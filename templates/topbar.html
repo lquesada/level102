@@ -1,0 +1,83 @@
+<!-- l102-topbar:start  Shared level102 top bar. Copy this whole block VERBATIM into every game (tests check it).
+     HEAD part: paste right after <meta name="viewport">, before the game's own styles, so language and text size are
+     known before the first paint (no flash of English).
+     Gives the page: <html lang> = en|es|de (saved choice > OS language > English), CSS var --fs (text scale 0.8..1.8, default 1.1),
+     a download link (the page itself, offline), a full-screen toggle (hidden where the browser can't do it), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
+     setLang(l), setFs(v) }, and the events 'l102:lang' and 'l102:fs' on window. -->
+<style>
+:root{--l102-bar-h:34px;--fs:1.1}
+.l102bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:var(--l102-bar-h);box-sizing:border-box;display:flex;align-items:center;gap:6px;
+  padding:3px max(8px,env(safe-area-inset-right)) 3px max(8px,env(safe-area-inset-left));background:rgba(12,6,28,.55);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:600 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation}
+.l102bar a{flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#fff;text-decoration:none;
+  height:28px;line-height:28px;padding:0 10px;border-radius:14px;background:rgba(255,255,255,.14)}
+.l102bar .l102sp{flex:1 1 0;min-width:0}
+.l102bar select,.l102bar button,.l102bar a.l102dl{flex:0 0 auto;height:28px;min-width:32px;margin:0;padding:0 6px;border:0;border-radius:14px;
+  background:rgba(255,255,255,.14);color:#fff;font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center}
+.l102bar select option{color:#000}
+.l102bar a.l102dl,.l102bar #l102full{display:inline-flex;align-items:center;justify-content:center;padding:0 6px;line-height:1}
+.l102bar [hidden]{display:none!important}
+.l102bar a:hover,.l102bar button:hover,.l102bar select:hover{background:rgba(255,255,255,.26)}
+.l102bar a:focus-visible,.l102bar button:focus-visible,.l102bar select:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
+.l102bar button:disabled{opacity:.4;cursor:default}
+@media (max-width:340px){.l102bar{gap:4px}.l102bar a{padding:0 7px}}
+</style>
+<script>
+(function(){
+  var LANGS=["en","es","de"],h=document.documentElement,lang=null,fs=1.1;
+  try{lang=localStorage.getItem("l102.lang");fs=parseFloat(localStorage.getItem("l102.fs"))||1.1;}catch(e){}
+  if(LANGS.indexOf(lang)<0){lang="en";var n=navigator.languages||[navigator.language||"en"];
+    for(var i=0;i<n.length;i++){var c=String(n[i]).slice(0,2).toLowerCase();if(LANGS.indexOf(c)>=0){lang=c;break;}}}
+  var clamp=function(v){return Math.round(Math.min(1.8,Math.max(.8,v))*10)/10;};
+  fs=clamp(fs);h.lang=lang;h.style.setProperty("--fs",fs);
+  window.L102={lang:lang,fs:fs,langs:LANGS,
+    setLang:function(l){if(LANGS.indexOf(l)<0||l===this.lang)return;this.lang=l;h.lang=l;try{localStorage.setItem("l102.lang",l);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:lang",{detail:l}));},
+    setFs:function(v){v=clamp(v);if(v===this.fs)return;this.fs=v;h.style.setProperty("--fs",v);try{localStorage.setItem("l102.fs",v);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:fs",{detail:v}));}};
+})();
+</script>
+<!-- l102-topbar:head-end -->
+
+<!-- BODY part: paste as the very first thing inside <body>. -->
+<nav class="l102bar" id="l102bar">
+  <a id="l102back" href="https://level102.com">&lsaquo; Back to level102.com</a>
+  <span class="l102sp"></span>
+  <select id="l102lang" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option></select>
+  <button type="button" id="l102minus" aria-label="Smaller text">A&minus;</button>
+  <button type="button" id="l102plus" aria-label="Bigger text">A+</button>
+  <button type="button" id="l102full" aria-label="Full screen" title="Full screen"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path id="l102fullp" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <a class="l102dl" id="l102dl" href="./" download="level102.html" aria-label="Download for offline use" title="Download for offline use"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</nav>
+<script>
+(function(){
+  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen"],
+         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa"],
+         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden"]};
+  var back=document.getElementById("l102back"),sel=document.getElementById("l102lang"),
+      minus=document.getElementById("l102minus"),plus=document.getElementById("l102plus"),dl=document.getElementById("l102dl"),
+      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement;
+  // full screen: browser's own exit (Esc, Android back) also works; hidden where unsupported (e.g. iPhone)
+  function isFull(){return !!(d.fullscreenElement||d.webkitFullscreenElement);}
+  if(!(d.fullscreenEnabled||d.webkitFullscreenEnabled))full.hidden=true;
+  full.addEventListener("click",function(){try{var p=isFull()?(d.exitFullscreen||d.webkitExitFullscreen).call(d)
+    :(de.requestFullscreen||de.webkitRequestFullscreen).call(de,{navigationUI:"hide"});if(p&&p.catch)p.catch(function(){});}catch(e){}});
+  d.addEventListener("fullscreenchange",paint);d.addEventListener("webkitfullscreenchange",paint);
+  // download = this very page (one self-contained file), named after its folder: /drinkmixer/ -> drinkmixer.html
+  var parts=location.pathname.split("/").filter(Boolean),last=parts[parts.length-1]||"";
+  if(/\.html?$/.test(last))last=parts[parts.length-2]||"";
+  dl.href=location.href.split("#")[0].split("?")[0];dl.setAttribute("download",(last&&last!=="docs"?last:"level102")+".html");
+  function paint(){var t=T[L102.lang];back.textContent="‹ "+t[0];sel.value=L102.lang;sel.setAttribute("aria-label",t[1]);
+    minus.setAttribute("aria-label",t[2]);minus.title=t[2];plus.setAttribute("aria-label",t[3]);plus.title=t[3];
+    dl.setAttribute("aria-label",t[4]);dl.title=t[4];
+    var f=isFull();full.setAttribute("aria-label",t[f?6:5]);full.title=t[f?6:5];full.setAttribute("aria-pressed",f);
+    fullp.setAttribute("d",f?"M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5":"M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5");
+    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;}
+  sel.addEventListener("change",function(){L102.setLang(sel.value);});
+  minus.addEventListener("click",function(){L102.setFs(L102.fs-.1);});
+  plus.addEventListener("click",function(){L102.setFs(L102.fs+.1);});
+  addEventListener("l102:lang",paint);addEventListener("l102:fs",paint);paint();
+})();
+</script>
+<!-- l102-topbar:end -->

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- l102-topbar:start  Shared level102 top bar. Copy this whole block VERBATIM into every game (tests check it).
+     HEAD part: paste right after <meta name="viewport">, before the game's own styles, so language and text size are
+     known before the first paint (no flash of English).
+     Gives the page: <html lang> = en|es|de (saved choice > OS language > English), CSS var --fs (text scale 0.8..1.8, default 1.1),
+     a download link (the page itself, offline), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
+     setLang(l), setFs(v) }, and the events 'l102:lang' and 'l102:fs' on window. -->
+<style>
+:root{--l102-bar-h:34px;--fs:1.1}
+.l102bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:var(--l102-bar-h);box-sizing:border-box;display:flex;align-items:center;gap:6px;
+  padding:3px max(8px,env(safe-area-inset-right)) 3px max(8px,env(safe-area-inset-left));background:rgba(12,6,28,.55);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:600 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation}
+.l102bar a{flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#fff;text-decoration:none;
+  height:28px;line-height:28px;padding:0 10px;border-radius:14px;background:rgba(255,255,255,.14)}
+.l102bar .l102sp{flex:1 1 0;min-width:0}
+.l102bar select,.l102bar button,.l102bar a.l102dl{flex:0 0 auto;height:28px;min-width:32px;margin:0;padding:0 6px;border:0;border-radius:14px;
+  background:rgba(255,255,255,.14);color:#fff;font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center}
+.l102bar select option{color:#000}
+.l102bar a.l102dl,.l102bar #l102full{display:inline-flex;align-items:center;justify-content:center;padding:0 6px;line-height:1}
+.l102bar [hidden]{display:none!important}
+.l102bar a:hover,.l102bar button:hover,.l102bar select:hover{background:rgba(255,255,255,.26)}
+.l102bar a:focus-visible,.l102bar button:focus-visible,.l102bar select:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
+.l102bar button:disabled{opacity:.4;cursor:default}
+@media (max-width:340px){.l102bar{gap:4px}.l102bar a{padding:0 7px}}
+</style>
+<script>
+(function(){
+  var LANGS=["en","es","de"],h=document.documentElement,lang=null,fs=1.1;
+  try{lang=localStorage.getItem("l102.lang");fs=parseFloat(localStorage.getItem("l102.fs"))||1.1;}catch(e){}
+  if(LANGS.indexOf(lang)<0){lang="en";var n=navigator.languages||[navigator.language||"en"];
+    for(var i=0;i<n.length;i++){var c=String(n[i]).slice(0,2).toLowerCase();if(LANGS.indexOf(c)>=0){lang=c;break;}}}
+  var clamp=function(v){return Math.round(Math.min(1.8,Math.max(.8,v))*10)/10;};
+  fs=clamp(fs);h.lang=lang;h.style.setProperty("--fs",fs);
+  window.L102={lang:lang,fs:fs,langs:LANGS,
+    setLang:function(l){if(LANGS.indexOf(l)<0||l===this.lang)return;this.lang=l;h.lang=l;try{localStorage.setItem("l102.lang",l);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:lang",{detail:l}));},
+    setFs:function(v){v=clamp(v);if(v===this.fs)return;this.fs=v;h.style.setProperty("--fs",v);try{localStorage.setItem("l102.fs",v);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:fs",{detail:v}));}};
+})();
+</script>
+<!-- l102-topbar:head-end -->
+<meta name="theme-color" content="#6a43e6">
+<title>level102</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M20 22h24l-3 30a4 4 0 0 1-4 3.6H27a4 4 0 0 1-4-3.6z' fill='%23ff3f8e'/%3E%3Cpath d='M36 22l6-14' stroke='%236a43e6' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<!-- l102-card: link previews (made by tools/make_cards.mjs; the page never loads card.jpg) -->
+<meta name="description" content="Free little games for phone, tablet and computer. They work offline, too.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="level102">
+<meta property="og:title" content="level102">
+<meta property="og:description" content="Free little games for phone, tablet and computer. They work offline, too.">
+<meta property="og:url" content="https://level102.com/">
+<meta property="og:image" content="https://level102.com/card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="level102">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /l102-card -->
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:calc(var(--l102-bar-h) + 24px) 16px 24px;
+  font-family:ui-rounded,"SF Pro Rounded","Segoe UI Rounded",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;
+  background:linear-gradient(135deg,#7b5cff 0%,#b05cff 45%,#ff6fb5 100%);background-color:#9a5cff;
+}
+#l102back{visibility:hidden}
+h1{margin:0;font-size:calc(clamp(28px,7vw,44px) * var(--fs));font-weight:900;letter-spacing:.5px;text-shadow:0 3px 0 rgba(60,20,120,.35)}
+.games{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;list-style:none;margin:0;padding:0}
+.game{display:flex;flex-direction:column;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:calc(16px * var(--fs));text-align:center;max-width:140px;text-shadow:0 1px 0 rgba(60,20,120,.35)}
+.game .icon{width:112px;height:112px;border-radius:28px;display:grid;place-items:center;background:linear-gradient(180deg,#fffdfb,#ffd9ec);
+  box-shadow:0 10px 24px rgba(52,22,120,.35),0 0 0 4px #ff5fa2;transition:transform .12s}
+.game:hover .icon,.game:focus-visible .icon{transform:translateY(-3px) scale(1.04)}
+.game:active .icon{transform:scale(.96)}
+.game:focus-visible{outline:none}
+.game .icon.dark{background:linear-gradient(180deg,#2a1a48,#120c1c);box-shadow:0 10px 24px rgba(52,22,120,.35),0 0 0 4px #ffd84d}
+.game:focus-visible .icon{box-shadow:0 10px 24px rgba(52,22,120,.35),0 0 0 4px #ff9d1c}
+</style>
+</head>
+<body>
+<!-- BODY part: paste as the very first thing inside <body>. -->
+<nav class="l102bar" id="l102bar">
+  <a id="l102back" href="https://level102.com">&lsaquo; Back to level102.com</a>
+  <span class="l102sp"></span>
+  <select id="l102lang" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option></select>
+  <button type="button" id="l102minus" aria-label="Smaller text">A&minus;</button>
+  <button type="button" id="l102plus" aria-label="Bigger text">A+</button>
+  <button type="button" id="l102full" aria-label="Full screen" title="Full screen"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path id="l102fullp" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <a class="l102dl" id="l102dl" href="./" download="level102.html" aria-label="Download for offline use" title="Download for offline use"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</nav>
+<script>
+(function(){
+  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen"],
+         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa"],
+         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden"]};
+  var back=document.getElementById("l102back"),sel=document.getElementById("l102lang"),
+      minus=document.getElementById("l102minus"),plus=document.getElementById("l102plus"),dl=document.getElementById("l102dl"),
+      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement;
+  // full screen: browser's own exit (Esc, Android back) also works; hidden where unsupported (e.g. iPhone)
+  function isFull(){return !!(d.fullscreenElement||d.webkitFullscreenElement);}
+  if(!(d.fullscreenEnabled||d.webkitFullscreenEnabled))full.hidden=true;
+  full.addEventListener("click",function(){try{var p=isFull()?(d.exitFullscreen||d.webkitExitFullscreen).call(d)
+    :(de.requestFullscreen||de.webkitRequestFullscreen).call(de,{navigationUI:"hide"});if(p&&p.catch)p.catch(function(){});}catch(e){}});
+  d.addEventListener("fullscreenchange",paint);d.addEventListener("webkitfullscreenchange",paint);
+  // download = this very page (one self-contained file), named after its folder: /drinkmixer/ -> drinkmixer.html
+  var parts=location.pathname.split("/").filter(Boolean),last=parts[parts.length-1]||"";
+  if(/\.html?$/.test(last))last=parts[parts.length-2]||"";
+  dl.href=location.href.split("#")[0].split("?")[0];dl.setAttribute("download",(last&&last!=="docs"?last:"level102")+".html");
+  function paint(){var t=T[L102.lang];back.textContent="‹ "+t[0];sel.value=L102.lang;sel.setAttribute("aria-label",t[1]);
+    minus.setAttribute("aria-label",t[2]);minus.title=t[2];plus.setAttribute("aria-label",t[3]);plus.title=t[3];
+    dl.setAttribute("aria-label",t[4]);dl.title=t[4];
+    var f=isFull();full.setAttribute("aria-label",t[f?6:5]);full.title=t[f?6:5];full.setAttribute("aria-pressed",f);
+    fullp.setAttribute("d",f?"M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5":"M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5");
+    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;}
+  sel.addEventListener("change",function(){L102.setLang(sel.value);});
+  minus.addEventListener("click",function(){L102.setFs(L102.fs-.1);});
+  plus.addEventListener("click",function(){L102.setFs(L102.fs+.1);});
+  addEventListener("l102:lang",paint);addEventListener("l102:fs",paint);paint();
+})();
+</script>
+<!-- l102-topbar:end -->
+<h1>level102</h1>
+<ul class="games">
+  <li>
+    <a class="game" href="drinkmixer/">
+      <span class="icon">
+        <svg width="84" height="84" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#fff"/><path d="M20 22h24l-3 30a4 4 0 0 1-4 3.6H27a4 4 0 0 1-4-3.6z" fill="#ff3f8e"/><path d="M21.5 32h21l-1.8 20a3 3 0 0 1-3 2.6H26.3a3 3 0 0 1-3-2.6z" fill="#ff9d1c"/><circle cx="29" cy="44" r="2.5" fill="#fff" opacity=".8"/><circle cx="36" cy="39" r="1.8" fill="#fff" opacity=".8"/><path d="M36 22l6-14" stroke="#6a43e6" stroke-width="4" stroke-linecap="round"/><ellipse cx="32" cy="22" rx="12" ry="3" fill="#ffd1e6"/></svg>
+      </span>
+      <span data-name="Drink Mixer|Mezclador de bebidas|Getränke-Mixer">Drink Mixer</span>
+    </a>
+  </li>
+  <li>
+    <a class="game" href="infinitedungeon/">
+      <span class="icon dark">
+        <svg width="84" height="84" viewBox="0 0 64 64" aria-hidden="true"><path d="M14 56V30a18 18 0 0 1 36 0v26z" fill="#3b2a5c" stroke="#7a5cc4" stroke-width="2.5"/><path d="M21 56V31a11 11 0 0 1 22 0v25z" fill="#0b0714"/><path d="M14 56h36" stroke="#7a5cc4" stroke-width="2.5" stroke-linecap="round"/><path d="M24 50l3-12 3 12z" fill="#5fe0ff"/><path d="M33 50l2.5-9 2.5 9z" fill="#d36bff"/><path d="M44 10L24 30" stroke="#e6e9f2" stroke-width="4" stroke-linecap="round"/><path d="M21 27l6 6" stroke="#ffd84d" stroke-width="4" stroke-linecap="round"/><path d="M22.5 31.5l-4 4" stroke="#a0683b" stroke-width="4" stroke-linecap="round"/><circle cx="17.5" cy="36.5" r="2.4" fill="#ffd84d"/></svg>
+      </span>
+      <span data-name="Infinite Dungeon|Mazmorra Infinita|Endloser Dungeon">Infinite Dungeon</span>
+    </a>
+  </li>
+  <li>
+    <a class="game" href="candyshop/">
+      <span class="icon">
+        <svg width="84" height="84" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#ffe1ee"/><path d="M0 14V14A14 14 0 0 1 14 0h36a14 14 0 0 1 14 14v0z" fill="#fff"/><path d="M8 2.5h9V14H8zM26 0h9v14h-9zM44 0h9v14h-9z" fill="#ff5d8f"/><path d="M0 14h64v3H0z" fill="#ff5d8f"/><path d="M41 33l6-17" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M41 33l6-17" stroke="#d9c7cf" stroke-width="1" stroke-linecap="round"/><circle cx="48" cy="15" r="7.5" fill="#ff4f81" stroke="#b8235a" stroke-width="1.2"/><path d="M48 15a2 2 0 0 1 2.5 1.5a4 4 0 0 1-4.5 3a5.5 5.5 0 0 1-3.5-6a7 7 0 0 1 8-5" fill="none" stroke="#ffd1e0" stroke-width="1.8" stroke-linecap="round"/><path d="M15 27h34l-3.4 28.5a3 3 0 0 1-3 2.5H21.4a3 3 0 0 1-3-2.5z" fill="#fff" fill-opacity=".55" stroke="#e0609a" stroke-width="2" stroke-linejoin="round"/><circle cx="25" cy="50" r="5" fill="#3fb6ff" stroke="#1f7fc0" stroke-width="1"/><circle cx="36" cy="51" r="5" fill="#ffcf33" stroke="#c99a10" stroke-width="1"/><circle cx="30.5" cy="42" r="4.5" fill="#6fd14f" stroke="#3f9a2a" stroke-width="1"/><circle cx="40.5" cy="42.5" r="4.2" fill="#ff5a5a" stroke="#b82a2a" stroke-width="1"/><path d="M19 35l3-3.5v7zM31 35l-3-3.5v7z" fill="#9b5cf0"/><ellipse cx="25" cy="35" rx="4.2" ry="3.2" fill="#9b5cf0" stroke="#5f2fb0" stroke-width="1"/><circle cx="23.5" cy="48.5" r="1.5" fill="#fff" fill-opacity=".8"/><circle cx="34.5" cy="49.5" r="1.5" fill="#fff" fill-opacity=".8"/><circle cx="29.3" cy="40.8" r="1.2" fill="#fff" fill-opacity=".8"/><path d="M19.5 30l3 24" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-opacity=".8"/><path d="M15 27h34" stroke="#e0609a" stroke-width="3" stroke-linecap="round"/></svg>
+      </span>
+      <span data-name="Candy Shop|Tienda de golosinas|Süßigkeitenladen">Candy Shop</span>
+    </a>
+  </li>
+  <li>
+    <a class="game" href="fluid/">
+      <span class="icon dark">
+        <svg width="84" height="84" viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="flb" cx="50%" cy="20%" r="90%"><stop offset="0" stop-color="#25306a"/><stop offset="1" stop-color="#070b1c"/></radialGradient><linearGradient id="flw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fd6ff"/><stop offset="1" stop-color="#0b3aa8"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#flb)"/><path d="M6 40c8-7 14 3 22-3s14-9 22-4 8 3 8 3v14a8 8 0 0 1-8 8H14a8 8 0 0 1-8-8z" fill="url(#flw)"/><path d="M10 41c6-4 11 1 17-2" fill="none" stroke="#e6f9ff" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><circle cx="44" cy="22" r="6" fill="url(#flw)"/><circle cx="42" cy="20" r="1.8" fill="#fff" opacity=".85"/><circle cx="24" cy="16" r="3.6" fill="url(#flw)"/><circle cx="23" cy="15" r="1.1" fill="#fff" opacity=".85"/><circle cx="30" cy="50" r="2" fill="#fff" opacity=".35"/><circle cx="46" cy="48" r="1.4" fill="#fff" opacity=".35"/></svg>
+      </span>
+      <span data-name="Fluid|Fluido|Flüssigkeit">Fluid</span>
+    </a>
+  </li>
+  <li>
+    <a class="game" href="arcadeclaw/">
+      <span class="icon">
+        <svg width="84" height="84" viewBox="0 0 64 64" aria-hidden="true" shape-rendering="crispEdges"><rect width="64" height="64" rx="12" fill="#8c4f24"/><rect x="3" y="3" width="58" height="58" rx="9" fill="#a8642f"/><rect x="6" y="5" width="52" height="11" fill="#2a1408"/><rect x="7" y="6" width="50" height="9" fill="#0b0d1c"/><rect x="10" y="8" width="6" height="5" fill="#ff3b3b"/><rect x="17" y="8" width="6" height="5" fill="#ff8a1f"/><rect x="24" y="8" width="6" height="5" fill="#ffd21f"/><rect x="31" y="8" width="6" height="5" fill="#3fdc4a"/><rect x="38" y="8" width="6" height="5" fill="#29b6ff"/><rect x="45" y="8" width="6" height="5" fill="#a35cff"/><rect x="7" y="18" width="50" height="32" fill="#2a1408"/><rect x="8" y="19" width="48" height="30" fill="#1f2560"/><rect x="9" y="21" width="46" height="3" fill="#8b939f"/><rect x="27" y="20" width="10" height="5" fill="#5d6470"/><rect x="31" y="25" width="2" height="5" fill="#b9c1cb"/><rect x="27" y="29" width="10" height="5" fill="#b9c1cb"/><rect x="27" y="33" width="10" height="2" fill="#5d6470"/><path d="M28 34 L22 39 L23 45 L26 46 M36 34 L42 39 L41 45 L38 46" fill="none" stroke="#1c1f27" stroke-width="3.4" stroke-linecap="square"/><path d="M28 34 L22 39 L23 45 L26 46 M36 34 L42 39 L41 45 L38 46" fill="none" stroke="#b9c1cb" stroke-width="1.6" stroke-linecap="square"/><circle cx="14" cy="45" r="4" fill="#a0642c"/><circle cx="11" cy="41" r="1.6" fill="#a0642c"/><circle cx="17" cy="41" r="1.6" fill="#a0642c"/><circle cx="32" cy="46" r="3.5" fill="#a35cff"/><circle cx="49" cy="45" r="4" fill="#3cb54a"/><rect x="7" y="50" width="50" height="2" fill="#d99a5a"/><circle cx="18" cy="56" r="4.5" fill="#2a1408"/><circle cx="18" cy="56" r="3.6" fill="#e5262d"/><rect x="16" y="54" width="2" height="2" fill="#ffd0d0"/><rect x="34" y="53" width="18" height="7" rx="2" fill="#0d4a1f"/><rect x="35" y="53" width="16" height="5" rx="2" fill="#27b84a"/></svg>
+
+      </span>
+      <span data-name="Arcade Claw|Máquina de Gancho|Greifautomat">Arcade Claw</span>
+    </a>
+  </li>
+</ul>
+<script>
+(function(){
+  function paint(){var i=L102.langs.indexOf(L102.lang);
+    document.querySelectorAll("[data-name]").forEach(function(el){el.textContent=el.getAttribute("data-name").split("|")[i]||el.textContent;});}
+  addEventListener("l102:lang",paint);paint();
+})();
+</script>
+</body>
+</html>

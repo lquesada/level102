@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+@@TOPBAR_HEAD@@
+<title>Arcade Claw</title>
+<link rel="icon" type="image/svg+xml" href="@@FAVICON@@">
+<script>
+// translated title before the first paint
+document.title={en:"Arcade Claw",es:"Máquina de Gancho",de:"Greifautomat"}[L102.lang]||"Arcade Claw";
+</script>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;background:#07040f}
+body{font:700 calc(15px * var(--fs))/1.25 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#f4ecff;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+#stage{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);overflow:hidden;touch-action:none;
+  background:radial-gradient(60% 40% at 15% 20%,rgba(255,40,140,.22),transparent 70%),
+             radial-gradient(50% 40% at 85% 30%,rgba(40,220,255,.18),transparent 70%),
+             radial-gradient(80% 60% at 50% 100%,rgba(120,40,200,.25),transparent 70%),#07040f}
+#screen{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges;cursor:default;outline:none;
+  box-shadow:0 0 40px rgba(0,0,0,.6)}
+#screen:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#hint{position:absolute;left:50%;top:10px;transform:translateX(-50%);max-width:min(92%,460px);box-sizing:border-box;
+  padding:9px 14px;border-radius:14px;background:rgba(20,8,40,.88);border:1px solid rgba(255,255,255,.2);
+  text-align:center;pointer-events:none;transition:opacity .5s;z-index:2;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+#hint.off{opacity:0}
+#toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);max-width:min(92%,420px);padding:8px 14px;border-radius:14px;
+  background:rgba(20,8,40,.9);border:1px solid rgba(255,255,255,.2);text-align:center;pointer-events:none;opacity:0;transition:opacity .35s;z-index:3}
+#toast.on{opacity:1}
+#prize{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,2,12,.6)}
+#prize[hidden]{display:none}
+#prizesBtn{position:absolute;z-index:2;background:transparent;border:0;padding:0;margin:0;cursor:pointer;border-radius:6px;-webkit-tap-highlight-color:transparent}
+#prizesBtn:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#prizesDlg{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(5,2,12,.65)}
+#prizesDlg[hidden]{display:none}
+#prizesDlg .card{width:100%;max-width:calc(440px * var(--fs));max-height:calc(100% - 8px);box-sizing:border-box;display:flex;flex-direction:column;padding:16px;border-radius:20px;
+  background:linear-gradient(180deg,#2a1450,#160a2c);border:2px solid #ffcf3a;box-shadow:0 0 0 4px #7a3cff,0 20px 50px rgba(0,0,0,.6)}
+#prizesDlg h2{margin:0 0 10px;text-align:center;font-size:calc(22px * var(--fs));color:#ffd84d;text-shadow:0 2px 0 #b2410f}
+#pzGrid{flex:1 1 auto;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(calc(86px * var(--fs)),1fr));grid-auto-rows:1fr;gap:8px}
+#pzGrid .it{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:12px;background:rgba(255,255,255,.08);text-align:center;
+  font-size:calc(13px * var(--fs));line-height:1.15;overflow-wrap:anywhere}
+#pzGrid canvas{width:56px;height:56px;object-fit:contain;flex:none;image-rendering:pixelated;image-rendering:crisp-edges}
+#pzGrid .n{position:absolute;top:4px;right:6px;padding:1px 6px;border-radius:9px;background:#ff3d7f;color:#fff;font-size:calc(12px * var(--fs))}
+#pzEmpty{margin:8px 0 12px;text-align:center}
+#pzEmpty[hidden]{display:none}
+#pzRow,#pzAsk .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+#pzRow[hidden],#pzAsk[hidden]{display:none}
+#pzAsk{margin-top:4px;padding:10px;border-radius:14px;background:rgba(255,77,94,.14);border:2px solid #ff6b7a}
+#pzAsk p{margin:0;text-align:center;line-height:1.25;font-size:calc(15px * var(--fs))}
+#prizesDlg .card.asking #pzGrid,#prizesDlg .card.asking #pzEmpty{display:none}
+#prizesDlg .card.asking #pzAsk{overflow:auto;min-height:0}
+@media (max-height:420px){#prizesDlg h2{margin-bottom:6px;font-size:calc(18px * var(--fs))}#prizesDlg .card{padding:10px 14px}}
+#pzReset,#pzNo,#pzYes{min-height:48px;min-width:44px;padding:0 14px;border-radius:14px;font:inherit;font-size:calc(16px * var(--fs));cursor:pointer;touch-action:manipulation}
+#pzReset{flex:1 0 auto;white-space:nowrap;border:2px solid #ff6b7a;background:transparent;color:#ffc4cb}
+#pzReset:disabled{opacity:.45;cursor:default}
+#pzNo{flex:1 0 auto;white-space:nowrap;border:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff}
+#pzYes{flex:1 0 auto;white-space:nowrap;border:0;background:linear-gradient(180deg,#ff6b7a,#e0283f);box-shadow:0 4px 0 #8f1526;color:#fff}
+#pzReset:active,#pzNo:active,#pzYes:active{transform:translateY(2px)}
+#pzReset:focus-visible,#pzNo:focus-visible,#pzYes:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#pzClose{flex:1 0 auto;white-space:nowrap;padding:0 14px;min-height:48px;border:0;border-radius:14px;font:inherit;font-size:calc(17px * var(--fs));color:#0d2a08;
+  background:linear-gradient(180deg,#7dff6a,#2fbf3a);box-shadow:0 4px 0 #1b7a22;cursor:pointer}
+#pzClose:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#prize .card{width:100%;max-width:360px;box-sizing:border-box;padding:18px 18px 16px;border-radius:20px;text-align:center;
+  background:linear-gradient(180deg,#2a1450,#160a2c);border:2px solid #ffcf3a;box-shadow:0 0 0 4px #7a3cff,0 20px 50px rgba(0,0,0,.6)}
+#prize h2{margin:0 0 6px;font-size:calc(26px * var(--fs));color:#ffd84d;text-shadow:0 2px 0 #b2410f}
+#prize p{margin:6px 0 12px;font-size:calc(17px * var(--fs))}
+#prize canvas{image-rendering:pixelated;image-rendering:crisp-edges;display:block;margin:4px auto 6px;max-width:100%}
+#prize button{display:block;width:100%;min-height:50px;border:0;border-radius:14px;font:inherit;font-size:calc(18px * var(--fs));
+  color:#0d2a08;background:linear-gradient(180deg,#7dff6a,#2fbf3a);box-shadow:0 4px 0 #1b7a22;cursor:pointer}
+#prize button:active{transform:translateY(2px);box-shadow:0 2px 0 #1b7a22}
+#prize button:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+</style>
+</head>
+<body>
+@@TOPBAR_BODY@@
+<main id="stage">
+  <canvas id="screen" tabindex="0" role="img" aria-label="Arcade Claw"></canvas>
+  <div id="hint"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <button type="button" id="prizesBtn"></button>
+  <div id="prizesDlg" hidden role="dialog" aria-modal="true" aria-labelledby="pzTitle">
+    <div class="card"><h2 id="pzTitle"></h2><div id="pzGrid"></div><p id="pzEmpty"></p>
+      <div id="pzRow"><button type="button" id="pzReset"></button><button type="button" id="pzClose"></button></div>
+      <div id="pzAsk" hidden role="group" aria-labelledby="pzAskT"><p id="pzAskT"></p><div class="row"><button type="button" id="pzNo"></button><button type="button" id="pzYes"></button></div></div></div>
+  </div>
+  <div id="prize" hidden role="dialog" aria-modal="true" aria-labelledby="pTitle">
+    <div class="card"><h2 id="pTitle"></h2><canvas id="pIcon" width="1" height="1"></canvas><p id="pText"></p><button type="button" id="pOk"></button></div>
+  </div>
+</main>
+<script>
+"use strict";
+@@ART@@
+@@TOYS@@
+@@GAME@@
+</script>
+</body>
+</html>

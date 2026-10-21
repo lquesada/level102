@@ -1,0 +1,9 @@
+# Local only, not published
+CLAUDE.local.md
+scratch/
+screenshots/
+node_modules/
+.DS_Store
+*.log
+todo.md
+CLAUDE.md

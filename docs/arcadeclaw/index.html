@@ -1,0 +1,1391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<!-- l102-topbar:start  Shared level102 top bar. Copy this whole block VERBATIM into every game (tests check it).
+     HEAD part: paste right after <meta name="viewport">, before the game's own styles, so language and text size are
+     known before the first paint (no flash of English).
+     Gives the page: <html lang> = en|es|de (saved choice > OS language > English), CSS var --fs (text scale 0.8..1.8, default 1.1),
+     a download link (the page itself, offline), a full-screen toggle (hidden where the browser can't do it), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
+     setLang(l), setFs(v) }, and the events 'l102:lang' and 'l102:fs' on window. -->
+<style>
+:root{--l102-bar-h:34px;--fs:1.1}
+.l102bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:var(--l102-bar-h);box-sizing:border-box;display:flex;align-items:center;gap:6px;
+  padding:3px max(8px,env(safe-area-inset-right)) 3px max(8px,env(safe-area-inset-left));background:rgba(12,6,28,.55);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:600 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation}
+.l102bar a{flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#fff;text-decoration:none;
+  height:28px;line-height:28px;padding:0 10px;border-radius:14px;background:rgba(255,255,255,.14)}
+.l102bar .l102sp{flex:1 1 0;min-width:0}
+.l102bar select,.l102bar button,.l102bar a.l102dl{flex:0 0 auto;height:28px;min-width:32px;margin:0;padding:0 6px;border:0;border-radius:14px;
+  background:rgba(255,255,255,.14);color:#fff;font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center}
+.l102bar select option{color:#000}
+.l102bar a.l102dl,.l102bar #l102full{display:inline-flex;align-items:center;justify-content:center;padding:0 6px;line-height:1}
+.l102bar [hidden]{display:none!important}
+.l102bar a:hover,.l102bar button:hover,.l102bar select:hover{background:rgba(255,255,255,.26)}
+.l102bar a:focus-visible,.l102bar button:focus-visible,.l102bar select:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
+.l102bar button:disabled{opacity:.4;cursor:default}
+@media (max-width:340px){.l102bar{gap:4px}.l102bar a{padding:0 7px}}
+</style>
+<script>
+(function(){
+  var LANGS=["en","es","de"],h=document.documentElement,lang=null,fs=1.1;
+  try{lang=localStorage.getItem("l102.lang");fs=parseFloat(localStorage.getItem("l102.fs"))||1.1;}catch(e){}
+  if(LANGS.indexOf(lang)<0){lang="en";var n=navigator.languages||[navigator.language||"en"];
+    for(var i=0;i<n.length;i++){var c=String(n[i]).slice(0,2).toLowerCase();if(LANGS.indexOf(c)>=0){lang=c;break;}}}
+  var clamp=function(v){return Math.round(Math.min(1.8,Math.max(.8,v))*10)/10;};
+  fs=clamp(fs);h.lang=lang;h.style.setProperty("--fs",fs);
+  window.L102={lang:lang,fs:fs,langs:LANGS,
+    setLang:function(l){if(LANGS.indexOf(l)<0||l===this.lang)return;this.lang=l;h.lang=l;try{localStorage.setItem("l102.lang",l);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:lang",{detail:l}));},
+    setFs:function(v){v=clamp(v);if(v===this.fs)return;this.fs=v;h.style.setProperty("--fs",v);try{localStorage.setItem("l102.fs",v);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:fs",{detail:v}));}};
+})();
+</script>
+<!-- l102-topbar:head-end -->
+<title>Arcade Claw</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 shape-rendering=%22crispEdges%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2212%22 fill=%22%238c4f24%22/%3E%3Crect x=%223%22 y=%223%22 width=%2258%22 height=%2258%22 rx=%229%22 fill=%22%23a8642f%22/%3E%3Crect x=%226%22 y=%225%22 width=%2252%22 height=%2211%22 fill=%22%232a1408%22/%3E%3Crect x=%227%22 y=%226%22 width=%2250%22 height=%229%22 fill=%22%230b0d1c%22/%3E%3Crect x=%2210%22 y=%228%22 width=%226%22 height=%225%22 fill=%22%23ff3b3b%22/%3E%3Crect x=%2217%22 y=%228%22 width=%226%22 height=%225%22 fill=%22%23ff8a1f%22/%3E%3Crect x=%2224%22 y=%228%22 width=%226%22 height=%225%22 fill=%22%23ffd21f%22/%3E%3Crect x=%2231%22 y=%228%22 width=%226%22 height=%225%22 fill=%22%233fdc4a%22/%3E%3Crect x=%2238%22 y=%228%22 width=%226%22 height=%225%22 fill=%22%2329b6ff%22/%3E%3Crect x=%2245%22 y=%228%22 width=%226%22 height=%225%22 fill=%22%23a35cff%22/%3E%3Crect x=%227%22 y=%2218%22 width=%2250%22 height=%2232%22 fill=%22%232a1408%22/%3E%3Crect x=%228%22 y=%2219%22 width=%2248%22 height=%2230%22 fill=%22%231f2560%22/%3E%3Crect x=%229%22 y=%2221%22 width=%2246%22 height=%223%22 fill=%22%238b939f%22/%3E%3Crect x=%2227%22 y=%2220%22 width=%2210%22 height=%225%22 fill=%22%235d6470%22/%3E%3Crect x=%2231%22 y=%2225%22 width=%222%22 height=%225%22 fill=%22%23b9c1cb%22/%3E%3Crect x=%2227%22 y=%2229%22 width=%2210%22 height=%225%22 fill=%22%23b9c1cb%22/%3E%3Crect x=%2227%22 y=%2233%22 width=%2210%22 height=%222%22 fill=%22%235d6470%22/%3E%3Cpath d=%22M28 34 L22 39 L23 45 L26 46 M36 34 L42 39 L41 45 L38 46%22 fill=%22none%22 stroke=%22%231c1f27%22 stroke-width=%223.4%22 stroke-linecap=%22square%22/%3E%3Cpath d=%22M28 34 L22 39 L23 45 L26 46 M36 34 L42 39 L41 45 L38 46%22 fill=%22none%22 stroke=%22%23b9c1cb%22 stroke-width=%221.6%22 stroke-linecap=%22square%22/%3E%3Ccircle cx=%2214%22 cy=%2245%22 r=%224%22 fill=%22%23a0642c%22/%3E%3Ccircle cx=%2211%22 cy=%2241%22 r=%221.6%22 fill=%22%23a0642c%22/%3E%3Ccircle cx=%2217%22 cy=%2241%22 r=%221.6%22 fill=%22%23a0642c%22/%3E%3Ccircle cx=%2232%22 cy=%2246%22 r=%223.5%22 fill=%22%23a35cff%22/%3E%3Ccircle cx=%2249%22 cy=%2245%22 r=%224%22 fill=%22%233cb54a%22/%3E%3Crect x=%227%22 y=%2250%22 width=%2250%22 height=%222%22 fill=%22%23d99a5a%22/%3E%3Ccircle cx=%2218%22 cy=%2256%22 r=%224.5%22 fill=%22%232a1408%22/%3E%3Ccircle cx=%2218%22 cy=%2256%22 r=%223.6%22 fill=%22%23e5262d%22/%3E%3Crect x=%2216%22 y=%2254%22 width=%222%22 height=%222%22 fill=%22%23ffd0d0%22/%3E%3Crect x=%2234%22 y=%2253%22 width=%2218%22 height=%227%22 rx=%222%22 fill=%22%230d4a1f%22/%3E%3Crect x=%2235%22 y=%2253%22 width=%2216%22 height=%225%22 rx=%222%22 fill=%22%2327b84a%22/%3E%3C/svg%3E%0A">
+<!-- l102-card: link previews (made by tools/make_cards.mjs; the page never loads card.jpg) -->
+<meta name="description" content="A pixel-art claw machine: insert a coin, steer the claw and grab a plush toy.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="level102">
+<meta property="og:title" content="Arcade Claw">
+<meta property="og:description" content="A pixel-art claw machine: insert a coin, steer the claw and grab a plush toy.">
+<meta property="og:url" content="https://level102.com/arcadeclaw/">
+<meta property="og:image" content="https://level102.com/arcadeclaw/card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Arcade Claw">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /l102-card -->
+<script>
+// translated title before the first paint
+document.title={en:"Arcade Claw",es:"Máquina de Gancho",de:"Greifautomat"}[L102.lang]||"Arcade Claw";
+</script>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;background:#07040f}
+body{font:700 calc(15px * var(--fs))/1.25 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#f4ecff;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+#stage{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);overflow:hidden;touch-action:none;
+  background:radial-gradient(60% 40% at 15% 20%,rgba(255,40,140,.22),transparent 70%),
+             radial-gradient(50% 40% at 85% 30%,rgba(40,220,255,.18),transparent 70%),
+             radial-gradient(80% 60% at 50% 100%,rgba(120,40,200,.25),transparent 70%),#07040f}
+#screen{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges;cursor:default;outline:none;
+  box-shadow:0 0 40px rgba(0,0,0,.6)}
+#screen:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#hint{position:absolute;left:50%;top:10px;transform:translateX(-50%);max-width:min(92%,460px);box-sizing:border-box;
+  padding:9px 14px;border-radius:14px;background:rgba(20,8,40,.88);border:1px solid rgba(255,255,255,.2);
+  text-align:center;pointer-events:none;transition:opacity .5s;z-index:2;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+#hint.off{opacity:0}
+#toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);max-width:min(92%,420px);padding:8px 14px;border-radius:14px;
+  background:rgba(20,8,40,.9);border:1px solid rgba(255,255,255,.2);text-align:center;pointer-events:none;opacity:0;transition:opacity .35s;z-index:3}
+#toast.on{opacity:1}
+#prize{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,2,12,.6)}
+#prize[hidden]{display:none}
+#prizesBtn{position:absolute;z-index:2;background:transparent;border:0;padding:0;margin:0;cursor:pointer;border-radius:6px;-webkit-tap-highlight-color:transparent}
+#prizesBtn:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#prizesDlg{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(5,2,12,.65)}
+#prizesDlg[hidden]{display:none}
+#prizesDlg .card{width:100%;max-width:calc(440px * var(--fs));max-height:calc(100% - 8px);box-sizing:border-box;display:flex;flex-direction:column;padding:16px;border-radius:20px;
+  background:linear-gradient(180deg,#2a1450,#160a2c);border:2px solid #ffcf3a;box-shadow:0 0 0 4px #7a3cff,0 20px 50px rgba(0,0,0,.6)}
+#prizesDlg h2{margin:0 0 10px;text-align:center;font-size:calc(22px * var(--fs));color:#ffd84d;text-shadow:0 2px 0 #b2410f}
+#pzGrid{flex:1 1 auto;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(calc(86px * var(--fs)),1fr));grid-auto-rows:1fr;gap:8px}
+#pzGrid .it{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:12px;background:rgba(255,255,255,.08);text-align:center;
+  font-size:calc(13px * var(--fs));line-height:1.15;overflow-wrap:anywhere}
+#pzGrid canvas{width:56px;height:56px;object-fit:contain;flex:none;image-rendering:pixelated;image-rendering:crisp-edges}
+#pzGrid .n{position:absolute;top:4px;right:6px;padding:1px 6px;border-radius:9px;background:#ff3d7f;color:#fff;font-size:calc(12px * var(--fs))}
+#pzEmpty{margin:8px 0 12px;text-align:center}
+#pzEmpty[hidden]{display:none}
+#pzRow,#pzAsk .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+#pzRow[hidden],#pzAsk[hidden]{display:none}
+#pzAsk{margin-top:4px;padding:10px;border-radius:14px;background:rgba(255,77,94,.14);border:2px solid #ff6b7a}
+#pzAsk p{margin:0;text-align:center;line-height:1.25;font-size:calc(15px * var(--fs))}
+#prizesDlg .card.asking #pzGrid,#prizesDlg .card.asking #pzEmpty{display:none}
+#prizesDlg .card.asking #pzAsk{overflow:auto;min-height:0}
+@media (max-height:420px){#prizesDlg h2{margin-bottom:6px;font-size:calc(18px * var(--fs))}#prizesDlg .card{padding:10px 14px}}
+#pzReset,#pzNo,#pzYes{min-height:48px;min-width:44px;padding:0 14px;border-radius:14px;font:inherit;font-size:calc(16px * var(--fs));cursor:pointer;touch-action:manipulation}
+#pzReset{flex:1 0 auto;white-space:nowrap;border:2px solid #ff6b7a;background:transparent;color:#ffc4cb}
+#pzReset:disabled{opacity:.45;cursor:default}
+#pzNo{flex:1 0 auto;white-space:nowrap;border:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff}
+#pzYes{flex:1 0 auto;white-space:nowrap;border:0;background:linear-gradient(180deg,#ff6b7a,#e0283f);box-shadow:0 4px 0 #8f1526;color:#fff}
+#pzReset:active,#pzNo:active,#pzYes:active{transform:translateY(2px)}
+#pzReset:focus-visible,#pzNo:focus-visible,#pzYes:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#pzClose{flex:1 0 auto;white-space:nowrap;padding:0 14px;min-height:48px;border:0;border-radius:14px;font:inherit;font-size:calc(17px * var(--fs));color:#0d2a08;
+  background:linear-gradient(180deg,#7dff6a,#2fbf3a);box-shadow:0 4px 0 #1b7a22;cursor:pointer}
+#pzClose:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#prize .card{width:100%;max-width:360px;box-sizing:border-box;padding:18px 18px 16px;border-radius:20px;text-align:center;
+  background:linear-gradient(180deg,#2a1450,#160a2c);border:2px solid #ffcf3a;box-shadow:0 0 0 4px #7a3cff,0 20px 50px rgba(0,0,0,.6)}
+#prize h2{margin:0 0 6px;font-size:calc(26px * var(--fs));color:#ffd84d;text-shadow:0 2px 0 #b2410f}
+#prize p{margin:6px 0 12px;font-size:calc(17px * var(--fs))}
+#prize canvas{image-rendering:pixelated;image-rendering:crisp-edges;display:block;margin:4px auto 6px;max-width:100%}
+#prize button{display:block;width:100%;min-height:50px;border:0;border-radius:14px;font:inherit;font-size:calc(18px * var(--fs));
+  color:#0d2a08;background:linear-gradient(180deg,#7dff6a,#2fbf3a);box-shadow:0 4px 0 #1b7a22;cursor:pointer}
+#prize button:active{transform:translateY(2px);box-shadow:0 2px 0 #1b7a22}
+#prize button:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+</style>
+</head>
+<body>
+<!-- BODY part: paste as the very first thing inside <body>. -->
+<nav class="l102bar" id="l102bar">
+  <a id="l102back" href="https://level102.com">&lsaquo; Back to level102.com</a>
+  <span class="l102sp"></span>
+  <select id="l102lang" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option></select>
+  <button type="button" id="l102minus" aria-label="Smaller text">A&minus;</button>
+  <button type="button" id="l102plus" aria-label="Bigger text">A+</button>
+  <button type="button" id="l102full" aria-label="Full screen" title="Full screen"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path id="l102fullp" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <a class="l102dl" id="l102dl" href="./" download="level102.html" aria-label="Download for offline use" title="Download for offline use"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</nav>
+<script>
+(function(){
+  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen"],
+         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa"],
+         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden"]};
+  var back=document.getElementById("l102back"),sel=document.getElementById("l102lang"),
+      minus=document.getElementById("l102minus"),plus=document.getElementById("l102plus"),dl=document.getElementById("l102dl"),
+      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement;
+  // full screen: browser's own exit (Esc, Android back) also works; hidden where unsupported (e.g. iPhone)
+  function isFull(){return !!(d.fullscreenElement||d.webkitFullscreenElement);}
+  if(!(d.fullscreenEnabled||d.webkitFullscreenEnabled))full.hidden=true;
+  full.addEventListener("click",function(){try{var p=isFull()?(d.exitFullscreen||d.webkitExitFullscreen).call(d)
+    :(de.requestFullscreen||de.webkitRequestFullscreen).call(de,{navigationUI:"hide"});if(p&&p.catch)p.catch(function(){});}catch(e){}});
+  d.addEventListener("fullscreenchange",paint);d.addEventListener("webkitfullscreenchange",paint);
+  // download = this very page (one self-contained file), named after its folder: /drinkmixer/ -> drinkmixer.html
+  var parts=location.pathname.split("/").filter(Boolean),last=parts[parts.length-1]||"";
+  if(/\.html?$/.test(last))last=parts[parts.length-2]||"";
+  dl.href=location.href.split("#")[0].split("?")[0];dl.setAttribute("download",(last&&last!=="docs"?last:"level102")+".html");
+  function paint(){var t=T[L102.lang];back.textContent="‹ "+t[0];sel.value=L102.lang;sel.setAttribute("aria-label",t[1]);
+    minus.setAttribute("aria-label",t[2]);minus.title=t[2];plus.setAttribute("aria-label",t[3]);plus.title=t[3];
+    dl.setAttribute("aria-label",t[4]);dl.title=t[4];
+    var f=isFull();full.setAttribute("aria-label",t[f?6:5]);full.title=t[f?6:5];full.setAttribute("aria-pressed",f);
+    fullp.setAttribute("d",f?"M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5":"M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5");
+    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;}
+  sel.addEventListener("change",function(){L102.setLang(sel.value);});
+  minus.addEventListener("click",function(){L102.setFs(L102.fs-.1);});
+  plus.addEventListener("click",function(){L102.setFs(L102.fs+.1);});
+  addEventListener("l102:lang",paint);addEventListener("l102:fs",paint);paint();
+})();
+</script>
+<!-- l102-topbar:end -->
+<main id="stage">
+  <canvas id="screen" tabindex="0" role="img" aria-label="Arcade Claw"></canvas>
+  <div id="hint"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <button type="button" id="prizesBtn"></button>
+  <div id="prizesDlg" hidden role="dialog" aria-modal="true" aria-labelledby="pzTitle">
+    <div class="card"><h2 id="pzTitle"></h2><div id="pzGrid"></div><p id="pzEmpty"></p>
+      <div id="pzRow"><button type="button" id="pzReset"></button><button type="button" id="pzClose"></button></div>
+      <div id="pzAsk" hidden role="group" aria-labelledby="pzAskT"><p id="pzAskT"></p><div class="row"><button type="button" id="pzNo"></button><button type="button" id="pzYes"></button></div></div></div>
+  </div>
+  <div id="prize" hidden role="dialog" aria-modal="true" aria-labelledby="pTitle">
+    <div class="card"><h2 id="pTitle"></h2><canvas id="pIcon" width="1" height="1"></canvas><p id="pText"></p><button type="button" id="pOk"></button></div>
+  </div>
+</main>
+<script>
+"use strict";
+/* ================= ART: the claw machine cabinet, claw, control panel and the arcade behind it =================
+   Everything is pixel art at 192x342 base pixels (see CONTRACT.md). Static parts are baked once into offscreen
+   canvases; each frame only the animated bits are drawn (background lights, kids, claw, LEDs, joystick, button, coin). */
+const ART=(()=>{
+  const W=192,H=342;
+  const mk=(w,h)=>{const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");x.imageSmoothingEnabled=false;return[c,x];};
+  // ---------- palette (taken from the picture) ----------
+  const P={
+    out:"#2a1408",wd0:"#4a2610",wd1:"#6b3a1a",wd2:"#8c4f24",wd3:"#a8642f",wd4:"#c27c3e",wd5:"#d99a5a",wd6:"#ecbb7f",
+    mq:"#0b0d1c",mq2:"#151a33",
+    m0:"#1c1f27",m1:"#3a3f4a",m2:"#5d6470",m3:"#8b939f",m4:"#b9c1cb",m5:"#e3e8ee",m6:"#ffffff",
+    bg0:"#0c0f2a",bg1:"#151a44",bg2:"#1f2560",bg3:"#2c3478",bg4:"#3a3f8a",flr:"#0e1028",
+    pink:"#ff3c8e",grn:"#3dff74",cyan:"#3ee6ff",red:"#ff2e4f",yel:"#ffd84d",blu:"#3f6dff",pur:"#a24bff",org:"#ff8a1f",
+    led0:"#0a0a10",ledT:"#ffffff",ledDim:"#3b3f4c",
+    b0:"#0d4a1f",b1:"#178a34",b2:"#27b84a",b3:"#5fe07a",b4:"#b8ffc7",
+    j0:"#6a0a10",j1:"#b8141c",j2:"#e5262d",j3:"#ff7a7a",j4:"#ffd0d0",
+    coin0:"#8a5a00",coin1:"#d89a10",coin2:"#ffd23a",coin3:"#fff1a8"};
+  // ---------- tiny pixel helpers ----------
+  const R=(c,x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x|0,y|0,w|0,h|0);};
+  const dot=(c,x,y,col,s=1)=>{c.fillStyle=col;c.fillRect(Math.round(x),Math.round(y),s,s);};
+  function line(c,x0,y0,x1,y1,col,s=1){x0=Math.round(x0);y0=Math.round(y0);x1=Math.round(x1);y1=Math.round(y1);
+    const dx=Math.abs(x1-x0),dy=-Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1;let e=dx+dy;c.fillStyle=col;const h=(s/2)|0;
+    for(let i=0;i<2000;i++){c.fillRect(x0-h,y0-h,s,s);if(x0===x1&&y0===y1)break;const e2=2*e;if(e2>=dy){e+=dy;x0+=sx;}if(e2<=dx){e+=dx;y0+=sy;}}}
+  function disc(c,cx,cy,r,col){c.fillStyle=col;for(let y=-r;y<=r;y++){const w=Math.floor(Math.sqrt(r*r-y*y+r*.8));c.fillRect(Math.round(cx-w),Math.round(cy+y),2*w+1,1);}}
+  function oval(c,cx,cy,rx,ry,col){c.fillStyle=col;for(let y=-ry;y<=ry;y++){const w=Math.floor(rx*Math.sqrt(Math.max(0,1-(y*y)/(ry*ry+.6))));c.fillRect(Math.round(cx-w),Math.round(cy+y),2*w+1,1);}}
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  // ---------- pixel fonts ----------
+  const F5={A:"01110,10001,10001,11111,10001,10001,10001",R:"11110,10001,10001,11110,10010,10001,10001",C:"01110,10001,10000,10000,10000,10001,01110",
+    D:"11110,10001,10001,10001,10001,10001,11110",E:"11111,10000,10000,11110,10000,10000,11111",L:"10000,10000,10000,10000,10000,10000,11111",
+    W:"10001,10001,10001,10101,10101,11011,10001",G:"01110,10001,10000,10111,10001,10001,01111",B:"11110,10001,10001,11110,10001,10001,11110",
+    O:"11111,10001,10001,10001,10001,10001,11111",I:"11111,00100,00100,00100,00100,00100,11111",N:"10001,11001,10101,10011,10001,10001,10001",
+    P:"11110,10001,10001,11110,10000,10000,10000",Y:"10001,10001,01010,00100,00100,00100,00100","1":"00100,01100,00100,00100,00100,00100,01110",
+    "=":"00000,00000,11111,00000,11111,00000,00000"," ":"00000,00000,00000,00000,00000,00000,00000"};
+  const F3={C:"111,100,100,100,111",R:"110,101,110,101,101",E:"111,100,110,100,111",D:"110,101,101,101,110",I:"111,010,010,010,111",T:"111,010,010,010,010",
+    S:"111,100,111,001,111",":":"000,010,000,010,000"," ":"000,000,000,000,000",
+    "0":"111,101,101,101,111","1":"010,110,010,010,111","2":"111,001,111,100,111","3":"111,001,111,001,111","4":"101,101,111,001,001",
+    "5":"111,100,111,001,111","6":"111,100,111,101,111","7":"111,001,010,010,010","8":"111,101,111,101,111","9":"111,101,111,001,111"};
+  const glyph=(F,ch)=>(F[ch]||F[" "]).split(",");
+  function text(c,F,str,x,y,col,sc=1,gap=1){let cx=x;for(const ch of str){const g=glyph(F,ch);for(let r=0;r<g.length;r++)for(let k=0;k<g[r].length;k++)if(g[r][k]==="1")R(c,cx+k*sc,y+r*sc,sc,sc,col);cx+=(g[0].length)*sc+gap;}return cx;}
+  const textW=(F,str,sc=1,gap=1)=>{let w=0;for(const ch of str)w+=glyph(F,ch)[0].length*sc+gap;return w-gap;};
+  // outlined text: dark outline around every lit pixel
+  function textOut(c,F,str,x,y,col,out,sc=1,gap=1){for(const[dx,dy]of[[-1,0],[1,0],[0,-1],[0,1],[1,1],[-1,1],[1,-1],[-1,-1]])text(c,F,str,x+dx,y+dy,out,sc,gap);return text(c,F,str,x,y,col,sc,gap);}
+
+  // ---------- geometry (measured from the picture: its pixels / ~2.98) ----------
+  const GEOM={glass:{x0:15,y0:54,x1:180,y1:258},railY:64,clawMinX:30,clawMaxX:164,clawHomeX:96,clawTopY:84,
+    floorY:252,floorAt:x=>252,wallL:16,wallR:179,chute:{x0:26,x1:75,y0:209,y1:255,z1:14,topY:195},dropX:50,
+    joystick:{cx:51,cy:276,r:19},grab:{x0:108,y0:273,x1:159,y1:296},coin:{x0:15,y0:302,x1:47,y1:339},prizes:{x0:159,y0:306,x1:183,y1:331},credits:{x0:71,y0:261,x1:121,y1:274},
+    pivotDY:9,depth:50,depthRise:1,bridgeRise:.22,floorBackY:202,backL:20,backR:175};   // depth: z range (0 = front glass); a toy/claw at z is drawn z*depthRise higher;
+                                                    // the gantry bridge (above eye level) only shifts z*bridgeRise
+  const G=GEOM.glass;
+
+  // ---------- 1) arcade room behind the glass: baked base (walls, machines, neon glow) + animated bits ----------
+  const[bg,bx]=mk(W,H);
+  const mix=(a,b,u)=>{const A=parseInt(a.slice(1),16),B=parseInt(b.slice(1),16),f=(s)=>[(s>>16)&255,(s>>8)&255,s&255],x=f(A),y=f(B);return"rgb("+x.map((v,i)=>Math.round(v+(y[i]-v)*u)).join()+")";};
+  const dith=(c,x,y,w,h,col,ph=0)=>{c.fillStyle=col;for(let j=0;j<h;j++)for(let i=(j+ph)&1;i<w;i+=2)c.fillRect(x+i,y+j,1,1);};
+  // glow halo: concentric dithered ellipses (soft, out of focus, but still pixel art)
+  function halo(c,cx,cy,rx,ry,col,a){c.globalAlpha=a*.35;oval(c,cx,cy,rx,ry,col);c.globalAlpha=a*.5;oval(c,cx,cy,Math.round(rx*.6),Math.round(ry*.6),col);c.globalAlpha=a;oval(c,cx,cy,Math.round(rx*.3),Math.round(ry*.3),col);c.globalAlpha=1;}
+  function neonLine(c,x0,y0,x1,y1,col,k){c.globalAlpha=.07*k;line(c,x0,y0,x1,y1,col,6);c.globalAlpha=.16*k;line(c,x0,y0,x1,y1,col,3);
+    c.globalAlpha=.45+.15*k;line(c,x0,y0,x1,y1,mix(col,"#ffffff",.35),1);c.globalAlpha=1;}
+  // machines: [x, top, w, h, body, screen, marquee, far(0 near..1 far), game]
+  const MACH=[
+    [57,124,13,62,"#1c1a3e","#2ad1ff","#ffd84d",.85,2],[100,121,14,64,"#1c1a3e","#3f6dff","#ff3c8e",.9,1],[86,126,12,58,"#1a1a3c","#b24bff","#3dff74",.95,3],
+    [40,112,18,74,"#24164a","#1e74ff","#3ee6ff",.55,1],[138,114,19,72,"#2a1240","#ff2e4f","#ffd84d",.5,0],
+    [15,98,24,88,"#2b1450","#ff2fa0","#ff3c8e",.15,0],[158,100,22,86,"#152a48","#2bff7a","#3ee6ff",.15,2],
+    [64,138,15,48,"#2a2410","#ffcc33","#ff8a1f",.35,3],[118,134,15,52,"#13283e","#33e0ff","#3f6dff",.35,1]];
+  function machine(c,m){const[x,top,w,h,body,scr,mq,far]=m,hz=far;
+    const B=mix(body,"#2a2a70",hz*.6);R(c,x,top,w,h,B);R(c,x,top,1,h,mix(B,"#ffffff",.12));R(c,x+w-1,top,1,h,mix(B,"#000000",.4));
+    R(c,x+1,top+1,w-2,4,mix(mq,"#2a2a70",hz*.5));R(c,x+1,top+1,w-2,1,mix(mq,"#ffffff",.5));                      // lit marquee
+    const sx=x+2,sy=top+7,sw=w-4,sh=Math.max(8,Math.round(h*.32));R(c,sx-1,sy-1,sw+2,sh+2,"#07070f");            // screen bezel
+    R(c,x+1,sy+sh+2,w-2,3,mix(B,"#ffffff",.08));R(c,x,sy+sh+5,w,1,mix(B,"#000",.5));                               // control ledge
+    return{sx,sy,sw,sh};}
+  const SCR=[];
+  (function(){
+    // walls: saturated purple/blue, lighter where the neon hits
+    for(let y=G.y0;y<G.y1;y++){const u=(y-G.y0)/(G.y1-G.y0);R(bx,G.x0,y,G.x1-G.x0,1,u<.2?mix("#140c38","#2a1a66",u/.2):u<.6?mix("#2a1a66","#22246e",(u-.2)/.4):mix("#22246e","#120f30",(u-.6)/.4));}
+    // ceiling panels + light glows (baked, the pulse is animated)
+    for(let x=G.x0;x<G.x1;x+=14)R(bx,x,G.y0,1,30,"#1f1650");
+    halo(bx,90,96,34,11,"#ff3c8e",.22);halo(bx,30,104,16,8,"#3dff74",.18);halo(bx,150,84,26,7,"#3ee6ff",.22);halo(bx,148,118,24,6,"#ff2e4f",.18);halo(bx,50,70,22,6,"#a24bff",.18);
+    // far machines first, then haze, then nearer ones
+    const order=MACH.map((m,i)=>i).sort((a,b)=>MACH[b][7]-MACH[a][7]);
+    let hazed=false;
+    for(const i of order){const m=MACH[i];if(!hazed&&m[7]<.6){bx.globalAlpha=.28;dith(bx,G.x0,100,G.x1-G.x0,90,"#5a58c8");bx.globalAlpha=1;hazed=true;}SCR[i]=machine(bx,m);}
+    // arcade floor with coloured reflections
+    for(let y=176;y<G.y1;y++)R(bx,G.x0,y,G.x1-G.x0,1,mix("#1a1650","#0c0b24",Math.min(1,(y-176)/20)));
+    for(const[x,col]of[[27,"#ff2fa0"],[49,"#1e74ff"],[148,"#ff2e4f"],[168,"#2bff7a"],[70,"#ffcc33"],[125,"#33e0ff"]])halo(bx,x,181,8,3,col,.35);
+    // bokeh: soft out-of-focus light dots
+    for(let i=0;i<26;i++){const x=G.x0+Math.floor(rnd()*(G.x1-G.x0)),y=G.y0+Math.floor(rnd()*60),col=["#ff3c8e","#3ee6ff","#ffd84d","#a24bff","#3dff74"][i%5];bx.globalAlpha=.18;disc(bx,x,y,2,col);bx.globalAlpha=1;}
+  })();
+  const NEON=[[54,86,120,108,"#ff3c8e",0],[15,94,46,112,"#3dff74",1.7],[116,82,178,76,"#3ee6ff",3.1],[110,114,180,119,"#ff2e4f",.6],[24,70,74,66,"#a24bff",2.4],[124,95,176,101,"#3f6dff",4.2],[62,100,96,90,"#ff8a1f",5.1]];
+  // tiny game graphics on a screen
+  function screen(c,s,col,game,t,seedn,far){const{sx,sy,sw,sh}=s,f=Math.floor(t*3+seedn*5);
+    c.globalAlpha=.75-far*.3;R(c,sx,sy,sw,sh,col);c.globalAlpha=.65;R(c,sx,sy,sw,sh,"#000");c.globalAlpha=.7-far*.3;
+    const lit=mix(col,"#ffffff",.7);
+    if(game===0){for(let r=0;r<2;r++)for(let k=0;k<sw-2;k+=3)if(((k+r+f)&3)!==0)R(c,sx+1+k+((f>>1)&1),sy+1+r*2,2,1,lit);R(c,sx+((f*2)%(sw-2))+1,sy+sh-2,2,1,"#fff");}
+    else if(game===1){const bx2=sx+1+Math.abs(((f*2)%(2*(sw-3)))-(sw-3)),by2=sy+1+Math.abs((f%(2*(sh-3)))-(sh-3));R(c,bx2,by2,1,1,"#fff");R(c,sx+1,sy+sh-2,3,1,lit);R(c,sx+sw-4,sy+2+(f%4),1,3,lit);}
+    else if(game===2){for(let k=0;k<sw;k+=2)R(c,sx+k,sy+sh-1-((k*7+f)%4),1,1+((k*7+f)%4),lit);R(c,sx+2,sy+2,2,2,"#ffef80");}
+    else{for(let k=0;k<4;k++)R(c,sx+1+((k*5+f)%(sw-2)),sy+1+((k*3+f*2)%(sh-2)),1,1,lit);R(c,sx+(sw>>1)-1,sy+(sh>>1),3,2,"#fff");}
+    c.globalAlpha=1;}
+  function room(c,t){
+    for(const[a0,b0,a1,b1,col,ph]of NEON){const k=.7+.3*Math.sin(t*.8+ph);neonLine(c,a0,b0,a1,b1,col,k);}
+    for(let i=0;i<MACH.length;i++){const m=MACH[i];screen(c,SCR[i],m[5],m[8],t,i,m[7]);
+      // screen light spilling onto the wall/floor in front, and blinking buttons
+      c.globalAlpha=.05+.02*Math.sin(t*1.2+i);oval(c,SCR[i].sx+(SCR[i].sw>>1),SCR[i].sy+(SCR[i].sh>>1),SCR[i].sw,SCR[i].sh,m[5]);c.globalAlpha=1;
+      const by=SCR[i].sy+SCR[i].sh+3;for(let k=0;k<3;k++)if(((Math.floor(t*1.2)+k+i)%3)!==0)dot(c,m[0]+2+k*3,by,["#ff3b3b","#ffd21f","#29b6ff"][k]);}
+    kids(c,t);
+    // push the arcade back: less saturation, a dark purple/navy wash (the toys, claw and machine stay the focus)
+    c.globalCompositeOperation="saturation";c.globalAlpha=.45;R(c,G.x0,G.y0,G.x1-G.x0,G.y1-G.y0,"#808080");c.globalCompositeOperation="source-over";
+    c.globalAlpha=.48;R(c,G.x0,G.y0,G.x1-G.x0,G.y1-G.y0,"#0a0920");c.globalAlpha=1;
+  }
+  // a kid at a machine, in profile; dir +1 faces right; lit on the facing side by the screen colour
+  function kid(c,x,y,dir,hair,shirt,pants,lite,t,ph,pony){
+    const b=Math.round(Math.sin(t*1.1+ph)*.6),arm=Math.sin(t*3+ph)>0?1:0,sh=mix(shirt,"#000000",.35),hl=mix(shirt,lite,.55),skin="#e2a27c",skinS="#b97556";
+    // legs + shoes
+    R(c,x-3,y-14,3,14,pants);R(c,x+1,y-14,3,14,mix(pants,"#000",.3));R(c,x-4+(dir>0?1:0),y-1,5,2,"#121220");R(c,x+(dir>0?1:0),y-1,5,2,"#121220");
+    // torso with shading: back side dark, front side lit by the screen
+    const ty=y-30+b;for(let r=0;r<16;r++){const w=r<3?10+r:13-((r>11)?1:0);const x0=x-((w/2)|0);R(c,x0,ty+r,w,1,shirt);R(c,dir>0?x0:x0+w-3,ty+r,3,1,sh);R(c,dir>0?x0+w-2:x0,ty+r,2,1,hl);}
+    // back arm (behind) and front arm reaching to the controls
+    line(c,x-dir*2,ty+4,x+dir*6,ty+11,sh,3);
+    line(c,x+dir*3,ty+3,x+dir*9,ty+9-arm,shirt,3);line(c,x+dir*4,ty+3,x+dir*9,ty+8-arm,hl,1);R(c,x+dir*10-1,ty+8-arm,3,2,skin);
+    // neck, head in profile (nose, eye, ear), hair
+    R(c,x-1,ty-2,3,3,skinS);const hx=x+dir,hy=ty-8;
+    oval(c,hx,hy,5,6,skin);R(c,hx+dir*5,hy,1,2,skin);dot(c,hx+dir*6,hy+1,skin);                      // nose
+    dot(c,hx+dir*3,hy-1,"#1b1020");dot(c,hx+dir*4,hy+3,skinS);                                        // eye, mouth
+    oval(c,hx-dir*2,hy-3,5,4,hair);R(c,hx-dir*6+(dir>0?0:-0),hy-3,3,7,hair);R(c,hx-dir*1-2,hy-7,6,1,mix(hair,"#ffffff",.25));
+    if(pony){line(c,hx-dir*6,hy-2,hx-dir*9,hy+5,hair,3);}
+    dot(c,hx-dir*1,hy+1,skinS);                                                                        // ear
+    c.globalAlpha=.35;R(c,dir>0?hx+3:hx-5,hy-4,3,9,lite);c.globalAlpha=1;                                 // screen light on the face
+  }
+  function kids(c,t){kid(c,80,190,-1,"#6a3a18","#2f9a58","#2a3058","#ffcc33",t,0,true);kid(c,112,188,1,"#1e140e","#2f62b8","#22263f","#33e0ff",t,2,false);}
+
+  // ---------- 2) cabinet inside: back posts, floor plate, chute box back ----------
+  const[ins,ix]=mk(W,H);
+  (function(){
+    // inside seen from slightly above: floor plane narrowing and rising to the back, low back wall, converging side glass
+    const FB=GEOM.floorBackY,FF=GEOM.floorY,BL=GEOM.backL,BR=GEOM.backR;
+    R(ix,G.x0,G.y0,G.x1-G.x0,3,P.wd0);R(ix,G.x0,G.y0+3,G.x1-G.x0,1,"rgba(0,0,0,.35)");
+    // side glass faces (left/right strips between the front and back corners) + back corner edges
+    ix.globalAlpha=.18;R(ix,G.x0,G.y0+4,BL-G.x0,FB-G.y0-4,"#9fb6ff");R(ix,BR,G.y0+4,G.x1-BR,FB-G.y0-4,"#9fb6ff");ix.globalAlpha=1;
+    R(ix,BL,G.y0+4,1,FB-G.y0-4,P.m3);R(ix,BR,G.y0+4,1,FB-G.y0-4,P.m2);
+    // low back wall behind the pile
+    R(ix,BL,FB-15,BR-BL+1,15,"#232745");R(ix,BL,FB-15,BR-BL+1,1,"#4a5080");R(ix,BL,FB-14,BR-BL+1,1,"#30355c");R(ix,BL,FB-1,BR-BL+1,1,"#151829");
+    for(let x=BL+8;x<BR;x+=16)R(ix,x,FB-12,1,10,"#1b1e38");
+    // floor: felt, darker at the back, with a faint perspective grid
+    for(let y=FB;y<G.y1;y++){const u=Math.min(1,(y-FB)/(FF-FB)),xl=Math.round(BL-(BL-G.x0)*u),xr=Math.round(BR+(G.x1-BR)*u);
+      const c0=[16,18,30],c1=[38,44,66],col="rgb("+c0.map((v,i)=>Math.round(v+(c1[i]-v)*u)).join()+")";R(ix,xl,y,xr-xl+1,1,col);
+      for(let x=xl+((y*3)&3);x<=xr;x+=4)if(((x*7+y*13)%11)===0)dot(ix,x,y,"rgba(255,255,255,.06)");}
+    ix.globalAlpha=.16;for(let z=10;z<GEOM.depth;z+=10){const y=FF-z,u=(y-FB)/(FF-FB),xl=Math.round(BL-(BL-G.x0)*u),xr=Math.round(BR+(G.x1-BR)*u);R(ix,xl,y,xr-xl+1,1,"#8f9ad8");}
+    for(let i=0;i<=9;i++){const xf=G.x0+(G.x1-G.x0)*i/9,xb=BL+(BR-BL)*i/9;line(ix,xb,FB,xf,FF,"#8f9ad8",1);}ix.globalAlpha=1;
+    R(ix,G.x0,FF,G.x1-G.x0,1,"rgba(255,255,255,.12)");
+    // front-to-back side rails the bridge rides on
+    for(const x of[17,172]){R(ix,x,G.y0+1,4,GEOM.railY-G.y0+5,P.m0);R(ix,x+1,G.y0+1,2,GEOM.railY-G.y0+4,P.m2);R(ix,x+1,G.y0+1,1,GEOM.railY-G.y0+4,P.m4);}
+  })();
+  // prize box back (its own layer: toys behind the box are drawn before it, so they never look as if inside it)
+  const[chb,cb_]=mk(W,H);
+  (function(){const C=GEOM.chute,top=C.topY;
+    // prize box (3D glass box): back face, inside, opening rim at the back, right side face
+    cb_.globalAlpha=.5;R(cb_,C.x0,top,C.x1-C.x0,C.y1-top,"#141a30");cb_.globalAlpha=1;
+    R(cb_,C.x0,top,C.x1-C.x0,2,P.m3);R(cb_,C.x0,top,C.x1-C.x0,1,P.m5);R(cb_,C.x0,top,1,C.y0-top,P.m3);R(cb_,C.x1-1,top,1,C.y0-top,P.m2);
+    R(cb_,C.x0+2,C.y1-4,C.x1-C.x0-4,3,"#0b0d16");                       // the trapdoor
+  })();
+  // chute front glass (after toys)
+  const[chf,cx_]=mk(W,H);
+  (function(){const C=GEOM.chute,w=C.x1-C.x0,h=C.y1-C.y0,top=C.topY;
+    // top face (the opening): rim edges in front, the inside darker
+    cx_.globalAlpha=.1;R(cx_,C.x0,top,w,C.y0-top,"#cfe6ff");cx_.globalAlpha=1;
+    // right side face: a narrow glass slab
+    cx_.globalAlpha=.22;R(cx_,C.x1,top+2,3,C.y1-top-2,"#cfe6ff");cx_.globalAlpha=1;R(cx_,C.x1+3,top+2,1,C.y1-top-2,P.m1);line(cx_,C.x1-1,top,C.x1+3,top+2,P.m4,1);
+    // front face
+    cx_.globalAlpha=.16;R(cx_,C.x0,C.y0,w,h,"#cfe6ff");cx_.globalAlpha=1;
+    R(cx_,C.x0,C.y0,w,2,P.m4);R(cx_,C.x0,C.y0,w,1,P.m5);R(cx_,C.x0,C.y0,2,h,P.m3);R(cx_,C.x1-2,C.y0,2,h,P.m2);R(cx_,C.x0,C.y1-2,w,2,P.m2);
+    R(cx_,C.x0-1,top,1,C.y1-top,P.m0);R(cx_,C.x0,top,1,C.y0-top,P.m4);R(cx_,C.x1,C.y0,1,h,P.m0);
+    cx_.globalAlpha=.45;for(let i=0;i<14;i++){dot(cx_,C.x0+6+i,C.y0+5+i*2,"#fff");dot(cx_,C.x0+7+i,C.y0+5+i*2,"#fff");}
+    for(let i=0;i<8;i++)dot(cx_,C.x0+22+i,C.y0+5+i*3,"#fff");cx_.globalAlpha=1;})();
+
+  // ---------- 3) gantry rails (static) ----------
+  const[rail,rx]=mk(W,H);
+  (function(){const y=GEOM.railY;
+    line(rx,24,y+1,16,y+12,P.m0,4);line(rx,24,y+1,16,y+12,P.m3,2);line(rx,168,y+1,177,y+12,P.m0,4);line(rx,168,y+1,177,y+12,P.m3,2);
+    R(rx,20,y-3,153,7,P.m0);R(rx,21,y-2,151,5,P.m2);R(rx,21,y-2,151,1,P.m4);R(rx,21,y+2,151,1,P.m1);
+    for(let x=26;x<170;x+=12)R(rx,x,y,2,1,P.m3);
+    R(rx,18,y-4,6,9,P.m1);R(rx,169,y-4,6,9,P.m1);R(rx,19,y-3,4,1,P.m4);R(rx,170,y-3,4,1,P.m4);})();
+
+  // ---------- 4) claw sprites (cached by how open it is) ----------
+  const CW=64,COX=32;
+  function prong(c,pts,dark,mid,hi){for(let i=0;i<pts.length-1;i++)line(c,pts[i][0]+COX,pts[i][1],pts[i+1][0]+COX,pts[i+1][1],dark,5);
+    for(let i=0;i<pts.length-1;i++)line(c,pts[i][0]+COX,pts[i][1],pts[i+1][0]+COX,pts[i+1][1],mid,3);
+    for(let i=0;i<pts.length-2;i++)line(c,pts[i][0]+COX-1,pts[i][1]-1,pts[i+1][0]+COX-1,pts[i+1][1]-1,hi,1);
+    const e=pts[pts.length-1];disc(c,e[0]+COX,e[1],2,dark);dot(c,e[0]+COX,e[1]-1,mid);}
+  const sideP=o=>[[-5,17],[-10-12*o,29],[-9-15*o,45],[-3-16*o,55],[-1-15*o,56]];
+  const clawCache=new Map();
+  function clawSprite(o){const q=Math.round(o*16);let s=clawCache.get(q);if(s)return s;o=q/16;
+    const[bk,bkx]=mk(CW,64),[fr,frx]=mk(CW,64);
+    const L=sideP(o),Rr=L.map(([x,y])=>[-x,y]);
+    prong(bkx,L,P.m0,P.m3,P.m5);prong(bkx,Rr,P.m0,P.m3,P.m4);
+    // hub (front layer): rod top, cylinder with bands, bottom cap, pivots
+    R(frx,COX-3,0,7,3,P.m0);R(frx,COX-2,0,5,3,P.m3);R(frx,COX-1,0,1,3,P.m5);
+    R(frx,COX-8,2,17,14,P.m0);R(frx,COX-7,3,15,12,P.m3);R(frx,COX-7,3,4,12,P.m4);R(frx,COX-6,3,1,12,P.m5);R(frx,COX+4,3,4,12,P.m2);R(frx,COX+7,3,1,12,P.m1);
+    R(frx,COX-7,7,15,1,P.m1);R(frx,COX-7,11,15,1,P.m1);R(frx,COX-7,8,15,1,P.m4);R(frx,COX-7,12,15,1,P.m4);
+    R(frx,COX-10,15,21,5,P.m0);R(frx,COX-9,16,19,3,P.m2);R(frx,COX-9,16,19,1,P.m4);R(frx,COX+5,17,4,2,P.m1);
+    disc(frx,COX-7,19,2,P.m0);disc(frx,COX+7,19,2,P.m0);dot(frx,COX-7,19,P.m4);dot(frx,COX+7,19,P.m4);
+    // front prong: straight down with a hook
+    prong(frx,[[0,18],[1,34],[0,48],[2,54],[5,55]],P.m0,P.m3,P.m5);
+    s={back:bk,front:fr};clawCache.set(q,s);return s;}
+
+  // ---------- 5) glass reflections ----------
+  const[refl,flx]=mk(W,H);
+  (function(){flx.fillStyle="#fff";flx.globalAlpha=.05;for(let y=G.y0;y<G.y1;y++){const x=Math.round(150-(y-G.y0)*.62);flx.fillRect(x,y,9,1);flx.fillRect(x+13,y,2,1);}
+    flx.globalAlpha=.035;for(let y=G.y0+30;y<G.y1;y++){const x=Math.round(186-(y-G.y0)*.5);flx.fillRect(x,y,4,1);}
+    flx.globalAlpha=.12;line(flx,G.x0+2,G.y0+4,G.x0+2,G.y1-3,"#fff",1);line(flx,G.x1-3,G.y0+4,G.x1-3,G.y1-3,"#000",1);flx.globalAlpha=1;})();
+
+  // ---------- 6) cabinet frame (wood), with the glass window cut out ----------
+  const[frame,fx]=mk(W,H);
+  (function(){
+    // body
+    R(fx,1,1,W-2,H-1,P.wd2);
+    // top rounded corners and outline
+    R(fx,0,3,1,H-3,P.out);R(fx,W-1,3,1,H-3,P.out);R(fx,3,0,W-6,1,P.out);dot(fx,1,1,P.out);dot(fx,2,1,P.out);dot(fx,1,2,P.out);dot(fx,W-2,1,P.out);dot(fx,W-3,1,P.out);dot(fx,W-2,2,P.out);
+    fx.clearRect(0,0,1,3);fx.clearRect(0,0,3,1);fx.clearRect(W-1,0,1,3);fx.clearRect(W-3,0,3,1);
+    // side planks: light left edge, dark right edge, grain
+    const plank=(x,y,w,h)=>{R(fx,x,y,w,h,P.wd3);R(fx,x,y,1,h,P.wd5);R(fx,x+1,y,1,h,P.wd4);R(fx,x+w-1,y,1,h,P.wd1);R(fx,x+w-2,y,1,h,P.wd2);
+      for(let i=0;i<h/9;i++){const gy=y+3+Math.floor(rnd()*(h-6)),gx=x+2+Math.floor(rnd()*(w-5));R(fx,gx,gy,1,2+Math.floor(rnd()*5),P.wd2);}};
+    plank(1,1,14,H-2);plank(W-15,1,14,H-2);
+    // top beam above/around the marquee
+    R(fx,15,1,W-30,52,P.wd3);R(fx,15,1,W-30,1,P.wd5);R(fx,15,2,W-30,1,P.wd4);
+    for(let i=0;i<14;i++)R(fx,20+Math.floor(rnd()*150),4+Math.floor(rnd()*46),3+Math.floor(rnd()*6),1,P.wd2);
+    // band under the marquee (lighter lip) and shadow onto the glass top
+    R(fx,15,47,W-30,7,P.wd4);R(fx,15,47,W-30,1,P.wd6);R(fx,15,52,W-30,2,P.wd1);
+    // window bevel
+    R(fx,G.x0-2,G.y0-1,G.x1-G.x0+4,1,P.out);R(fx,G.x0-2,G.y0,2,G.y1-G.y0,P.out);R(fx,G.x1,G.y0,2,G.y1-G.y0,P.wd1);R(fx,G.x0-3,G.y0,1,G.y1-G.y0,P.wd1);R(fx,G.x1+2,G.y0,1,G.y1-G.y0,P.wd4);
+    // ledge under the glass + control panel
+    R(fx,1,258,W-2,4,P.wd5);R(fx,1,258,W-2,1,P.wd6);R(fx,1,261,W-2,1,P.wd2);
+    R(fx,1,262,W-2,33,P.wd3);for(let i=0;i<10;i++)R(fx,4+Math.floor(rnd()*184),264+Math.floor(rnd()*28),4+Math.floor(rnd()*8),1,P.wd2);
+    R(fx,15,262,1,33,P.wd2);R(fx,W-16,262,1,33,P.wd2);
+    // lip above the lower panel
+    R(fx,1,295,W-2,5,P.wd5);R(fx,1,295,W-2,1,P.wd6);R(fx,1,299,W-2,1,P.wd1);R(fx,1,300,W-2,1,P.out);
+    // lower panel (darker planks)
+    R(fx,1,301,W-2,H-302,P.wd2);for(let x=1;x<W;x+=24){R(fx,x,301,1,H-302,P.wd1);R(fx,x+1,301,1,H-302,P.wd3);}
+    for(let i=0;i<16;i++)R(fx,3+Math.floor(rnd()*186),304+Math.floor(rnd()*34),1,3+Math.floor(rnd()*6),P.wd1);
+    R(fx,1,H-3,W-2,2,P.wd1);R(fx,1,H-1,W-2,1,P.out);
+    // window hole
+    fx.clearRect(G.x0,G.y0,G.x1-G.x0,G.y1-G.y0);
+    // marquee frame + panel
+    R(fx,18,12,156,33,P.out);R(fx,19,13,154,31,P.m1);R(fx,19,13,154,1,P.m4);R(fx,19,43,154,1,P.m0);R(fx,19,13,1,31,P.m3);R(fx,172,13,1,31,P.m0);
+    R(fx,22,16,148,25,P.mq);R(fx,22,16,148,1,"#000");R(fx,23,17,146,1,P.mq2);
+    for(let x=24;x<168;x+=2)dot(fx,x,39,P.mq2);
+    // credits panel (frame; the digits are animated)
+    const K=GEOM.credits;R(fx,K.x0,K.y0,K.x1-K.x0,K.y1-K.y0,P.out);R(fx,K.x0+1,K.y0+1,K.x1-K.x0-2,K.y1-K.y0-2,P.led0);R(fx,K.x0+1,K.y1-2,K.x1-K.x0-2,1,"#1a1c26");
+    // joystick base plate (stick + ball animated)
+    oval(fx,51,290,13,5,P.out);oval(fx,51,289,12,4,P.m1);oval(fx,51,288,11,3,P.m2);oval(fx,51,288,7,2,P.m0);R(fx,44,287,6,1,P.m4);
+    // GRAB button well
+    const B=GEOM.grab;R(fx,B.x0,B.y0+2,B.x1-B.x0,B.y1-B.y0-1,P.out);R(fx,B.x0+1,B.y1-3,B.x1-B.x0-2,3,"#3a2010");
+    // coin plate
+    const Cn=GEOM.coin;R(fx,Cn.x0+2,Cn.y0+2,Cn.x1-Cn.x0-4,Cn.y1-Cn.y0-4,P.out);R(fx,Cn.x0+3,Cn.y0+3,Cn.x1-Cn.x0-6,Cn.y1-Cn.y0-6,P.m2);
+    R(fx,Cn.x0+3,Cn.y0+3,Cn.x1-Cn.x0-6,1,P.m4);R(fx,Cn.x0+3,Cn.y0+3,1,Cn.y1-Cn.y0-6,P.m4);R(fx,Cn.x1-4,Cn.y0+3,1,Cn.y1-Cn.y0-6,P.m1);R(fx,Cn.x0+3,Cn.y1-4,Cn.x1-Cn.x0-6,1,P.m1);
+    for(const[sx,sy]of[[Cn.x0+5,Cn.y0+5],[Cn.x1-7,Cn.y0+5],[Cn.x0+5,Cn.y1-7],[Cn.x1-7,Cn.y1-7]]){dot(fx,sx,sy,P.m0);dot(fx,sx+1,sy+1,P.m4);}
+    R(fx,29,309,5,13,P.m0);R(fx,30,310,3,11,"#050507");R(fx,29,309,5,1,P.m1);           // coin slot
+    // coin return: little down arrow
+    R(fx,28,326,7,1,P.m1);line(fx,31,326,31,331,P.m0,1);line(fx,28,328,31,331,P.m0,1);line(fx,34,328,31,331,P.m0,1);
+    // "<- 1 COIN = 1 PLAY"
+    const ay=321;R(fx,52,ay-1,8,4,P.out);line(fx,49,ay+1,54,ay-4,P.out,2);line(fx,49,ay+1,54,ay+6,P.out,2);
+    R(fx,52,ay,8,2,"#fff");line(fx,50,ay+1,54,ay-3,"#fff",1);line(fx,50,ay,54,ay+4,"#fff",1);line(fx,51,ay+1,54,ay-2,"#fff",1);line(fx,51,ay+1,54,ay+4,"#fff",1);
+    textOut(fx,F5,"1 COIN = 1 PLAY",63,ay-3,"#fff",P.out,1,1);
+  })();
+  // marquee letters, one canvas each (animated brightness)
+  const MQ=[["A","#ff3b3b"],["R","#ff8a1f"],["C","#ffd21f"],["A","#3fdc4a"],["D","#29b6ff"],["E","#a35cff"],[" ",""],["C","#ffd21f"],["L","#3fdc4a"],["A","#29b6ff"],["W","#ff4fd2"]];
+  const shade=(hex,f)=>{const n=parseInt(hex.slice(1),16),r=n>>16,g=(n>>8)&255,b=n&255,m=v=>Math.max(0,Math.min(255,Math.round(f>1?v+(255-v)*(f-1):v*f)));return"rgb("+m(r)+","+m(g)+","+m(b)+")";};
+  // marquee font: blocky 11x16 letters built from 3 px strokes, 1 px dark outline, drop shadow, light top edges
+  const LW=11,LH=16,S3=3,MID=7;
+  const MF={A:[[1,0,LW-2,S3],[0,1,S3,LH-1],[LW-S3,1,S3,LH-1],[0,MID,LW,S3]],
+    R:[[0,0,LW-1,S3],[0,0,S3,LH],[LW-S3,1,S3,MID],[0,MID,LW-1,S3],[LW-S3-2,MID+S3,S3,2],[LW-S3-1,MID+S3+2,S3,2],[LW-S3,MID+S3+4,S3,LH-(MID+S3+4)]],
+    C:[[1,0,LW-1,S3],[0,1,S3,LH-2],[1,LH-S3,LW-1,S3]],
+    D:[[0,0,LW-2,S3],[0,0,S3,LH],[0,LH-S3,LW-2,S3],[LW-S3,1,S3,LH-2]],
+    E:[[0,0,LW,S3],[0,0,S3,LH],[0,MID,LW-2,S3],[0,LH-S3,LW,S3]],
+    L:[[0,0,S3,LH],[0,LH-S3,LW,S3]],
+    W:[[0,0,S3,LH-1],[LW-S3,0,S3,LH-1],[4,6,S3,LH-6],[1,LH-S3,LW-2,S3]]};
+  const letters=MQ.map(([ch,col])=>{if(ch===" ")return null;const[c,x]=mk(LW+4,LH+5);
+    const[m,mx]=mk(LW,LH);mx.fillStyle="#fff";for(const[a,b,w,h]of MF[ch])mx.fillRect(a,b,w,h);
+    const md=mx.getImageData(0,0,LW,LH).data,on=(px,py)=>px>=0&&py>=0&&px<LW&&py<LH&&md[(py*LW+px)*4+3]>0;
+    for(let py=-1;py<=LH;py++)for(let px=-1;px<=LW;px++){let near=false;for(let dy=-1;dy<=1&&!near;dy++)for(let dx=-1;dx<=1;dx++)if(on(px+dx,py+dy)){near=true;break;}
+      if(near){R(x,px+2,py+3,1,1,"rgba(0,0,0,.5)");}}                                                 // drop shadow
+    for(let py=-1;py<=LH;py++)for(let px=-1;px<=LW;px++){let near=false;for(let dy=-1;dy<=1&&!near;dy++)for(let dx=-1;dx<=1;dx++)if(on(px+dx,py+dy)){near=true;break;}
+      if(near)R(x,px+1,py+1,1,1,"#000");}                                                             // outline
+    for(let py=0;py<LH;py++)for(let px=0;px<LW;px++)if(on(px,py))R(x,px+1,py+1,1,1,!on(px,py-1)?shade(col,1.6):!on(px,py+1)?shade(col,.62):col);
+    return c;});
+  const MQX=(()=>{let w=0;for(const[ch]of MQ)w+=ch===" "?5:LW+2;return Math.round(96-(w-2)/2)-1;})();
+
+  // ---------- control panel (animated) ----------
+  function panel(c,s){
+    // credits LEDs
+    const K=GEOM.credits,n=Math.max(0,Math.min(9,s.credits|0)),lit=n>0,fl=s.creditsFlash||0;
+    const col=lit?(fl>0&&Math.floor(s.t*12)%2?P.yel:P.ledT):P.ledDim;
+    if(lit){c.globalAlpha=.25+.25*fl;R(c,K.x0+1,K.y0+1,K.x1-K.x0-2,K.y1-K.y0-2,"#3a3a20");c.globalAlpha=1;}
+    const str="CREDITS: "+n,tw=textW(F3,str);text(c,F3,str,Math.round((K.x0+K.x1-tw)/2),K.y0+4,col);
+    // joystick: stick tilts with joyX, red ball on top
+    // joyY: +1 = pushed to the back (leans away: ball higher and a bit smaller), -1 = pulled to the front (ball lower, bigger)
+    const jx=Math.max(-1,Math.min(1,s.joyX||0)),jyy=Math.max(-1,Math.min(1,s.joyY||0)),bxx=51+Math.round(jx*7),
+      byy=263+Math.round(Math.abs(jx)*2)-Math.round(jyy*6)+(jyy<0?Math.round(-jyy*3):0),br=10+(jyy<-.3?1:jyy>.3?-1:0);
+    line(c,51,287,bxx,byy+6,P.m0,4);line(c,51,287,bxx,byy+6,P.m2,2);line(c,50,286,bxx-1,byy+6,P.m4,1);
+    disc(c,bxx,byy,br,P.out);disc(c,bxx,byy,br-1,P.j1);disc(c,bxx-1,byy-1,br-2,P.j2);disc(c,bxx-2,byy-2,br-5,"#f04545");disc(c,bxx-3,byy-4,2,P.j3);dot(c,bxx-5,byy-6,P.j4,2);
+    R(c,bxx+4,byy+5,3,1,P.j0);R(c,bxx-4,byy+8,8,1,P.j0);
+    // GRAB button (pressed: sunk 2px; busy: dimmer, pulsing)
+    const B=GEOM.grab,dn=s.grabDown?2:0,busy=!!s.busy,bw=B.x1-B.x0,bh=B.y1-B.y0-4;
+    const pulse=busy?.5+.5*Math.sin(s.t*8):1;
+    const pill=(x,y,w,h,col)=>{R(c,x+3,y,w-6,h,col);R(c,x+1,y+1,w-2,h-2,col);R(c,x,y+3,w,h-6,col);};
+    if(!dn)pill(B.x0+1,B.y0+3,bw-2,bh+1,"#0a3516");
+    pill(B.x0+1,B.y0+dn,bw-2,bh,P.b0);pill(B.x0+2,B.y0+1+dn,bw-4,bh-2,busy?"#1d6e36":P.b1);
+    pill(B.x0+3,B.y0+2+dn,bw-6,Math.round((bh-4)*.55),busy?(pulse>.5?"#2c9a49":"#23843d"):P.b2);
+    R(c,B.x0+7,B.y0+2+dn,bw-14,1,busy?"#5fc47a":P.b3);R(c,B.x0+4,B.y0+4+dn,2,3,busy?"#5fc47a":P.b4);
+    const gtxt=(col,ox,oy)=>{text(c,F5,"GRAB",ox,oy,col,1,2);text(c,F5,"GRAB",ox+1,oy,col,1,2);};
+    const gw=textW(F5,"GRAB",1,2)+1,gx=Math.round(B.x0+(bw-gw)/2),gy=B.y0+Math.round((bh-7)/2)+dn;
+    for(const[dx,dy]of[[-1,0],[1,0],[0,-1],[0,1],[1,1],[-1,1]])gtxt(P.b0,gx+dx,gy+dy);gtxt(busy?"#d8ffe0":"#fff",gx,gy);
+    if(dn){c.globalAlpha=.25;R(c,B.x0+2,B.y0+dn,bw-4,bh,"#000");c.globalAlpha=1;}
+    // prizes button: chunky pink button with a little plush bear, number badge, pressed state, glow after a win
+    {const Q=GEOM.prizes,dn=s.prizesDown?2:0,w=Q.x1-Q.x0,h=Q.y1-Q.y0,nw=s.prizeNew||0;
+      if(nw>0){c.globalAlpha=.55*nw;R(c,Q.x0-3,Q.y0-2,w+6,h+5,P.yel);c.globalAlpha=.35*nw;R(c,Q.x0-5,Q.y0-4,w+10,h+9,P.yel);c.globalAlpha=1;}
+      const sq=(x,y,ww,hh,col)=>{R(c,x+2,y,ww-4,hh,col);R(c,x,y+2,ww,hh-4,col);R(c,x+1,y+1,ww-2,hh-2,col);};
+      sq(Q.x0,Q.y0+2,w,h-1,P.out);if(!dn)sq(Q.x0+1,Q.y0+3,w-2,h-2,"#5a1236");
+      sq(Q.x0+1,Q.y0+dn,w-2,h-3,"#8a1e52");sq(Q.x0+2,Q.y0+1+dn,w-4,h-5,"#c2387a");sq(Q.x0+3,Q.y0+1+dn,w-6,Math.round((h-5)*.5),"#e2559a");
+      R(c,Q.x0+5,Q.y0+1+dn,w-10,1,"#ff9ccc");dot(c,Q.x0+3,Q.y0+3+dn,"#ffd0e6");
+      // bear: ears, head, muzzle, eyes, nose
+      const bx2=Q.x0+(w>>1),by2=Q.y0+12+dn;
+      disc(c,bx2-5,by2-5,3,P.out);disc(c,bx2+5,by2-5,3,P.out);disc(c,bx2-5,by2-5,2,"#a0642c");disc(c,bx2+5,by2-5,2,"#a0642c");dot(c,bx2-5,by2-5,"#e0a070");dot(c,bx2+5,by2-5,"#e0a070");
+      oval(c,bx2,by2+1,7,6,P.out);oval(c,bx2,by2+1,6,5,"#a0642c");R(c,bx2-4,by2-3,3,1,"#c8844a");
+      oval(c,bx2,by2+3,3,2,"#ecc89a");dot(c,bx2-3,by2,"#1a0d05");dot(c,bx2+3,by2,"#1a0d05");R(c,bx2-1,by2+2,2,1,"#1a0d05");
+      // badge with the count
+      const n=Math.max(0,Math.min(99,s.prizes|0));
+      if(n>0){const str=String(n),tw=textW(F3,str),bw=tw+4,bxx=Q.x1-bw+3,byy=Q.y0-3;
+        R(c,bxx,byy,bw,9,P.out);R(c,bxx+1,byy+1,bw-2,7,"#e5262d");R(c,bxx+1,byy+1,bw-2,1,"#ff7a7a");text(c,F3,str,bxx+2,byy+2,"#fff");}}
+    // coin going into the slot: face-on, then edge-on and down into the slot
+    const ct=s.coinT;
+    if(ct!=null&&ct>=0&&ct<1){const sx=31,top=309;
+      if(ct<.55){const u=ct/.55,y=Math.round(292+u*16);disc(c,sx,y,5,P.coin0);disc(c,sx,y,4,P.coin1);disc(c,sx-1,y-1,3,P.coin2);dot(c,sx-2,y-2,P.coin3,2);R(c,sx-1,y-1,1,3,P.coin1);}
+      else{const u=(ct-.55)/.45,y=Math.round(304+u*12),hh=Math.max(0,top+11-y);R(c,sx-1,y,3,Math.min(11,hh>0?Math.min(11,top-y+11):0),P.coin1);
+        if(y<top){R(c,sx-1,y,3,top-y,P.coin2);}dot(c,sx-1,y,P.coin3);}}
+  }
+
+  // ---------- the whole frame ----------
+  // z: 0 = front glass .. GEOM.depth = back. The bridge rides back (a little higher); the claw is drawn z*depthRise higher.
+  const bridgeDY=z=>Math.round(z*GEOM.bridgeRise);
+  function grip(s){const pv=GEOM.pivotDY,o=Math.max(0,Math.min(1,s.clawOpen||0)),a=s.clawAngle||0,z=Math.max(0,Math.min(GEOM.depth,s.clawZ||0));
+    const py=GEOM.railY-bridgeDY(z)+pv,L=Math.max(4,s.clawY-z*GEOM.depthRise-py);
+    const hx=s.clawX+Math.sin(a)*L,hy=py+Math.cos(a)*L,ty=54,ca=Math.cos(a),sa=Math.sin(a);
+    return{x:hx-sa*ty,y:hy+ca*ty,z,spread:3+16*o,hubX:hx,hubY:hy,angle:a,pivotY:py};}
+  function drawScene(ctx,s,layers){
+    ctx.imageSmoothingEnabled=false;const t=s.t||0;
+    ctx.drawImage(bg,0,0);room(ctx,t);ctx.drawImage(ins,0,0);
+    // layers.box: GAME draws the prize box itself (ART.drawBox) at its depth among the toys
+    if(!(layers&&layers.box))ctx.drawImage(chb,0,0);
+    if(layers&&layers.toys)layers.toys(ctx);
+    if(!(layers&&layers.box))ctx.drawImage(chf,0,0);
+    // gantry, carriage, cable + coil, claw
+    const g=grip(s),bd=bridgeDY(g.z);
+    ctx.drawImage(rail,0,-bd);if(g.z>1){ctx.globalAlpha=Math.min(.35,g.z/GEOM.depth*.35);ctx.fillStyle="#000";ctx.fillRect(16,GEOM.railY-bd-4,161,9);ctx.globalAlpha=1;}
+    const ry=GEOM.railY-bd,cx=Math.round(s.clawX),hx=g.hubX,hy=g.hubY,a=g.angle;
+    R(ctx,cx-14,ry-7,29,15,P.m0);R(ctx,cx-13,ry-6,27,13,P.m2);R(ctx,cx-13,ry-6,27,2,P.m4);R(ctx,cx-13,ry-6,2,13,P.m4);R(ctx,cx+11,ry-6,3,13,P.m1);R(ctx,cx-13,ry+5,27,2,P.m1);
+    R(ctx,cx-9,ry-2,4,3,P.m1);R(ctx,cx+5,ry-2,4,3,P.m1);dot(ctx,cx-8,ry-2,P.m4);dot(ctx,cx+6,ry-2,P.m4);
+    R(ctx,cx-4,ry+7,9,3,P.m0);R(ctx,cx-3,ry+7,7,2,P.m3);
+    const px0=cx,py0=ry+GEOM.pivotDY;
+    // coiled power cable from the carriage's left to the hub
+    {const ax=cx-10,ay=ry+7,bx2=hx-6,by2=hy+5,n=Math.max(6,Math.round(Math.hypot(bx2-ax,by2-ay)/2.5)),dx=(bx2-ax)/n,dy=(by2-ay)/n,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len;
+      let lx=ax,ly=ay;for(let i=1;i<=n;i++){const w=(i%2?2:-2)*(i<n?1:0),x=ax+dx*i+nx*w,y=ay+dy*i+ny*w;line(ctx,lx,ly,x,y,P.m0,2);line(ctx,lx,ly,x,y,i%2?P.m3:P.m1,1);lx=x;ly=y;}}
+    // centre cable/rod
+    line(ctx,px0,py0,hx,hy+1,P.m0,3);line(ctx,px0,py0,hx,hy+1,P.m3,1);
+    const sp=clawSprite(s.clawOpen||0);
+    // layers.claw (optional) draws the rotated sprite itself (GAME: at screen resolution, so the swinging claw has no moire)
+    const drawClaw=img=>{if(layers&&layers.claw)layers.claw(ctx,img,hx,hy,a,COX);else{ctx.save();ctx.translate(Math.round(hx),Math.round(hy));ctx.rotate(a);ctx.drawImage(img,-COX,0);ctx.restore();}};
+    drawClaw(sp.back);
+    if(layers&&layers.held)layers.held(ctx,g.x,g.y,a);
+    drawClaw(sp.front);
+    if(layers&&layers.front)layers.front(ctx);   // toys in front of the claw (depth order), under the glass reflection
+    ctx.drawImage(refl,0,0);
+    ctx.drawImage(frame,0,0);
+    // marquee: letters shimmer in a rainbow wave
+    let x=MQX;for(let i=0;i<MQ.length;i++){if(!letters[i]){x+=5;continue;}const k=.5+.5*Math.sin(t*3-i*.6);
+      ctx.drawImage(letters[i],x,19);if(k>.8){ctx.globalAlpha=(k-.8)*2.5;ctx.globalCompositeOperation="lighter";ctx.drawImage(letters[i],x,19);ctx.globalCompositeOperation="source-over";ctx.globalAlpha=1;}x+=LW+2;}
+    panel(ctx,s);
+  }
+  return{W,H,GEOM,drawScene,drawBox:(ctx,front)=>ctx.drawImage(front?chf:chb,0,0),clawGrip:grip,P};
+})();
+
+/* ===== TOYS: hand-placed pixel art plush toys (copied from the machine in the reference picture + new ones in the same style) =====
+   Sprites are palette strings. "m" = mirrored: each row is the LEFT half and gets mirrored (symmetric toys).
+   Letters: o outline, d dark, b base, l light, h shine, m patch (muzzle/belly), k mouth / patch shade, p pink (blush, inner ear),
+   n nose, e eye, w eye shine (white), s spikes, plus toy-specific ones. */
+const TOYS=(()=>{
+  const P={ // palettes: letter + hex
+    brown:"o3a1a0c d7a401c ba8622c lcc8848 he8b070 mf0c890 kb07a48 pf590a8 n3a1a0c",
+    bigbrown:"o341608 d70381a b9e5a28 lc48244 he4ae6c mf2ca94 kb07a48 pf590a8 n341608",
+    red:"o4c0e0a d9c2a1e bd8442f lf27058 hff9c84 mffcab4 kc06a5a pff9ab8 n4c0e0a",
+    sky:"o0e2e58 d2e82c4 b64bdf2 la2dcff hd6f0ff mdff3ff k7cb4dc pff9ab8 n0e2e58",
+    orange:"o5a2a08 dc46c18 bf4a43a lffc868 hffe0a0 mfbe2b8 kc89a68 pf590a8 nf47aa0 xd8781e",
+    purple:"o2e1650 d6e44a8 ba676dc lc8a4f2 he4ccff mecdcff k9a7ac4 pff9ad0 nf47aa0",
+    lilac:"o3e2268 d8a64c4 bc39ae8 ldcc0f6 hf0e2ff mf4ecff kb498d8 pff9ad0 nf47aa0",
+    gray:"o26262e d6c6c7c ba6a6b4 lcfcfda hececf4 mf4f4f8 k8a8a98 pf590a8 nf47aa0 x7a7a88",
+    black:"o0c0c18 d24243a b3a3a50 l5a5a78 h7a7a9c m6e6e8e k24243a pff8ab0 n0c0c18 effd23a w3a2a08",
+    fox:"x4a1a06 o4a1a06 db04a12 bf0782a lffa45a hffc890 mfff4e6 kd8b49a pf590a8 nf47aa0",
+    pink:"o5a1438 dc0507e bf28ab8 lffb6d6 hffd8ea mffe6f0 kc06890 pff5a94 n5a1438",
+    dino:"o0c3214 d1e7a2c b3cb846 l76e070 hb0f4a0 md6f6b0 k1e7a2c s1f8a32 pff9ab8 n0c3214",
+    frog:"o0a3810 d22862c b4cc84a l8cf07a hc0ffa8 k0a3810 pff9ab8 wffffff e1b1020",
+    carblue:"o0c1648 d22409a b3a6ad8 l6c96f2 hb4ccff gbfe6ff t23232b rc8c8d4 yffe878 zff5a4a",
+    carred:"o4a0c08 d9a2418 bd83830 lf26a5a hffa494 gbfe6ff t23232b rc8c8d4 yffe878 zffc84a",
+    gold:"o4a3006 db07c10 bf0c232 lffe070 hfffbd0",
+    rblue:"o0a2448 d1a64a8 b36a2e4 l86d0ff hd8f2ff",
+    rgreen:"o0a3a1a d1c8040 b3ec466 l8cf0a0 hd8ffe0",
+    white:"o3a344c dc4c0d4 bf2f0f6 lffffff hffffff mfff0f6 kd8c8dc pf6a0bc",
+    peng:"o0c0c18 d1e2034 b2e3048 l4a4c6a mf6f6fa kd6d6e2 yffa62a pff9ab8",
+    octo:"o4a0e3a da83a88 be86ac0 lff9ede hffc8ee k4a0e3a pff5aa0",
+    steel:"o1e2434 d6e788e ba8b2c4 ld6dcea hf2f4fa z1e2a3a c5cf0ff t38c8c0 rff4a4a",
+    duck:"o5a3806 dd8961a bffd23a lfff08a hfffcd0 yff9a2a zc8641a",
+    star:"o5a3806 dd8961a bffd23a lfff08a hfffcd0 kc8641a pff9ab8",
+    whale:"o0c1c4a d2a52a4 b4a86e0 l86b6ff hc4dcff md6e8ff k0c1c4a pff9ab8 y9ad8ff",
+    panda:"a2a2a36 A1a1a24 o1a1a24 d9a9aa8 bf6f6f8 lffffff hffffff mffffff kc8c8d0 pf6a0bc n1a1a24",
+    honey:"o5a3406 dc88a1a bf2c040 lffe07a hfff0b0 mfff2d0 kd8a860 pf590a8 n4a2a08",
+    pinkbear:"o5a1a3a dc0608a bf49ac0 lffbedc hffdcec mfff0f6 kd8a0b8 pff6a9a n5a1a3a",
+    mint:"o0c3a30 d2c9a80 b5cd6b8 l96f0d6 hc8fff0 mecfff8 k8cc8b8 pff9ab8 n0c3a30",
+    polar:"o3a4458 dbcc8d8 bf0f6fa lffffff hffffff mffffff kccd4e0 pf6a0bc n3a4458",
+    calico:"o3a2a24 dcabaa8 bf6f2ea lffffff hffffff mffffff kd8ccc0 pf590a8 nf47aa0 xf09a3a y3a3030",
+    siamese:"o3a2414 d6a4a30 bf2e2c8 lfff4e0 hfffaf0 mfff8ee kc8b090 pf590a8 nf47aa0 x6a4a30 e2a5ac8 wffffff",
+    tux:"o0c0c18 d24243a b3a3a50 l5a5a78 h7a7a9c mf4f4f8 kc8c8d0 pff8ab0 n0c0c18",
+    pinkcat:"o5a1438 dc0507e bf49ac4 lffbedc hffdcec mfff0f6 kd8a0b8 pff6a9a nf47aa0",
+    bluecat:"o0e2a52 d3a6ec0 b6c9eea la4c4ff hd4e4ff meef4ff k9ab0e0 pff9ab8 nf47aa0",
+    pinkdino:"o4a1030 dc04a80 bf28ab8 lffb6d6 hffd8ea mffeef6 kc04a80 sc04a80 pff6a9a n4a1030",
+    bluedino:"o0c2a52 d2a64c0 b4a92ea l86c0ff hc4e0ff me0f0ff k2a64c0 s2a64c0 pff9ab8 n0c2a52",
+    purpledino:"o2e1650 d6a40b0 b9e6ae6 lc8a4f6 he6d0ff mf0e6ff k6a40b0 s6a40b0 pff9ad0 n2e1650",
+    orangedino:"o5a2408 dc4601a bf49a3a lffc06a hffe0a0 mfff0d0 kc4601a sc4601a pff9ab8 n5a2408",
+    pinkbun:"o5a1a3a de0a0bc bffd2e4 lffeaf2 hffffff mfff6fa kd8a8bc pff6a9a",
+    brownbun:"o3a1a0c d8a5430 bc08a5a ldcae80 hf0d0a8 mf6e2cc kb08a68 pf590a8",
+    mintjelly:"o0c3a30 d2c9a80 b6ee0c0 la8f6e2 hd8fff4 meafff8 k8cc8b8 pff9ab8 n0c3a30",
+    lemon:"o5a4006 dd0a018 bffe04a lfff08a hfffcd0 mfffae0 kd8b860 pff9ab8 n5a4006",
+    grape:"o2e1650 d6e44a8 ba676dc lc8a4f2 he4ccff mf0e6ff k9a7ac4 pff9ad0 n2e1650",
+    peach:"o5a2a10 dd8743a bffa86a lffcc98 hffe6c8 mfff0e0 kd8a080 pff6a9a n5a2a10",
+    axolotl:"o5a1438 dc0507e bf6a0c4 lffc4dc hffe0ee kc0507e pff5a94 wffffff e1b1020",
+    cargreen:"o0a3a1a d1c8040 b3ec466 l8cf0a0 hd8ffe0 gbfe6ff t23232b rc8c8d4 yffe878 zff5a4a",
+    caryellow:"o5a3806 dd8961a bffd23a lfff08a hfffcd0 gbfe6ff t23232b rc8c8d4 yffffff zff5a4a",
+    rpink:"o5a1438 dc0507e bf28ab8 lffc4dc hfff0f6",
+    rpurple:"o2e1650 d6e44a8 ba676dc lc8a4f2 hf0e6ff",
+    blueghost:"o1e3a5a d8ab4e0 bcfe6ff le8f6ff hffffff mfff0f6 k8ab4e0 pf6a0bc",
+    bluoct:"o0e2a52 d2e6ac4 b5a96ee l96c0ff hd0e6ff k0e2a52 pff9ab8",
+    pinkstar:"o5a1438 dc0507e bf28ab8 lffc4dc hfff0f6 kc0507e pff6a9a",
+    pinkwhale:"o4a1030 dc04a80 bf28ab8 lffb6d6 hffdcec mfff0f6 k4a1030 pff6a9a yffd0e8",
+    bluemush:"o0e2a52 d2a52a4 b4a86e0 l86b6ff hc4dcff wffffff mf6e6c6 kc8a87a e1b1020 pff9ab8",
+    mush:"o4a0a0c da01e22 be8433e lff7a6a hffb0a0 wffffff mf6e6c6 kc8a87a e1b1020 pff9ab8",
+    pig:"o5a1a3a dc0608a bf4a6c0 lffc4dc hffdcec mf47aa0 kc06a8a pff6a9a n5a1a3a",
+    koala:"o2a2a36 d6c6c80 ba0a0b4 lc8c8d8 he4e4ee mf0f0f6 k5a5a68 pf6a0bc n23232e",
+    lion:"o5a3406 dc88a1a bf2c040 lffe07a hfff0b0 mfff2d0 kd8a860 pf590a8 n4a2a08 xd8781e y9a4a10",
+    owl:"o3a1a0c d8a5430 bc08a5a ldcae80 hf0d0a8 mf6ead6 kb08a68 pf590a8 yffa62a zc8641a",
+    chick:"o5a3806 dd8961a bffd23a lfff08a hfffcd0 mfff2c0 kc8641a pff9ab8 yff9a2a zc8641a",
+    hamster:"o5a2a08 dd8843a bf6b46a lffd29a hffe8c4 mfff6ea kd8a880 pf590a8 n5a2a08",
+    sheep:"o3a344c dc4c0d4 bf2f0f6 lffffff hffffff mf6dcc4 kc8a890 pf6a0bc n3a344c x6a5a58",
+    elephant:"o1e2a44 d5a7aa8 b8eaed8 lb8d0f0 hdcecff me0ecfa k5a7aa8 pf6a0bc n1e2a44",
+    monkey:"o3a1a0c d7a401c ba8622c lcc8848 he8b070 mf6dcb8 kb07a48 pf590a8 n3a1a0c",
+    turtle:"o0c3214 d1e7a2c b3cb846 l76e070 hb0f4a0 md6f6b0 k1e7a2c pff9ab8 n0c3214 x8a5a20 yc8943a",
+    bee:"o3a2a06 dd8961a bffd23a lfff08a hfffcd0 mdcf0ff k5a3806 pff9ab8 n3a2a06 x3a2a06",
+    unicorn:"o4a2a5a dc4a8d8 bf6f0fa lffffff hffffff mfff0f6 kd8c0dc pff9ad0 nf47aa0 yffd23a xb07aff qff9ad0",
+    hedgehog:"o3a2414 d6a4a30 b9a7048 lc8a070 he0c098 mf6e2c8 kb09070 pf590a8 n2a1a10 s5a3a20"};
+  const BASE="e1b1020 wffffff";
+  // per-kind head size/position (fractions of W/H), round = one round body (no separate head), face = its own nose/mouth
+  const beak=(put,g)=>{const x=Math.floor(g.cx)-1,y=Math.round(g.fy+g.eh*.5);put(x,y,"y");put(x+1,y,"y");put(x,y+1,"z");put(x+1,y+1,"z");};
+  const KIND={
+    pig:{face(put,g){const sy=g.ny+.5;for(let y=-2;y<=2;y++)for(let x=-4;x<=3;x++)if(((x+.5)*(x+.5))/16+(y*y)/5<=1)put(g.cx+x,sy+y,"m");put(g.cx-2,sy,"n");put(g.cx+1,sy,"n");put(g.cx-1,sy+3,"k");put(g.cx,sy+3,"k");}},
+    koala:{hrx:.38,blush:.28,face(put,g){for(let y=0;y<4;y++)for(let x=-2;x<2;x++)if(!((y===0||y===3)&&(x===-2||x===1)))put(g.cx+x,g.ny-1+y,"n");put(g.cx-1,g.ny+3,"k");put(g.cx,g.ny+3,"k");}},
+    lion:{hy:.36,hrx:.33,hry:.24,blush:.24},
+    owl:{round:1,cy:.55,rx:.42,ry:.43,fy:.4,ex:.17,face:beak},
+    chick:{round:1,cy:.56,rx:.44,ry:.4,fy:.5,face:beak},
+    hamster:{round:1,cy:.56,rx:.47,ry:.4,fy:.5},
+    bee:{round:1,cy:.6,rx:.4,ry:.36,fy:.46},
+    sheep:{hrx:.4,hry:.27,blush:.25},
+    elephant:{hrx:.3,blush:.22,face(put,g){for(let y=0;y<8;y++){put(g.cx-1,g.ny-1+y,"l");put(g.cx,g.ny-1+y,"b");}put(g.cx+1,g.ny+6,"b");put(g.cx+1,g.ny+7,"d");}},
+    monkey:{hrx:.36,blush:.26},
+    turtle:{hy:.3,hrx:.3,hry:.24,blush:.22},
+    unicorn:{hy:.44,hry:.25},
+    hedgehog:{hrx:.38,hry:.27,blush:.26}};
+  /* ---- round plush generator: shapes are drawn at their real size (no stretching), written as palette letters ---- */
+  function plush(kind,W,H,opt={}){
+    const L=[...Array(H)].map(()=>Array(W).fill(".")),SID=[...Array(H)].map(()=>Array(W).fill(-1));let sid=0;
+    const ell=(cx,cy,rx,ry,ch,shade=true)=>{const s=sid++;for(let y=0;y<H;y++)for(let x=0;x<W;x++){const nx=(x+.5-cx)/rx,ny=(y+.5-cy)/ry;if(nx*nx+ny*ny>1)continue;
+      let c=ch;if(shade&&ch==="b"){const l=-nx*.55-ny*.8,d=nx*.5+ny*.85;c=d>.68?"d":l>.62?(l>.95?"h":"l"):"b";}L[y][x]=c;SID[y][x]=s;}return s;};
+    const tri=(ax,ay,bx,by,qx,qy,ch)=>{const s=sid++;for(let y=0;y<H;y++)for(let x=0;x<W;x++){const px=x+.5,py=y+.5,e=(x1,y1,x2,y2)=>(x2-x1)*(py-y1)-(y2-y1)*(px-x1);
+      const a=e(ax,ay,bx,by),b=e(bx,by,qx,qy),c=e(qx,qy,ax,ay);if((a>=0&&b>=0&&c>=0)||(a<=0&&b<=0&&c<=0)){L[y][x]=ch;SID[y][x]=s;}}return s;};
+    const put=(x,y,c)=>{x=Math.round(x);y=Math.round(y);if(y>=0&&y<H&&x>=0&&x<W&&L[y][x]!==".")L[y][x]=c;};
+    const put_=(x,y,c)=>{x=Math.round(x);y=Math.round(y);if(y>=0&&y<H&&x>=0&&x<W){L[y][x]=c;SID[y][x]=sid;}};
+    const cx=W/2,big=W>=32,K=KIND[kind]||{},round=!!K.round;
+    // head: round, ~60% of the height; body narrower than the head, paws tucked under
+    const hy=H*(K.hy||(kind==="bunny"?.44:.37)),hrx=W*(K.hrx||(kind==="cat"?.45:.44)),hry=H*(K.hry||(kind==="bunny"?.24:.29));
+    if(kind==="lion"){ell(cx,hy+hry*.1,hrx*1.42,hry*1.42,"y",false);ell(cx,hy+hry*.06,hrx*1.24,hry*1.24,"x",false);   // mane, two tones
+      for(let i=0;i<12;i++){const t=i/12*Math.PI*2;ell(cx+Math.cos(t)*hrx*1.3,hy+hry*.1+Math.sin(t)*hry*1.3,W*.07,W*.07,"y",false);}
+      ell(W*.85,H*.8,W*.07,H*.1,"b");ell(W*.89,H*.66,W*.07,W*.07,"y",false);}   // tail with a tuft
+    if(kind==="monkey")ell(W*.86,H*.72,W*.08,H*.15,"b");                          // tail
+    if(kind==="bee")for(const s of[-1,1])ell(cx+s*W*.34,H*.3,W*.17,H*.13,"m",false);   // wings
+    if(kind==="sheep"){for(let i=0;i<9;i++){const t=Math.PI*(1.05+i/8*.9);ell(cx+Math.cos(t)*hrx*.78,hy+Math.sin(t)*hry*.78,W*.15,W*.15,"b");}   // wool puffs
+      for(const s of[-1,1])ell(cx+s*hrx*1.02,hy+hry*.3,W*.11,H*.055,"x",false);}   // ears sticking out of the wool
+    if(kind==="cat"&&opt.tail!==false){ell(W*.86,H*.66,W*.09,H*.16,"b");}
+    let body=-1;
+    if(kind==="turtle"){ell(cx,H*.72,W*.44,H*.24,"y",false);body=ell(cx,H*.72,W*.38,H*.2,"x",false);   // shell (the body) with a rim
+      for(const[dx,dy]of[[-.24,-.06],[.24,-.06],[0,.02],[-.13,.13],[.13,.13]])ell(cx+dx*W,H*(.72+dy),W*.07,H*.045,"y",false);
+      for(const s of[-1,1]){ell(cx+s*W*.42,H*.62,W*.09,H*.08,"b");ell(cx+s*W*.3,H*.93,W*.11,H*.07,"b");}}   // flippers
+    else if(!round&&kind!=="blob"&&kind!=="critter"){body=ell(cx,H*.77,W*.33,H*.2,"b");
+      const ar=opt.panda?"a":"b";ell(cx-W*.3,H*.73,W*.1,H*.11,ar);ell(cx+W*.3,H*.73,W*.1,H*.11,ar);   // arms
+      ell(cx,H*.79,W*.18,H*.13,"m",false);                                                                                   // belly
+      const ft=kind==="cat"?"m":kind==="sheep"?"x":"b";ell(cx-W*.17,H*.93,W*.13,H*.07,ft);ell(cx+W*.17,H*.93,W*.13,H*.07,ft);}         // feet
+    // ears (behind the head)
+    if(kind==="teddy"){for(const s of[-1,1]){ell(cx+s*hrx*.66,hy-hry*.74,W*.135,W*.135,opt.panda?"a":"b");ell(cx+s*hrx*.66,hy-hry*.7,W*.065,W*.065,"p",false);}}
+    if(kind==="cat"){for(const s of[-1,1]){tri(cx+s*hrx*.92,hy-hry*1.22,cx+s*hrx*.95,hy-hry*.2,cx+s*hrx*.2,hy-hry*.62,"b");
+      tri(cx+s*hrx*.8,hy-hry*.98,cx+s*hrx*.82,hy-hry*.42,cx+s*hrx*.42,hy-hry*.62,"p");}}
+    if(kind==="bunny"){for(const s of[-1,1]){ell(cx+s*W*.2,H*.16,W*.11,H*.16,"b");ell(cx+s*W*.2,H*.17,W*.05,H*.12,"p",false);}}
+    if(kind==="blob"||kind==="critter"){for(const s of[-1,1])ell(cx+s*W*.28,H*.22,W*.1,W*.1,"b");}
+    if(kind==="hamster"||kind==="lion"){const ey=kind==="lion"?hy-hry*.78:H*.22,ex_=kind==="lion"?hrx*.72:W*.3;
+      for(const s of[-1,1]){ell(cx+s*ex_,ey,W*.1,W*.1,"b");ell(cx+s*ex_,ey+.5,W*.05,W*.05,"p",false);}}
+    if(kind==="pig"||kind==="unicorn")for(const s of[-1,1]){tri(cx+s*hrx*1.02,hy-hry*1.12,cx+s*hrx*.98,hy-hry*.25,cx+s*hrx*.28,hy-hry*.8,"b");
+      tri(cx+s*hrx*.9,hy-hry*.9,cx+s*hrx*.86,hy-hry*.45,cx+s*hrx*.5,hy-hry*.72,"p");}
+    if(kind==="koala")for(const s of[-1,1]){ell(cx+s*hrx*.92,hy-hry*.5,W*.19,W*.19,"b");ell(cx+s*hrx*.95,hy-hry*.45,W*.1,W*.1,"m",false);}
+    if(kind==="elephant")for(const s of[-1,1]){ell(cx+s*hrx*1.05,hy+hry*.05,W*.2,H*.22,"b");ell(cx+s*hrx*1.08,hy+hry*.08,W*.12,H*.14,"p",false);}
+    if(kind==="monkey")for(const s of[-1,1]){ell(cx+s*hrx*1.02,hy+hry*.05,W*.12,W*.12,"b");ell(cx+s*hrx*1.04,hy+hry*.05,W*.06,W*.06,"m",false);}
+    if(kind==="hedgehog")for(let i=0;i<9;i++){const t=Math.PI*(1.0+i/8),c_=Math.cos(t),s_=Math.sin(t),bx=cx+c_*hrx*.7,by=hy+s_*hry*.7,px=-s_,py=c_;   // spikes all around the top
+      tri(bx+c_*hrx*.62,by+s_*hry*.62,bx+px*W*.1,by+py*W*.1,bx-px*W*.1,by-py*W*.1,"s");}
+    if(kind==="owl")for(const s of[-1,1])tri(cx+s*W*.4,H*.04,cx+s*W*.38,H*.3,cx+s*W*.12,H*.2,"b");   // ear tufts
+    if(kind==="chick")for(const dx of[-1.5,0,1.5])tri(cx+dx,H*.06,cx+dx-1.6,H*.2,cx+dx+1.6,H*.2,"b");   // a little tuft
+    if(kind==="bee")for(const s of[-1,1]){for(let j=0;j<4;j++)put_(cx+s*(2+j*.8),H*.22-j*1.2,"o");put_(cx+s*5,H*.22-4.6,"o");put_(cx+s*5.6,H*.22-4.6,"o");}   // antennae
+    const head=kind==="blob"||kind==="critter"?ell(cx,H*.56,W*.46,H*.41,"b"):round?ell(cx,H*K.cy,W*K.rx,H*K.ry,"b"):ell(cx,hy,hrx,hry,"b");
+    if(kind==="teddy"||kind==="lion"||kind==="koala")ell(cx,hy+hry*.45,W*.16,H*.085,"m",false);                       // muzzle
+    if(kind==="sheep"||kind==="hedgehog")ell(cx,hy+hry*.28,hrx*.66,hry*.66,"m",false);   // the face
+    if(kind==="monkey"){for(const s of[-1,1])ell(cx+s*W*.12,hy-hry*.08,W*.15,H*.12,"m",false);ell(cx,hy+hry*.45,W*.21,H*.1,"m",false);}
+    if(kind==="owl"){for(const s of[-1,1])ell(cx+s*W*.17,H*.4,W*.15,W*.15,"m",false);for(const s of[-1,1])ell(cx+s*W*.37,H*.63,W*.1,H*.2,"d",false);   // eye discs, wings
+      ell(cx,H*.74,W*.2,H*.15,"l",false);for(const[dx,dy]of[[-2,0],[2,0],[0,2],[-3,4],[3,4]])put(cx+dx-.5,H*.7+dy,"k");}   // feathered belly
+    if(kind==="hamster")for(const s of[-1,1])ell(cx+s*W*.3,H*.68,W*.15,H*.14,"m",false);   // full cheeks
+    if(kind==="chick")for(const s of[-1,1])ell(cx+s*W*.43,H*.66,W*.1,H*.16,"l",false);   // little wings
+    if(kind==="bee"){const b0=H*K.cy;for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=y+.5-b0;if((v>H*.08&&v<H*.16)||(v>H*.25&&v<H*.32))put(x,y,"x");}}   // stripes
+    if(kind==="unicorn"){tri(cx,hy-hry*1.7,cx-W*.07,hy-hry*.75,cx+W*.07,hy-hry*.75,"y");   // horn
+      for(const[dx,dy,c]of[[-.18,-.95,"x"],[-.32,-.78,"q"],[-.42,-.5,"x"],[-.46,-.18,"q"]])ell(cx+dx*hrx*2.2,hy+dy*hry,W*.09,W*.09,c,false);}   // mane
+    // face
+    const fy=kind==="blob"||kind==="critter"?H*.5:round?H*K.fy:hy+hry*(K.fy||.08),ex=W*(K.ex||kind==="critter"?.2:.21),eh=big?4:3,ew=big?3:(W<22?2:3);
+    for(const s of[-1,1]){const x0=Math.round(cx+s*ex-ew/2);for(let j=0;j<eh;j++)for(let i=0;i<ew;i++)put(x0+i,Math.round(fy-eh/2)+j,"e");put(x0,Math.round(fy-eh/2),"w");
+      const bx_=W*(K.blush||.34);put(cx+s*bx_-(s<0?1:0),fy+eh*.5+1,"p");put(cx+s*bx_-(s<0?0:1),fy+eh*.5+1,"p");
+      if(opt.panda){for(let j=-1;j<=eh;j++){put(x0-1,Math.round(fy-eh/2)+j,"A");put(x0+ew,Math.round(fy-eh/2)+j+1,"A");}for(let i=0;i<ew;i++)put(x0+i,Math.round(fy-eh/2)+eh,"A");}}
+    const c0=Math.floor(cx)-1,c1=Math.floor(cx)-(W%2?0:0),ny=Math.round(fy+eh*.5+(kind==="teddy"?0:0));
+    if(K.face)K.face(put,{cx,c0,ny,fy,eh,W,H,hy,hry});
+    else{put(c0,ny,"n");put(c0+1,ny,"n");if(W%2)put(c0+2,ny,"n");
+    put(c0,ny+1,"k");put(c0+1+(W%2),ny+1,"k");put(c0-1,ny+2,"k");put(c0+2+(W%2),ny+2,"k");if(W%2)put(c0+1,ny+2,"k");}
+    // markings
+    if(opt.stripes){const t=Math.round(hy-hry*.8);for(const dx of[-2,0,2]){put(cx+dx-.5,t,"x");put(cx+dx-.5,t+1,"x");}put(cx-hrx*.85,fy+1,"x");put(cx+hrx*.85-1,fy+1,"x");put(cx-hrx*.8,fy+3,"x");put(cx+hrx*.8-1,fy+3,"x");}
+    if(opt.calico){for(let j=0;j<3;j++)for(let i=0;i<3;i++){put(cx-hrx*.6+i,hy-hry*.55+j,"x");put(cx+hrx*.45+i,hy-hry*.6+j,"y");put(cx-W*.2+i,H*.78+j,"x");}}
+    if(opt.siamese){for(let i=-3;i<3;i++){put(cx+i,ny-1,"x");put(cx+i,ny+2,"x");}put(cx-4,ny,"x");put(cx+3,ny,"x");put(cx-4,ny+1,"x");put(cx+3,ny+1,"x");}
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(x===0||y===0||x===W-1||y===H-1)L[y][x]=".";
+    // seams (head over body / arms) + outline
+    const R=L.map(r=>r.slice());
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(L[y][x]==="."||SID[y][x]!==head)continue;
+      for(const[dx,dy]of[[0,1],[1,0],[-1,0]]){const X=x+dx,Y=y+dy;if(Y<H&&X>=0&&X<W&&L[Y][X]!=="."&&SID[Y][X]!==head&&SID[Y][X]<head&&"ewpnkA".indexOf(L[y][x])<0){R[y][x]="o";break;}}}
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(L[y][x]===".")for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+dx,Y=y+dy;if(X>=0&&Y>=0&&X<W&&Y<H&&L[Y][X]!=="."){R[y][x]="o";break;}}
+    return R.map(r=>r.join(""));
+  }
+  const S={ /* ---------- templates ---------- */
+    teddy:{gen:o=>plush("teddy",26,30,o)},bigteddy:{gen:o=>plush("teddy",34,40,o)},
+    cat:{gen:o=>plush("cat",27,29,o)},bigcat:{gen:o=>plush("cat",34,38,o)},
+    blob:{gen:o=>plush("blob",24,21,o)},
+    pig:{gen:o=>plush("pig",26,28,o)},koala:{gen:o=>plush("koala",28,29,o)},lion:{gen:o=>plush("lion",30,32,o)},owl:{gen:o=>plush("owl",24,28,o)},
+    chick:{gen:o=>plush("chick",20,20,o)},hamster:{gen:o=>plush("hamster",24,20,o)},sheep:{gen:o=>plush("sheep",28,30,o)},elephant:{gen:o=>plush("elephant",30,29,o)},
+    monkey:{gen:o=>plush("monkey",28,29,o)},turtle:{gen:o=>plush("turtle",28,28,o)},bee:{gen:o=>plush("bee",22,26,o)},unicorn:{gen:o=>plush("unicorn",26,32,o)},
+    hedgehog:{gen:o=>plush("hedgehog",28,28,o)},critter:{gen:o=>plush("critter",20,18,o)},bunny:{gen:o=>plush("bunny",22,32,o)},
+    dino:{grow:{rows:[1,3,4,5,9,11,13,15,18],cols:[2,4,6,7,9,11,13,15]},r:["...ooooooo............","..obllllbbo...........",".obllbbbbbbo..........","obllbbwebbbbo.........","obbbbbeebbbbo.........",
+      "onbbbbbbbbbbbo........",".okkkkbbbbbbbo........","..oommmbbbbbbo........",".....obbbbbbbbo.os....","....obbbbbbbbbbos.....",
+      "...obmmmbbbbbbbbos....","..obmmmmmbbbbbbbbso...","..oobmmmmmbbbbbbbbo...","....ommmmmbbbbbbbbbo..","....ommmmmbbbbbbbbbbo.",
+      "....obmmmmbbbbbbbdbbbo","....obbmmbbbbbbbddoooo","....obbbbbbbbbbdo.....","....obbbdobbbbbdo.....","....obbbdo.obbbdo.....",
+      "...obbbbdo.obbbbdo....","...oooooo..ooooooo...."]},
+    bigdino:{grow:{rows:[1,3,4,5,9,11,14,15,17,19,22],cols:[2,4,6,7,9,11,13,15,17,19]},r:["....ooooooooo...............","...ollllllllbo..............","..olllhhllbbbbo.............",".ollbbbbbbbbbbbo............",
+      "olbbbwwebbbbbbbbo...........","obbbbweebbbbbbbbo...........","obbbbeeebbbbbbbbbo..........","onbbbbbbbbbbbbbbbo..........",
+      "obbppbbbbbbbbbbbbo..s.......",".okkkkkkbbbbbbbbbo.oso......","..ommmmmmbbbbbbbo.osso......","...ooommmmbbbbbbbbosbo......",
+      "......oommbbbbbbbbbbbo.s....",".....obbbbbbbbbbbbbbbbosso..","....obmmmbbbbbbbbbbbbbbbo...","...obmmmmmbbbbbbbbbbbbbbbo..",
+      "..obbommmmmmbbbbbbbbbbbbo...","..obdommmmmmbbbbbbbbbbbbbo..","...ooommmmmmbbbbbbbbbbbbbbo.",".....ommmmmbbbbbbbbbbbbbbbo.",
+      ".....obmmmbbbbbbbbbbbbbbdddo",".....obbbbbbbbbbbbbbbbddoooo","......obbbbbbbbbbbbbbdo.....","......obbbbdobbbbbbbbdo.....",
+      ".....obbbbbdo.obbbbbbdo.....","....obbbbbbdo.obbbbbbbdo....","....oooooooo..oooooooooo...."]},
+    frog:{m:1,grow:{rows:[1,3,4,6,8,10],cols:[2,3,7,9]},r:["..ooooo....",".owwwwwo...","owwweewoooo","owwweewolll","owwwwwwolll",".owwwwolllb",".oolllllbbb","olllbbbbbbb",
+      "olpbbbbbbbb","obbkbbbbbbb","obbbkkkkkkk",".odbbbbbbbb","..oddddbbbb","....ooooooo"]},
+    car:{grow:{rows:[3,5,6,7],cols:[3,6,8,9,12,15,18,20]},r:["......ooooooooo.........",".....oggogggggo.........","....oggggoggggggo.......","...obbbbbbbbbbbbbooo....",
+      ".oollllllllllllllllllo..","ozbbbbbbbbbbbbbbbbbbbyo.","obbbbbbbbbbbbbbbbbbbbbo.","obbbbbbbbbbbbbbbbbbbbbo.",
+      "oddoooodddddddoooodddo..",".oottttoooooootttttoo...","..ottrrtto...ottrrtto...","..otttttto...otttttto...","...oooooo....oooooo....."]},
+    ring:{m:1,grow:{rows:[2,5,7,8,10,13],cols:[2,4,6]},r:[".....ooo","...oolll","..olhhbb",".olhbbbb",".olbbooo","olbbo...","olbo....","obbo....","obbo....","obdo....","obdbo...",
+      ".odbbooo",".oddbbbb","..oddddd","...ooddd",".....ooo"]},
+    ringS:{m:1,grow:{rows:[2,4,6,8],cols:[1,3]},r:["...ooo",".oollh","olhbbb","olbooo","obo...","obo...","odo...","odbooo",".oddbb","..oddd","....oo"]},
+    penguin:{m:1,grow:{rows:[2,4,5,8,10,12,14,16],cols:[2,3,5,6]},r:["....ooooo","...obbbbb","..obbbbbb",".obbmmmmm",".obmmwemm",".obmmeemm",".obpmmmyy",".obbmmmmm","obbbbmmmm",
+      "obbbmmmmm","obbbmmmmm","obbdmmmmm","obbdmmmmm","obdbmmmmm",".obbbmmmm",".obbbbmmm","..obbbbbb","..oyyyobb","..ooooooo"]},
+    octopus:{m:1,grow:{rows:[2,4,5,6,9,12,13],cols:[3,5,7,8]},r:[".....oooooo","...oollllll","..ollllbbbb",".olllbbbbbb",".olbbbbbbbb","olbbbwebbbb","olbbbeebbbb","obbbbeebbbb",
+      "obppbbbbbbk","obbbbbbbbbb",".odbbbbbbbb",".obdbbbbbbb","obbobbobbob","obbobbobbob","obdobdobdob","olbolbolbob",".oo.oo.oo.o"]},
+    robot:{m:1,grow:{rows:[4,6,8,11,12,14,16,18],cols:[3,5,7]},r:["........r","........o","...oooooo","..ollllll","..olbbbbb","..obzzzzz","..obzcczz","..obzzzzz","..odbbbbb","...oooooo",
+      ".ooolllll","oblolbbbb","obbobtttt","obbobtttt","obdobbbbb",".ooobbbbb","...odbbbb","....obbo.","....obbo.","...oddddo","...oooooo"]},
+    duck:{grow:{rows:[2,3,5,8,9,11],cols:[4,6,8,9,11,13,15,17]},r:["....oooo............","...ollllo...........","..ollhhllo..........","..olwebbbo..........","..olbebbbo..........",
+      "yyyobbbbbo...ooo....","zzzobbbbbbo.oblo....",".oooobbbbbboobbo....","....obbbbbbbbbbbo...","...obllllbbbbbbbbo..",
+      "...obllllbbbbbbbbbo.","...obbllbbbbbbbbbo..","....obbbbbbbbbbdo...",".....odbbbbbbddo....","......oooooooooo...."]},
+    ghost:{m:1,grow:{rows:[2,4,6,7,9,11,13],cols:[2,4,5,6]},r:["....ooooo","..oolllll",".ollllbbb",".olbbbbbb","olbbbbbbb","olbbwebbb","obbbeebbb","obbbeebbb","obpbbbbbb",
+      "obbbbbbbk","obbbbbbbk","obbbbbbbb","obdbbbbbb","obdbbbbbb","obbbbbbbb","obbbbbbbb","obbobbobb",".oo.oo.oo"]},
+    star:{m:1,grow:{rows:[3,6,7,8,10,12],cols:[3,5,6,8]},r:[".........o","........ol",".......olb",".......olb","......ollb","oooooollbb","ollllllbbb",".obbbwebbb","..obbeebbb",
+      "...opbbbbk","....obbbbb","...obbbbbb","...obbbbdd","..obbdo...",".obddo....",".ooo......"]},
+    whale:{grow:{rows:[4,6,7,9,10,11],cols:[3,6,9,12,15,18,20,22]},r:[".................yy.......","................y..y......",".........ooooooooo........",".......oollllllllloo......",
+      "......ollhhllllllllllo....","o....olllbbbbbbbbbbbbbo...","oo..olbbbbbbbbbbbwebbbbo..","obo.obbbbbbbbbbbbeebbbbbo.",
+      "obbooobbbbbbbbbbbbbbbpbbo.","obbbbbbbbbbbbbbbbbbbbbbkbo",".obbbbmmmmmmmmmmmmmmmkkbo.","..obbmmmmmmmmmmmmmmmmmmo..",
+      "...odmmmmmmmmmmmmmmmmdo...",".....oodddddddddddddoo....",".......ooooooooooooo......"]},
+    mushroom:{m:1,grow:{rows:[1,3,5,6,10,11],cols:[2,4,6]},r:["....ooooo","..oolllll",".ollwwbbb",".olwwwbbb","olbbwbbbb","olbbbbbww","obbbbbbww","odbbbbbbb",".oddddddd",
+      "..ooommmm","....omwem","....ommem","....opmmk","....ommmm","....okmmm",".....oooo"]}};
+  // the toys: [id, template, palette(+overrides), EN, ES, DE, mass, grip, extra pixels "x,y,c;..."]
+  const DEF=[
+    ["bear_brown","teddy","brown","Brown teddy","Osito marrón","Brauner Teddy",1,.9],
+    ["cat_orange","cat","orange","Ginger cat","Gato canela","Rote Katze",1,.85,"@stripes"],
+    ["blob_blue","blob","sky","Sky jelly","Gominola celeste","Himmelsglibber",.8,.8],
+    ["bear_big","bigteddy","bigbrown","Big teddy","Osote","Riesenteddy",1.6,.9],
+    ["dino_green","dino","dino","Little dino","Dinosaurio","Kleiner Dino",1,.75],
+    ["cat_purple","cat","purple","Purple cat","Gato morado","Lila Katze",1,.85],
+    ["cat_gray","cat","gray","Grey cat","Gato gris","Graue Katze",1,.85,"@stripes"],
+    ["bear_red","teddy","red","Red bear","Oso rojo","Roter Bär",1,.9],
+    ["dino_big","bigdino","dino","Big dino","Dinosaurio grande","Großer Dino",1.7,.7],
+    ["cat_ginger_big","bigcat","orange","Big ginger cat","Gatazo canela","Große rote Katze",1.4,.85,"@stripes"],
+    ["cat_purple_big","bigcat","purple","Big purple cat","Gatazo morado","Große lila Katze",1.4,.85],
+    ["critter_pink","critter","pink","Pink pal","Amiguito rosa","Rosa Freund",.6,.75],
+    ["frog_head","frog","frog","Frog head","Cabeza de rana","Froschkopf",.8,.7],
+    ["car_blue","car","carblue","Blue racer","Coche azul","Blaues Auto",.9,.45],
+    ["car_red","car","carred","Red racer","Coche rojo","Rotes Auto",.9,.45],
+    ["ring_gold","ring","gold","Gold ring","Anillo dorado","Goldring",.4,.35],
+    ["ring_blue","ring","rblue","Blue ring","Anillo azul","Blauer Ring",.4,.35],
+    ["ring_green","ringS","rgreen","Green ring","Anillo verde","Grüner Ring",.35,.35],
+    ["cat_lilac","cat","lilac","Lilac kitty","Gatita lila","Fliederkätzchen",1,.85],
+    ["bunny","bunny","white","Bunny","Conejito","Häschen",.9,.85],
+    ["penguin","penguin","peng","Penguin","Pingüino","Pinguin",1,.8],
+    ["octopus","octopus","octo","Octopus","Pulpo","Krake",.9,.8],
+    ["robot","robot","steel","Robot","Robot","Roboter",1.2,.6],
+    ["duck","duck","duck","Duck","Patito","Entchen",.7,.75],
+    ["ghost","ghost","white","Ghost","Fantasmita","Gespenst",.6,.8],
+    ["star","star","star","Star plush","Estrella","Sternchen",.6,.7],
+    ["whale","whale","whale","Whale","Ballena","Wal",1.1,.7],
+    ["mushroom","mushroom","mush","Mushroom","Seta","Pilz",.7,.8],
+    ["fox","cat","fox","Fox","Zorrito","Füchslein",1,.85,""],
+    ["bear_blue","teddy","sky","Blue bear","Oso azul","Blauer Bär",.9,.9],
+    ["cat_black","cat","black","Night cat","Gato negro","Schwarze Katze",1,.85],
+    ["panda","teddy","panda","Panda","Panda","Panda",1,.9,"@panda"],
+    ["bear_honey","teddy","honey","Honey bear","Osito miel","Honigbär",1,.9],
+    ["bear_pink","teddy","pinkbear","Pink bear","Osita rosa","Rosa Bär",1,.9],
+    ["bear_mint","teddy","mint","Mint bear","Oso menta","Minzbär",1,.9],
+    ["bear_polar","bigteddy","polar","Polar bear","Oso polar","Eisbär",1.5,.9],
+    ["cat_calico","cat","calico","Patchy cat","Gato calicó","Glückskatze",1,.85,"@calico"],
+    ["cat_siamese","cat","siamese","Cream cat","Gato crema","Cremekatze",1,.85,"@siamese"],
+    ["cat_tux","cat","tux","Tuxedo cat","Gato esmoquin","Smokingkatze",1,.85],
+    ["cat_pink","cat","pinkcat","Pink cat","Gata rosa","Rosa Katze",1,.85],
+    ["cat_blue","bigcat","bluecat","Blue cat","Gato azul","Blaue Katze",1.4,.85],
+    ["dino_pink","dino","pinkdino","Pink dino","Dino rosa","Rosa Dino",1,.75],
+    ["dino_blue","dino","bluedino","Blue dino","Dino azul","Blauer Dino",1,.75],
+    ["dino_purple","bigdino","purpledino","Purple dino","Dino morado","Lila Dino",1.7,.7],
+    ["dino_orange","dino","orangedino","Orange dino","Dino naranja","Oranger Dino",1,.75],
+    ["bunny_pink","bunny","pinkbun","Pink bunny","Conejita rosa","Rosa Häschen",.9,.85],
+    ["bunny_brown","bunny","brownbun","Brown bunny","Conejo marrón","Braunes Häschen",.9,.85],
+    ["jelly_mint","blob","mintjelly","Mint jelly","Gominola menta","Minzglibber",.8,.8],
+    ["jelly_lemon","blob","lemon","Lemon jelly","Gominola limón","Zitronenglibber",.8,.8],
+    ["critter_grape","critter","grape","Grape pal","Amiguito uva","Traubenfreund",.6,.75],
+    ["critter_peach","critter","peach","Peach pal","Amiguito melocotón","Pfirsichfreund",.6,.75],
+    ["axolotl","frog","axolotl","Axolotl","Ajolote","Axolotl",.8,.7],
+    ["car_green","car","cargreen","Green racer","Coche verde","Grünes Auto",.9,.45],
+    ["car_yellow","car","caryellow","Yellow racer","Coche amarillo","Gelbes Auto",.9,.45],
+    ["ring_pink","ring","rpink","Pink ring","Anillo rosa","Rosa Ring",.4,.35],
+    ["ghost_blue","ghost","blueghost","Blue ghost","Fantasmita azul","Blaues Gespenst",.6,.8],
+    ["octopus_blue","octopus","bluoct","Blue octopus","Pulpo azul","Blaue Krake",.9,.8],
+    ["star_pink","star","pinkstar","Pink star","Estrella rosa","Rosa Sternchen",.6,.7],
+    ["whale_pink","whale","pinkwhale","Pink whale","Ballena rosa","Rosa Wal",1.1,.7],
+    ["mushroom_blue","mushroom","bluemush","Blue mushroom","Seta azul","Blauer Pilz",.7,.8],
+    ["pig","pig","pig","Piglet","Cerdito","Schweinchen",.9,.85],
+    ["koala","koala","koala","Koala","Koala","Koala",1,.9],
+    ["lion","lion","lion","Lion","León","Löwe",1.1,.85],
+    ["owl","owl","owl","Owl","Búho","Eule",.8,.8],
+    ["chick","chick","chick","Chick","Pollito","Küken",.5,.75],
+    ["hamster","hamster","hamster","Hamster","Hámster","Hamster",.6,.8],
+    ["sheep","sheep","sheep","Lamb","Ovejita","Schäfchen",1,.9],
+    ["elephant","elephant","elephant","Elephant","Elefante","Elefant",1.2,.85],
+    ["monkey","monkey","monkey","Monkey","Monito","Äffchen",1,.85],
+    ["turtle","turtle","turtle","Turtle","Tortuga","Schildkröte",1.1,.75],
+    ["bee","bee","bee","Bee","Abejita","Bienchen",.6,.8],
+    ["unicorn","unicorn","unicorn","Unicorn","Unicornio","Einhorn",1,.85],
+    ["hedgehog","hedgehog","hedgehog","Hedgehog","Erizo","Igel",.9,.8]];
+  // no longer put in new machines (kept so saved prizes and saved machines still show them)
+  const RETIRED=new Set(["ring_gold","ring_blue","ring_green","ring_pink"]);
+  // toys of the same shape (only the colour or size differs): a new machine shows each shape once before it repeats one
+  const FAM={bigteddy:"teddy",bigcat:"cat",critter:"blob",bigdino:"dino",ringS:"ring"};
+  // how cute each one is (0..1): the nicest ones (the picture's best) go to the front of the pile
+  const CUTE={bear_big:1,cat_ginger_big:.97,cat_purple_big:.96,bear_brown:.95,panda:.95,cat_orange:.93,dino_big:.92,blob_blue:.92,critter_pink:.92,
+    cat_purple:.9,cat_lilac:.9,bear_red:.88,cat_gray:.88,dino_green:.88,bunny:.88,bear_polar:.88,bunny_pink:.87,cat_calico:.86,octopus:.85,
+    penguin:.85,frog_head:.82,axolotl:.84,duck:.8,ghost:.8,star:.8,whale:.8,mushroom:.78,fox:.84,bear_blue:.84,cat_black:.8,cat_pink:.84,cat_blue:.85,
+    pig:.9,koala:.9,lion:.88,owl:.88,chick:.9,hamster:.9,sheep:.89,elephant:.87,monkey:.87,turtle:.85,bee:.88,unicorn:.9,hedgehog:.88,
+    car_blue:.55,car_red:.55,car_green:.5,car_yellow:.5,ring_gold:.45,ring_blue:.42,ring_green:.4,ring_pink:.42,ring_purple:.4,robot:.7};
+
+  const pal=s=>{const o={};for(const t of(BASE+" "+s).split(" ").filter(Boolean)){o[t[0]]=t.slice(1).trim();}if(!o.a)o.a=o.b;if(!o.A)o.A=o.d;return o;};
+  const mir=r=>r+[...r].reverse().join("");
+  function grow(rows,g,m){if(!g)return rows;const W=rows[0].length,cs=new Set(g.cols||[]);if(m)for(const c of g.cols||[])cs.add(W-1-c);
+    const rs=new Set(g.rows||[]),out=[];rows.forEach((r,y)=>{const nr=[...r].map((ch,x)=>cs.has(x)?ch+ch:ch).join("");out.push(nr);if(rs.has(y))out.push(nr);});return out;}
+  // template -> full rows (mirrored halves, then the toy's extra pixels, then the size growth)
+  function build(name,extra){const t=S[name];if(t.gen){const o={};if(extra&&extra[0]==="@")for(const k of extra.slice(1).split(","))o[k]=1;return t.gen(o);}
+    const rows=(t.m?t.r.map(mir):t.r.slice()).map(r=>[...r]);
+    if(extra)for(const q of extra.split(";")){const[x,y,c]=q.split(",");if(rows[+y])rows[+y][+x]=c;}
+    return grow(rows.map(r=>r.join("")),t.grow,!!t.m);}
+  // collision circles from the sprite's filled rows: 1-3 circles following the silhouette
+  function partsOf(rows){const H=rows.length,W=rows[0].length,cx=W/2,cy=H/2,band=[[0,.42],[.38,.72],[.68,1]],out=[];
+    for(const[a,b]of band){let x0=W,x1=-1,y0=H,y1=-1;for(let y=Math.floor(a*H);y<Math.ceil(b*H);y++)for(let x=0;x<W;x++)if(rows[y][x]!=="."){x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y);}
+      if(x1<0)continue;out.push({x:(x0+x1+1)/2-cx,y:(y0+y1+1)/2-cy,r:Math.max(2.5,Math.min(x1-x0+1,(y1-y0+1)*1.25)/2)});}
+    return out;}
+  const L=DEF.map(([id,tpl,pk,en,es,de,mass,grip,extra])=>{
+    const R=build(tpl,extra);
+    return{id,name:{en,es,de},w:R[0].length,h:R.length,rows:R,pal:pal(P[pk]),parts:partsOf(R),mass,grip,cute:CUTE[id]!=null?CUTE[id]:.75,shape:FAM[tpl]||tpl,retired:RETIRED.has(id)};});
+
+  const hex=h=>[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];
+  const cache={},byId={};for(const t of L)byId[t.id]=t;
+  function bake(t){
+    const W=t.w,H=t.h,mk=()=>{const c=document.createElement("canvas");c.width=W;c.height=H;return c;};
+    const n=mk(),hc=mk(),a=n.getContext("2d").createImageData(W,H),b=hc.getContext("2d").createImageData(W,H);
+    const filled=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&t.rows[y][x]!==".";
+    const solid=(x,y)=>filled(x,y)&&t.rows[y][x]!=="o";
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const ch=t.rows[y][x];if(ch===".")continue;let c=hex(t.pal[ch]||"ff00ff");const p=(y*W+x)*4;
+      if("oewnk".indexOf(ch)<0){ // volume: a soft round falloff to the lower right, and a cool rim light on the inner right/bottom edge
+        const nx=(x+.5-W/2)/(W/2),ny=(y+.5-H/2)/(H/2),f=Math.max(0,nx*.45+ny*.75);c=c.map(v=>v*(1-.16*f*f));
+        if(solid(x,y)&&(!solid(x+1,y)||!solid(x,y+1))&&nx+ny>.2)c=c.map((v,i)=>v+([226,236,255][i]-v)*.28);}
+      a.data[p]=c[0];a.data[p+1]=c[1];a.data[p+2]=c[2];a.data[p+3]=255;
+      // highlight: a little lighter + warm glowing rim (the toy under the claw)
+      const rim=!filled(x-1,y)||!filled(x+1,y)||!filled(x,y-1)||!filled(x,y+1);
+      const l=rim?[255,240,140]:c.map(v=>v+(255-v)*.28);b.data[p]=l[0];b.data[p+1]=l[1];b.data[p+2]=l[2];b.data[p+3]=255;}
+    n.getContext("2d").putImageData(a,0,0);hc.getContext("2d").putImageData(b,0,0);
+    return cache[t.id]={n,h:hc,W,H,sh:[]};}
+  // darker copies for back rows (shade 0..1, 4 steps)
+  function shaded(s,q){if(s.sh[q])return s.sh[q];const c=document.createElement("canvas");c.width=s.W;c.height=s.H;const x=c.getContext("2d");
+    x.drawImage(s.n,0,0);x.globalCompositeOperation="source-atop";x.fillStyle="rgba(14,10,40,"+(q*.15)+")";x.fillRect(0,0,s.W,s.H);return s.sh[q]=c;}
+  const get=id=>cache[id]||bake(byId[id]);
+  // turned toys: RotSprite-style, so outlines stay whole (a plain canvas rotate of tiny pixel art drops and doubles
+  // pixels). Scale2x three times (8x, keeps diagonals smooth), rotate there, take the centre sample of each pixel.
+  const STEPS=32,DEAD=.13;   // 32 angles per turn (cached lazily); nearly upright toys are drawn upright
+  // edges are decided on the palette letters (K), the shaded colours (C) just follow
+  function up2(K,C,W,H){const k=new Uint8Array(W*H*4),o=new Uint32Array(W*H*4),W2=W*2,at=(x,y)=>x<0||y<0||x>=W||y>=H?-1:y*W+x,kk=i=>i<0?0:K[i];
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const e=y*W+x,b=at(x,y-1),d=at(x-1,y),f=at(x+1,y),h=at(x,y+1),B=kk(b),D=kk(d),F=kk(f),Hh=kk(h);let s0=e,s1=e,s2=e,s3=e;
+      if(B!==Hh&&D!==F){if(D===B)s0=d;if(B===F)s1=f;if(D===Hh)s2=d;if(Hh===F)s3=f;}
+      const i=2*y*W2+2*x,put=(j,s)=>{k[j]=s<0?0:K[s];o[j]=s<0?0:C[s];};put(i,s0);put(i+1,s1);put(i+W2,s2);put(i+W2+1,s3);}return[k,o];}
+  function turned(c,t,k){const r=c._r||(c._r=[]);if(r[k])return r[k];const W=t.w,H=t.h;
+    if(!c._u){let C=new Uint32Array(c.getContext("2d").getImageData(0,0,W,H).data.buffer),K=new Uint8Array(W*H),w=W,h=H;
+      for(let y=0;y<H;y++)for(let x=0;x<W;x++){const ch=t.rows[y][x];K[y*W+x]=ch==="."?0:ch.charCodeAt(0);}
+      for(let i=0;i<3;i++){[K,C]=up2(K,C,w,h);w*=2;h*=2;}c._u=C;}
+    const U=c._u,W8=W*8,th=k/STEPS*Math.PI*2,co=Math.cos(th),si=Math.sin(th),ow=Math.ceil(Math.abs(W*co)+Math.abs(H*si))+2,oh=Math.ceil(Math.abs(W*si)+Math.abs(H*co))+2;
+    const o=document.createElement("canvas");o.width=ow;o.height=oh;const id=o.getContext("2d").createImageData(ow,oh),O=new Uint32Array(id.data.buffer);
+    const cx=W>>1,cy=H>>1,dx0=ow>>1,dy0=oh>>1;
+    for(let j=0;j<oh;j++)for(let i=0;i<ow;i++){const dx=i+.5-dx0,dy=j+.5-dy0,sx=dx*co+dy*si+cx,sy=-dx*si+dy*co+cy;
+      if(sx<0||sy<0||sx>=W||sy>=H)continue;O[j*ow+i]=U[((sy*8)|0)*W8+((sx*8)|0)];}
+    o.getContext("2d").putImageData(id,0,0);return r[k]={c:o,x:dx0,y:dy0};}
+  return{
+    list:L.map(t=>({id:t.id,name:t.name,w:t.w,h:t.h,parts:t.parts,mass:t.mass,grip:t.grip,cute:t.cute,shape:t.shape,retired:t.retired})),
+    draw(ctx,id,x,y,angle,opts={}){const s=get(id),q=Math.round(Math.max(0,Math.min(1,opts.shade||0))*4),c=opts.highlight?s.h:q?shaded(s,q):s.n;ctx.save();ctx.imageSmoothingEnabled=false;
+      if(opts.alpha!=null)ctx.globalAlpha*=opts.alpha;ctx.translate(Math.round(x),Math.round(y));
+      let k=0;if(angle&&Math.abs(Math.atan2(Math.sin(angle),Math.cos(angle)))>DEAD)k=((Math.round(angle/(Math.PI*2)*STEPS)%STEPS)+STEPS)%STEPS;
+      if(k){const r=turned(c,byId[id],k);ctx.drawImage(r.c,-r.x,-r.y);}else ctx.drawImage(c,-(s.W>>1),-(s.H>>1));ctx.restore();},
+    big(id,scale){const s=get(id),c=document.createElement("canvas");c.width=s.W*scale;c.height=s.H*scale;const x=c.getContext("2d");x.imageSmoothingEnabled=false;x.drawImage(s.n,0,0,c.width,c.height);return c;},
+    _rows:id=>byId[id].rows};
+})();
+
+/* ===================== Arcade Claw: game (state, input, 3D physics, claw, pointer, fisheye, UI) =====================
+   World coordinates: x = left/right, y = "flat" height measured downwards like the screen at the front glass
+   (floor at G.floorY), z = depth (0 front glass .. G.depth back wall). Screen: sx = x, sy = y - z*G.depthRise. */
+(function(){
+const BW=ART.W,BH=ART.H,G=ART.GEOM;
+const D=G.depth||40,RISE=G.depthRise==null?.6:G.depthRise;
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+
+/* ---------- text (everything outside the machine; the machine's own labels stay English) ---------- */
+const STR={
+  en:{prizes:"Your prizes",prizesAria:n=>`Your prizes: ${n}`,prizesEmpty:"Nothing yet. Grab a toy!",close:"Close",name:"Arcade Claw",hint:"Tap the coin slot, move the joystick, then press GRAB!",congrats:"Congrats!",got:n=>`You got ${n}!`,
+      again:"Keep playing",slip:"Oh no, it slipped!",miss:"Nothing this time. Try again!",noCredit:"Insert a coin first!",full:"9 credits is the most!",empty:"The machine is empty! Reset it in Your prizes to play again.",reset:"Reset",resetAsk:"Start over from scratch? Your prizes are cleared and the machine is filled up again.",resetNo:"Cancel",resetYes:"Yes, reset",resetDone:"New game! The machine is full again.",noSave:"Can't save here: your progress is lost when you leave.",
+      screen:"Claw machine. Coin slot: C key. Joystick: arrow keys. Grab: space."},
+  es:{prizes:"Tus premios",prizesAria:n=>`Tus premios: ${n}`,prizesEmpty:"Todavía nada. ¡Atrapa un peluche!",close:"Cerrar",name:"Máquina de Gancho",hint:"Toca la ranura de monedas, mueve la palanca y pulsa GRAB.",congrats:"¡Enhorabuena!",got:n=>`¡Te llevas ${n}!`,
+      again:"Seguir jugando",slip:"¡Oh, no, se ha escapado!",miss:"Esta vez nada. ¡Prueba otra vez!",noCredit:"¡Primero mete una moneda!",full:"¡9 créditos como máximo!",empty:"¡La máquina está vacía! Reiníciala en Tus premios para volver a jugar.",reset:"Reiniciar",resetAsk:"¿Empezar de cero? Se borran tus premios y la máquina se vuelve a llenar.",resetNo:"Cancelar",resetYes:"Sí, reiniciar",resetDone:"¡Partida nueva! La máquina vuelve a estar llena.",noSave:"Aquí no se puede guardar: perderás tu progreso al salir.",
+      screen:"Máquina de gancho. Ranura: tecla C. Palanca: flechas. Agarrar: barra espaciadora."},
+  de:{prizes:"Deine Preise",prizesAria:n=>`Deine Preise: ${n}`,prizesEmpty:"Noch nichts. Schnapp dir ein Plüschtier!",close:"Schließen",name:"Greifautomat",hint:"Tippe auf den Münzschlitz, beweg den Joystick und drück GRAB!",congrats:"Glückwunsch!",got:n=>`Du hast ${n} gewonnen!`,
+      again:"Weiterspielen",slip:"Oh nein, abgerutscht!",miss:"Diesmal nichts. Versuch's nochmal!",noCredit:"Wirf zuerst eine Münze ein!",full:"Mehr als 9 Credits gehen nicht!",empty:"Der Automat ist leer! Starte ihn unter „Deine Preise“ neu, um wieder zu spielen.",reset:"Neu starten",resetAsk:"Ganz von vorn anfangen? Deine Preise werden gelöscht und der Automat wird wieder gefüllt.",resetNo:"Abbrechen",resetYes:"Ja, neu starten",resetDone:"Neues Spiel! Der Automat ist wieder voll.",noSave:"Speichern geht hier nicht: Dein Fortschritt geht beim Verlassen verloren.",
+      screen:"Greifautomat. Münzschlitz: Taste C. Joystick: Pfeiltasten. Greifen: Leertaste."}};
+const T=()=>STR[L102.lang]||STR.en;
+const tname=t=>(t.name&&(t.name[L102.lang]||t.name.en))||t.id;
+
+/* ---------- canvases: scene at 192x342 -> fisheye -> shown with nearest-neighbour ---------- */
+const scene=document.createElement("canvas");scene.width=BW;scene.height=BH;
+const sx=scene.getContext("2d");sx.imageSmoothingEnabled=false;
+const screen=$("screen"),ox=screen.getContext("2d");screen.width=BW;screen.height=BH;
+// crisp fisheye: the scene is first blown up with whole-pixel blocks (GPU), then the barrel warp is drawn in small tiles at
+// the screen's real resolution. Pixels bend slightly instead of being dropped or doubled (no broken letters).
+const big=document.createElement("canvas"),bx=big.getContext("2d");let BK=1,TILES=[];
+const FK=.075;   // barrel strength
+function barrel(u,v){const cx=BW/2,cy=BH/2,R=Math.hypot(cx,cy),dx=(u-cx)/R,dy=(v-cy)/R,f=(1-FK)+FK*(dx*dx+dy*dy);return[cx+dx*f*R,cy+dy*f*R];}
+function buildTiles(OW,OH){BK=Math.max(1,Math.ceil(OW/BW));big.width=BW*BK;big.height=BH*BK;bx.imageSmoothingEnabled=false;
+  TILES=[];const TX=18,TY=32;
+  for(let j=0;j<TY;j++)for(let i=0;i<TX;i++){const x0=Math.round(OW*i/TX),x1=Math.round(OW*(i+1)/TX),y0=Math.round(OH*j/TY),y1=Math.round(OH*(j+1)/TY);
+    const c=[[x0,y0],[x1,y0],[x0,y1],[x1,y1]].map(([x,y])=>barrel(x/OW*BW,y/OH*BH));
+    const sx0=Math.min(c[0][0],c[2][0]),sx1=Math.max(c[1][0],c[3][0]),sy0=Math.min(c[0][1],c[1][1]),sy1=Math.max(c[2][1],c[3][1]);
+    TILES.push([sx0*BK,sy0*BK,(sx1-sx0)*BK,(sy1-sy0)*BK,x0,y0,x1-x0,y1-y0]);}}
+// barrel ("fisheye") lookup: output pixel -> source pixel; subtle, the centre bulges a little like the picture
+const LUT=new Int32Array(BW*BH);
+(function(){const K=.075,cx=BW/2,cy=BH/2,R=Math.hypot(cx,cy);
+  for(let y=0;y<BH;y++)for(let x=0;x<BW;x++){const dx=(x+.5-cx)/R,dy=(y+.5-cy)/R,r2=dx*dx+dy*dy,f=(1-K)+K*r2;
+    const X=Math.round(cx+dx*f*R-.5),Y=Math.round(cy+dy*f*R-.5);LUT[y*BW+x]=X<0||Y<0||X>=BW||Y>=BH?-1:Y*BW+X;}})();
+// the scene is drawn in layers: whatever is in `scene` is blown up into `big` (the first one replaces it), then `scene` is
+// cleared for the next layer. The claw is drawn straight into `big` between layers: its pixels are blown up first and
+// then rotated at full resolution (smooth edges), so the swinging claw has no moire.
+let firstLayer=true;const cbuf=document.createElement("canvas"),cbx=cbuf.getContext("2d");
+function flushLayer(){bx.imageSmoothingEnabled=false;bx.globalCompositeOperation=firstLayer?"copy":"source-over";bx.drawImage(scene,0,0,BW*BK,BH*BK);
+  bx.globalCompositeOperation="source-over";firstLayer=false;sx.save();sx.setTransform(1,0,0,1,0,0);sx.clearRect(0,0,BW,BH);sx.restore();}
+function drawClawHi(img,hx,hy,a,cox){flushLayer();const w=img.width*BK,h=img.height*BK;
+  if(cbuf.width!==w||cbuf.height!==h){cbuf.width=w;cbuf.height=h;}else cbx.clearRect(0,0,w,h);
+  cbx.imageSmoothingEnabled=false;cbx.drawImage(img,0,0,w,h);
+  bx.save();bx.translate(hx*BK,hy*BK);bx.rotate(a);bx.imageSmoothingEnabled=true;bx.drawImage(cbuf,-cox*BK,0);bx.restore();}
+function present(){flushLayer();firstLayer=true;ox.imageSmoothingEnabled=false;
+  for(const t of TILES)ox.drawImage(big,t[0],t[1],t[2],t[3],t[4],t[5],t[6],t[7]);}
+
+/* ---------- random: rng = looks / placement, roll = the grab outcome (tests can seed it) ---------- */
+let rng=Math.random,roll=Math.random;
+
+/* ---------- physics: toys are rigid bodies made of spheres (rotation only in the screen plane) ---------- */
+const GRAV=520,REST=0,MU=.9,TIP_R=2.5,SLOP=.25,VMAX=260,WMAX=9,STEP=1/240;
+// heavy plush: no bounce, grippy, they stop rolling when they rest on something, slightly tilted toys sit back up,
+// and they fall asleep quickly (a sleeping toy only wakes for a real push)
+const SQUASH=.35,ROLL=.93,SLIDE=.97,RIGHT=120,UPRIGHT=.75,SLEEP_V=7,SLEEP_T=.35,WAKE_J=6;
+let bodies=[],nextId=1;
+function makeBody(t,x,y,z,a){const parts=(t.parts&&t.parts.length?t.parts:[{x:0,y:0,r:Math.min(t.w,t.h)*.42}]).map(p=>({x:p.x,y:p.y,r:p.r}));
+  let I=0;for(const p of parts)I+=p.r*p.r*.4+p.x*p.x+p.y*p.y;const m=t.mass||1;I=I/parts.length*m;
+  const br=Math.max(...parts.map(p=>Math.hypot(p.x,p.y)+p.r));
+  return{id:nextId++,t,x,y,z,a:a==null?(rng()-.5)*.5:a,vx:0,vy:0,vz:0,w:0,m,im:1/m,ii:1/I,parts,br,sleep:0,held:false,gone:false,_wp:null};}
+function worldParts(b){const c=Math.cos(b.a),s=Math.sin(b.a);return b.parts.map(p=>({x:b.x+p.x*c-p.y*s,y:b.y+p.x*s+p.y*c,z:b.z,r:p.r}));}
+const floorY=x=>typeof G.floorAt==="function"?G.floorAt(x):G.floorY;
+const kinematic=b=>b.held||b.rising;
+const wallL=z=>G.wallL+((G.backL==null?G.wallL:G.backL)-G.wallL)*clamp(z/D,0,1),wallR=z=>G.wallR+((G.backR==null?G.wallR:G.backR)-G.wallR)*clamp(z/D,0,1);
+function impulse(b,px,py,jx,jy,jz){if(kinematic(b))return;b.vx+=jx*b.im;b.vy+=jy*b.im;b.vz+=jz*b.im;b.w+=((px-b.x)*jy-(py-b.y)*jx)*b.ii;}
+function velAt(b,px,py){return[b.vx-b.w*(py-b.y),b.vy+b.w*(px-b.x),b.vz];}
+// contact on body b at point p with normal n (from the other thing into b), depth d; o = other body or null (+ its velocity)
+function contact(b,px,py,pz,nx,ny,nz,d,o,ov){
+  const va=velAt(b,px,py);let rx=va[0],ry=va[1],rz=va[2];
+  if(o){const vb=velAt(o,px,py);rx-=vb[0];ry-=vb[1];rz-=vb[2];}else if(ov){rx-=ov[0];ry-=ov[1];rz-=ov[2];}
+  const vn=rx*nx+ry*ny+rz*nz;
+  if(o){if(b.mv&&o.sleep)o.sleep=0;else if(o.mv&&b.sleep)b.sleep=0;}   // a moving toy wakes the ones it touches (nothing floats)
+  const kA=!kinematic(b),kB=o&&!kinematic(o),imA=kA?b.im:0,iiA=kA?b.ii:0,imB=kB?o.im:0,iiB=kB?o.ii:0;
+  const ra=(px-b.x)*ny-(py-b.y)*nx,rb=o?(px-o.x)*ny-(py-o.y)*nx:0,k=imA+imB+ra*ra*iiA+rb*rb*iiB;
+  if(k<=0)return;
+  const corr=Math.min(1.5,Math.max(0,d-SLOP)*.4)/k;   // gentle position correction with slop, capped (no pops)
+  if(kA){b.x+=nx*corr*imA;b.y+=ny*corr*imA;b.z+=nz*corr*imA;}if(kB){o.x-=nx*corr*imB;o.y-=ny*corr*imB;o.z-=nz*corr*imB;}
+  if(vn>=0)return;
+  const jn=-(1+REST)*vn/k;impulse(b,px,py,nx*jn,ny*jn,nz*jn);if(o)impulse(o,px,py,-nx*jn,-ny*jn,-nz*jn);
+  // friction along the sliding direction
+  let tx=rx-vn*nx,ty=ry-vn*ny,tz=rz-vn*nz;const tl=Math.hypot(tx,ty,tz);
+  if(tl>1e-4){tx/=tl;ty/=tl;tz/=tl;const ta=(px-b.x)*ty-(py-b.y)*tx,tb=o?(px-o.x)*ty-(py-o.y)*tx:0,kt=imA+imB+ta*ta*iiA+tb*tb*iiB;
+    if(kt>0){let jt=-tl/kt;const mx=MU*jn;jt=Math.max(jt,-mx);impulse(b,px,py,tx*jt,ty*jt,tz*jt);if(o)impulse(o,px,py,-tx*jt,-ty*jt,-tz*jt);}}
+  if(ny<-.5)b.ground=true;if(o&&ny>.5)o.ground=true;   // resting on something below
+  if(jn>WAKE_J*(o?Math.min(b.m,o.m):b.m)){b.sleep=0;if(o)o.sleep=0;}}
+// the box walls, floor, glass ceiling, and the prize box (a block on the left, all the way back)
+function statics(b,P){
+  const r=P.r,fy=floorY(P.x),C=G.chute;
+  if(P.y+r>fy&&!b.inChute&&!b.rising)contact(b,P.x,fy,P.z,0,-1,0,P.y+r-fy,null);
+  const wl=wallL(P.z),wr=wallR(P.z);   // the side walls converge towards the back
+  if(P.x-r<wl)contact(b,wl,P.y,P.z,1,0,0,wl-(P.x-r),null);
+  if(P.x+r>wr)contact(b,wr,P.y,P.z,-1,0,0,P.x+r-wr,null);
+  const rz=r*SQUASH;   // plush squashes flat against the front glass and the back wall
+  if(P.z-rz<0)contact(b,P.x,P.y,0,0,0,1,rz-P.z,null);
+  if(P.z+rz>D)contact(b,P.x,P.y,D,0,0,-1,P.z+rz-D,null);
+  const top=G.glass.y0+2+P.z*RISE;if(P.y-r<top)contact(b,P.x,top,P.z,0,1,0,top-(P.y-r),null);
+  if(!b.inChute){
+    if(P.z-r<BOXZ+BOXM&&P.x+r>C.x0&&P.x-r<C.x1&&P.y+r>C.y0){/* the box (and just behind it) is solid for the pile */const dTop=P.y+r-C.y0,dRight=C.x1-(P.x-r);
+      if(P.z>=BOXZ){   // behind the box there is nothing to sit on (a toy resting there floated, out of reach): it slides back or right
+        const dBack=BOXZ+BOXM-(P.z-rz);if(dBack>0){if(P.x>C.x1-1&&dRight<dBack)contact(b,C.x1,P.y,P.z,1,0,0,dRight,null);else contact(b,P.x,P.y,BOXZ+BOXM,0,0,1,dBack,null);}}
+      else if(P.x>C.x1-1&&dRight<dTop)contact(b,C.x1,P.y,P.z,1,0,0,dRight,null);else contact(b,P.x,C.y0,P.z,0,-1,0,dTop,null);}}
+  else{if(P.x-r<C.x0+1)contact(b,C.x0+1,P.y,P.z,1,0,0,C.x0+1-(P.x-r),null);if(P.x+r>C.x1-1)contact(b,C.x1-1,P.y,P.z,-1,0,0,P.x+r-(C.x1-1),null);}}
+function physStep(dt){
+  for(const b of bodies){if(kinematic(b)||b.sleep>SLEEP_T){b.ground=false;continue;}b.vy+=GRAV*dt;b.vx*=.999;b.vz*=.995;b.w*=.99;
+    if(b.ground){b.w*=ROLL;b.vx*=SLIDE;b.vz*=SLIDE;const a=Math.atan2(Math.sin(b.a),Math.cos(b.a));if(Math.abs(a)<UPRIGHT)b.w-=a*RIGHT*dt;}b.ground=false;
+    const v=Math.hypot(b.vx,b.vy,b.vz);if(v>VMAX){const k=VMAX/v;b.vx*=k;b.vy*=k;b.vz*=k;}b.w=clamp(b.w,-WMAX,WMAX);   // no flying off
+    b.x+=b.vx*dt;b.y+=b.vy*dt;b.z+=b.vz*dt;b.a+=b.w*dt;}
+  for(let it=0;it<3;it++){   // three solver passes; sleeping pairs are still checked so overlaps never get stuck
+  for(const b of bodies)b._wp=worldParts(b);
+  for(let i=0;i<bodies.length;i++){const A=bodies[i];
+    for(let j=i+1;j<bodies.length;j++){const B=bodies[j];if(kinematic(A)&&kinematic(B))continue;if(A.inChute||B.inChute)continue;   // inside the prize box: falls freely
+      const dx=B.x-A.x,dy=B.y-A.y,dz=B.z-A.z,R=A.br+B.br;if(dx*dx+dy*dy+dz*dz>R*R)continue;
+      for(const P of A._wp)for(const Q of B._wp){const ex=Q.x-P.x,ey=Q.y-P.y,ez=Q.z-P.z,rr=P.r+Q.r,d2=ex*ex+ey*ey+ez*ez;if(d2>=rr*rr||d2<1e-6)continue;
+        const d=Math.sqrt(d2),nx=-ex/d,ny=-ey/d,nz=-ez/d,f=P.r/rr,cx=P.x+ex*f,cy=P.y+ey*f,cz=P.z+ez*f;
+        if(kinematic(A))contact(B,cx,cy,cz,-nx,-ny,-nz,rr-d,null,[A.vx,A.vy,A.vz]);
+        else if(kinematic(B))contact(A,cx,cy,cz,nx,ny,nz,rr-d,null,[B.vx,B.vy,B.vz]);
+        else contact(A,cx,cy,cz,nx,ny,nz,rr-d,B);}}}}
+  const prongs=clawProngs();
+  for(const b of bodies){if(b.held)continue;
+    const C=G.chute;
+    // a toy the claw let go of over the prize box drops in (checked before the box top can stop it)
+    if(b.fromClaw&&!b.inChute&&b.x>C.x0-6&&b.x<C.x1+6&&b.y>C.y0-b.br-14&&b.y<C.y0+6){b.inChute=true;   // mostly over the opening: guide it in
+      const m=Math.min(b.br*.6,(C.x1-C.x0)/2-2);b.x=clamp(b.x,C.x0+m,C.x1-m);b.vx*=.3;}
+    if(b.rising){b.y-=22*dt;b.vy=-22;b.vx=b.vz=b.w=0;if(b.y+b.lowest<=floorY(b.x)){b.rising=false;b.vy=0;}}
+    for(const P of worldParts(b)){statics(b,P);
+      if(b!==claw.target)for(const c of prongs){   // prong = kinematic capsule from the knuckle to the tip
+        const sx_=c.bx-c.ax,sy_=c.by-c.ay,L2=sx_*sx_+sy_*sy_,t=L2>0?clamp(((P.x-c.ax)*sx_+(P.y-c.ay)*sy_)/L2,0,1):0,qx=c.ax+sx_*t,qy=c.ay+sy_*t;
+        const ex=P.x-qx,ey=P.y-qy,ez=P.z-c.z,rr=P.r+TIP_R,d2=ex*ex+ey*ey+ez*ez;
+        if(d2<rr*rr&&d2>1e-6){const d=Math.sqrt(d2);contact(b,qx+ex/d*TIP_R,qy+ey/d*TIP_R,c.z+ez/d*TIP_R,ex/d,ey/d,ez/d,rr-d,null,c.v);b.sleep=0;}}}
+    const sp=Math.abs(b.vx)+Math.abs(b.vy)+Math.abs(b.vz)+Math.abs(b.w)*6;b.mv=sp>=SLEEP_V;if(!b.mv&&!b.rising)b.sleep+=dt;else b.sleep=0;
+    if(b.sleep>SLEEP_T){b.vx=b.vy=b.vz=b.w=0;}
+    if(b.inChute&&b.y-b.br*.3>C.y1&&!b.gone){b.gone=true;onWon(b);}}
+  bodies=bodies.filter(b=>!b.gone);}
+
+/* ---------- the pile, composed like the picture: the cutest in a front row facing us, a second row a bit further
+   back, and a back row peeking over (also behind the prize box). ~20 toys, small overlaps only. ---------- */
+const START_TOYS=34,BOXZ=G.chute.z1||D*.5,BOXM=8;   // BOXM: toys right behind the box would look as if inside it   // the prize box only fills the front of the depth: toys sit behind it
+function shuffled(a){const c=a.slice();for(let i=c.length-1;i>0;i--){const j=(rng()*(i+1))|0;[c[i],c[j]]=[c[j],c[i]];}return c;}
+const lowest=t=>Math.max(...(t.parts&&t.parts.length?t.parts:[{y:0,r:Math.min(t.w,t.h)*.42}]).map(p=>p.y+p.r));
+const halfW=t=>Math.max(...(t.parts&&t.parts.length?t.parts:[{x:0,r:Math.min(t.w,t.h)*.42}]).map(p=>Math.abs(p.x)+p.r));
+const depthR=t=>Math.max(...(t.parts&&t.parts.length?t.parts:[{r:8}]).map(p=>p.r));
+function placeRow(toys,x0,x1,z,i){ // a tidy row: standing up, tallest in the middle, evenly spaced and centred
+  const row=[];[...toys].sort((p,q)=>q.h-p.h).forEach((t,k)=>k%2?row.push(t):row.unshift(t));
+  const ws=row.map(halfW),sum=ws.reduce((a,b)=>a+2*b,0),gap=Math.min(4,(x1-x0-sum)/Math.max(1,row.length-1));
+  let x=x0+Math.max(0,(x1-x0-sum-gap*(row.length-1))/2);
+  row.forEach((t,k)=>{x+=ws[k];const a=(rng()-.5)*(i<2?.06:.2),zz=z+(gap<0?(k%2?1.5:-1.5):0);
+    bodies.push(makeBody(t,x,floorY(x)-lowest(t)-.3,zz,a));x+=ws[k]+gap;});}
+// how many toys fit in a width with ~20% overlap; a shape already in the machine only comes back when no new shape fits
+let shapes=new Map();
+function takeRow(src,used,w,k,max=99){const out=[];let acc=0;
+  for(const most of[1,2,99])for(const t of src){const sh=t.shape||t.id;if(out.length>=max)break;if(used.has(t.id)||(shapes.get(sh)||0)>=most)continue;const tw=2*halfW(t)*k;if(acc+tw>w&&out.length)continue;if(acc+tw>w)break;out.push(t);used.add(t.id);shapes.set(sh,(shapes.get(sh)||0)+1);acc+=tw;}
+  return out;}
+// the top of whatever is under x at depth z (toys or the floor), for stacking a toy of half width hw on it
+function surface(x,z,hw,skip){let top=floorY(x);for(const b of bodies){if(skip.has(b)||Math.abs(b.z-z)>11||Math.abs(b.x-x)>halfW(b.t)*.7+hw*.5)continue;for(const P of worldParts(b))top=Math.min(top,P.y-P.r);}return top;}
+function spawnPile(n){const L=TOYS.list.filter(t=>!t.retired).sort((a,b)=>(b.cute||0)-(a.cute||0)),used=new Set(),C=G.chute,R0=Math.max(...L.map(depthR),8);
+  const x0=z=>z<BOXZ+BOXM+R0?C.x1+2:wallL(z)+1,x1=z=>wallR(z)-1;shapes=new Map();
+  // the floor: four standing rows from the front glass to the back wall; the cutest (not too big) in the two front rows
+  const small=L.filter(t=>t.h<=32),zf=R0*SQUASH+.5,zb=D-R0*SQUASH-.5,zs=[0,1,2,3].map(i=>zf+(zb-zf)*i/3);
+  zs.forEach((z,i)=>placeRow(takeRow(i<2?small:shuffled(L),used,x1(z)-x0(z),i<2?1:.95,Math.max(2,n-bodies.length-2*(3-i))),x0(z),x1(z),z,i));settle(.5);
+  // then ONE layer on top, only towards the back (nestled between the back rows)
+  const rest=shuffled(L.filter(t=>!used.has(t.id)));let count=bodies.length;
+  for(const z of[(zs[2]+zs[3])/2,(zs[1]+zs[2])/2]){if(count>=n)break;const row=takeRow(rest,used,x1(z)-x0(z)-8,1,n-count);if(!row.length)break;
+    placeRow(row,x0(z)+4,x1(z)-4,z,3);const nw=new Set(bodies.slice(-row.length));for(const b of nw){b.y=surface(b.x,b.z,halfW(b.t),nw)-lowest(b.t)-.5;}
+    count+=row.length;settle(.45);}}
+function settle(sec){ // gentle: strong damping so the rows stay rows
+  for(let t=0;t<sec;t+=STEP){physStep(STEP);for(const b of bodies){b.vx*=.9;b.vy*=.94;b.vz*=.85;b.w*=.9;}}   // short and damped: they lean and push, but stay tidy-ish
+  for(const b of bodies){b.vx=b.vy=b.vz=b.w=0;b.sleep=1;}}
+/* ---------- the claw: moves in x (left/right) and z (back/front), swings as a 2D pendulum ---------- */
+const PARK={x:G.dropX,z:G.chute.z1?G.chute.z1/2:D*.3};   // like a real machine: the claw waits over the prize box
+const claw={x:PARK.x,y:G.clawTopY,z:PARK.z,target:null,closeTo:0,spreadV:0,slipped:false,vx:0,vy:0,vz:0,angX:0,angXV:0,angZ:0,angZV:0,open:0,mode:"idle",timer:0,held:null,holdOff:[0,0,0],holdA:0,willDrop:false,dropAt:0,dropT:99,holdP:1,got:false};
+const MAXV=58,MAXVZ=34,ACC=220,DOWN=46,UP=42;
+let joyX=0,joyY=0,keyX=0,keyY=0,ptrJoy=null,grabFlash=0,now=0;
+let credits=0,creditsFlash=0,coinT=-1,coinQ=0;
+const jx=()=>clamp(joyX||keyX,-1,1),jy=()=>clamp(joyY||keyY,-1,1);
+function clawState(){const L=12+(claw.y-G.clawTopY);
+  return{t:now,clawX:claw.x,clawY:claw.y,clawZ:clamp(claw.z+Math.sin(claw.angZ)*Math.min(8,L*.25),0,D),clawAngle:claw.angX,clawOpen:claw.open,
+    joyX:jx(),joyY:jy(),grabDown:grabFlash>0,credits,creditsFlash,coinT,busy:claw.mode!=="idle",prizes:prizeCount(),prizesDown:prizesDown>0,prizeNew};}
+// prong tips in world coordinates (ART gives screen coordinates; the claw at depth z is drawn z*RISE higher)
+function grip(st){const g=ART.clawGrip(st||clawState());return{x:g.x,y:g.y+g.z*RISE,z:g.z,spread:g.spread};}
+function clawTips(){const g=grip();return[{x:g.x-g.spread,y:g.y,z:g.z,r:TIP_R},{x:g.x+g.spread,y:g.y,z:g.z,r:TIP_R}];}
+function clawProngs(){const st=clawState(),a=ART.clawGrip(st),g=grip(st),hy=a.hubY+a.z*RISE,sv=claw.spreadV||0;
+  return[{ax:a.hubX-3,ay:hy+6,bx:g.x-g.spread,by:g.y,z:g.z,v:[claw.vx-sv,claw.vy,claw.vz]},{ax:a.hubX+3,ay:hy+6,bx:g.x+g.spread,by:g.y,z:g.z,v:[claw.vx+sv,claw.vy,claw.vz]}];}
+// what is right under the claw: the toy and the height of the surface (for the red pointer)
+function below(){const g=grip();let top=floorY(g.x),hit=null;
+  for(const b of bodies){if(b.held||b.inChute)continue;for(const P of (b._wp||worldParts(b))){const dx=P.x-g.x,dz=P.z-g.z,q=P.r*P.r-dx*dx-dz*dz;if(q<=0)continue;const ty=P.y-Math.sqrt(q);if(ty<top&&ty>g.y-2){top=ty;hit=b;}}}
+  return{x:g.x,y:top,z:g.z,b:hit,tipY:g.y};}
+function startGrab(){
+  if(claw.mode!=="idle"||busyPrize())return;
+  if(credits<=0){nudge();return;}
+  credits--;creditsFlash=1;grabFlash=.25;claw.mode="opening";claw.timer=0;claw.slipped=false;claw.got=false;hideHint();}
+// no credit: the coin slot blinks and the hint comes back
+let coinBlink=0,hintT=0;function nudge(){coinBlink=2.5;$("toast").classList.remove("on");hintOff=false;$("hint").classList.remove("off");clearTimeout(hintT);hintT=setTimeout(hideHint,3500);}
+const canMove=()=>credits>0||coinT>=0;
+// a real pendulum on the moving trolley: only the trolley's acceleration swings it. ART rotates the claw clockwise for a
+// positive angle (its bottom goes LEFT), so speeding up to the right gives a positive angle: the claw lags behind, then follows.
+function swing(dt,ax,az){const L=12+(claw.y-G.clawTopY),gL=300/L;
+  claw.angXV+=(-gL*Math.sin(claw.angX)+(ax/L)*Math.cos(claw.angX)*.45-1.3*claw.angXV)*dt;claw.angX=clamp(claw.angX+claw.angXV*dt,-.35,.35);
+  claw.angZV+=(-gL*Math.sin(claw.angZ)-(az/L)*Math.cos(claw.angZ)*.45-1.3*claw.angZV)*dt;claw.angZ=clamp(claw.angZ+claw.angZV*dt,-.35,.35);}
+function steer(tx,tz){const ax=clamp((clamp((tx-claw.x)*3,-MAXV*.9,MAXV*.9)-claw.vx)*6,-ACC,ACC),az=clamp((clamp((tz-claw.z)*3,-MAXVZ,MAXVZ)-claw.vz)*6,-ACC,ACC);return[ax,az];}
+function clawUpdate(dt){
+  let ax,az;
+  const mv=claw.mode==="test"||claw.mode==="idle"&&canMove();   // no coin, no moving (touching the joystick puts one in)
+  if(claw.mode==="idle"||claw.mode==="test"){ax=clamp(((mv?jx():0)*MAXV-claw.vx)*7,-ACC,ACC);az=clamp(((mv?jy():0)*MAXVZ-claw.vz)*7,-ACC,ACC);}
+  else if(claw.mode==="carry")[ax,az]=steer(PARK.x,PARK.z);
+  else{ax=clamp(-claw.vx*7,-ACC,ACC);az=clamp(-claw.vz*7,-ACC,ACC);}
+  claw.vx+=ax*dt;claw.vz+=az*dt;let nx=claw.x+claw.vx*dt,nz=claw.z+claw.vz*dt;
+  if(nx<G.clawMinX){nx=G.clawMinX;claw.vx=0;ax=0;}if(nx>G.clawMaxX){nx=G.clawMaxX;claw.vx=0;ax=0;}
+  if(nz<0){nz=0;claw.vz=0;az=0;}if(nz>D){nz=D;claw.vz=0;az=0;}claw.x=nx;claw.z=nz;
+  swing(dt,ax,az);
+  claw.timer+=dt;const prevY=claw.y,prevOpen=claw.open;
+  switch(claw.mode){
+    case"opening":claw.open=Math.min(1,claw.open+dt*3);if(claw.open>=1){claw.mode="down";claw.timer=0;}break;
+    case"down":{claw.y+=DOWN*dt;   // no made-up wobble: it only swings from real motion
+      // go down until the prong tips reach around the middle of the toy below (or the floor)
+      if(claw.timer<.05||!claw.target)claw.target=below().b;const tipY=grip().y,goal=claw.target?claw.target.y:floorY(claw.x)-3;
+      if(tipY>=goal||tipY>=floorY(claw.x)-3||claw.timer>5){claw.mode="closing";claw.timer=0;
+        claw.target=between();claw.closeTo=claw.target?clamp((halfW(claw.target.t)*.72-3)/16,0,.85):0;}break;}
+    case"closing":claw.open=Math.max(claw.closeTo,claw.open-dt*1.6);if(claw.open<=claw.closeTo){claw.mode="grip";claw.timer=0;tryGrip();claw.target=null;}break;
+    case"grip":if(claw.timer>.35){claw.mode="up";claw.timer=0;}break;
+    case"up":claw.y-=UP*dt;
+      if(claw.held&&claw.willDrop&&claw.y<claw.dropAt)loseGrip(T().slip);
+      if(claw.y<=G.clawTopY){claw.y=G.clawTopY;claw.mode="carry";claw.timer=0;if(!claw.held&&!claw.slipped)toast(T().miss);}break;
+    case"carry":if(claw.held&&claw.willDrop&&claw.timer>claw.dropT)loseGrip(T().slip);
+      if(Math.abs(claw.x-PARK.x)<.8&&Math.abs(claw.vx)<6&&Math.abs(claw.z-PARK.z)<1.5){claw.mode="release";claw.timer=0;}break;
+    case"release":claw.open=Math.min(1,claw.open+dt*2.5);if(claw.held&&claw.open>.4)release();if(claw.timer>1.1){claw.mode="close2";claw.timer=0;}break;
+    case"close2":claw.open=Math.max(0,claw.open-dt*2);if(claw.open<=0){claw.mode="idle";claw.timer=0;}break;   // parked over the prize box
+    case"test":break;}
+  claw.vy=(claw.y-prevY)/dt;claw.spreadV=(claw.open-prevOpen)/dt*16;
+  if(claw.held){const g=grip(),b=claw.held,c=Math.cos(claw.angX),s=Math.sin(claw.angX);
+    const tx=g.x+claw.holdOff[0]*c-claw.holdOff[1]*s,ty=g.y+claw.holdOff[0]*s+claw.holdOff[1]*c,tz=g.z+claw.holdOff[2];
+    b.vx=(tx-b.x)/dt;b.vy=(ty-b.y)/dt;b.vz=(tz-b.z)/dt;b.x=tx;b.y=ty;b.z=tz;b.a+=((claw.holdA+claw.angX)-b.a)*Math.min(1,dt*8);b.w=0;}}
+function tryGrip(){const st=clawState(),gc=grip(st),go=grip(Object.assign({},st,{clawOpen:1})),g={x:gc.x,y:Math.max(gc.y,go.y),z:gc.z,spread:go.spread};let best=null,bs=-1;
+  for(const b of bodies){if(b.inChute)continue;let inside=0;
+    for(const P of worldParts(b)){if(Math.abs(P.x-g.x)<g.spread+P.r*.3&&Math.abs(P.z-g.z)<P.r+3&&P.y>g.y-P.r-10&&P.y<g.y+P.r+6)inside+=P.r;}
+    if(inside>0){const centred=1-Math.min(1,Math.hypot(b.x-g.x,(b.z-g.z)*1.3)/(g.spread+3));const score=inside*(.4+centred);if(score>bs){bs=score;best=b;}}}
+  if(!best){claw.held=null;return;}
+  const centred=1-Math.min(1,Math.hypot(best.x-g.x,(best.z-g.z)*1.3)/(g.spread+3)),gr=best.t.grip==null?.6:best.t.grip;
+  claw.holdP=clamp(.15+.85*centred*gr+.15,0,.95);
+  // 1 in 3: the claw opens on the way; otherwise it depends on how centred it grabbed and how grippy the toy is
+  const cheat=roll()<1/3,slips=roll()>claw.holdP;claw.willDrop=cheat||slips;
+  claw.dropAt=slips&&!cheat?g.y-6-rng()*6:G.clawTopY+10+rng()*30;claw.dropT=cheat?.2+rng()*.8:99;
+  best.held=true;best.sleep=0;claw.held=best;const c=Math.cos(-claw.angX),s=Math.sin(-claw.angX),ox_=clamp(best.x-g.x,-2,2),oy_=clamp(best.y-gc.y,-5,3);
+  claw.holdOff=[ox_*c-oy_*s,ox_*s+oy_*c,clamp(best.z-g.z,-2,2)];claw.holdA=clamp(best.a-claw.angX,-.25,.25);   // middle of the toy between the tips
+  for(const b of bodies)if(Math.abs(b.x-g.x)<b.br+30&&Math.abs(b.z-g.z)<b.br+16)b.sleep=0;}   // only the toys around the claw wake up
+// the toy that sits between the open prongs right now (the one to close around)
+function between(){const st=clawState(),g=grip(Object.assign({},st,{clawOpen:1}));let best=null,bs=-1;
+  for(const b of bodies){if(b.inChute||b.held)continue;let inside=0;
+    for(const P of worldParts(b))if(Math.abs(P.x-g.x)<g.spread&&Math.abs(P.z-g.z)<P.r+3&&Math.abs(P.y-g.y)<P.r+8)inside+=P.r;
+    if(inside>bs){bs=inside;best=inside>0?b:best;}}
+  return best;}
+function loseGrip(msg){const b=claw.held;if(!b)return;claw.slipped=true;b.fromClaw=claw.x<G.chute.x1+4;b.held=false;b.sleep=0;b.w=(rng()-.5)*3;claw.held=null;claw.willDrop=false;claw.open=.6;
+  setTimeout(()=>{if(claw.mode!=="release")claw.open=0;},250);if(msg)toast(msg);}
+function release(){const b=claw.held;if(!b)return;b.fromClaw=true;b.held=false;b.sleep=0;b.vx=claw.vx;b.vy=10;b.vz=0;claw.held=null;}
+
+/* ---------- coins, credits ---------- */
+function insertCoin(){if(busyPrize())return;coinBlink=0;if(credits+coinQ+(coinT>=0?1:0)>=9){toast(T().full);return;}hideHint();if(coinT<0)coinT=0;else coinQ++;}
+function coinUpdate(dt){if(coinT>=0){coinT+=dt/.6;if(coinT>=1){coinT=-1;credits=Math.min(9,credits+1);creditsFlash=1;if(coinQ>0){coinQ--;coinT=0;}}}
+  creditsFlash=Math.max(0,creditsFlash-dt*1.2);prizeNew=Math.max(0,prizeNew-dt*.5);prizesDown=Math.max(0,prizesDown-dt);grabFlash=Math.max(0,grabFlash-dt);coinBlink=Math.max(0,coinBlink-dt);}
+
+/* ---------- won ---------- */
+let lastPrize=null,wins=0;
+/* prizes won (saved with the game, see save()); newest first */
+let won=[],prizeNew=0,prizesDown=0;
+function addPrize(t){const e=won.find(w=>w.t.id===t.id);if(e){e.n++;won=[e,...won.filter(w=>w!==e)];}else won.unshift({t,n:1});prizeNew=1;paintPrizesBtn();if(!$("prizesDlg").hidden)renderPrizes();}   // the open list updates itself
+const prizeCount=()=>won.reduce((a,w)=>a+w.n,0);
+function paintPrizesBtn(){const b=$("prizesBtn"),T_=T();b.setAttribute("aria-label",T_.prizesAria(prizeCount()));b.title=T_.prizes;}
+function openPrizes(){if(busyPrize())return;prizesDown=.25;askReset(false);renderPrizes();$("prizesDlg").hidden=false;setTimeout(()=>$("pzClose").focus(),30);}
+function renderPrizes(){const T_=T(),g=$("pzGrid");g.textContent="";$("pzTitle").textContent=T_.prizes;$("pzClose").textContent=T_.close;$("pzReset").textContent=T_.reset;$("pzReset").disabled=claw.mode!=="idle";
+  $("pzAskT").textContent=T_.resetAsk;$("pzNo").textContent=T_.resetNo;$("pzYes").textContent=T_.resetYes;
+  $("pzEmpty").textContent=T_.prizesEmpty;$("pzEmpty").hidden=won.length>0;
+  for(const w of won){const it=document.createElement("div");it.className="it";const c=TOYS.big(w.t.id,3),nm=document.createElement("span");nm.textContent=tname(w.t);
+    it.append(c,nm);if(w.n>1){const n=document.createElement("span");n.className="n";n.textContent="×"+w.n;it.append(n);}g.append(it);}}
+function closePrizes(){if($("prizesDlg").hidden)return;$("prizesDlg").hidden=true;$("prizesBtn").focus({preventScroll:true});}
+$("prizesBtn").addEventListener("click",openPrizes);$("pzClose").addEventListener("click",closePrizes);
+// reset (asks first): the whole game starts again, prizes cleared, the machine full, and that is saved
+function askReset(on){$("pzAsk").hidden=!on;$("pzRow").hidden=on;document.querySelector("#prizesDlg .card").classList.toggle("asking",on);if(on)$("pzNo").focus();}
+$("pzReset").addEventListener("click",()=>{if(claw.mode==="idle")askReset(true);});
+$("pzNo").addEventListener("click",()=>{askReset(false);$("pzReset").focus();});
+$("pzYes").addEventListener("click",()=>{resetGame();askReset(false);closePrizes();toast(T().resetDone);});
+function resetGame(){won=[];wins=0;lastPrize=null;prizeNew=0;credits=0;coinQ=0;coinT=-1;claw.held=null;claw.target=null;bodies=[];
+  spawnPile(START_TOYS);settle(1.4);paintPrizesBtn();save(true);}
+$("prizesDlg").addEventListener("click",e=>{if(e.target.id==="prizesDlg")closePrizes();});
+addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("pzAsk").hidden)$("pzNo").click();else if(!$("prizesDlg").hidden)closePrizes();else if(!$("prize").hidden)$("pOk").click();}});
+function onWon(b){claw.got=true;lastPrize=b.t;wins++;addPrize(b.t);save(true);const P=$("prize"),T_=T();$("pTitle").textContent=T_.congrats;$("pText").textContent=T_.got(tname(b.t));
+  $("pOk").textContent=T_.again;const big=TOYS.big(b.t.id,6),ic=$("pIcon");ic.width=big.width;ic.height=big.height;
+  const ix=ic.getContext("2d");ix.imageSmoothingEnabled=false;ix.drawImage(big,0,0);P.hidden=false;setTimeout(()=>$("pOk").focus(),50);
+  }   // no new toys: the machine slowly empties (only Reset, in the prizes, fills it again)
+const empty=()=>!bodies.some(b=>!b.inChute&&!b.gone);
+
+const busyPrize=()=>!$("prize").hidden||!$("prizesDlg").hidden;
+$("pOk").addEventListener("click",()=>{$("prize").hidden=true;screen.focus({preventScroll:true});if(empty())toast(T().empty);});
+
+/* ---------- input: map screen points back through the fisheye to machine pixels ---------- */
+function toMachine(e){const r=screen.getBoundingClientRect();const u=Math.floor((e.clientX-r.left)/r.width*BW),v=Math.floor((e.clientY-r.top)/r.height*BH);
+  if(u<0||v<0||u>=BW||v>=BH)return null;const j=LUT[v*BW+u];return j<0?null:[j%BW,(j/BW)|0];}
+const pad=(R,n)=>({x0:R.x0-n,y0:R.y0-n,x1:R.x1+n,y1:R.y1+n});
+const inRect=(p,R)=>p&&p[0]>=R.x0&&p[0]<=R.x1&&p[1]>=R.y0&&p[1]<=R.y1;
+screen.addEventListener("pointerdown",e=>{const p=toMachine(e);if(!p)return;const J=G.joystick;
+  if(Math.hypot(p[0]-J.cx,p[1]-J.cy)<J.r+6){if(!canMove()&&claw.mode==="idle")insertCoin();else hideHint();ptrJoy={id:e.pointerId,x0:e.clientX,y0:e.clientY};try{screen.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();return;}
+  if(inRect(p,pad(G.grab,4))){startGrab();e.preventDefault();return;}
+  if(inRect(p,pad(G.coin,4))){insertCoin();e.preventDefault();return;}});
+screen.addEventListener("pointermove",e=>{if(!ptrJoy||e.pointerId!==ptrJoy.id)return;const r=screen.getBoundingClientRect(),k=r.width/BW;
+  joyX=clamp((e.clientX-ptrJoy.x0)/k/8,-1,1);joyY=clamp(-(e.clientY-ptrJoy.y0)/k/8,-1,1);});   // stick up = back
+const endJoy=e=>{if(ptrJoy&&e.pointerId===ptrJoy.id){ptrJoy=null;joyX=joyY=0;}};
+screen.addEventListener("pointerup",endJoy);screen.addEventListener("pointercancel",endJoy);
+const keys=new Set();const keyAxes=()=>{keyX=(keys.has("ArrowRight")?1:0)-(keys.has("ArrowLeft")?1:0);keyY=(keys.has("ArrowUp")?1:0)-(keys.has("ArrowDown")?1:0);};
+addEventListener("keydown",e=>{if(e.target.closest&&e.target.closest("#l102bar,#prize"))return;
+  if(e.key.startsWith("Arrow")){keys.add(e.key);keyAxes();if(!canMove()&&claw.mode==="idle"&&!e.repeat)insertCoin();else hideHint();e.preventDefault();}
+  else if(e.key===" "||e.key==="Enter"){if(!busyPrize()){startGrab();e.preventDefault();}}
+  else if(e.key==="c"||e.key==="C"){insertCoin();}});
+addEventListener("keyup",e=>{if(keys.delete(e.key))keyAxes();});
+addEventListener("blur",()=>{keys.clear();keyAxes();joyX=joyY=0;ptrJoy=null;});
+
+/* ---------- hint, toast, texts ---------- */
+let hintOff=false;function hideHint(){if(!hintOff){hintOff=true;$("hint").classList.add("off");}}
+let toastT=0;function toast(m){const el=$("toast");el.textContent=m;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("on"),2200);}
+function paintTexts(){const T_=T();document.title=T_.name;$("hint").textContent=T_.hint;screen.setAttribute("aria-label",T_.screen);paintPrizesBtn();if(!$("prizesDlg").hidden)renderPrizes();
+  if(!$("prize").hidden&&lastPrize){$("pTitle").textContent=T_.congrats;$("pText").textContent=T_.got(tname(lastPrize));$("pOk").textContent=T_.again;}}
+addEventListener("l102:lang",paintTexts);
+
+/* ---------- layout: biggest crisp (integer device-pixel) scale that fits ---------- */
+function layout(){const st=$("stage").getBoundingClientRect(),dpr=devicePixelRatio||1;
+  // crisp whole device-pixel scale when that loses little; otherwise use the space
+  let k=Math.min(st.width*dpr/BW,st.height*dpr/BH);if(k>=1&&Math.floor(k)/k>=.85)k=Math.floor(k);const w=BW*k/dpr,h=BH*k/dpr,L=(st.width-w)/2,Tp=(st.height-h)/2;
+  Object.assign(screen.style,{width:w+"px",height:h+"px",left:L+"px",top:Tp+"px"});
+  {const OW=Math.max(BW,Math.round(w*dpr)),OH=Math.max(BH,Math.round(h*dpr));if(!TILES.length||screen.width!==OW||screen.height!==OH){screen.width=OW;screen.height=OH;buildTiles(OW,OH);}}
+  placePrizesBtn();
+  // the hint sits beside the machine when there is room, else on top of the marquee for a moment
+  const hs=$("hint").style;if(L>=170){Object.assign(hs,{left:(L/2)+"px",right:"auto",margin:"0",width:"",top:(Tp+h*.42)+"px",maxWidth:(L-24)+"px",transform:"translate(-50%,-50%)"});}
+  else Object.assign(hs,{left:"0",right:"0",margin:"0 auto",width:"fit-content",top:"10px",maxWidth:"min(92%,460px)",transform:"none"});}
+function placePrizesBtn(){const R=G.prizes,b=$("prizesBtn");if(!R){b.style.display="none";return;}
+  const st=$("stage").getBoundingClientRect(),a=machineToClient(R.x0,R.y0),c=machineToClient(R.x1,R.y1);
+  Object.assign(b.style,{display:"",left:(a[0]-st.left-2)+"px",top:(a[1]-st.top-2)+"px",width:(c[0]-a[0]+4)+"px",height:(c[1]-a[1]+4)+"px"});}
+// machine pixel -> client point (inverse of the fisheye lookup)
+function machineToClient(mx,my){let best=-1,bd=1e9;for(let i=0;i<LUT.length;i++){const j=LUT[i];if(j<0)continue;const d=Math.abs(j%BW-mx)+Math.abs(((j/BW)|0)-my);if(d<bd){bd=d;best=i;if(!d)break;}}
+  const r=screen.getBoundingClientRect();return[r.left+(best%BW+.5)*r.width/BW,r.top+(((best/BW)|0)+.5)*r.height/BH];}
+addEventListener("resize",layout);
+
+/* ---------- drawing the toys back to front, with the pointer at its depth ---------- */
+function drawPointer(ctx,u){const blink=(now*3.2%1)<.62,sy0=Math.round(u.tipY-u.z*RISE+3),sy1=Math.round(u.y-u.z*RISE),x=Math.round(u.x);
+  ctx.fillStyle="rgba(0,0,0,.3)";ctx.beginPath();ctx.ellipse(x+.5,sy1,6,2,0,0,Math.PI*2);ctx.fill();   // soft shadow on the surface below
+  if(blink&&sy1>sy0){ctx.fillStyle="#ff2a3a";ctx.fillRect(x,sy0,1,sy1-sy0);ctx.fillStyle="#ffb0b6";ctx.fillRect(x,sy1-1,1,1);}}
+/* depth order, back to front: toys behind the claw (layers.toys), the claw's back prongs, the toys right between the prongs
+   and the held one (layers.held), the front prong, then the toys in front of it (layers.front). The prize box is drawn at its
+   own depth (BOXZ) in whichever of those two lists it falls: its back face, the toys falling inside it, its front glass. */
+const MIDZ=6;   // toys up to this far in front of the claw are inside its reach: behind the front prong
+let frontQ=[],midQ=[],boxLater=false,hlToy=null;
+function drawToy(ctx,b){const opts={highlight:b===hlToy,shade:clamp(b.z/D,0,1)*.55},X=Math.round(b.x),Y=Math.round(b.y-b.z*RISE);
+  if(!b.rising){const by=Math.round(b.y+lowest(b.t)*Math.cos(b.a)-b.z*RISE);ctx.fillStyle="rgba(8,4,20,.32)";ctx.beginPath();ctx.ellipse(X+.5,by-.5,halfW(b.t)*.8,2.2,0,0,Math.PI*2);ctx.fill();}   // soft contact shadow
+  if(b.rising){ctx.save();ctx.beginPath();ctx.rect(0,0,BW,Math.round(floorY(b.x)-b.z*RISE));ctx.clip();TOYS.draw(ctx,b.t.id,X,Y,b.a,opts);ctx.restore();}
+  else TOYS.draw(ctx,b.t.id,X,Y,b.a,opts);}
+function screenBox(b){const hw=halfW(b.t)+2,X=b.x,Y=b.y-b.z*RISE;return{x0:X-hw,x1:X+hw,y0:Y-b.br-2,y1:Y+b.br+2};}
+const overlap=(A,B)=>A.x0<B.x1&&B.x0<A.x1&&A.y0<B.y1&&B.y0<A.y1;
+function clawBox(){const a=ART.clawGrip(clawState());let R={x0:Math.min(a.hubX,a.x)-a.spread-6,x1:Math.max(a.hubX,a.x)+a.spread+6,y0:a.hubY-4,y1:a.y+4};
+  if(claw.held){const h=screenBox(claw.held);R={x0:Math.min(R.x0,h.x0),x1:Math.max(R.x1,h.x1),y0:Math.min(R.y0,h.y0),y1:Math.max(R.y1,h.y1)};}return R;}
+const byDepth=(a,b)=>b.z-a.z||a.y-b.y;
+function drawBox(ctx){ART.drawBox(ctx,false);for(const b of bodies.filter(b=>b.inChute&&!b.held).sort(byDepth))drawToy(ctx,b);ART.drawBox(ctx,true);}
+// toys back to front; the prize box goes in before the first toy in front of its back face, the pointer before the first toy in front of it
+function drawList(ctx,list,box,u){let drew=!u;
+  for(const b of list){if(box&&b.z<BOXZ){drawBox(ctx);box=false;}if(!drew&&b.z<u.z){drawPointer(ctx,u);drew=true;}drawToy(ctx,b);}
+  if(!drew)drawPointer(ctx,u);if(box)drawBox(ctx);}
+const layers={box:true,
+  toys(ctx){const showP=claw.mode==="idle"||claw.mode==="opening"||claw.mode==="down";const u=showP?below():null;hlToy=u&&u.b;
+    const gz=ART.clawGrip(clawState()).z,zc=gz-1,R=clawBox(),back=[];frontQ=[];midQ=[];
+    for(const b of bodies.filter(b=>!b.held&&!b.inChute).sort(byDepth)){
+      if(b.z>=zc)back.push(b);else if((b===claw.target||gz-b.z<MIDZ)&&overlap(screenBox(b),R))midQ.push(b);else frontQ.push(b);}
+    boxLater=BOXZ<zc;drawList(ctx,back,!boxLater,u);},
+  front(ctx){drawList(ctx,frontQ,boxLater,null);},
+  claw(ctx,img,hx,hy,a,cox){drawClawHi(img,hx,hy,a,cox);},
+  held(ctx){for(const b of midQ)drawToy(ctx,b);const b=claw.held;if(b)TOYS.draw(ctx,b.t.id,Math.round(b.x),Math.round(b.y-b.z*RISE),b.a,{shade:clamp(b.z/D,0,1)*.55});}};
+/* ---------- main loop ---------- */
+let last=performance.now(),acc=0,raf=0;const perf={frames:0,sum:0,max:0,reset(){this.frames=this.sum=this.max=0;}};
+/* ---------- saved game (localStorage "arcadeclaw.save", versioned): prizes, credits and where every toy is.
+   Saved when everything rests with the claw idle, right after a win, and when leaving (mid-grab: the last resting
+   state, so a reload goes back to just before that grab). Loading validates everything (ids, numbers, ranges). ---------- */
+const SAVE_KEY="arcadeclaw.save";let saveT=0,lastSaved="",saveWarned=false;
+function save(force){const toys=bodies.filter(b=>!b.inChute&&!b.gone).map(b=>[b.t.id,+b.x.toFixed(2),+b.y.toFixed(2),+b.z.toFixed(2),+b.a.toFixed(3)]);
+  const s=JSON.stringify({v:1,credits:Math.min(9,credits+coinQ+(coinT>=0?1:0)),won:won.map(w=>[w.t.id,w.n]),toys});if(s===lastSaved&&!force)return;
+  try{localStorage.setItem(SAVE_KEY,s);lastSaved=s;}catch(_){if(!saveWarned){saveWarned=true;toast(T().noSave);}}}
+function load(){let d;try{d=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");}catch(_){return false;}
+  if(!d||typeof d!=="object"||d.v!==1||!Array.isArray(d.toys)||!Array.isArray(d.won))return false;
+  const byId={};for(const t of TOYS.list)byId[t.id]=t;const num=(v,a,b)=>typeof v==="number"&&Number.isFinite(v)&&v>=a&&v<=b;
+  const toys=[];for(const r of d.toys.slice(0,120)){if(!Array.isArray(r)||!Object.prototype.hasOwnProperty.call(byId,r[0]))continue;const[id,x,y,z,a]=r;
+    if(!num(x,0,BW)||!num(y,0,BH)||!num(z,-5,D+5)||!num(a,-1e3,1e3))continue;toys.push([byId[id],x,y,clamp(z,0,D),a]);}
+  if(d.toys.length&&!toys.length)return false;   // nothing usable: start a fresh machine
+  const prizes=[];for(const r of d.won.slice(0,500)){if(!Array.isArray(r)||!Object.prototype.hasOwnProperty.call(byId,r[0])||!Number.isInteger(r[1])||r[1]<1||r[1]>9999)continue;if(!prizes.some(p=>p.t.id===r[0]))prizes.push({t:byId[r[0]],n:r[1]});}
+  bodies=toys.map(([t,x,y,z,a])=>{const b=makeBody(t,clamp(x,wallL(z)+2,wallR(z)-2),Math.min(y,floorY(x)),z,a);b.sleep=1;return b;});settle(.25);
+  // older versions let toys rest on a shelf right behind the prize box, floating out of reach: wake them so they slide off and fall
+  const C=G.chute;for(const b of bodies)if(b.z>=BOXZ&&b.x+b.br>C.x0&&b.x-b.br<C.x1&&b.y+lowest(b.t)<floorY(b.x)-3&&worldParts(b).some(P=>P.z-P.r*SQUASH<BOXZ+BOXM))b.sleep=0;
+  won=prizes;wins=prizes.reduce((a,p)=>a+p.n,0);credits=Number.isInteger(d.credits)?clamp(d.credits,0,9):0;lastSaved=JSON.stringify(d);paintPrizesBtn();return true;}
+function frame(t){raf=0;const t0=performance.now();let dt=Math.min(.05,(t-last)/1000);last=t;now+=dt;
+  coinUpdate(dt);acc+=dt;let n=0;const h=STEP;while(acc>=h&&n<10){clawUpdate(h);physStep(h);acc-=h;n++;}if(n===10)acc=0;
+  sx.setTransform(1,0,0,1,0,0);sx.imageSmoothingEnabled=false;sx.clearRect(0,0,BW,BH);ART.drawScene(sx,clawState(),layers);
+  if(coinBlink>0&&(now*4%1)<.55){const R=G.coin;sx.strokeStyle="#ffe14a";sx.lineWidth=1;sx.strokeRect(R.x0-1.5,R.y0-1.5,R.x1-R.x0+3,R.y1-R.y0+3);sx.strokeStyle="rgba(255,225,74,.45)";sx.strokeRect(R.x0-2.5,R.y0-2.5,R.x1-R.x0+5,R.y1-R.y0+5);}   // "insert a coin" nudge
+  present();
+  if((saveT+=dt)>1){saveT=0;if(claw.mode==="idle"&&!claw.held&&bodies.every(b=>b.sleep>SLEEP_T&&!b.inChute))save();}
+  const ft=performance.now()-t0;perf.frames++;perf.sum+=ft;if(ft>perf.max)perf.max=ft;
+  if(!document.hidden)raf=requestAnimationFrame(frame);}
+addEventListener("pagehide",()=>{if(claw.mode==="idle")save();});
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&claw.mode==="idle")save();if(!document.hidden&&!raf){last=performance.now();raf=requestAnimationFrame(frame);}});
+
+/* ---------- start ---------- */
+paintTexts();layout();if(!load()){spawnPile(START_TOYS);settle(1.4);}else if(empty())setTimeout(()=>toast(T().empty),600);raf=requestAnimationFrame(frame);
+
+/* test hooks */
+window.AC={get credits(){return credits;},get mode(){return claw.mode;},get wins(){return wins;},
+  claw:()=>({x:claw.x,y:claw.y,z:claw.z,angX:claw.angX,angZ:claw.angZ,open:claw.open,held:!!claw.held}),
+  coin:insertCoin,grab:startGrab,joy(x,y){joyX=x;joyY=y||0;},seed(seq){let i=0;roll=()=>seq[i++%seq.length];},unseed(){roll=Math.random;},
+  aimAtToy(){const c=bodies.filter(b=>!b.held&&!b.inChute&&!b.rising&&b.x>G.chute.x1+10&&b.x>G.clawMinX&&b.x<G.clawMaxX).sort((a,b)=>(a.y-a.br)-(b.y-b.br))[0];if(!c)return null;claw.x=c.x;claw.z=clamp(c.z,0,D);claw.vx=claw.vz=0;return c.t.id;},   // tests only
+  parked:()=>Math.abs(claw.x-PARK.x)<1.5&&Math.abs(claw.z-PARK.z)<2&&claw.y<=G.clawTopY+.5,nudged:()=>coinBlink>0,
+  pose(){const b=claw.held;if(!b)return null;const g=grip();return{dx:b.x-g.x,dy:b.y-g.y,dz:b.z-g.z,spread:g.spread,half:halfW(b.t)};},
+  depthRows(){return bodies.map(b=>+b.z.toFixed(1));},
+  sweep(y){claw.mode="test";claw.open=1;claw.y=y;claw.x=G.clawMinX;claw.z=D*.5;claw.vx=claw.vz=0;},endTest(){claw.mode="idle";claw.open=0;claw.y=G.clawTopY;},
+  health(){let nan=0,maxOv=0;for(const b of bodies){if(![b.x,b.y,b.z,b.vx,b.vy,b.vz,b.a].every(Number.isFinite))nan++;}
+    for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){const A=worldParts(bodies[i]),B=worldParts(bodies[j]);
+      for(const P of A)for(const Q of B){const ov=P.r+Q.r-Math.hypot(P.x-Q.x,P.y-Q.y,P.z-Q.z);if(ov>maxOv)maxOv=ov;}}
+    return{nan,maxOv:+maxOv.toFixed(2)};},
+  aimBehindFront(){for(const b of bodies.filter(b=>!b.held&&!b.inChute&&b.z>D*.35&&b.x>G.clawMinX+4&&b.x<G.clawMaxX-4).sort((a,c)=>c.z-a.z)){
+      const f=bodies.find(o=>o!==b&&o.z<b.z-8&&overlap(screenBox(o),screenBox(b)));if(f){claw.x=b.x;claw.z=clamp(b.z,0,D);claw.vx=claw.vz=0;return b.t.id;}}return null;},
+  // pixels where a front toy and the held toy overlap on screen: does the scene show the front toy? (render each alone and compare)
+  depthCheck(){const h=claw.held;if(!h)return null;const fronts=bodies.filter(o=>o!==h&&!o.held&&o.z<h.z-3&&overlap(screenBox(o),screenBox(h)));if(!fronts.length)return{checked:0,ok:0};
+    const one=b=>{const c=document.createElement("canvas");c.width=BW;c.height=BH;const x=c.getContext("2d");x.imageSmoothingEnabled=false;TOYS.draw(x,b.t.id,Math.round(b.x),Math.round(b.y-b.z*RISE),b.a,{shade:clamp(b.z/D,0,1)*.55,highlight:b===hlToy});return x.getImageData(0,0,BW,BH).data;};
+    const H=one(h),lo=document.createElement("canvas");lo.width=BW;lo.height=BH;const lx=lo.getContext("2d");lx.imageSmoothingEnabled=false;lx.drawImage(big,0,0,BW,BH);const S=lx.getImageData(0,0,BW,BH).data;let checked=0,ok=0,bad=0;
+    for(const f of fronts){const F=one(f);for(let i=0;i<F.length;i+=4){if(F[i+3]<250||H[i+3]<250)continue;if(Math.abs(F[i]-H[i])+Math.abs(F[i+1]-H[i+1])+Math.abs(F[i+2]-H[i+2])<60)continue;checked++;
+      const dF=Math.abs(S[i]-F[i])+Math.abs(S[i+1]-F[i+1])+Math.abs(S[i+2]-F[i+2]),dH=Math.abs(S[i]-H[i])+Math.abs(S[i+1]-H[i+1])+Math.abs(S[i+2]-H[i+2]);if(dF<dH)ok++;else if(dH<24)bad++;}}
+    return{checked,ok,bad};},   // bad = the held toy shows through a toy that is in front of it
+  prizes:()=>won.map(w=>[w.t.id,w.n]),addPrizeTest(id){const t=TOYS.list.find(x=>x.id===id);if(t)addPrize(t);},
+  inBox:()=>bodies.filter(b=>!b.fromClaw&&!b.held&&b.x+halfW(b.t)*.5>G.chute.x0&&b.x-halfW(b.t)*.5<G.chute.x1&&b.z<BOXZ+BOXM&&b.y>G.chute.y0-4).map(b=>b.t.id),
+  ids:()=>bodies.filter(b=>!b.held&&!b.inChute).map(b=>b.t.id),
+  shapes(){const c={};for(const b of bodies)c[b.t.shape]=(c[b.t.shape]||0)+1;return{retired:bodies.filter(b=>b.t.retired).length,shapes:Object.keys(c).length,most:Math.max(0,...Object.values(c))};},
+  drawSets:()=>({front:frontQ.map(b=>b.t.id),mid:midQ.map(b=>b.t.id),target:claw.target&&!claw.target.held?claw.target.t.id:null,boxLater,clawZ:ART.clawGrip(clawState()).z,boxZ:BOXZ}),
+  emptyTest(){bodies=bodies.filter(b=>b.held||b.inChute);},saveNow(){save(true);},SAVE_KEY,
+  toys:()=>bodies.length,state:()=>bodies.filter(b=>!b.held&&!b.inChute).map(b=>[b.x,b.y,b.z,b.a,b.sleep>SLEEP_T?1:0]),rising:()=>bodies.filter(b=>b.rising).length,
+  outside(){let c=0;for(const b of bodies){if(b.inChute||b.rising)continue;for(const P of worldParts(b)){if(P.x<wallL(P.z)-2||P.x>wallR(P.z)+2||P.y>floorY(P.x)+3||P.z<-2||P.z>D+2||P.y-P.r<G.glass.y0-3)c++;}}return c;},
+  below:()=>{const u=below();return{y:u.y,tipY:u.tipY,id:u.b&&u.b.t.id};},
+  front:()=>bodies.filter(b=>b.z<D*.45).map(b=>b.t.cute||0),back:()=>bodies.filter(b=>b.z>=D*.45).map(b=>b.t.cute||0),
+  // machine pixel -> a client point on screen (inverse of the fisheye) for tests
+  toScreen(mx,my){let best=-1,bd=1e9;for(let i=0;i<LUT.length;i++){const j=LUT[i];if(j<0)continue;const d=Math.abs(j%BW-mx)+Math.abs(((j/BW)|0)-my);if(d<bd){bd=d;best=i;if(!d)break;}}
+    const r=screen.getBoundingClientRect();return[r.left+(best%BW+.5)*r.width/BW,r.top+(((best/BW)|0)+.5)*r.height/BH];},
+  prize:()=>lastPrize&&lastPrize.id,dialog:()=>!$("prize").hidden,perf,
+  dbg:()=>bodies.filter(b=>b.fromClaw||b.held).map(b=>({id:b.t.id,x:+b.x.toFixed(1),y:+b.y.toFixed(1),z:+b.z.toFixed(1),inChute:!!b.inChute})),G,BW,BH,D,RISE};
+})();
+
+</script>
+</body>
+</html>

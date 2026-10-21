@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<!-- l102-topbar:start  Shared level102 top bar. Copy this whole block VERBATIM into every game (tests check it).
+     HEAD part: paste right after <meta name="viewport">, before the game's own styles, so language and text size are
+     known before the first paint (no flash of English).
+     Gives the page: <html lang> = en|es|de (saved choice > OS language > English), CSS var --fs (text scale 0.8..1.8, default 1.1),
+     a download link (the page itself, offline), a full-screen toggle (hidden where the browser can't do it), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
+     setLang(l), setFs(v) }, and the events 'l102:lang' and 'l102:fs' on window. -->
+<style>
+:root{--l102-bar-h:34px;--fs:1.1}
+.l102bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:var(--l102-bar-h);box-sizing:border-box;display:flex;align-items:center;gap:6px;
+  padding:3px max(8px,env(safe-area-inset-right)) 3px max(8px,env(safe-area-inset-left));background:rgba(12,6,28,.55);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:600 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation}
+.l102bar a{flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#fff;text-decoration:none;
+  height:28px;line-height:28px;padding:0 10px;border-radius:14px;background:rgba(255,255,255,.14)}
+.l102bar .l102sp{flex:1 1 0;min-width:0}
+.l102bar select,.l102bar button,.l102bar a.l102dl{flex:0 0 auto;height:28px;min-width:32px;margin:0;padding:0 6px;border:0;border-radius:14px;
+  background:rgba(255,255,255,.14);color:#fff;font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center}
+.l102bar select option{color:#000}
+.l102bar a.l102dl,.l102bar #l102full{display:inline-flex;align-items:center;justify-content:center;padding:0 6px;line-height:1}
+.l102bar [hidden]{display:none!important}
+.l102bar a:hover,.l102bar button:hover,.l102bar select:hover{background:rgba(255,255,255,.26)}
+.l102bar a:focus-visible,.l102bar button:focus-visible,.l102bar select:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
+.l102bar button:disabled{opacity:.4;cursor:default}
+@media (max-width:340px){.l102bar{gap:4px}.l102bar a{padding:0 7px}}
+</style>
+<script>
+(function(){
+  var LANGS=["en","es","de"],h=document.documentElement,lang=null,fs=1.1;
+  try{lang=localStorage.getItem("l102.lang");fs=parseFloat(localStorage.getItem("l102.fs"))||1.1;}catch(e){}
+  if(LANGS.indexOf(lang)<0){lang="en";var n=navigator.languages||[navigator.language||"en"];
+    for(var i=0;i<n.length;i++){var c=String(n[i]).slice(0,2).toLowerCase();if(LANGS.indexOf(c)>=0){lang=c;break;}}}
+  var clamp=function(v){return Math.round(Math.min(1.8,Math.max(.8,v))*10)/10;};
+  fs=clamp(fs);h.lang=lang;h.style.setProperty("--fs",fs);
+  window.L102={lang:lang,fs:fs,langs:LANGS,
+    setLang:function(l){if(LANGS.indexOf(l)<0||l===this.lang)return;this.lang=l;h.lang=l;try{localStorage.setItem("l102.lang",l);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:lang",{detail:l}));},
+    setFs:function(v){v=clamp(v);if(v===this.fs)return;this.fs=v;h.style.setProperty("--fs",v);try{localStorage.setItem("l102.fs",v);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:fs",{detail:v}));}};
+})();
+</script>
+<!-- l102-topbar:head-end -->
+<title>Fluid</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3CradialGradient id=%22b%22 cx=%2250%25%22 cy=%2220%25%22 r=%2290%25%22%3E%3Cstop offset=%220%22 stop-color=%22%2325306a%22/%3E%3Cstop offset=%221%22 stop-color=%22%23070b1c%22/%3E%3C/radialGradient%3E%3ClinearGradient id=%22w%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%235fd6ff%22/%3E%3Cstop offset=%221%22 stop-color=%22%230b3aa8%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22url(%23b)%22/%3E%3Cpath d=%22M6 40c8-7 14 3 22-3s14-9 22-4 8 3 8 3v14a8 8 0 0 1-8 8H14a8 8 0 0 1-8-8z%22 fill=%22url(%23w)%22/%3E%3Cpath d=%22M10 41c6-4 11 1 17-2%22 fill=%22none%22 stroke=%22%23e6f9ff%22 stroke-width=%222.4%22 stroke-linecap=%22round%22 opacity=%22.85%22/%3E%3Ccircle cx=%2244%22 cy=%2222%22 r=%226%22 fill=%22url(%23w)%22/%3E%3Ccircle cx=%2242%22 cy=%2220%22 r=%221.8%22 fill=%22%23fff%22 opacity=%22.85%22/%3E%3Ccircle cx=%2224%22 cy=%2216%22 r=%223.6%22 fill=%22url(%23w)%22/%3E%3Ccircle cx=%2223%22 cy=%2215%22 r=%221.1%22 fill=%22%23fff%22 opacity=%22.85%22/%3E%3Ccircle cx=%2230%22 cy=%2250%22 r=%222%22 fill=%22%23fff%22 opacity=%22.35%22/%3E%3Ccircle cx=%2246%22 cy=%2248%22 r=%221.4%22 fill=%22%23fff%22 opacity=%22.35%22/%3E%3C/svg%3E">
+<!-- l102-card: link previews (made by tools/make_cards.mjs; the page never loads card.jpg) -->
+<meta name="description" content="A pocket of glowing liquid: tilt and shake your phone, or drag it around.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="level102">
+<meta property="og:title" content="Fluid">
+<meta property="og:description" content="A pocket of glowing liquid: tilt and shake your phone, or drag it around.">
+<meta property="og:url" content="https://level102.com/fluid/">
+<meta property="og:image" content="https://level102.com/fluid/card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Fluid">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /l102-card -->
+<script>
+// translated title before the first paint
+document.title={en:"Fluid",es:"Fluido",de:"Flüssigkeit"}[L102.lang]||"Fluid";
+</script>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#070b1c;overscroll-behavior:none}
+body{font:600 calc(15px * var(--fs))/1.25 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#eaf2ff;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+#stage{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);overflow:hidden;touch-action:none;cursor:grab;
+  background:radial-gradient(120% 90% at 50% 15%,#1a2350 0%,#0b1130 55%,#05070f 100%)}
+#stage.drag{cursor:grabbing}
+#vessel{position:absolute;box-sizing:border-box;pointer-events:none;border:2px solid rgba(190,220,255,.28);
+  background:radial-gradient(100% 100% at 30% 20%,rgba(255,255,255,.06),rgba(255,255,255,0) 60%);
+  box-shadow:inset 0 0 30px rgba(140,190,255,.12),0 0 24px rgba(0,0,0,.35)}
+#liquid{position:absolute;left:0;top:0;pointer-events:none}
+#fizz{position:absolute;left:0;top:0;pointer-events:none}
+#tools{position:absolute;right:max(10px,env(safe-area-inset-right));top:10px;display:flex;flex-direction:column;gap:10px;z-index:2}
+#tools button{width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,.28);background:rgba(20,30,70,.55);
+  color:#eaf2ff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;touch-action:manipulation;
+  box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .08s}
+#tools button:active,#tools button.press{transform:scale(.9);background:rgba(60,90,170,.7)}
+#tools button:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+#tools svg{width:26px;height:26px}
+#tools button.txt{font:800 calc(17px * var(--fs))/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.5px}
+#hint{position:absolute;left:max(12px,env(safe-area-inset-left));top:12px;max-width:min(calc(100% - 96px),520px);
+  box-sizing:border-box;padding:12px 18px;border-radius:18px;background:rgba(10,16,40,.72);border:1px solid rgba(255,255,255,.16);
+  pointer-events:none;transition:opacity .6s;z-index:2}
+#hint b{display:block;font-size:calc(26px * var(--fs));letter-spacing:.5px;margin-bottom:4px;
+  background:linear-gradient(90deg,#7fe3ff,#c9a2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#hint.off{opacity:0}
+#toast{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:min(80vw,460px);padding:8px 14px;border-radius:14px;
+  background:rgba(10,16,40,.85);font-size:calc(13px * var(--fs));text-align:center;pointer-events:none;opacity:0;transition:opacity .4s;z-index:3}
+#toast.on{opacity:1}
+#stats{position:absolute;left:8px;bottom:8px;z-index:4;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,.6);font:600 12px/1.35 ui-monospace,monospace;white-space:pre;pointer-events:none}
+#intro{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:rgba(4,7,20,.55);padding:16px}
+#intro[hidden]{display:none}
+#intro .card{max-width:420px;width:100%;box-sizing:border-box;padding:22px;border-radius:22px;text-align:center;
+  background:rgba(14,22,56,.92);border:1px solid rgba(255,255,255,.18);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+#intro b{display:block;font-size:calc(34px * var(--fs));background:linear-gradient(90deg,#7fe3ff,#c9a2ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#intro p{margin:10px 0 18px}
+#intro button{display:block;width:100%;min-height:52px;margin-top:10px;border-radius:16px;border:0;font:inherit;font-size:calc(18px * var(--fs));
+  color:#06102c;background:linear-gradient(90deg,#7fe3ff,#b9a6ff);cursor:pointer}
+#intro button.alt{background:rgba(255,255,255,.12);color:#eaf2ff;border:1px solid rgba(255,255,255,.25)}
+#intro button:active{transform:scale(.97)}
+#intro button:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+</style>
+</head>
+<body>
+<!-- BODY part: paste as the very first thing inside <body>. -->
+<nav class="l102bar" id="l102bar">
+  <a id="l102back" href="https://level102.com">&lsaquo; Back to level102.com</a>
+  <span class="l102sp"></span>
+  <select id="l102lang" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option></select>
+  <button type="button" id="l102minus" aria-label="Smaller text">A&minus;</button>
+  <button type="button" id="l102plus" aria-label="Bigger text">A+</button>
+  <button type="button" id="l102full" aria-label="Full screen" title="Full screen"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path id="l102fullp" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <a class="l102dl" id="l102dl" href="./" download="level102.html" aria-label="Download for offline use" title="Download for offline use"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</nav>
+<script>
+(function(){
+  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen"],
+         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa"],
+         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden"]};
+  var back=document.getElementById("l102back"),sel=document.getElementById("l102lang"),
+      minus=document.getElementById("l102minus"),plus=document.getElementById("l102plus"),dl=document.getElementById("l102dl"),
+      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement;
+  // full screen: browser's own exit (Esc, Android back) also works; hidden where unsupported (e.g. iPhone)
+  function isFull(){return !!(d.fullscreenElement||d.webkitFullscreenElement);}
+  if(!(d.fullscreenEnabled||d.webkitFullscreenEnabled))full.hidden=true;
+  full.addEventListener("click",function(){try{var p=isFull()?(d.exitFullscreen||d.webkitExitFullscreen).call(d)
+    :(de.requestFullscreen||de.webkitRequestFullscreen).call(de,{navigationUI:"hide"});if(p&&p.catch)p.catch(function(){});}catch(e){}});
+  d.addEventListener("fullscreenchange",paint);d.addEventListener("webkitfullscreenchange",paint);
+  // download = this very page (one self-contained file), named after its folder: /drinkmixer/ -> drinkmixer.html
+  var parts=location.pathname.split("/").filter(Boolean),last=parts[parts.length-1]||"";
+  if(/\.html?$/.test(last))last=parts[parts.length-2]||"";
+  dl.href=location.href.split("#")[0].split("?")[0];dl.setAttribute("download",(last&&last!=="docs"?last:"level102")+".html");
+  function paint(){var t=T[L102.lang];back.textContent="‹ "+t[0];sel.value=L102.lang;sel.setAttribute("aria-label",t[1]);
+    minus.setAttribute("aria-label",t[2]);minus.title=t[2];plus.setAttribute("aria-label",t[3]);plus.title=t[3];
+    dl.setAttribute("aria-label",t[4]);dl.title=t[4];
+    var f=isFull();full.setAttribute("aria-label",t[f?6:5]);full.title=t[f?6:5];full.setAttribute("aria-pressed",f);
+    fullp.setAttribute("d",f?"M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5":"M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5");
+    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;}
+  sel.addEventListener("change",function(){L102.setLang(sel.value);});
+  minus.addEventListener("click",function(){L102.setFs(L102.fs-.1);});
+  plus.addEventListener("click",function(){L102.setFs(L102.fs+.1);});
+  addEventListener("l102:lang",paint);addEventListener("l102:fs",paint);paint();
+})();
+</script>
+<!-- l102-topbar:end -->
+<main id="stage" aria-label="Fluid">
+  <div id="vessel"></div>
+  <canvas id="liquid"></canvas>
+  <canvas id="fizz"></canvas>
+  <div id="tools">
+    <button type="button" id="bShape"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="shapeIcon" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d=""/></svg></button>
+    <button type="button" id="bColor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.5 4.6 6 7.8 6 11a6 6 0 0 1-12 0c0-3.2 2.5-6.4 6-11z" fill="currentColor" id="dropIcon"/><path d="M9.2 14.5a3 3 0 0 0 2.6 2.9" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/></svg></button>
+    <button type="button" id="bSpeed" class="txt"><span id="spdTxt">×1</span></button>
+    <button type="button" id="bAmount"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="amClip"><path d="M7 4h10l-1.2 15.2A2 2 0 0 1 13.8 21h-3.6a2 2 0 0 1-2-1.8z"/></clipPath></defs><rect id="amLevel" x="0" y="12" width="24" height="12" fill="currentColor" clip-path="url(#amClip)" opacity=".85"/><path d="M7 4h10l-1.2 15.2A2 2 0 0 1 13.8 21h-3.6a2 2 0 0 1-2-1.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+    <button type="button" id="bShake"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="4" width="8" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4.5 8.5c-1 2-1 5 0 7M19.5 8.5c1 2 1 5 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+  <div id="hint"><b id="hTitle">Fluid</b><span id="hText"></span></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="stats" hidden></div>
+  <div id="intro" hidden><div class="card"><b id="iTitle">Fluid</b><p id="iText"></p>
+    <button type="button" id="iStart"></button><button type="button" id="iFull" class="alt"></button></div></div>
+</main>
+<script>
+"use strict";
+/* ================= text ================= */
+const STR={
+  en:{name:"Fluid",shape:"Change shape",shapes:["Full screen","Circle","Square"],color:"Change color",shake:"Shake",speed:"Speed",amount:"Liquid",
+      hintTouch:"Tilt and shake your phone. Drag the liquid with your finger.",
+      hintMouse:"Drag the liquid with the mouse. Arrow keys tilt it, space shakes it.",
+      noSecure:"Tilt only works when the game is opened from https://level102.com/fluid. Drag the liquid with your finger.",noMotion:"No tilt here: this page can't read the motion sensor. Drag the liquid with your finger.",stage:"Liquid toy",introText:"Tilt and shake your phone to move the liquid. Drag it with your fingers.",start:"Start",startFull:"Start in full screen",colors:["Ocean","Lava","Slime","Grape","Bubblegum"]},
+  es:{name:"Fluido",shape:"Cambiar forma",shapes:["Pantalla completa","Círculo","Cuadrado"],color:"Cambiar color",shake:"Agitar",speed:"Velocidad",amount:"Líquido",
+      hintTouch:"Inclina y agita el móvil. Arrastra el líquido con el dedo.",
+      hintMouse:"Arrastra el líquido con el ratón. Las flechas lo inclinan y la barra espaciadora lo agita.",
+      noSecure:"Inclinar solo funciona abriendo el juego desde https://level102.com/fluid. Arrastra el líquido con el dedo.",noMotion:"Aquí no se puede inclinar: esta página no puede leer el sensor de movimiento. Arrastra el líquido con el dedo.",stage:"Juguete de líquido",introText:"Inclina y agita el móvil para mover el líquido. Arrástralo con los dedos.",start:"Empezar",startFull:"Empezar en pantalla completa",colors:["Océano","Lava","Moco","Uva","Chicle"]},
+  de:{name:"Flüssigkeit",shape:"Form ändern",shapes:["Ganzer Bildschirm","Kreis","Quadrat"],color:"Farbe ändern",shake:"Schütteln",speed:"Tempo",amount:"Flüssigkeit",
+      hintTouch:"Neige und schüttle dein Handy. Zieh die Flüssigkeit mit dem Finger.",
+      hintMouse:"Zieh die Flüssigkeit mit der Maus. Pfeiltasten kippen sie, die Leertaste schüttelt sie.",
+      noSecure:"Kippen klappt nur, wenn das Spiel von https://level102.com/fluid geöffnet wird. Zieh die Flüssigkeit mit dem Finger.",noMotion:"Kippen geht hier nicht: Diese Seite kann den Bewegungssensor nicht lesen. Zieh die Flüssigkeit mit dem Finger.",stage:"Flüssigkeits-Spielzeug",introText:"Neige und schüttle dein Handy, um die Flüssigkeit zu bewegen. Zieh sie mit den Fingern.",start:"Los geht's",startFull:"Im Vollbild starten",colors:["Ozean","Lava","Schleim","Traube","Kaugummi"]}};
+const t=()=>STR[L102.lang]||STR.en;
+const $=id=>document.getElementById(id);
+const stage=$("stage"),vessel=$("vessel"),cv=$("liquid"),cx2=cv.getContext("2d"),fz=$("fizz"),fzc=fz.getContext("2d");
+const touchy=matchMedia("(pointer:coarse)").matches;
+
+/* ================= saved choices ================= */
+const store={get(k,d){try{const v=localStorage.getItem("fluid."+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},
+  set(k,v){try{localStorage.setItem("fluid."+k,JSON.stringify(v));}catch(e){}}};
+const SHAPES=["full","circle","square"];
+let shapeI=Math.max(0,SHAPES.indexOf(store.get("shape","full")));
+// liquid colours: [surface, deep]
+const COLORS=[[[70,205,255],[8,48,160]],[[255,160,50],[175,22,8]],[[150,255,95],[18,120,40]],[[205,130,255],[70,22,150]],[[255,125,205],[165,20,100]]];
+let colorI=Math.min(COLORS.length-1,Math.max(0,store.get("color",0)|0));
+
+/* ================= simulation (particle fluid, double density relaxation) ================= */
+const MAXN=2600;
+const PX=new Float32Array(MAXN),PY=new Float32Array(MAXN),VX=new Float32Array(MAXN),VY=new Float32Array(MAXN),
+      OX=new Float32Array(MAXN),OY=new Float32Array(MAXN),RHO=new Float32Array(MAXN),RHON=new Float32Array(MAXN);
+let N=0;
+let W=0,H=0,S=10,HR=22;           // stage size, particle spacing, interaction radius (px)
+let QUAL=1;   // particle budget, lowered automatically on slow phones
+const SPEEDS=[1,1.5,2,3,1/3,.5,.75],SPEED_TXT=["1","1.5","2","3","0.33","0.5","0.75"];   // x1 = the user's favourite (old x2)
+const AMOUNTS=[1,1.25,1.5,1/3,.5,.75],AMOUNT_TXT=["1","1.25","1.5","0.33","0.5","0.75"];   // button cycle; x1 = the tuned default
+let SPI=Math.min(SPEEDS.length-1,Math.max(0,store.get("speed3",0)|0)),AMI=Math.min(AMOUNTS.length-1,Math.max(0,store.get("amount",0)|0));
+let MM=1;const SPM=()=>MM;   // solver multiplier (stiffer + smaller steps for stronger gravity)
+let GM=matchMedia("(pointer:coarse)").matches?5:2.5,SUB=1/240,   // gravity multiplier: phones feel real, keys/mouse calmer
+   REST=0,K=0,KN=0,VS=.15,KF=1200,KNF=4000,RESTF=1.2;   // rest density, stiffness, near stiffness, viscosity
+let GX=0,GY=1,G0=1800;            // gravity direction (unit-ish) and strength px/s^2
+let gx=0,gy=1;                    // smoothed gravity actually applied
+// shape = rounded rectangle {cx,cy,hw,hh,r}; morphs between targets
+let shp={cx:0,cy:0,hw:1,hh:1,r:1},shpFrom=null,shpTo=null,morphT=1;
+function shapeRect(i){const m=8,w=W-2*m,h=H-2*m,mn=Math.min(W,H);
+  if(SHAPES[i]==="full")return{cx:W/2,cy:H/2,hw:w/2,hh:h/2,r:Math.min(22,mn*.06)};
+  if(SHAPES[i]==="circle"){const R=Math.min(W*.45,H*.45);return{cx:W/2,cy:H/2,hw:R,hh:R,r:R};}
+  const Q=Math.min(W*.43,H*.43);return{cx:W/2,cy:H/2,hw:Q,hh:Q,r:Math.max(10,Q*.08)};}
+// how many particles each shape holds
+const FILL=[.62,.7,.68];
+function shapeArea(r){return 4*r.hw*r.hh-(4-Math.PI)*r.r*r.r;}
+function targetN(){return Math.min(MAXN,Math.round(Math.min(.9,FILL[shapeI]*AMOUNTS[AMI])*shapeArea(shapeRect(shapeI))/(S*S)));}
+// signed distance to the vessel wall (negative inside) + outward normal
+let sdN=[0,0];
+function sdf(x,y){const qx=Math.abs(x-shp.cx)-(shp.hw-shp.r),qy=Math.abs(y-shp.cy)-(shp.hh-shp.r),sx=Math.sign(x-shp.cx)||1,sy=Math.sign(y-shp.cy)||1;
+  if(qx>0||qy>0){const ax=Math.max(qx,0),ay=Math.max(qy,0),l=Math.hypot(ax,ay)||1;sdN[0]=ax/l*sx;sdN[1]=ay/l*sy;return l-shp.r+Math.min(Math.max(qx,qy),0);}
+  if(qx>qy){sdN[0]=sx;sdN[1]=0;}else{sdN[0]=0;sdN[1]=sy;}return Math.max(qx,qy)-shp.r;}
+
+// spatial grid (cell = HR) with counting sort
+let GW_=1,GH_=1,cellStart=new Int32Array(1),cellCount=new Int32Array(1),order=new Int32Array(MAXN),cellOf=new Int32Array(MAXN);
+const PI_=new Int32Array(MAXN*24),PJ=new Int32Array(MAXN*24),PQ=new Float32Array(MAXN*24),PDX=new Float32Array(MAXN*24),PDY=new Float32Array(MAXN*24);
+let NP=0;
+function buildGrid(){
+  const gw=Math.ceil(W/HR)+3,gh=Math.ceil(H/HR)+3;
+  if(gw!==GW_||gh!==GH_||cellStart.length<gw*gh+1){GW_=gw;GH_=gh;cellStart=new Int32Array(gw*gh+1);cellCount=new Int32Array(gw*gh);}
+  cellCount.fill(0);
+  for(let i=0;i<N;i++){let cx=(PX[i]/HR|0)+1,cy=(PY[i]/HR|0)+1;if(cx<0)cx=0;else if(cx>=GW_)cx=GW_-1;if(cy<0)cy=0;else if(cy>=GH_)cy=GH_-1;const c=cy*GW_+cx;cellOf[i]=c;cellCount[c]++;}
+  let s=0;for(let c=0;c<GW_*GH_;c++){cellStart[c]=s;s+=cellCount[c];}cellStart[GW_*GH_]=s;
+  for(let c=0;c<GW_*GH_;c++)cellCount[c]=cellStart[c];
+  for(let i=0;i<N;i++)order[cellCount[cellOf[i]]++]=i;
+}
+function findPairs(){
+  NP=0;const h2=HR*HR,cap=PI_.length;
+  for(let i=0;i<N;i++){const c=cellOf[i],x=PX[i],y=PY[i];
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const cc=c+dy*GW_+dx;if(cc<0||cc>=GW_*GH_)continue;
+      for(let k=cellStart[cc],e=cellStart[cc+1];k<e;k++){const j=order[k];if(j<=i)continue;
+        const rx=PX[j]-x,ry=PY[j]-y,d2=rx*rx+ry*ry;if(d2>=h2||NP>=cap)continue;const d=Math.sqrt(d2)||1e-4;
+        PI_[NP]=i;PJ[NP]=j;PQ[NP]=1-d/HR;PDX[NP]=rx/d;PDY[NP]=ry/d;NP++;}}}
+}
+// pointer interaction
+const ptrs=new Map();   // one entry per finger / mouse: {x,y,vx,vy,grab:Int32Array,ox,oy,n}
+function step(dt){
+  const ax=gx*G0,ay=gy*G0;
+  // forces: gravity, pointer
+  for(let i=0;i<N;i++){VX[i]+=ax*dt;VY[i]+=ay*dt;}
+  const R=HR*4.5,R2=R*R;
+  for(const ptr of ptrs.values()){
+    for(let k=0;k<ptr.n;k++){const i=ptr.grab[k];if(i>=N)continue;const tx=ptr.x+ptr.ox[k],ty=ptr.y+ptr.oy[k];
+      VX[i]+=((tx-PX[i])*45-VX[i])*Math.min(1,dt*14);VY[i]+=((ty-PY[i])*45-VY[i])*Math.min(1,dt*14);}
+    for(let i=0;i<N;i++){const rx=PX[i]-ptr.x,ry=PY[i]-ptr.y,d2=rx*rx+ry*ry;if(d2>R2)continue;const f=(1-Math.sqrt(d2)/R)*Math.min(1,dt*8);
+      VX[i]+=(ptr.vx-VX[i])*f;VY[i]+=(ptr.vy-VY[i])*f;}}
+  // predict
+  for(let i=0;i<N;i++){OX[i]=PX[i];OY[i]=PY[i];PX[i]+=VX[i]*dt;PY[i]+=VY[i]*dt;}
+  buildGrid();findPairs();
+  // double density relaxation
+  RHO.fill(0,0,N);RHON.fill(0,0,N);
+  for(let p=0;p<NP;p++){const q=PQ[p],q2=q*q,q3=q2*q,i=PI_[p],j=PJ[p];RHO[i]+=q2;RHO[j]+=q2;RHON[i]+=q3;RHON[j]+=q3;}
+  const dt2=dt*dt;
+  for(let p=0;p<NP;p++){const i=PI_[p],j=PJ[p],q=PQ[p];
+    const P=K*((RHO[i]+RHO[j])*.5-RESTE),PN=KN*(RHON[i]+RHON[j])*.5;
+    let D=dt2*(P*q+PN*q*q)*.5;if(D>HR*.3)D=HR*.3;else if(D<-HR*.3)D=-HR*.3;
+    const dx=D*PDX[p],dy=D*PDY[p];PX[i]-=dx;PY[i]-=dy;PX[j]+=dx;PY[j]+=dy;}
+  // walls
+  const pr=S*.45;
+  for(let i=0;i<N;i++){const d=sdf(PX[i],PY[i]);if(d>-pr){const e=d+pr;PX[i]-=sdN[0]*e;PY[i]-=sdN[1]*e;}}
+  // velocities from positions (+ a little viscosity-like damping)
+  const inv=1/dt,damp=Math.exp(-dt*.35),vmax=HR*inv*.8;
+  for(let i=0;i<N;i++){let vx=(PX[i]-OX[i])*inv*damp,vy=(PY[i]-OY[i])*inv*damp;const v2=vx*vx+vy*vy;if(v2>vmax*vmax){const s=vmax/Math.sqrt(v2);vx*=s;vy*=s;}VX[i]=vx;VY[i]=vy;}
+  // linear viscosity between neighbours (smooth, gooey but not sticky)
+  for(let p=0;p<NP;p++){const i=PI_[p],j=PJ[p];const u=(VX[i]-VX[j])*PDX[p]+(VY[i]-VY[j])*PDY[p];if(u<=0)continue;const I=VS/Math.sqrt(SPM())*PQ[p]*u*.5;
+    VX[i]-=I*PDX[p];VY[i]-=I*PDY[p];VX[j]+=I*PDX[p];VY[j]+=I*PDY[p];}
+}
+function setScale(){
+  // particle spacing so the full-screen shape holds ~NFULL particles
+  const area=W*H,NFULL=Math.round((area<350000?760:area<800000?1100:1500)*QUAL);
+  S=Math.max(6,Math.sqrt(FILL[0]*area/NFULL));HR=S*2.1;
+  const vr=shapeRect(shapeI),L=Math.max(2*vr.hw,2*vr.hh);
+  G0=SPEEDS[SPI]*(touchy?2*33.4:9.2)*L;   // x1 = tuned on the user's phone (old x3 in the circle ~ old x6 in full screen)
+  const Gt=GM*Math.max(1200,Math.min(4200,Math.min(W,H)*(touchy?6:3.6)));MM=Math.max(.05,G0/Gt);   // vs the strength the solver was tuned at
+  REST=RESTF;K=HR*KF*MM;KN=HR*KNF*MM;
+}
+function spawnBlock(n){
+  // fill from the bottom (along gravity) in a hex lattice
+  const r=shapeRect(shapeI),x0=r.cx-r.hw+S,x1=r.cx+r.hw-S;let row=0,k=0;
+  for(let y=r.cy+r.hh-S;k<n&&y>r.cy-r.hh;y-=S*.87,row++)for(let x=x0+(row&1)*S*.5;x<x1&&k<n;x+=S){
+    shp=r;if(sdf(x,y)>-S*.6)continue;PX[N]=x+(Math.random()-.5);PY[N]=y;VX[N]=0;VY[N]=0;N++;k++;}
+}
+let pourQ=0;
+function pour(){ // add particles as a stream from the side opposite to gravity
+  const n=Math.min(pourQ,6,MAXN-N);if(n<=0)return;const gl=Math.hypot(gx,gy)||1,ux=gx/gl,uy=gy/gl;
+  // a point inside the vessel, far "up"
+  let px=shp.cx-ux*(Math.min(shp.hw,shp.hh)-S*2.5),py=shp.cy-uy*(Math.min(shp.hw,shp.hh)-S*2.5);
+  for(let k=0;k<n;k++){const off=(k-(n-1)/2)*S*.9;PX[N]=px-uy*off;PY[N]=py+ux*off;VX[N]=ux*G0*.25;VY[N]=uy*G0*.25;N++;}pourQ-=n;}
+function drain(){ // remove extra particles from the top of the liquid (opposite to gravity)
+  let extra=N-targetN();if(extra<=0)return;extra=Math.min(extra,24);
+  for(let e=0;e<extra;e++){let best=-1,bv=Infinity;for(let i=0;i<N;i++){const v=PX[i]*gx+PY[i]*gy;if(v<bv){bv=v;best=i;}}
+    if(best<0)break;N--;PX[best]=PX[N];PY[best]=PY[N];VX[best]=VX[N];VY[best]=VY[N];}
+  for(const q of ptrs.values())q.n=0;}
+
+/* ================= rendering: metaball field on the CPU -> its outline is traced (marching squares) and filled as one
+   smooth vector shape at full screen resolution, painted with the shading image (so edges and drops stay crisp) ================= */
+const sc=document.createElement("canvas"),scx=sc.getContext("2d");let LDPR=1;
+let CR=2,TMP=null,COLS=null,BUF=null,BR=2,BW=25,FW=1,FH=1,RS=3,F=new Float32Array(1),FO=new Float32Array(1),img=null,KR=1,KER=null,KD=0;
+function setupField(){
+  RS=Math.max(2.4,Math.sqrt(W*H/(W*H<400000?30000:55000)));   // small field, upscaled smoothly by the browser
+  FW=Math.ceil(W/RS)+2;FH=Math.ceil(H/RS)+2;sc.width=FW;sc.height=FH;
+  LDPR=Math.min(devicePixelRatio||1,touchy?1.5:2);cv.width=Math.round(W*LDPR);cv.height=Math.round(H*LDPR);cv.style.width=W+"px";cv.style.height=H+"px";
+  F=new Float32Array(FW*FH);FO=new Float32Array(FW*FH);TMP=new Float32Array(Math.max(FW,FH)*2+8);COLS=new Float32Array(FW);BUF=new Float32Array(FW*FH);img=scx.createImageData(FW,FH);
+  BR=Math.max(1,Math.round(HR*.62/RS));BW=(2*BR+1)*(2*BR+1);
+  const inside=BW/((S/RS)*(S/RS));T0=inside*.33;T1=inside*.41;CR=Math.max(1.5,S*.95/RS);   // CR: core radius (field px)   // field value of resting liquid -> surface band
+  const kr=HR*1.1/RS;KD=Math.ceil(kr);KR=kr;KER=new Float32Array((2*KD+1)*(2*KD+1));
+  for(let y=-KD;y<=KD;y++)for(let x=-KD;x<=KD;x++){const d2=(x*x+y*y)/(kr*kr);KER[(y+KD)*(2*KD+1)+x+KD]=d2<1?(1-d2)*(1-d2)*(1-d2):0;}
+}
+let T0=1.3,T1=2.1;
+const SIN=new Float32Array(1024);for(let i=0;i<1024;i++)SIN[i]=Math.sin(i/1024*Math.PI*2);                          // surface threshold band (soft edge)
+function render(){
+  // each particle = one bilinear point; then two box blurs (fast, any radius) give a smooth metaball field
+  F.fill(0);FO.fill(0);const vs=1/(HR*14);
+  // moving particles are smeared back along their path: fast drops become streaks / splashes, not round beads
+  const put=(fx,fy,m)=>{const ix=fx|0,iy=fy|0;if(ix<0||iy<0||ix>=FW-1||iy>=FH-1)return;const ax=fx-ix,ay=fy-iy,o=iy*FW+ix;
+    F[o]+=(1-ax)*(1-ay)*m;F[o+1]+=ax*(1-ay)*m;F[o+FW]+=(1-ax)*ay*m;F[o+FW+1]+=ax*ay*m;};
+  const maxL=S*2.6,step=S*.45;
+  for(let i=0;i<N;i++){const fx=PX[i]/RS+1,fy=PY[i]/RS+1,v=Math.hypot(VX[i],VY[i]);
+    const L=Math.min(maxL,v*.03);if(L<step){put(fx,fy,BW);continue;}
+    const k=1+Math.ceil(L/step),ux=-VX[i]/v*L/RS/(k-1),uy=-VY[i]/v*L/RS/(k-1),m=BW*(1+.5*L/maxL)/k;   // a streak keeps a little more mass so thin splashes still show
+    for(let j=0;j<k;j++)put(fx+ux*j,fy+uy*j,m);}
+  blur(F);blur(F);blur(F);
+  // depth along gravity: 0 at the liquid's top surface, 1 deep down
+  let top=Infinity;for(let i=0;i<N;i++){const pj=PX[i]*gx+PY[i]*gy;if(pj<top)top=pj;}
+  const gl=Math.hypot(gx,gy)||1,dgx=gx/gl*RS/(Math.max(W,H)*.55),dgy=gy/gl*RS/(Math.max(W,H)*.55),d0=-top/gl/(Math.max(W,H)*.55);
+  const tt=performance.now()/1000,cs=RS*.045;
+  const c=COLORS[colorI],br=c[0][0]*.62+c[1][0]*.38,bg=c[0][1]*.62+c[1][1]*.38,bb=c[0][2]*.62+c[1][2]*.38,sr=c[0][0],sg=c[0][1],sb=c[0][2],dr=c[1][0],dg=c[1][1],db=c[1][2],d=img.data;
+  // light from the top-left, viewer in front
+  const Lx=-.45,Ly=-.62,Lz=.64,Hx=Lx,Hy=Ly,Hz=Lz+1,hl=Math.hypot(Hx,Hy,Hz),hx=Hx/hl,hy=Hy/hl,hz=Hz/hl;
+  for(let y=1;y<FH-1;y++){let o=y*FW+1;for(let x=1;x<FW-1;x++,o++){const v=F[o],p=o*4;
+    if(v<T0*.5){d[p]=br;d[p+1]=bg;d[p+2]=bb;d[p+3]=255;continue;}
+    let e=1-(v-T0)/((T1-T0)*1.6);e=e>0?e*e*(2.5/((T1-T0)*1.6)):0;   // light the rim and the surface, keep the inside smooth
+    let nx=(F[o-1]-F[o+1])*e,ny=(F[o-FW]-F[o+FW])*e,nz=1;const nl=Math.sqrt(nx*nx+ny*ny+1);nx/=nl;ny/=nl;nz/=nl;
+    const diff=Math.max(0,nx*Lx+ny*Ly+nz*Lz),sh=Math.max(0,nx*hx+ny*hy+nz*hz),s2=sh*sh,s4=s2*s2,s8=s4*s4,s16=s8*s8,spec=s16*s8*s4*1.1,fres=(1-nz)**2;
+    // one even colour; light only shapes the edges (gloss + a soft rim)
+    const lit=.88+.22*diff,wh=fres*.22;
+    let r=br*lit,g=bg*lit,b=bb*lit;r+=(255-r)*wh;g+=(255-g)*wh;b+=(255-b)*wh;
+    d[p]=r+spec*230;d[p+1]=g+spec*230;d[p+2]=b+spec*230;d[p+3]=255;}}
+  scx.putImageData(img,0,0);
+  // trace the outline at the middle of the surface band and fill it, painted with the shading image
+  const Tm=(T0+T1)*.5;cx2.setTransform(1,0,0,1,0,0);cx2.clearRect(0,0,cv.width,cv.height);cx2.setTransform(LDPR,0,0,LDPR,0,0);
+  traceOutline(Tm);
+  const pat=cx2.createPattern(sc,"no-repeat");if(pat.setTransform)pat.setTransform(new DOMMatrix([RS,0,0,RS,-RS,-RS]));
+  cx2.imageSmoothingEnabled=true;cx2.fillStyle=pat;cx2.globalAlpha=1-.3*flat;cx2.fill("evenodd");cx2.globalAlpha=1;
+}
+
+/* marching squares with linked edges: each blob's outline becomes one closed loop (few hundred points) */
+let EN1=new Int32Array(1),EN2=new Int32Array(1),EXY=new Float32Array(2),EUSED=new Int32Array(1);
+// segment table per cell case: pairs of cell edges (0 top, 1 right, 2 bottom, 3 left); saddles use the cell centre
+const SEG=[[],[3,0],[0,1],[3,1],[1,2],null,[0,2],[3,2],[2,3],[0,2],null,[1,2],[3,1],[0,1],[3,0],[]];
+function traceOutline(Tm){
+  for(let x=0;x<FW;x++){F[x]=0;F[(FH-1)*FW+x]=0;}for(let y=0;y<FH;y++){F[y*FW]=0;F[y*FW+FW-1]=0;}   // closed outlines even where the liquid touches the edge
+  const n2=FW*FH*2;if(EN1.length<n2){EN1=new Int32Array(n2).fill(-1);EN2=new Int32Array(n2).fill(-1);EXY=new Float32Array(n2*2);EUSED=new Int32Array(n2);}
+  let nu=0;
+  const eid=(x,y,k)=>k===0?(y*FW+x)*2:k===2?((y+1)*FW+x)*2:k===3?(y*FW+x)*2+1:(y*FW+x+1)*2+1;
+  const pt=(id,x,y,k,va,vb)=>{if(EN1[id]===-2)return;const t=(Tm-va)/(vb-va);let X,Y;
+    if(k===0){X=x+t;Y=y;}else if(k===2){X=x+t;Y=y+1;}else if(k===3){X=x;Y=y+t;}else{X=x+1;Y=y+t;}
+    EXY[id*2]=(X-1)*RS;EXY[id*2+1]=(Y-1)*RS;};
+  const link=(i,j)=>{if(EN1[i]<0){EN1[i]=j;EUSED[nu++]=i;}else EN2[i]=j;if(EN1[j]<0){EN1[j]=i;EUSED[nu++]=j;}else EN2[j]=i;};
+  for(let y=0;y<FH-1;y++)for(let x=0;x<FW-1;x++){const o=y*FW+x,a=F[o],b=F[o+1],c=F[o+FW+1],d=F[o+FW];
+    const code=(a>=Tm?1:0)|(b>=Tm?2:0)|(c>=Tm?4:0)|(d>=Tm?8:0);if(code===0||code===15)continue;
+    let segs=SEG[code];if(!segs){const cin=(a+b+c+d)*.25>=Tm;segs=code===5?(cin?[0,1,2,3]:[3,0,1,2]):(cin?[3,0,1,2]:[0,1,2,3]);}
+    // edge values: top a-b, right b-c, bottom d-c, left a-d
+    const EV=[[a,b],[b,c],[d,c],[a,d]];
+    for(let q=0;q<segs.length;q+=2){const k1=segs[q],k2=segs[q+1],i1=eid(x,y,k1),i2=eid(x,y,k2);
+      pt(i1,x,y,k1,EV[k1][0],EV[k1][1]);pt(i2,x,y,k2,EV[k2][0],EV[k2][1]);link(i1,i2);}}
+  cx2.beginPath();
+  for(let u=0;u<nu;u++){let id=EUSED[u];if(EN1[id]===-3)continue;const start=id;let prev=-1;
+    cx2.moveTo(EXY[id*2],EXY[id*2+1]);
+    for(let guard=0;guard<100000;guard++){const a1=EN1[id],a2=EN2[id];EN1[id]=-3;const nx=a1!==prev&&a1>=0?a1:a2;if(nx<0||nx===start||EN1[nx]===-3)break;
+      prev=id;id=nx;cx2.lineTo(EXY[id*2],EXY[id*2+1]);}
+    cx2.closePath();}
+  for(let u=0;u<nu;u++){EN1[EUSED[u]]=-1;EN2[EUSED[u]]=-1;}
+}
+
+/* bubbles: a few rising in the liquid, drawn sharp on their own canvas */
+const BUB=[];let fzDpr=1;
+function setupFizz(){fzDpr=Math.min(devicePixelRatio||1,1.5);fz.width=W*fzDpr;fz.height=H*fzDpr;fz.style.width=W+"px";fz.style.height=H+"px";BUB.length=0;}
+function fieldAt(x,y){const ix=(x/RS+1)|0,iy=(y/RS+1)|0;return ix<0||iy<0||ix>=FW||iy>=FH?0:F[iy*FW+ix];}
+function fizz(dt){
+  fzc.setTransform(1,0,0,1,0,0);fzc.clearRect(0,0,fz.width,fz.height);if(!N)return;
+  const want=Math.min(22,N/40|0);while(BUB.length<want)BUB.push({x:0,y:0,r:0,life:-1});
+  const gl=Math.hypot(gx,gy)||1,ux=gx/gl,uy=gy/gl;
+  fzc.setTransform(fzDpr,0,0,fzDpr,0,0);fzc.lineWidth=1.2;
+  for(const b of BUB){
+    if(b.life<0||fieldAt(b.x,b.y)<T1*1.2){const i=Math.random()*N|0;b.x=PX[i];b.y=PY[i];b.r=S*(.12+Math.random()*.22);b.life=0;b.v=0;continue;}
+    b.life+=dt;b.v=Math.min(S*9,b.v+S*30*dt);
+    // ride the liquid + float up against gravity
+    let best=-1,bd=1e9;for(let k=0;k<6;k++){const i=Math.random()*N|0,dx=PX[i]-b.x,dy=PY[i]-b.y,d=dx*dx+dy*dy;if(d<bd){bd=d;best=i;}}
+    if(best>=0&&bd<HR*HR*4){b.x+=VX[best]*dt*.8;b.y+=VY[best]*dt*.8;}
+    b.x-=ux*b.v*dt+Math.sin(b.life*7+b.r)*.3;b.y-=uy*b.v*dt;
+    const a=Math.min(1,b.life*3)*.75;fzc.globalAlpha=a;
+    fzc.beginPath();fzc.arc(b.x,b.y,b.r,0,Math.PI*2);fzc.strokeStyle="rgba(255,255,255,.75)";fzc.stroke();
+    fzc.beginPath();fzc.arc(b.x-b.r*.35,b.y-b.r*.35,b.r*.28,0,Math.PI*2);fzc.fillStyle="#fff";fzc.fill();}
+  fzc.globalAlpha=1;}
+
+function blur(A){ // box blur radius BR: rows then columns, running sums
+  const r=BR,inv=1/(2*r+1),T=TMP;
+  for(let y=0;y<FH;y++){const o=y*FW;let s=0;for(let x=0;x<=r&&x<FW;x++)s+=A[o+x];
+    for(let x=0;x<FW;x++){T[x]=s*inv;const a=x+r+1,b=x-r;if(a<FW)s+=A[o+a];if(b>=0)s-=A[o+b];}
+    for(let x=0;x<FW;x++)A[o+x]=T[x];}
+  // columns, row by row (cache friendly): running column sums
+  const C=COLS,B=BUF;C.fill(0);for(let y=0;y<=r&&y<FH;y++){const o=y*FW;for(let x=0;x<FW;x++)C[x]+=A[o+x];}
+  for(let y=0;y<FH;y++){const o=y*FW,a=(y+r+1)*FW,b=(y-r)*FW,ha=y+r+1<FH,hb=y-r>=0;
+    for(let x=0;x<FW;x++){B[o+x]=C[x]*inv;if(ha)C[x]+=A[a+x];if(hb)C[x]-=A[b+x];}}
+  A.set(B);}
+
+/* ================= vessel ================= */
+function placeVessel(){vessel.style.left=(shp.cx-shp.hw)+"px";vessel.style.top=(shp.cy-shp.hh)+"px";vessel.style.width=(2*shp.hw)+"px";
+  vessel.style.height=(2*shp.hh)+"px";vessel.style.borderRadius=shp.r+"px";vessel.style.opacity=SHAPES[shapeI]==="full"&&morphT>=1?.55:1;}
+const SHAPE_ICON=["M3.5 3.5h17v17h-17z","M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 1 0 0-17z","M6 6h12v12H6z"];
+function setShape(i,anim){shapeI=i;store.set("shape",SHAPES[i]);setScale();shpFrom={...shp};shpTo=shapeRect(i);morphT=anim?0:1;if(!anim)shp=shpTo;
+  const n=targetN();if(n>N)pourQ=n-N;paintTexts();wake();}
+const ease=u=>u<.5?2*u*u:1-(-2*u+2)**2/2;
+function morph(dt){if(morphT>=1)return;morphT=Math.min(1,morphT+dt/.55);const u=ease(morphT);
+  for(const k of["cx","cy","hw","hh","r"])shp[k]=shpFrom[k]+(shpTo[k]-shpFrom[k])*u;placeVessel();}
+
+/* ================= gravity from the phone ================= */
+let FLATT=0,flat=0,RESTE=1.2,lp=null,motionOn=false,motionAsked=false,inv=0,invN=0,invSum=0,lastG=[0,1];
+function onMotion(e){const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;gotMotion=true;
+  // force felt by the liquid = -(measured specific force); device y points up, screen y down
+  let fx=-a.x,fy=a.y;
+  if(invN<12&&Math.abs(a.y)>6&&Math.abs(a.x)<4){invSum+=Math.sign(a.y);invN++;if(invN===12)inv=invSum<-6?1:0;}  // some browsers report the opposite sign
+  if(inv){fx=-fx;fy=-fy;}
+  const ang=((screen.orientation&&screen.orientation.angle)||window.orientation||0)*Math.PI/180,c=Math.cos(ang),s=Math.sin(ang);
+  const X=fx*c+fy*s,Y=-fx*s+fy*c;     // rotate into the current screen orientation
+  // shakes: the quick part of the signal (minus a slow average) is boosted so the liquid sloshes hard
+  if(!lp){lp=[X,Y];}lp[0]+=(X-lp[0])*.12;lp[1]+=(Y-lp[1])*.12;
+  GX=(lp[0]+(X-lp[0])*2.6)/9.81;GY=(lp[1]+(Y-lp[1])*2.6)/9.81;motionOn=true;
+  {const az=Math.abs(a.z||0),al=Math.hypot(a.x,a.y,a.z||0)||1;FLATT=Math.min(1,Math.max(0,(az/al-.45)/.5));}   // phone lying flat -> 1
+  if(Math.hypot(GX-lastG[0],GY-lastG[1])>.03){lastG=[GX,GY];wake();}}
+let gotMotion=false,blockedTold=false;
+function checkMotion(){if(!touchy||blockedTold)return;setTimeout(()=>{if(!gotMotion&&!blockedTold){blockedTold=true;toast(window.isSecureContext===false?t().noSecure:t().noMotion);}},2500);}
+function onOrient(e){if(gotMotion||e.beta==null)return;   // fallback when only orientation is available
+  const b=e.beta*Math.PI/180,g=e.gamma*Math.PI/180;let fx=Math.sin(g)*Math.cos(b),fy=Math.sin(b);
+  const ang=((screen.orientation&&screen.orientation.angle)||window.orientation||0)*Math.PI/180,c=Math.cos(ang),s=Math.sin(ang);
+  GX=fx*c+fy*s;GY=-fx*s+fy*c;motionOn=true;if(Math.hypot(GX-lastG[0],GY-lastG[1])>.03){lastG=[GX,GY];wake();}}
+function askMotion(){checkMotion();if(motionAsked)return;
+  if(typeof DeviceMotionEvent!=="undefined"&&typeof DeviceMotionEvent.requestPermission==="function"){
+    DeviceMotionEvent.requestPermission().then(r=>{motionAsked=true;if(r!=="granted"&&!motionOn)toast(t().noMotion);}).catch(()=>{});   // retried on the next tap if not allowed yet
+    if(typeof DeviceOrientationEvent!=="undefined"&&typeof DeviceOrientationEvent.requestPermission==="function")DeviceOrientationEvent.requestPermission().catch(()=>{});}
+  else motionAsked=true;}
+// listen right away (Android); iPhone only sends events after the permission asked on the first tap
+if(typeof DeviceMotionEvent!=="undefined")addEventListener("devicemotion",onMotion);
+addEventListener("deviceorientation",onOrient);
+
+/* ================= input ================= */
+function ptrPos(e){const r=stage.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];}
+stage.addEventListener("pointerdown",e=>{if(e.target.closest("#tools"))return;askMotion();hideHint();
+  const[x,y]=ptrPos(e),taken=new Uint8Array(N);for(const q of ptrs.values())for(let k=0;k<q.n;k++)if(q.grab[k]<N)taken[q.grab[k]]=1;
+  const R=HR*3,R2=R*R,M=Math.min(N,Math.max(60,N/8|0)),grab=new Int32Array(M),ox=new Float32Array(M),oy=new Float32Array(M);let n=0;
+  for(let i=0;i<N&&n<M;i++){if(taken[i])continue;const rx=PX[i]-x,ry=PY[i]-y;if(rx*rx+ry*ry<R2){grab[n]=i;ox[n]=rx*.7;oy[n]=ry*.7;n++;}}
+  if(n<M*.5){ // not on the liquid (or only its edge): grab the nearest drops, they flow to the finger
+    const idx=Array.from({length:N},(_,i)=>i).filter(i=>!taken[i]),dd=i=>(PX[i]-x)**2+(PY[i]-y)**2;idx.sort((a,b)=>dd(a)-dd(b));
+    n=0;for(const i of idx.slice(0,M)){grab[n]=i;const a=n*2.4,rr=Math.sqrt(n)*S*.55;ox[n]=Math.cos(a)*rr;oy[n]=Math.sin(a)*rr;n++;}}
+  ptrs.set(e.pointerId,{x,y,vx:0,vy:0,lx:x,ly:y,lt:performance.now(),grab,ox,oy,n});stage.classList.add("drag");
+  try{stage.setPointerCapture(e.pointerId);}catch(_){}wake();});
+stage.addEventListener("pointermove",e=>{const ptr=ptrs.get(e.pointerId);if(!ptr)return;const[x,y]=ptrPos(e),now=performance.now(),dt=Math.max(8,now-ptr.lt)/1000;
+  ptr.vx=ptr.vx*.4+(x-ptr.lx)/dt*.6;ptr.vy=ptr.vy*.4+(y-ptr.ly)/dt*.6;ptr.x=x;ptr.y=y;ptr.lx=x;ptr.ly=y;ptr.lt=now;wake();});
+const endPtr=e=>{if(e.type==="pointerup")askMotion();if(ptrs.delete(e.pointerId)&&!ptrs.size)stage.classList.remove("drag");};
+stage.addEventListener("pointerup",endPtr);stage.addEventListener("pointercancel",endPtr);
+function shake(){const s=G0*.55;for(let i=0;i<N;i++){const a=Math.random()*Math.PI*2;VX[i]+=Math.cos(a)*s*.35+(Math.random()-.5)*s;VY[i]+=Math.sin(a)*s*.35-s*.6*Math.random();}wake();}
+function press(b,fn){b.addEventListener("pointerdown",()=>b.classList.add("press"));b.addEventListener("pointerup",()=>b.classList.remove("press"));
+  b.addEventListener("pointerleave",()=>b.classList.remove("press"));b.addEventListener("click",()=>{hideHint();fn();});}
+press($("bShape"),()=>setShape((shapeI+1)%SHAPES.length,true));
+press($("bColor"),()=>{colorI=(colorI+1)%COLORS.length;store.set("color",colorI);paintTexts();wake();});
+press($("bShake"),()=>{askMotion();shake();});
+press($("bSpeed"),()=>{SPI=(SPI+1)%SPEEDS.length;store.set("speed3",SPI);setScale();paintTexts();toast(t().speed+" "+$("spdTxt").textContent);wake();});
+press($("bAmount"),()=>{AMI=(AMI+1)%AMOUNTS.length;store.set("amount",AMI);const n=targetN();if(n>N)pourQ=n-N;paintTexts();toast($("bAmount").getAttribute("aria-label"));wake();});
+let keyG=null;
+addEventListener("keydown",e=>{if(e.target.closest&&e.target.closest("#l102bar"))return;
+  const m={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];
+  if(m){keyG=m;GX=m[0];GY=m[1];hideHint();wake();e.preventDefault();}
+  else if(e.key===" "&&!(e.target.closest&&e.target.closest("button"))){shake();hideHint();e.preventDefault();}});
+
+/* ================= texts, hint, toast ================= */
+function paintTexts(){const T=t();document.title=T.name;$("hTitle").textContent=T.name;$("hText").textContent=touchy?T.hintTouch:T.hintMouse;
+  stage.setAttribute("aria-label",T.stage);
+  const sb=$("bShape"),nx=T.shapes[(shapeI+1)%SHAPES.length];sb.setAttribute("aria-label",T.shape+": "+nx);sb.title=T.shape+": "+nx;
+  $("shapeIcon").setAttribute("d",SHAPE_ICON[(shapeI+1)%SHAPES.length]);
+  const cb=$("bColor");cb.setAttribute("aria-label",T.color+": "+T.colors[colorI]);cb.title=cb.getAttribute("aria-label");
+  $("dropIcon").setAttribute("fill",`rgb(${COLORS[(colorI+1)%COLORS.length][0].join()})`);
+  const kb=$("bShake");kb.setAttribute("aria-label",T.shake);kb.title=T.shake;
+  const dec=x=>L102.lang==="en"?x:x.replace(".",","),sx_="×"+dec(SPEED_TXT[SPI]);
+  const ab=$("bAmount"),al=T.amount+" ×"+dec(AMOUNT_TXT[AMI]);ab.setAttribute("aria-label",al);ab.title=al;const lv=Math.min(1,AMOUNTS[AMI]/1.5);$("amLevel").setAttribute("y",String(21-15*lv));$("spdTxt").textContent=sx_;const sb2=$("bSpeed");sb2.setAttribute("aria-label",T.speed+" "+sx_);sb2.title=sb2.getAttribute("aria-label");
+  $("iTitle").textContent=T.name;$("iText").textContent=T.introText;$("iStart").textContent=T.start;$("iFull").textContent=T.startFull;}
+let hintT=setTimeout(hideHint,7000);
+// phones: a start card first; its tap is the gesture the browser needs to hand over the motion sensor
+const canFull=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);
+if(touchy){$("intro").hidden=false;$("hint").classList.add("off");clearTimeout(hintT);$("iFull").hidden=!canFull;}
+function closeIntro(full){askMotion();$("intro").hidden=true;
+  if(full){const de=document.documentElement;try{const p=(de.requestFullscreen||de.webkitRequestFullscreen).call(de,{navigationUI:"hide"});if(p&&p.catch)p.catch(()=>{});}catch(e){}}}
+$("iStart").addEventListener("click",()=>closeIntro(false));$("iFull").addEventListener("click",()=>closeIntro(true));
+// full screen: keep the screen from rotating (the liquid already follows gravity)
+function onFull(){const fs=document.fullscreenElement||document.webkitFullscreenElement,o=screen.orientation;if(!o)return;
+  try{if(fs&&o.lock){const p=o.lock(innerHeight>=innerWidth?"portrait-primary":"landscape-primary");if(p&&p.catch)p.catch(()=>{});}else if(!fs&&o.unlock)o.unlock();}catch(e){}}
+document.addEventListener("fullscreenchange",onFull);document.addEventListener("webkitfullscreenchange",onFull);
+function hideHint(){clearTimeout(hintT);$("hint").classList.add("off");}
+let toastT=0;function toast(m){const el=$("toast");el.textContent=m;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("on"),4000);}
+addEventListener("l102:lang",paintTexts);
+
+/* ================= main loop (sleeps when the liquid is still) ================= */
+const STATS=/[?&]stats\b/.test(location.search);if(STATS)$("stats").hidden=false;
+let st={f:0,w:0,t0:performance.now()};
+let raf=0,last=0,acc=0,still=0,rt={real:0,lost:0},FL_RT=1;
+const perf={frames:0,sum:0,max:0,reset(){this.frames=0;this.sum=0;this.max=0;}};
+function wake(){still=0;if(!raf&&!document.hidden){last=performance.now();raf=requestAnimationFrame(frame);}}
+function frame(now){raf=0;const t0=performance.now(),raw=(now-last)/1000;let dt=Math.min(.05,raw);last=now;const clip=raw<.5?raw-dt:0;   // time a slow frame could not simulate
+  // smooth the gravity (phone sensors are noisy; keys switch softly)
+  const k=motionOn?1:Math.min(1,dt*7);gx+=(GX-gx)*k;gy+=(GY-gy)*k;   // phone tilt applies at once
+  // flat phone: gravity pushes into the screen, so the liquid spreads into a thinner layer (looser + a bit see-through)
+  flat+=(FLATT-flat)*Math.min(1,dt*3);RESTE=REST*(1-.5*flat);
+  morph(dt);if(pourQ>0)pour();drain();
+  acc+=dt;const h=SUB/Math.sqrt(SPM()),cap=Math.ceil(8*Math.sqrt(Math.max(1,SPM())));let n=0;while(acc>=h&&n<cap){step(h);acc-=h;n++;}
+  let lost=clip;if(n===cap){lost+=acc;acc=0;}
+  // same speed on every phone: if this one can't keep real time, drop some particles until it can
+  rt.real+=dt+clip;rt.lost+=lost;if(rt.real>1.5){const ratio=1-rt.lost/rt.real;FL_RT=ratio;if(ratio<.92&&QUAL>.45){QUAL=Math.max(.45,QUAL*.88);setScale();setupField();}rt.real=0;rt.lost=0;}   // keep real-time speed on slower phones
+  render();fizz(dt);
+  let vm=0;for(let i=0;i<N;i+=3){const v=VX[i]*VX[i]+VY[i]*VY[i];if(v>vm)vm=v;}
+  still=vm<(S*1.6)**2&&Math.abs(FLATT-flat)<.02&&!ptrs.size&&morphT>=1&&!pourQ?still+dt:0;
+  if(STATS){st.f++;st.w+=performance.now()-t0;const now2=performance.now();if(now2-st.t0>500){const sec=(now2-st.t0)/1000;
+    $("stats").textContent=`fps ${(st.f/sec).toFixed(0)}  work ${(st.w/st.f).toFixed(1)}ms\nreal-time ${(FL_RT*100).toFixed(0)}%  particles ${N}\nspeed x${SPEEDS[SPI].toFixed(2)}  g ${G0.toFixed(0)}px/s2\nvessel ${SHAPES[shapeI]} ${W}x${H}  dpr ${devicePixelRatio}`;st.f=0;st.w=0;st.t0=now2;}}
+  const ft=performance.now()-t0;perf.frames++;perf.sum+=ft;if(ft>perf.max)perf.max=ft;
+  if(still<1.2)raf=requestAnimationFrame(frame);}
+document.addEventListener("visibilitychange",()=>{if(document.hidden){if(raf)cancelAnimationFrame(raf);raf=0;}else wake();});
+
+/* ================= layout ================= */
+function layout(){const r=stage.getBoundingClientRect(),oW=W,oH=H;W=Math.round(r.width);H=Math.round(r.height);if(W<10||H<10)return;
+  const first=!oW;setScale();setupField();setupFizz();
+  if(first){shp=shapeRect(shapeI);spawnBlock(targetN());}
+  else{const sx=W/oW,sy=H/oH;for(let i=0;i<N;i++){PX[i]*=sx;PY[i]*=sy;}shp=shapeRect(shapeI);shpTo=shp;morphT=1;
+    const n=targetN();if(n>N)pourQ=n-N;}
+  placeVessel();wake();}
+addEventListener("resize",layout);
+paintTexts();layout();
+
+/* test hooks */
+window.FL={flat:()=>flat,amount:()=>AMOUNTS[AMI],realtime:()=>FL_RT,qual:()=>QUAL,speed:()=>SPEEDS[SPI],pos:i=>[PX[i],PY[i]],tune(o){if('sub' in o)SUB=o.sub;if('g' in o)GM=o.g;if('rest' in o)RESTF=o.rest;if('k' in o)KF=o.k;if('kn' in o)KNF=o.kn;if('vs' in o)VS=o.vs;setScale();},avgSpeed(){let v=0;for(let i=0;i<N;i++)v+=Math.hypot(VX[i],VY[i]);return v/N;},get n(){return N;},target:targetN,shape:()=>SHAPES[shapeI],color:()=>colorI,perf,
+  com(){let x=0,y=0;for(let i=0;i<N;i++){x+=PX[i];y+=PY[i];}return[x/N,y/N];},
+  outside(m){let c=0;for(let i=0;i<N;i++)if(sdf(PX[i],PY[i])>(m||2))c++;return c;},
+  gravity:()=>[gx,gy],running:()=>!!raf,maxSpeed(){let v=0;for(let i=0;i<N;i++)v=Math.max(v,Math.hypot(VX[i],VY[i]));return v;},
+  density(){let s=0;for(let i=0;i<N;i++)s+=RHO[i];return s/N;},S:()=>S,HR:()=>HR,shp:()=>({...shp}),size:()=>[W,H]};
+</script>
+</body>
+</html>
