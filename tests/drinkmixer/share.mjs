@@ -10,9 +10,12 @@ import { join } from "node:path";
 const PAGE = pageUrl("drinkmixer"), SHOTS = shotsDir("drinkmixer");
 const { ok, summary } = checker();
 const local = link => link.replace("https://level102.com/drinkmixer/", PAGE);
-// stubs installed before the page's own scripts: catch any alert/confirm and record share / clipboard calls
+// stubs installed before the page's own scripts: catch any alert/confirm and record share / clipboard calls.
+// Every share sheet here is link-only (picture sharing is share_pic.mjs), so the browser's own canShare is removed
+// too: Chrome on macOS has a real one that accepts files, Chrome on Linux has none
 const STUBS = `window.__alerts=0;window.alert=window.confirm=window.prompt=function(){window.__alerts++;};
   window.__mode=(location.hash.match(/mode=(\\w+)/)||[])[1]||"share";window.__shared=[];window.__clip=[];
+  Object.defineProperty(Navigator.prototype,"canShare",{value:undefined,configurable:true});
   if(window.__mode==="none")Object.defineProperty(Navigator.prototype,"share",{value:undefined,configurable:true});
   else Object.defineProperty(Navigator.prototype,"share",{configurable:true,value:function(d){window.__shared.push(d);
     return window.__mode==="fail"?Promise.reject(new Error("no share target")):window.__mode==="abort"?Promise.reject(new DOMException("cancelled","AbortError")):Promise.resolve();}});

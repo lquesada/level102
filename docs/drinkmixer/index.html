@@ -301,7 +301,7 @@ svg{display:block}
 .name-edit input{flex:1 1 180px}
 .name-edit .btn{min-height:48px;padding:0 14px;font-size:calc(14px * var(--fs))}
 .friend{font-size:calc(12px * var(--fs));font-weight:900;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin:0 0 2px}
-.share{z-index:40;align-items:center}
+.inv.share{z-index:40;align-items:center}
 .share-box{width:min(100%,460px);background:var(--body);border-radius:24px;box-shadow:var(--shadow);padding:16px;display:grid;gap:12px;animation:rise .25s ease}
 .share-box h2{margin:0;font-size:calc(19px * var(--fs));font-weight:900}
 .share-box p{margin:0;font-size:calc(14px * var(--fs));font-weight:700;color:var(--ink2)}
@@ -2848,6 +2848,17 @@ function relocalise(){
     else{showGrid();layoutGrid(true);}
   }
 }
+// a label never splits a word in the middle: system fonts differ per device (San Francisco on Apple is wider), so if
+// a label's longest word is wider than the label, shrink that label's text just enough (never below 70%)
+const FIT_SEL=".seg button,.actions.three .btn",fitCv=document.createElement("canvas").getContext("2d");let fitRaf=0;
+function fitWords(){const els=[...document.querySelectorAll(FIT_SEL)];els.forEach(e=>{if(e.style.fontSize)e.style.fontSize="";});
+  const want=els.map(e=>{if(!e.offsetWidth)return 0;const cs=getComputedStyle(e),f=parseFloat(cs.fontSize),avail=e.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+    fitCv.font=cs.fontWeight+" "+cs.fontSize+" "+cs.fontFamily;const tx=cs.textTransform==="uppercase"?e.textContent.toUpperCase():e.textContent;
+    let w=0;for(const x of tx.split(/[\s\-·,/\u00AD]+/))w=Math.max(w,fitCv.measureText(x).width);return w>avail?Math.max(f*.7,f*avail/w*.97):0;});
+  els.forEach((e,i)=>{if(want[i])e.style.fontSize=want[i]+"px";});}
+const fitSoon=()=>{if(!fitRaf)fitRaf=requestAnimationFrame(()=>{fitRaf=0;fitWords();});};
+new MutationObserver(fitSoon).observe($("#app"),{childList:true,subtree:true,characterData:true});
+addEventListener("resize",fitSoon);addEventListener("l102:fs",fitSoon);
 addEventListener("l102:lang",relocalise);
 addEventListener("l102:fs",()=>{if(!$("#inv").hidden&&V.detailNo===null)layoutGrid(true);});
 applyLang();paintStatic();

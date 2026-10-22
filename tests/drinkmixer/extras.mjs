@@ -11,6 +11,11 @@ const PAGE = pageUrl("drinkmixer"), SHOTS = shotsDir("drinkmixer");
 const { ok, summary } = checker();
 const VIEWS = { phone: [360, 740, true], land: [740, 360, true], desktop: [1280, 800, false] };
 const OS = { en: "en-US", es: "es-ES", de: "de-DE" };
+// with the collection open, no control of the screen underneath may paint above it (the served SHARE button did)
+const ABOVE_INV = `(()=>{const inv=document.querySelector("#inv"),bad=[];if(inv.hidden)return["collection not open"];
+  for(const e of document.querySelectorAll("button,input,a")){if(inv.contains(e)||e.closest("#l102bar")||e.closest("[hidden]"))continue;const r=e.getBoundingClientRect();if(!r.width||!r.height)continue;
+    const t=document.elementFromPoint(Math.min(innerWidth-1,Math.max(0,r.x+r.width/2)),Math.min(innerHeight-1,Math.max(0,r.y+r.height/2)));if(t&&e.contains(t))bad.push(e.dataset.act||e.id||e.className);}
+  return bad;})()`;
 const FULL = "boba|taro,mango,lychee,strawberry|4|4|L|spiral|vitc,b12,multi|tapioca,strawwhip,scoop_van,f_straw,sprinkles|honey|rainbow|stripe|oat|4|crushed|2|3|1|1";
 
 // press a control the way the player would (finger on touch screens, mouse on desktop)
@@ -155,6 +160,7 @@ async function sizeRun(lang, vname) {
     await press(b, "[data-act=save]", touch);
     await b.ev("DrinkMixer.fillInventory(30)"); await press(b, "#invBtn", touch); await sleep(500);
     await layout(b, `${T} collection`, lang); await b.shot(join(SHOTS, `fs_${T}_8_collection.png`));
+    const above = await b.ev(ABOVE_INV); ok(`${T} collection: nothing of the screen underneath shows above it`, above.length === 0, above.join(", "));
     await press(b, "#invSpacer .icell", touch); await press(b, "[data-iact=remove]", touch); await sleep(200);
     await b.ev(`document.querySelector("#invDetail").scrollTop=1e5`); await sleep(100);
     await layout(b, `${T} recipe card + confirm`, lang); await b.shot(join(SHOTS, `fs_${T}_9_recipe.png`));

@@ -1987,7 +1987,7 @@ function toast(msg,ms=3000){const el=$("store");el.textContent=msg;el.classList.
   el.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>el.style.display="none",ms);}
 
 /* ================= texts / language ================= */
-function updateCount(){badgeT=1;const T=total();$("payA").innerHTML=bag.length?amt(T):"";contBtn.setAttribute("aria-label",CT?STR[L102.lang].contAria(bag.length,CT):"");
+function updateCount(){badgeT=1;const T=total(),pa=$("payA"),was=pa.innerHTML;pa.innerHTML=bag.length?amt(T):"";if(pa.innerHTML!==was)fitPay();contBtn.setAttribute("aria-label",CT?STR[L102.lang].contAria(bag.length,CT):"");
   if(phase==="counter")counterChanged();kick();}
 function setTexts(){const L=STR[L102.lang];document.title=L.title;
   for(const [id,k] of[["chg","chg"],["rst","rst"],["rst2","rst"],["arL","left"],["arR","right"],["invBtn","coll"]]){const el=$(id);el.setAttribute("aria-label",L[k]);el.title=L[k];}

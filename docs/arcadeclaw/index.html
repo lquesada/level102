@@ -1312,7 +1312,8 @@ const layers={box:true,
     boxLater=BOXZ<zc;drawList(ctx,back,!boxLater,u);},
   front(ctx){drawList(ctx,frontQ,boxLater,null);},
   claw(ctx,img,hx,hy,a,cox){drawClawHi(img,hx,hy,a,cox);},
-  held(ctx){for(const b of midQ)drawToy(ctx,b);const b=claw.held;if(b)TOYS.draw(ctx,b.t.id,Math.round(b.x),Math.round(b.y-b.z*RISE),b.a,{shade:clamp(b.z/D,0,1)*.55});}};
+  held(ctx){const h=claw.held;   // the held toy hangs at the claw's depth: mid toys in front of it are drawn after it (still behind the front prong)
+    for(const b of midQ)if(!h||b.z>=h.z)drawToy(ctx,b);if(h)TOYS.draw(ctx,h.t.id,Math.round(h.x),Math.round(h.y-h.z*RISE),h.a,{shade:clamp(h.z/D,0,1)*.55});if(h)for(const b of midQ)if(b.z<h.z)drawToy(ctx,b);}};
 /* ---------- main loop ---------- */
 let last=performance.now(),acc=0,raf=0;const perf={frames:0,sum:0,max:0,reset(){this.frames=this.sum=this.max=0;}};
 /* ---------- saved game (localStorage "arcadeclaw.save", versioned): prizes, credits and where every toy is.
