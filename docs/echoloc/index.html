@@ -1,0 +1,1687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<!-- l102-topbar:start  Shared level102 top bar. Copy this whole block VERBATIM into every game (tests check it).
+     HEAD part: paste right after <meta name="viewport">, before the game's own styles, so language and text size are
+     known before the first paint (no flash of English).
+     Gives the page: <html lang> = en|es|de (saved choice > OS language > English), CSS var --fs (text scale 0.8..1.8, default 1.1),
+     a download link (the page itself, offline), a full-screen toggle (hidden where the browser can't do it), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
+     setLang(l), setFs(v), help(open) }, and the events 'l102:lang', 'l102:fs' and 'l102:help' (detail: true = opened, false = closed) on window.
+     A "?" button opens a help panel: "How to play" (from the page's own <template id="l102help-text"> with one <div data-lang="en|es|de">
+     per language, anywhere in the page) + "About" (author, source code, licence). While it is open, keys, clicks and touches don't reach the game. -->
+<style>
+:root{--l102-bar-h:34px;--fs:1.1}
+.l102bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:var(--l102-bar-h);box-sizing:border-box;display:flex;align-items:center;gap:6px;
+  padding:3px max(8px,env(safe-area-inset-right)) 3px max(8px,env(safe-area-inset-left));background:rgba(12,6,28,.55);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:600 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;
+  -webkit-user-select:none;user-select:none;touch-action:manipulation}
+.l102bar a{flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#fff;text-decoration:none;
+  height:28px;line-height:28px;padding:0 10px;border-radius:14px;background:rgba(255,255,255,.14)}
+.l102bar .l102sp{flex:1 1 0;min-width:0}
+.l102bar select,.l102bar button,.l102bar a.l102dl{flex:0 0 auto;height:28px;min-width:32px;margin:0;padding:0 6px;border:0;border-radius:14px;
+  background:rgba(255,255,255,.14);color:#fff;font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center}
+.l102bar select option{color:#000}
+.l102bar a.l102dl,.l102bar #l102full{display:inline-flex;align-items:center;justify-content:center;padding:0 6px;line-height:1}
+.l102bar [hidden]{display:none!important}
+.l102bar a:hover,.l102bar button:hover,.l102bar select:hover{background:rgba(255,255,255,.26)}
+.l102bar a:focus-visible,.l102bar button:focus-visible,.l102bar select:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
+.l102bar button:disabled{opacity:.4;cursor:default}
+@media (max-width:340px){.l102bar{gap:4px}.l102bar a{padding:0 7px}}
+.l102bar #l102help{font-weight:800;font-size:15px}
+.l102dlg{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+  padding:calc(var(--l102-bar-h) + 8px) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+  background:rgba(8,4,20,.6);font:400 calc(var(--fs)*14px)/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;touch-action:pan-y}
+.l102dlg[hidden]{display:none!important}
+.l102box{position:relative;box-sizing:border-box;width:100%;max-width:540px;max-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding:14px 18px 16px;border-radius:16px;background:rgba(28,16,58,.97);box-shadow:0 10px 40px rgba(0,0,0,.5);-webkit-user-select:text;user-select:text;text-align:left}
+.l102box h2{margin:2px 40px 6px 0;font-size:1.25em;line-height:1.2}
+.l102box h2+h2,.l102box #l102how+h2{margin-top:16px}
+.l102box h3{margin:10px 0 4px;font-size:1.02em;color:#ffd84d}
+.l102box p{margin:4px 0}
+.l102box ul{margin:4px 0;padding-left:1.3em}
+.l102box li{margin:2px 0}
+.l102box a{color:#9fd4ff}
+.l102box #l102x{position:absolute;top:8px;right:8px;width:34px;height:34px;border:0;border-radius:17px;background:rgba(255,255,255,.14);color:#fff;
+  font:700 20px/1 system-ui,sans-serif;cursor:pointer}
+.l102box #l102x:hover{background:rgba(255,255,255,.26)}
+.l102box a:focus-visible,.l102box button:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
+</style>
+<script>
+(function(){
+  var LANGS=["en","es","de"],h=document.documentElement,lang=null,fs=1.1;
+  try{lang=localStorage.getItem("l102.lang");fs=parseFloat(localStorage.getItem("l102.fs"))||1.1;}catch(e){}
+  if(LANGS.indexOf(lang)<0){lang="en";var n=navigator.languages||[navigator.language||"en"];
+    for(var i=0;i<n.length;i++){var c=String(n[i]).slice(0,2).toLowerCase();if(LANGS.indexOf(c)>=0){lang=c;break;}}}
+  var clamp=function(v){return Math.round(Math.min(1.8,Math.max(.8,v))*10)/10;};
+  fs=clamp(fs);h.lang=lang;h.style.setProperty("--fs",fs);
+  window.L102={lang:lang,fs:fs,langs:LANGS,
+    setLang:function(l){if(LANGS.indexOf(l)<0||l===this.lang)return;this.lang=l;h.lang=l;try{localStorage.setItem("l102.lang",l);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:lang",{detail:l}));},
+    setFs:function(v){v=clamp(v);if(v===this.fs)return;this.fs=v;h.style.setProperty("--fs",v);try{localStorage.setItem("l102.fs",v);}catch(e){}
+      dispatchEvent(new CustomEvent("l102:fs",{detail:v}));}};
+})();
+</script>
+<!-- l102-topbar:head-end -->
+<title>Echoloc</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3CradialGradient id=%22eg%22 cx=%2250%25%22 cy=%2278%25%22 r=%2280%25%22%3E%3Cstop offset=%220%22 stop-color=%22%230d2a44%22/%3E%3Cstop offset=%221%22 stop-color=%22%23000%22/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22url(%23eg)%22/%3E%3Ccircle cx=%2221.6%22 cy=%2244.0%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2223.5%22 cy=%2241.5%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2226.0%22 cy=%2239.6%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2228.9%22 cy=%2238.4%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2232.0%22 cy=%2238.0%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2235.1%22 cy=%2238.4%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2238.0%22 cy=%2239.6%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2240.5%22 cy=%2241.5%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2242.4%22 cy=%2244.0%22 r=%221.9%22 fill=%22%239fe0ff%22 opacity=%220.95%22/%3E%3Ccircle cx=%2214.7%22 cy=%2240.0%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2216.7%22 cy=%2237.1%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2219.1%22 cy=%2234.7%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2222.0%22 cy=%2232.7%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2225.2%22 cy=%2231.2%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2228.5%22 cy=%2230.3%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2232.0%22 cy=%2230.0%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2235.5%22 cy=%2230.3%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2238.8%22 cy=%2231.2%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2242.0%22 cy=%2232.7%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2244.9%22 cy=%2234.7%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2247.3%22 cy=%2237.1%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%2249.3%22 cy=%2240.0%22 r=%221.6%22 fill=%22%239fe0ff%22 opacity=%220.75%22/%3E%3Ccircle cx=%227.8%22 cy=%2236.0%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%229.8%22 cy=%2233.0%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2212.2%22 cy=%2230.2%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2215.0%22 cy=%2227.8%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2218.0%22 cy=%2225.8%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2221.3%22 cy=%2224.1%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2224.8%22 cy=%2223.0%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2228.3%22 cy=%2222.2%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2232.0%22 cy=%2222.0%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2235.7%22 cy=%2222.2%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2239.2%22 cy=%2223.0%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2242.7%22 cy=%2224.1%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2246.0%22 cy=%2225.8%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2249.0%22 cy=%2227.8%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2251.8%22 cy=%2230.2%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2254.2%22 cy=%2233.0%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2256.2%22 cy=%2236.0%22 r=%221.3%22 fill=%22%239fe0ff%22 opacity=%220.5%22/%3E%3Ccircle cx=%2232%22 cy=%2250%22 r=%223.2%22 fill=%22%23e6f7ff%22/%3E%3Crect x=%2245%22 y=%229%22 width=%2212%22 height=%226%22 rx=%221%22 fill=%22%2329e06a%22 opacity=%22.9%22/%3E%3Ccircle cx=%2212%22 cy=%2213%22 r=%221.4%22 fill=%22%23ff4a3a%22/%3E%3Ccircle cx=%2216%22 cy=%2213%22 r=%221.4%22 fill=%22%23ff4a3a%22/%3E%3C/svg%3E">
+<!-- l102-card: link previews (made by tools/make_cards.mjs; the page never loads card.jpg) -->
+<meta name="description" content="You cannot see. Echolocate through dark halls, find the exit, and don't let them hear you.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="level102">
+<meta property="og:title" content="Echoloc">
+<meta property="og:description" content="You cannot see. Echolocate through dark halls, find the exit, and don't let them hear you.">
+<meta property="og:url" content="https://level102.com/echoloc/">
+<meta property="og:image" content="https://level102.com/echoloc/card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Echoloc">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /l102-card -->
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;font-family:"Courier New",monospace;color:#9fd8ff;user-select:none;-webkit-user-select:none;touch-action:none;-webkit-touch-callout:none}
+  canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
+  #noise{pointer-events:none;opacity:0;image-rendering:pixelated;mix-blend-mode:screen}
+  #vign{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 35%,rgba(160,0,0,.85) 100%)}
+  #flash{position:fixed;inset:0;pointer-events:none;opacity:0;background:#a00}
+  #prompt{position:fixed;left:50%;bottom:8%;transform:translateX(-50%);font-size:calc(15px*var(--fs));letter-spacing:.35em;color:#bfe9ff;
+    text-shadow:0 0 8px #3af,0 0 18px #06f;animation:pulse 2.2s ease-in-out infinite;pointer-events:none;white-space:nowrap}
+  #prompt.hit{animation:none;opacity:1;color:#fff;text-shadow:0 0 14px #fff,0 0 30px #4cf}
+  @keyframes pulse{0%,100%{opacity:.25}50%{opacity:.75}}
+  #info{position:fixed;left:max(16px,env(safe-area-inset-left));top:calc(var(--l102-bar-h) + 10px);font-size:calc(12px*var(--fs));line-height:1.6;color:#5b7f99;pointer-events:none;transition:opacity 2s}
+  #info b{color:#7fc4ff;font-weight:normal}
+  #overlay{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.88);text-align:center;cursor:pointer;padding:16px;box-sizing:border-box}
+  #overlay h1{font-size:clamp(30px,9vw,64px);letter-spacing:.4em;margin:0 0 12px 0.5em;color:#cfefff;text-shadow:0 0 12px #39f,0 0 40px #06f;font-weight:normal}
+  #overlay h1.red{color:#ffb0a0;text-shadow:0 0 12px #f22,0 0 40px #a00}
+  #overlay h1.green{color:#c0ffc8;text-shadow:0 0 12px #2f6,0 0 40px #0a3}
+  #overlay p{max-width:600px;color:#6f93ad;line-height:1.7;font-size:calc(14px*var(--fs));margin:6px 0}
+  #overlay .go{margin-top:26px;font-size:calc(14px*var(--fs));color:#cfefff;letter-spacing:.3em;animation:pulse 1.6s infinite}
+  kbd{color:#bfe9ff;border:1px solid #2a4a66;padding:0 5px;border-radius:3px}
+  #touch{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);z-index:10;display:none;touch-action:none}
+  /* floating stick: inner ring = walk, push the knob past the dashed outer ring = run */
+  #stickBase{position:fixed;width:208px;height:208px;margin:-104px 0 0 -104px;border-radius:50%;border:2px dashed rgba(255,150,130,.38);pointer-events:none;box-sizing:border-box}
+  #stickBase::before{content:"";position:absolute;left:50%;top:50%;width:130px;height:130px;margin:-65px 0 0 -65px;border-radius:50%;border:2px solid rgba(120,200,255,.32);background:rgba(20,60,100,.1);box-sizing:border-box}
+  #stickRun{position:absolute;left:0;right:0;top:-2px;transform:translateY(-100%);text-align:center;font-size:calc(11px*var(--fs));letter-spacing:.25em;color:rgba(255,170,150,.75)}
+  #stickBase.run{border-color:rgba(255,140,120,.85);border-style:solid}
+  #stickKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(120,200,255,.25);border:2px solid rgba(160,220,255,.5);box-sizing:border-box}
+  #stickKnob.run{background:rgba(255,120,100,.4);border-color:rgba(255,160,140,.8)}
+  #lookHint{position:fixed;right:max(4%,env(safe-area-inset-right));bottom:9%;width:120px;height:120px;border-radius:50%;border:2px dotted rgba(120,200,255,.3);
+    display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(10px*var(--fs));letter-spacing:.12em;line-height:1.5;color:rgba(160,215,255,.6);pointer-events:none;transition:opacity 1.5s}
+  .tapFx{position:fixed;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:2px solid #9fe0ff;box-shadow:0 0 18px #3af;pointer-events:none;animation:tapfx .45s ease-out forwards}
+  @keyframes tapfx{from{transform:scale(.3);opacity:1}to{transform:scale(1.6);opacity:0}}
+  #rotate{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    background:#000;color:#cfefff;text-align:center;padding:16px;box-sizing:border-box;font-size:calc(15px*var(--fs));letter-spacing:.2em}
+  #rotate p{margin:0;color:#6f93ad;letter-spacing:.05em;font-size:calc(13px*var(--fs))}
+  #rotate svg{animation:tilt 2.4s ease-in-out infinite}
+  @keyframes tilt{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+  @media (orientation:portrait){html.touch #rotate{display:flex}}
+  html:fullscreen #info{display:none}
+  html:-webkit-full-screen #info{display:none}
+  .sub{margin-top:10px;font-size:calc(12px*var(--fs));color:#5b7f99}
+  #toast{position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:50;font-size:calc(13px*var(--fs));white-space:nowrap;letter-spacing:.3em;color:#ffe9a0;text-shadow:0 0 10px #f90;opacity:0;transition:opacity .4s;pointer-events:none}
+  @media (max-height:520px){
+    #overlay{justify-content:flex-start;overflow-y:auto;padding-top:10px}
+    #overlay h1{font-size:34px;margin-bottom:4px}
+    #overlay p{font-size:calc(11px*var(--fs));line-height:1.45;margin:3px 0}
+    #overlay .go{margin-top:10px}
+    #info{font-size:calc(10px*var(--fs))}
+  }
+</style>
+</head>
+<body>
+<!-- BODY part: paste as the very first thing inside <body>. -->
+<nav class="l102bar" id="l102bar">
+  <a id="l102back" href="https://level102.com">&lsaquo; Back to level102.com</a>
+  <span class="l102sp"></span>
+  <button type="button" id="l102help" aria-label="Help" title="Help" aria-haspopup="dialog">?</button>
+  <select id="l102lang" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option></select>
+  <button type="button" id="l102minus" aria-label="Smaller text">A&minus;</button>
+  <button type="button" id="l102plus" aria-label="Bigger text">A+</button>
+  <button type="button" id="l102full" aria-label="Full screen" title="Full screen"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path id="l102fullp" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <a class="l102dl" id="l102dl" href="./" download="level102.html" aria-label="Download for offline use" title="Download for offline use"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</nav>
+<div class="l102dlg" id="l102dlg" role="dialog" aria-modal="true" aria-labelledby="l102how-h" hidden><div class="l102box">
+  <button type="button" id="l102x" aria-label="Close">&times;</button>
+  <h2 id="l102how-h">How to play</h2><div id="l102how"></div>
+  <h2 id="l102about-h">About</h2><div id="l102about"></div>
+</div></div>
+<script>
+(function(){
+  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen","Help","How to play","About","Close",
+    "Made by Luis Quesada.","It is free software (GNU GPL v3 or later): you can play it, share it and change it.","Source code on GitHub"],
+         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa","Ayuda","Cómo se juega","Acerca de","Cerrar",
+    "Hecho por Luis Quesada.","Es software libre (GNU GPL v3 o posterior): puedes jugarlo, compartirlo y modificarlo.","Código fuente en GitHub"],
+         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden","Hilfe","So wird gespielt","Über","Schließen",
+    "Gemacht von Luis Quesada.","Es ist freie Software (GNU GPL v3 oder neuer): Du darfst es spielen, teilen und verändern.","Quellcode auf GitHub"]};
+  var back=document.getElementById("l102back"),sel=document.getElementById("l102lang"),
+      minus=document.getElementById("l102minus"),plus=document.getElementById("l102plus"),dl=document.getElementById("l102dl"),
+      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement,
+      help=document.getElementById("l102help"),dlg=document.getElementById("l102dlg"),x=document.getElementById("l102x"),
+      how=document.getElementById("l102how"),howH=document.getElementById("l102how-h"),about=document.getElementById("l102about"),aboutH=document.getElementById("l102about-h");
+  // help panel: the page's <template id="l102help-text"> (one <div data-lang> per language) + About; the game gets 'l102:help' to pause
+  function fillHelp(){var t=T[L102.lang],tp=d.getElementById("l102help-text"),c=tp&&tp.content,
+      el=c&&(c.querySelector('[data-lang="'+L102.lang+'"]')||c.querySelector('[data-lang="en"]'));
+    how.innerHTML="";if(el)how.appendChild(el.cloneNode(true));howH.hidden=how.hidden=!el;dlg.setAttribute("aria-labelledby",el?"l102how-h":"l102about-h");
+    howH.textContent=t[8];aboutH.textContent=t[9];x.setAttribute("aria-label",t[10]);x.title=t[10];
+    about.innerHTML="<p>"+t[11]+"</p><p>"+t[12]+"</p><p><a href=\"https://github.com/lquesada/level102\" target=\"_blank\" rel=\"noopener\">"+t[13]+": github.com/lquesada/level102</a></p>";}
+  function openHelp(o){o=!!o;if(o===!dlg.hidden)return;if(o){fillHelp();dlg.hidden=false;try{d.exitPointerLock&&d.pointerLockElement&&d.exitPointerLock();}catch(e){}
+      dlg.querySelector(".l102box").scrollTop=0;x.focus();}else{dlg.hidden=true;help.focus();}
+    help.setAttribute("aria-expanded",o);dispatchEvent(new CustomEvent("l102:help",{detail:o}));}
+  L102.help=openHelp;
+  help.addEventListener("click",function(e){e.stopPropagation();openHelp(dlg.hidden);});
+  x.addEventListener("click",function(){openHelp(false);});
+  dlg.addEventListener("click",function(e){if(e.target===dlg)openHelp(false);});
+  // nothing inside the panel reaches the game underneath
+  ["pointerdown","pointerup","pointermove","mousedown","mouseup","mousemove","click","dblclick","contextmenu","wheel","touchstart","touchmove","touchend","touchcancel"]
+    .forEach(function(n){dlg.addEventListener(n,function(e){e.stopPropagation();},{passive:true});});
+  ["keydown","keyup","keypress"].forEach(function(n){addEventListener(n,function(e){if(dlg.hidden)return;e.stopImmediatePropagation();
+    if(n==="keydown"&&e.key==="Escape"){e.preventDefault();openHelp(false);}},true);});
+  // full screen: browser's own exit (Esc, Android back) also works; hidden where unsupported (e.g. iPhone)
+  function isFull(){return !!(d.fullscreenElement||d.webkitFullscreenElement);}
+  if(!(d.fullscreenEnabled||d.webkitFullscreenEnabled))full.hidden=true;
+  full.addEventListener("click",function(){try{var p=isFull()?(d.exitFullscreen||d.webkitExitFullscreen).call(d)
+    :(de.requestFullscreen||de.webkitRequestFullscreen).call(de,{navigationUI:"hide"});if(p&&p.catch)p.catch(function(){});}catch(e){}});
+  d.addEventListener("fullscreenchange",paint);d.addEventListener("webkitfullscreenchange",paint);
+  // download = this very page (one self-contained file), named after its folder: /drinkmixer/ -> drinkmixer.html
+  var parts=location.pathname.split("/").filter(Boolean),last=parts[parts.length-1]||"";
+  if(/\.html?$/.test(last))last=parts[parts.length-2]||"";
+  dl.href=location.href.split("#")[0].split("?")[0];dl.setAttribute("download",(last&&last!=="docs"?last:"level102")+".html");
+  function paint(){var t=T[L102.lang];back.textContent="‹ "+t[0];sel.value=L102.lang;sel.setAttribute("aria-label",t[1]);
+    minus.setAttribute("aria-label",t[2]);minus.title=t[2];plus.setAttribute("aria-label",t[3]);plus.title=t[3];
+    dl.setAttribute("aria-label",t[4]);dl.title=t[4];
+    var f=isFull();full.setAttribute("aria-label",t[f?6:5]);full.title=t[f?6:5];full.setAttribute("aria-pressed",f);
+    fullp.setAttribute("d",f?"M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5":"M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5");
+    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;help.setAttribute("aria-label",t[7]);help.title=t[7];if(!dlg.hidden)fillHelp();}
+  sel.addEventListener("change",function(){L102.setLang(sel.value);});
+  minus.addEventListener("click",function(){L102.setFs(L102.fs-.1);});
+  plus.addEventListener("click",function(){L102.setFs(L102.fs+.1);});
+  addEventListener("l102:lang",paint);addEventListener("l102:fs",paint);paint();
+})();
+</script>
+<!-- l102-topbar:end -->
+<canvas id="gl"></canvas>
+<canvas id="noise" width="200" height="112"></canvas>
+<div id="vign"></div>
+<div id="flash"></div>
+<div id="prompt"></div>
+<div id="toast"></div>
+<div id="touch"><div id="stickBase"><div id="stickRun"></div><div id="stickKnob"></div></div><div id="lookHint"></div></div>
+<div id="info"></div>
+<div id="overlay"></div>
+<div id="rotate"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="20" y="6" width="24" height="52" rx="5" fill="none" stroke="#9fd8ff" stroke-width="3"/><circle cx="32" cy="51" r="2.5" fill="#9fd8ff"/></svg><div id="rotT"></div><p id="rotP"></p></div>
+<script>
+'use strict';
+// safety net: on any error, free the mouse and say what happened
+function crash(msg){ try{ document.exitPointerLock&&document.exitPointerLock(); }catch(e){}
+  const o=document.getElementById('overlay'); if(!o) return;
+  ovState={k:'error',msg}; try{ o.innerHTML=overlayHTML(ovState); }catch(e){ o.textContent=String(msg); } o.style.display='flex'; }
+// no WebGL: the page shows its NO WEBGL screen and stops quietly (no error report, no ERROR screen on top)
+window.addEventListener('error',e=>{ if(ovState&&ovState.k==='noGL'){ e.preventDefault(); return; } crash(e.message); });
+window.addEventListener('unhandledrejection',e=>crash(e.reason));
+// =====================================================================
+//  TEXTS (EN/ES/DE; L102 = the shared level102 top bar)
+// =====================================================================
+const isTouch=matchMedia('(pointer:coarse)').matches||(('ontouchstart' in window)&&navigator.maxTouchPoints>0);
+if(isTouch) document.documentElement.classList.add('touch');
+const STR={
+ en:{intro1:'You cannot see. Click your tongue to see.',
+  intro2:'Something lives in these halls. It cannot see either, but it hears everything. Echo too close, or too often, and it will come. When it runs, it screams. When it screams, others answer.',
+  ctlPC:'<kbd>WASD</kbd> move · <kbd>MOUSE</kbd> look · <kbd>SHIFT</kbd> run · <kbd>SPACE</kbd> echolocate · <kbd>F</kbd> full screen · headphones recommended',
+  ctlTouch:'<kbd>LEFT THUMB</kbd> move · push it past the dashed ring to <kbd>RUN</kbd> · <kbd>RIGHT THUMB</kbd> drag to look · <kbd>DOUBLE-TAP</kbd> the right side to echolocate · headphones recommended',
+  fsNote:'Plays in full screen, with the phone sideways.',
+  begin:['CLICK TO BEGIN','TAP TO BEGIN'],prompt:['PRESS [ SPACE ]','DOUBLE-TAP [ RIGHT SIDE ]'],
+  info1:'<b>FIND THE EXIT</b> — follow the green signs',
+  infoPC:'<kbd>WASD</kbd> move &nbsp; <kbd>MOUSE</kbd> look &nbsp; <kbd>SHIFT</kbd> run (loud)<br><kbd>SPACE</kbd> echolocate — they hear echoes &amp; running; when they click, freeze.',
+  infoTouch:'left thumb: move, push far to run · right thumb: look, double-tap to echo<br>they hear echoes &amp; running; when they click, freeze.',
+  paused:'PAUSED',pausedMsg:'The dark waits.',resume:['CLICK TO RESUME','TAP TO RESUME'],
+  won:'ESCAPED',wonMsg:'You found the exit in {s} s.',again:['CLICK TO PLAY AGAIN','TAP TO PLAY AGAIN'],
+  dead:'CONSUMED',deadMsg:'It heard you.',retry:['CLICK TO TRY AGAIN','TAP TO TRY AGAIN'],
+  error:'ERROR',restart:['CLICK TO RESTART','TAP TO RESTART'],
+  noGL:'NO WEBGL',noGLMsg:'This browser has WebGL turned off. Try Chrome or Firefox with hardware acceleration on.',
+  rot:'TURN YOUR PHONE SIDEWAYS',rotMsg:'Echoloc is played in landscape.',rotTap:'Or tap here to play in full screen.',run:'RUN',look:'DRAG<br>TO LOOK<br><br>DOUBLE-TAP<br>TO ECHO',
+  dbgOn:'DEBUG LIGHTS ON',dbgOff:'DEBUG LIGHTS OFF'},
+ es:{intro1:'No puedes ver. Chasquea la lengua para ver.',
+  intro2:'Algo vive en estos pasillos. Tampoco ve, pero lo oye todo. Si haces eco demasiado cerca o demasiado a menudo, vendrá. Cuando corre, chilla. Cuando chilla, otros responden.',
+  ctlPC:'<kbd>WASD</kbd> moverte · <kbd>RATÓN</kbd> mirar · <kbd>MAYÚS</kbd> correr · <kbd>ESPACIO</kbd> ecolocalizar · <kbd>F</kbd> pantalla completa · mejor con auriculares',
+  ctlTouch:'<kbd>PULGAR IZQUIERDO</kbd> moverte · empújalo más allá del anillo discontinuo para <kbd>CORRER</kbd> · <kbd>PULGAR DERECHO</kbd> arrastra para mirar · <kbd>DOBLE TOQUE</kbd> a la derecha para ecolocalizar · mejor con auriculares',
+  fsNote:'Se juega en pantalla completa, con el móvil en horizontal.',
+  begin:['HAZ CLIC PARA EMPEZAR','TOCA PARA EMPEZAR'],prompt:['PULSA [ ESPACIO ]','DOBLE TOQUE [ A LA DERECHA ]'],
+  info1:'<b>ENCUENTRA LA SALIDA</b>: sigue las señales verdes',
+  infoPC:'<kbd>WASD</kbd> moverte &nbsp; <kbd>RATÓN</kbd> mirar &nbsp; <kbd>MAYÚS</kbd> correr (hace ruido)<br><kbd>ESPACIO</kbd> ecolocalizar: oyen los ecos y las carreras; cuando chasquean, quieto.',
+  infoTouch:'pulgar izquierdo: moverte, empuja lejos para correr · pulgar derecho: mirar, doble toque para el eco<br>oyen los ecos y las carreras; cuando chasquean, quieto.',
+  paused:'PAUSA',pausedMsg:'La oscuridad espera.',resume:['HAZ CLIC PARA SEGUIR','TOCA PARA SEGUIR'],
+  won:'ESCAPASTE',wonMsg:'Encontraste la salida en {s} s.',again:['HAZ CLIC PARA JUGAR OTRA VEZ','TOCA PARA JUGAR OTRA VEZ'],
+  dead:'DEVORADO',deadMsg:'Te ha oído.',retry:['HAZ CLIC PARA REINTENTAR','TOCA PARA REINTENTAR'],
+  error:'ERROR',restart:['HAZ CLIC PARA REINICIAR','TOCA PARA REINICIAR'],
+  noGL:'SIN WEBGL',noGLMsg:'Este navegador tiene WebGL desactivado. Prueba Chrome o Firefox con la aceleración por hardware activada.',
+  rot:'GIRA EL MÓVIL',rotMsg:'Echoloc se juega en horizontal.',rotTap:'O toca aquí para jugar en pantalla completa.',run:'CORRER',look:'ARRASTRA<br>PARA MIRAR<br><br>DOBLE TOQUE<br>PARA EL ECO',
+  dbgOn:'LUCES DE DEPURACIÓN: SÍ',dbgOff:'LUCES DE DEPURACIÓN: NO'},
+ de:{intro1:'Du kannst nichts sehen. Schnalze mit der Zunge, um zu sehen.',
+  intro2:'Etwas lebt in diesen Gängen. Es kann auch nicht sehen, aber es hört alles. Ein Echo zu nah oder zu oft, und es kommt. Wenn es rennt, kreischt es. Wenn es kreischt, antworten andere.',
+  ctlPC:'<kbd>WASD</kbd> gehen · <kbd>MAUS</kbd> umsehen · <kbd>SHIFT</kbd> rennen · <kbd>LEERTASTE</kbd> Echo · <kbd>F</kbd> Vollbild · am besten mit Kopfhörern',
+  ctlTouch:'<kbd>LINKER DAUMEN</kbd> gehen · über den gestrichelten Ring hinaus schieben zum <kbd>RENNEN</kbd> · <kbd>RECHTER DAUMEN</kbd> ziehen zum Umsehen · rechts <kbd>DOPPELT TIPPEN</kbd> für ein Echo · am besten mit Kopfhörern',
+  fsNote:'Wird im Vollbild und mit quer gehaltenem Handy gespielt.',
+  begin:['KLICKEN ZUM STARTEN','TIPPEN ZUM STARTEN'],prompt:['DRÜCKE [ LEERTASTE ]','DOPPELT TIPPEN [ RECHTS ]'],
+  info1:'<b>FINDE DEN AUSGANG</b>: folge den grünen Schildern',
+  infoPC:'<kbd>WASD</kbd> gehen &nbsp; <kbd>MAUS</kbd> umsehen &nbsp; <kbd>SHIFT</kbd> rennen (laut)<br><kbd>LEERTASTE</kbd> Echo: sie hören Echos und Rennen; wenn sie klicken, erstarre.',
+  infoTouch:'linker Daumen: gehen, weit schieben zum Rennen · rechter Daumen: umsehen, doppelt tippen für ein Echo<br>sie hören Echos und Rennen; wenn sie klicken, erstarre.',
+  paused:'PAUSE',pausedMsg:'Die Dunkelheit wartet.',resume:['KLICKEN ZUM WEITERSPIELEN','TIPPEN ZUM WEITERSPIELEN'],
+  won:'ENTKOMMEN',wonMsg:'Du hast den Ausgang in {s} s gefunden.',again:['KLICKEN FÜR EIN NEUES SPIEL','TIPPEN FÜR EIN NEUES SPIEL'],
+  dead:'GEFRESSEN',deadMsg:'Es hat dich gehört.',retry:['KLICKEN FÜR EINEN NEUEN VERSUCH','TIPPEN FÜR EINEN NEUEN VERSUCH'],
+  error:'FEHLER',restart:['KLICKEN ZUM NEUSTART','TIPPEN ZUM NEUSTART'],
+  noGL:'KEIN WEBGL',noGLMsg:'In diesem Browser ist WebGL ausgeschaltet. Probiere Chrome oder Firefox mit eingeschalteter Hardwarebeschleunigung.',
+  rot:'HANDY QUER HALTEN',rotMsg:'Echoloc wird im Querformat gespielt.',rotTap:'Oder hier tippen, um im Vollbild zu spielen.',run:'RENNEN',look:'ZIEHEN<br>ZUM UMSEHEN<br><br>DOPPELT TIPPEN<br>FÜR ECHO',
+  dbgOn:'DEBUG-LICHT AN',dbgOff:'DEBUG-LICHT AUS'}};
+const lang=()=>(window.L102&&STR[L102.lang])?L102.lang:'en';
+function T(k,a){ let v=STR[lang()][k]; if(Array.isArray(v)) v=v[isTouch?1:0]; if(a) for(const n in a) v=v.replace('{'+n+'}',a[n]); return v; }
+// the overlay is described by a state so a language switch can redraw it in place
+let ovState={k:'start'};
+function overlayHTML(st){
+  if(st.k==='start') return `<h1>ECHOLOC</h1><p>${T('intro1')}</p><p>${T('intro2')}</p><p id="ctl">${T(isTouch?'ctlTouch':'ctlPC')}</p>`
+    +(isTouch&&fsSupported?`<div class="sub">${T('fsNote')}</div>`:'')+`<div class="go">${T('begin')}</div>`;
+  const M={paused:['','pausedMsg','resume'],won:['green','wonMsg','again'],dead:['red','deadMsg','retry'],error:['red',null,'restart'],noGL:['red','noGLMsg',null]}[st.k];
+  const msg=M[1]?T(M[1],st.a):String(st.msg).replace(/</g,'&lt;');
+  return `<h1 class="${M[0]}">${T(st.k)}</h1><p>${msg}</p>${M[2]?`<div class="go">${T(M[2])}</div>`:''}`;
+}
+function paintTexts(){
+  const o=document.getElementById('overlay'); if(o) o.innerHTML=overlayHTML(ovState);
+  document.getElementById('prompt').textContent=T('prompt');
+  document.getElementById('info').innerHTML=T('info1')+'<br>'+T(isTouch?'infoTouch':'infoPC');
+  document.getElementById('stickRun').textContent=T('run'); document.getElementById('lookHint').innerHTML=T('look');
+  document.getElementById('rotT').textContent=T('rot'); document.getElementById('rotP').textContent=T('rotMsg')+(fsSupported?' '+T('rotTap'):'');
+  document.title='Echoloc';
+}
+addEventListener('l102:lang',paintTexts);
+// =====================================================================
+//  RNG / helpers
+// =====================================================================
+let seed = (Date.now() ^ 0x9e3779b9) >>> 0;
+function rnd(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+const R = (a,b)=>a+(b-a)*rnd();
+const RI = (a,b)=>Math.floor(a+(b-a+1)*rnd());
+const MR = (a,b)=>a+(b-a)*Math.random();
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+const smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);};
+
+// =====================================================================
+//  LEVEL
+// =====================================================================
+const W=92, H=92, MAXH=4.6, EYE=1.6;
+const T_WALL=0,T_ROOM=1,T_COR=2,T_DOOR=3;
+const MAT_REFL=[0.14,0.82,0.05]; // plain, reverb (tiles), carpet
+const K_WALL=1,K_CEIL=2,K_FURN=3,K_FLOOR=4,K_TOP=5,K_MON=6,K_LOCK=7;
+let cellType, roomOf, ceilH, walk, reserved, cellBoxes, boxArr, BX, rooms, startCell, exitInfo, signs, exitDist, walkCount, monsters=[];
+
+const idx=(x,z)=>z*W+x;
+const inb=(x,z)=>x>=0&&z>=0&&x<W&&z<H;
+const walkAt=(x,z)=>{const cx=Math.floor(x),cz=Math.floor(z);return inb(cx,cz)&&walk[idx(cx,cz)]===1;};
+
+function addBox(x0,y0,z0,x1,y1,z1,kind){
+  const bi=boxArr.length/7;
+  boxArr.push(x0,y0,z0,x1,y1,z1,kind);
+  for(let z=Math.floor(z0);z<=Math.floor(z1-1e-4);z++)
+    for(let x=Math.floor(x0);x<=Math.floor(x1-1e-4);x++){
+      if(!inb(x,z)||kind===K_WALL||kind===K_CEIL) continue; const i=idx(x,z); // walls/ceilings are traced analytically
+      (cellBoxes[i]||(cellBoxes[i]=[])).push(bi);
+    }
+}
+
+let cbS=null, cbI=null, castCeil=null, mat=null, startInfo=null, carveMain=false, mainCor=null, exitCell=null, footprint=null;
+function carveCell(x,z){ if(x<1||z<1||x>=W-1||z>=H-1) return; const i=idx(x,z); if(cellType[i]===T_WALL) cellType[i]=T_COR; if(carveMain&&cellType[i]===T_COR) mainCor[i]=1; }
+function carveH(xa,xb,z,w){ for(let x=Math.min(xa,xb);x<=Math.max(xa,xb)+w-1;x++) for(let k=0;k<w;k++) carveCell(x,z+k); }
+function carveV(za,zb,x,w){ for(let z=Math.min(za,zb);z<=Math.max(za,zb)+w-1;z++) for(let k=0;k<w;k++) carveCell(x+k,z); }
+function carveBetween(x0,z0,x1,z1,main){
+  carveMain=!!main;
+  const w=rnd()<0.55?2:3; // 2-3m wide halls
+  const seg=(a,b,c,d)=>{ if(rnd()<.5){carveH(a,c,b,w);carveV(b,d,c,w);} else {carveV(b,d,a,w);carveH(a,c,d,w);} };
+  if(rnd()<0.6){ // dog-leg through a random waypoint -> twistier halls
+    const mx=clamp(Math.floor(lerp(x0,x1,R(0.25,0.75)))+RI(-6,6),2,W-5), mz=clamp(Math.floor(lerp(z0,z1,R(0.25,0.75)))+RI(-6,6),2,H-5);
+    seg(x0,z0,mx,mz); seg(mx,mz,x1,z1);
+  } else seg(x0,z0,x1,z1);
+  carveMain=false;
+}
+function carveCorridor(A,B,main){ carveBetween(Math.floor(A.cx),Math.floor(A.cz),Math.floor(B.cx),Math.floor(B.cz),main); }
+
+function bfs(startI, grid){
+  const d=new Int16Array(W*H).fill(-1), q=new Int32Array(W*H); let h=0,t=0;
+  if(!grid[startI]) return d;
+  d[startI]=0; q[t++]=startI;
+  while(h<t){ const c=q[h++], cx=c%W, cz=(c/W)|0, nd=d[c]+1;
+    if(cx>0   &&grid[c-1]&&d[c-1]<0){d[c-1]=nd;q[t++]=c-1;}
+    if(cx<W-1 &&grid[c+1]&&d[c+1]<0){d[c+1]=nd;q[t++]=c+1;}
+    if(cz>0   &&grid[c-W]&&d[c-W]<0){d[c-W]=nd;q[t++]=c-W;}
+    if(cz<H-1 &&grid[c+W]&&d[c+W]<0){d[c+W]=nd;q[t++]=c+W;}
+  }
+  return d;
+}
+function reachCount(){ const d=bfs(startCell,walk); let n=0; for(let i=0;i<d.length;i++) if(d[i]>=0) n++; return n; }
+
+function tryPlace(cells, bx){
+  for(const c of cells) if(c<0||!walk[c]||reserved[c]) return false;
+  for(const c of cells) walk[c]=0;
+  walkCount-=cells.length;
+  if(reachCount()!==walkCount){ for(const c of cells) walk[c]=1; walkCount+=cells.length; return false; }
+  for(const b of bx) addBox(b[0],b[1],b[2],b[3],b[4],b[5],K_FURN);
+  for(const c of cells){ const cx=c%W, cz=(c/W)|0; let x0=1e9,z0=1e9,x1=-1e9,z1=-1e9;
+    for(const b of bx){ if(b[1]>1.6) continue; x0=Math.min(x0,Math.max(b[0],cx)); z0=Math.min(z0,Math.max(b[2],cz)); x1=Math.max(x1,Math.min(b[3],cx+1)); z1=Math.max(z1,Math.min(b[5],cz+1)); }
+    if(x1<x0){ x0=cx;z0=cz;x1=cx+1;z1=cz+1; } footprint[c*4]=x0; footprint[c*4+1]=z0; footprint[c*4+2]=x1; footprint[c*4+3]=z1; }
+  return true;
+}
+// rect inside cell against a wall side (dx,dz): depth d0..d1 from wall, along a0..a1
+function wallRect(x,z,dx,dz,d0,d1,a0,a1,y0,y1){
+  if(dx===-1) return [x+d0,y0,z+a0,x+d1,y1,z+a1];
+  if(dx=== 1) return [x+1-d1,y0,z+a0,x+1-d0,y1,z+a1];
+  if(dz===-1) return [x+a0,y0,z+d0,x+a1,y1,z+d1];
+  return [x+a0,y0,z+1-d1,x+a1,y1,z+1-d0];
+}
+function makeShelf(x,z,dx,dz){
+  const b=[], h=R(1.6,2.2);
+  b.push(wallRect(x,z,dx,dz,0,0.45,0.03,0.07,0,h));
+  b.push(wallRect(x,z,dx,dz,0,0.45,0.93,0.97,0,h));
+  b.push(wallRect(x,z,dx,dz,0,0.03,0.03,0.97,0,h));
+  for(let y=0.08;y<h;y+=R(0.38,0.48)){
+    b.push(wallRect(x,z,dx,dz,0.02,0.45,0.05,0.95,y,y+0.03));
+    let a=0.1; while(a<0.85){ const w=R(0.06,0.22); if(rnd()<.65){ const hh=R(0.08,0.3); b.push(wallRect(x,z,dx,dz,R(0.05,0.15),R(0.25,0.42),a,Math.min(0.92,a+w),y+0.03,y+0.03+hh)); } a+=w+R(0.02,0.1); }
+  }
+  return b;
+}
+function makeCabinet(x,z,dx,dz){ const h=R(1.0,1.4); const b=[wallRect(x,z,dx,dz,0,0.6,0.15,0.85,0,h)];
+  for(let y=0.3;y<h;y+=0.35) b.push(wallRect(x,z,dx,dz,0.6,0.62,0.4,0.6,y,y+0.03)); return b; }
+function makeTable(x,z){ const y=R(0.7,0.78), b=[[x+0.04,y,z+0.04,x+0.96,y+0.05,z+0.96]];
+  for(const [a,c] of [[0.08,0.08],[0.85,0.08],[0.08,0.85],[0.85,0.85]]) b.push([x+a,0,z+c,x+a+0.07,y,z+c+0.07]);
+  if(rnd()<.6) b.push([x+R(.1,.5),y+.05,z+R(.1,.5),x+R(.55,.9),y+.05+R(.02,.3),z+R(.55,.9)]);
+  return b; }
+function makeChair(x,z){ const b=[[x+0.3,0.42,z+0.3,x+0.7,0.47,z+0.7]];
+  for(const [a,c] of [[0.3,0.3],[0.65,0.3],[0.3,0.65],[0.65,0.65]]) b.push([x+a,0,z+c,x+a+0.05,0.42,z+c+0.05]);
+  const s=RI(0,3); if(s===0) b.push([x+0.3,0.47,z+0.3,x+0.7,0.95,z+0.34]); else if(s===1) b.push([x+0.3,0.47,z+0.66,x+0.7,0.95,z+0.7]);
+  else if(s===2) b.push([x+0.3,0.47,z+0.3,x+0.34,0.95,z+0.7]); else b.push([x+0.66,0.47,z+0.3,x+0.7,0.95,z+0.7]);
+  return b; }
+function makeCrates(x,z){ const b=[]; let y=0, s=R(0.6,0.9); const n=RI(1,3);
+  for(let i=0;i<n;i++){ const ox=R(0,1-s), oz=R(0,1-s), h=s*R(0.6,1); b.push([x+ox,y,z+oz,x+ox+s,y+h,z+oz+s]); y+=h; s*=R(0.6,0.9); }
+  return b; }
+
+function tryGen(){
+  cellType=new Uint8Array(W*H); roomOf=new Int16Array(W*H).fill(-1); rooms=[];
+  mainCor=new Uint8Array(W*H); exitCell=new Uint8Array(W*H); footprint=new Float32Array(W*H*4);
+  for(let a=0;a<3000&&rooms.length<24;a++){
+    const w=RI(6,16),h=RI(6,16),x=RI(2,W-w-2),z=RI(2,H-h-2);
+    let ok=true; for(const r of rooms) if(x<r.x+r.w+3&&x+w+3>r.x&&z<r.z+r.h+3&&z+h+3>r.z){ok=false;break;}
+    if(!ok) continue;
+    const r={x,z,w,h,id:rooms.length,cx:x+w/2,cz:z+h/2}; rooms.push(r);
+    for(let zz=z;zz<z+h;zz++) for(let xx=x;xx<x+w;xx++){cellType[idx(xx,zz)]=T_ROOM;roomOf[idx(xx,zz)]=r.id;}
+  }
+  if(rooms.length<12) return false;
+  { // biggest room becomes room 0 = start room
+    let L=0; for(const r of rooms) if(r.w*r.h>rooms[L].w*rooms[L].h) L=r.id;
+    if(L!==0){ const A=rooms[0],B=rooms[L]; rooms[0]=B; rooms[L]=A; B.id=0; A.id=L;
+      for(let i=0;i<W*H;i++){ if(roomOf[i]===0) roomOf[i]=L; else if(roomOf[i]===L) roomOf[i]=0; } } }
+  { // sound materials: a couple of hard tiled REVERB rooms, a few CARPETED rooms, the rest plain
+    mat=new Uint8Array(W*H); const pool=rooms.slice(1).sort(()=>rnd()-.5); let nr=0,nc=0;
+    for(const r of pool){ let m=0; if(nr<2&&r.w*r.h>=48){m=1;nr++;} else if(nc<3){m=2;nc++;} else continue; r.mat=m;
+      for(let z=r.z;z<r.z+r.h;z++) for(let x=r.x;x<r.x+r.w;x++) mat[idx(x,z)]=m; } }
+  // main route = MST (gets exit signs). Everything else = unsigned side passages.
+  const tree=[0], out=rooms.slice(1).map(r=>r.id), mainE=[], sideE=[];
+  const rd=(a,b)=>Math.hypot(rooms[a].cx-rooms[b].cx,rooms[a].cz-rooms[b].cz);
+  while(out.length){ let best=1e9,bi=0,bj=0;
+    for(const a of tree) for(let j=0;j<out.length;j++){const d=rd(a,out[j]); if(d<best){best=d;bi=a;bj=j;}}
+    mainE.push([bi,out[bj]]); tree.push(out[bj]); out.splice(bj,1); }
+  for(let k=0;k<30;k++){ const a=RI(0,rooms.length-1),b=RI(0,rooms.length-1); if(a!==b&&rd(a,b)<42) sideE.push([a,b]); }
+  for(const r of rooms){ const near=rooms.filter(o=>o!==r).sort((a,b)=>rd(r.id,a.id)-rd(r.id,b.id)).slice(0,3); for(const o of near) if(rnd()<0.55) sideE.push([r.id,o.id]); }
+  for(const [a,b] of sideE) carveCorridor(rooms[a],rooms[b],false);
+  for(const [a,b] of mainE) carveCorridor(rooms[a],rooms[b],true);
+  // service tunnels: corridor-to-corridor shortcuts (unsigned)
+  const corCells=[]; for(let i=0;i<W*H;i++) if(cellType[i]===T_COR) corCells.push(i);
+  for(let k=0;k<18&&corCells.length;k++){ const a=corCells[RI(0,corCells.length-1)];
+    for(let t=0;t<25;t++){ const b=corCells[RI(0,corCells.length-1)]; const d=Math.hypot(a%W-b%W,((a/W)|0)-((b/W)|0));
+      if(d>=8&&d<=28){ carveBetween(a%W,(a/W)|0,b%W,(b/W)|0,false); break; } } }
+  // doors
+  const ct2=cellType.slice();
+  for(let z=1;z<H-1;z++) for(let x=1;x<W-1;x++){ const i=idx(x,z); if(cellType[i]!==T_COR) continue;
+    for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){ const a=idx(x+dx,z+dz), b=idx(x-dx,z-dz);
+      if(cellType[a]===T_ROOM && cellType[b]===T_COR) ct2[i]=T_DOOR; } }
+  cellType=ct2;
+  // exit room = farthest from start; cut a proper 2m-wide exit passage out through its wall
+  startCell=idx(Math.floor(rooms[0].cx),Math.floor(rooms[0].cz));
+  const w0=new Uint8Array(W*H); for(let i=0;i<W*H;i++) w0[i]=cellType[i]!==T_WALL?1:0;
+  const d0=bfs(startCell,w0); const byFar=rooms.slice(1).sort((a,b)=>d0[idx(Math.floor(b.cx),Math.floor(b.cz))]-d0[idx(Math.floor(a.cx),Math.floor(a.cz))]);
+  let ex=null;
+  for(const er of byFar.slice(0,4)){ const cand=[];
+    for(let z=er.z;z<er.z+er.h;z++) for(let x=er.x;x<er.x+er.w;x++) for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const px=Math.abs(dz), pz=Math.abs(dx); // passage is 2 cells wide: columns 0 and 1 along p
+      if(roomOf[idx(x+px,z+pz)]!==er.id) continue;
+      let ok=true;
+      for(let k=1;k<=4&&ok;k++) for(let c=-1;c<=2&&ok;c++){ const X=x+dx*k+px*c, Z=z+dz*k+pz*c; if(X<1||Z<1||X>=W-1||Z>=H-1||cellType[idx(X,Z)]!==T_WALL) ok=false; }
+      if(ok) cand.push([x,z,dx,dz,px,pz]); }
+    if(cand.length){ ex=cand[RI(0,cand.length-1)]; ex.push(er.id); break; } }
+  if(!ex) return false;
+  { const [x,z,dx,dz,px,pz,rid]=ex;
+    for(let k=1;k<=3;k++) for(let c=0;c<2;c++){ const i=idx(x+dx*k+px*c,z+dz*k+pz*c); cellType[i]=k===1?T_DOOR:T_COR; exitCell[i]=1; }
+    const e3x=x+dx*3+0.5+px*0.5, e3z=z+dz*3+0.5+pz*0.5;
+    exitInfo={ex:x+dx*3, ez:z+dz*3, nx:-dx, nz:-dz, fx:e3x+dx*0.5, fz:e3z+dz*0.5, px:e3x, pz:e3z, bx:x+dx*2+0.5+px*0.5, bz:z+dz*2+0.5+pz*0.5, room:rid, fx0:x, fz0:z, ppx:px, ppz:pz}; }
+  // heights
+  ceilH=new Float32Array(W*H);
+  for(let i=0;i<W*H;i++){ const t=cellType[i];
+    if(t===T_ROOM){const r=rooms[roomOf[i]], ar=r.w*r.h; ceilH[i]=ar>=110?4.4:ar>=60?3.5:3.0;}
+    else if(t===T_COR) ceilH[i]=2.7; else if(t===T_DOOR) ceilH[i]=exitCell[i]?2.5:2.2; else ceilH[i]=MAXH; }
+  walk=new Uint8Array(W*H); walkCount=0;
+  for(let i=0;i<W*H;i++) if(cellType[i]!==T_WALL){walk[i]=1;walkCount++;}
+  if(reachCount()!==walkCount) return false;
+  // boxes
+  boxArr=[]; cellBoxes=new Array(W*H);
+  for(let z=0;z<H;z++) for(let x=0;x<W;x++){ const i=idx(x,z);
+    if(cellType[i]===T_WALL){ let exposed=false;
+      for(let dz=-1;dz<=1;dz++) for(let dx=-1;dx<=1;dx++) if(inb(x+dx,z+dz)&&cellType[idx(x+dx,z+dz)]!==T_WALL) exposed=true;
+      if(exposed) addBox(x,0,z,x+1,MAXH,z+1,K_WALL);
+    } else if(ceilH[i]<MAXH) addBox(x,ceilH[i],z,x+1,MAXH,z+1,K_CEIL);
+  }
+  { // a boarded, padlocked door on the start room's wall: that's how you got in
+    const r=rooms[0], cand=[];
+    for(let z=r.z;z<r.z+r.h;z++) for(let x=r.x;x<r.x+r.w;x++) for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const px=Math.abs(dz),pz=Math.abs(dx), i1=idx(x,z), i2=idx(x+px,z+pz);
+      if(roomOf[i2]!==0||cellType[i1]!==T_ROOM||cellType[i2]!==T_ROOM) continue;
+      if(cellType[idx(x+dx,z+dz)]!==T_WALL||cellType[idx(x+px+dx,z+pz+dz)]!==T_WALL) continue;
+      if(cellType[idx(x-px+dx,z-pz+dz)]!==T_WALL||cellType[idx(x+2*px+dx,z+2*pz+dz)]!==T_WALL) continue;
+      // spawn spot 2 cells in must be open floor
+      if(roomOf[idx(x-dx*2,z-dz*2)]!==0) continue;
+      const cx=r.x+r.w/2, cz=r.z+r.h/2; cand.push([x,z,dx,dz,px,pz,-Math.hypot(x-cx,z-cz)+ (dx?r.h:r.w)]); }
+    if(!cand.length) return false;
+    cand.sort((a,b)=>b[6]-a[6]); const [x,z,dx,dz,px,pz]=cand[RI(0,Math.min(3,cand.length-1))];
+    const aC=px?x+1:z+1; // boundary between the two cells, along the wall
+    const mk=(a0,a1,d0,d1,y0,y1)=>{ let X0,X1,Z0,Z1;
+      if(dx!==0){ if(dx<0){X0=x+d0;X1=x+d1;} else {X0=x+1-d1;X1=x+1-d0;} Z0=aC+a0; Z1=aC+a1; }
+      else { if(dz<0){Z0=z+d0;Z1=z+d1;} else {Z0=z+1-d1;Z1=z+1-d0;} X0=aC+a0; X1=aC+a1; }
+      addBox(X0,y0,Z0,X1,y1,Z1,K_LOCK); };
+    mk(-0.78,-0.62,0,0.16,0,2.45); mk(0.62,0.78,0,0.16,0,2.45); mk(-0.78,0.78,0,0.16,2.3,2.45);
+    mk(-0.62,0.62,0,0.05,0,2.3);
+    for(const y of [0.55,1.25,1.95]) mk(-0.75,0.75,0.05,0.11,y,y+0.13);
+    mk(0.38,0.46,0.05,0.15,1.0,1.08); mk(-0.09,0.09,0.11,0.21,1.32,1.52); mk(-0.05,0.05,0.21,0.24,1.5,1.58);
+    const wx=dx!==0?(dx<0?x:x+1):aC, wz=dz!==0?(dz<0?z:z+1):aC; // door centre on the wall face
+    startInfo={x:wx-dx*1.8, z:wz-dz*1.8, yaw:Math.atan2(-dx,-dz), dx:wx, dz:wz};
+    startCell=idx(Math.floor(startInfo.x),Math.floor(startInfo.z));
+    if(!walk[startCell]) return false;
+  }
+  const dS=bfs(startCell,walk);
+  reserved=new Uint8Array(W*H);
+  const reserve=(i,rad)=>{const x=i%W,z=(i/W)|0; for(let dz=-rad;dz<=rad;dz++)for(let dx=-rad;dx<=rad;dx++) if(inb(x+dx,z+dz)) reserved[idx(x+dx,z+dz)]=1;};
+  for(let i=0;i<W*H;i++) if(cellType[i]===T_DOOR||exitCell[i]) reserve(i,1);
+  reserve(startCell,2);
+  // furniture (sparser, so you can actually flee)
+  for(const r of rooms){
+    const area=r.w*r.h;
+    if(area>=110&&rnd()<.5){ const off=RI(2,3);
+      for(let z=r.z+off;z<r.z+r.h-2;z+=5) for(let x=r.x+off;x<r.x+r.w-2;x+=5)
+        tryPlace([idx(x,z)],[[x+0.3,0,z+0.3,x+0.7,ceilH[idx(x,z)],z+0.7]]); }
+    if(area>=120&&rnd()<.3){ // cubicle partitions
+      for(let z=r.z+3;z<r.z+r.h-3;z+=4){ let x=r.x+3;
+        while(x<r.x+r.w-3){ const len=RI(2,3), cells=[], bx=[];
+          for(let k=0;k<len&&x+k<r.x+r.w-3;k++){ cells.push(idx(x+k,z)); bx.push([x+k,0,z+0.47,x+k+1,1.35,z+0.53]); }
+          tryPlace(cells,bx); x+=len+RI(2,3); } } }
+    for(let z=r.z;z<r.z+r.h;z++) for(let x=r.x;x<r.x+r.w;x++){
+      const i=idx(x,z); if(!walk[i]||reserved[i]) continue;
+      let wd=null; for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]) if(cellType[idx(x+dx,z+dz)]===T_WALL){wd=[dx,dz];break;}
+      const p=rnd();
+      if(wd){ if(p<.13) tryPlace([i],makeShelf(x,z,wd[0],wd[1])); else if(p<.18) tryPlace([i],makeCabinet(x,z,wd[0],wd[1])); else if(p<.2) tryPlace([i],makeCrates(x,z)); }
+      else { if(p<.025){ if(tryPlace([i],makeTable(x,z))){ for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]) if(rnd()<.3) tryPlace([idx(x+dx,z+dz)],makeChair(x+dx,z+dz)); } }
+        else if(p<.035) tryPlace([i],makeCrates(x,z)); else if(p<.04) tryPlace([i],makeChair(x,z)); }
+    }
+  }
+  for(let i=0;i<W*H;i++) if(cellType[i]===T_COR&&!reserved[i]&&rnd()<.005) tryPlace([i],makeCrates(i%W,(i/W)|0));
+  BX=new Float32Array(boxArr);
+  // flat lookup tables for the raycaster: per-cell furniture (CSR) and ceiling height (-1 = solid wall)
+  cbS=new Int32Array(W*H+1); let tot=0; for(let i=0;i<W*H;i++){ cbS[i]=tot; if(cellBoxes[i]) tot+=cellBoxes[i].length; } cbS[W*H]=tot;
+  cbI=new Int32Array(tot); for(let i=0;i<W*H;i++) if(cellBoxes[i]) cbI.set(cellBoxes[i],cbS[i]);
+  castCeil=new Float32Array(W*H); for(let i=0;i<W*H;i++) castCeil[i]=cellType[i]===T_WALL?-1:ceilH[i];
+  // exit flow. signs follow the MAIN network only; side passages stay unsigned.
+  const target=idx(exitInfo.ex,exitInfo.ez);
+  exitDist=bfs(target,walk);
+  const mainGrid=new Uint8Array(W*H); for(let i=0;i<W*H;i++) if(walk[i]&&(cellType[i]===T_ROOM||mainCor[i]||exitCell[i])) mainGrid[i]=1;
+  const dMain=bfs(target,mainGrid);
+  signs=[];
+  const signDir=(i)=>{ const D=dMain[i]>=0?dMain:exitDist; let cur=i; for(let s=0;s<5;s++){ let best=cur,bd=D[cur];
+      for(const o of [1,-1,W,-W]){ const n=cur+o; if(n>=0&&n<W*H&&D[n]>=0&&D[n]<bd){bd=D[n];best=n;} }
+      if(best===cur) break; cur=best; }
+    if(cur===i) return null; const dx=(cur%W)-(i%W), dz=((cur/W)|0)-((i/W)|0), l=Math.hypot(dx,dz); return [dx/l,dz/l]; };
+  const addSign=(i)=>{ const d=signDir(i); if(!d) return; const x=i%W,z=(i/W)|0;
+    signs.push({x:x+0.5,z:z+0.5,y:Math.min(ceilH[i]-0.32,2.45),top:ceilH[i],dx:d[0],dz:d[1]}); };
+  for(const r of rooms){ const i=idx(Math.floor(r.cx),Math.floor(r.cz)); if(cellType[i]===T_ROOM) addSign(i); }
+  const cor=[]; for(let i=0;i<W*H;i++) if(cellType[i]===T_COR&&mainCor[i]&&!exitCell[i]&&dMain[i]>=0) cor.push(i);
+  for(let k=cor.length-1;k>0;k--){const j=RI(0,k);[cor[k],cor[j]]=[cor[j],cor[k]];}
+  for(const i of cor){ const x=i%W+0.5,z=((i/W)|0)+0.5; if(signs.every(s=>Math.hypot(s.x-x,s.z-z)>9)) addSign(i); }
+  // monsters
+  monsters=[];
+  const spawnable=[]; for(let i=0;i<W*H;i++) if(walk[i]&&dS[i]>32&&!reserved[i]&&Math.hypot(i%W+0.5-startInfo.x,((i/W)|0)+0.5-startInfo.z)>25) spawnable.push(i);
+  const order=rooms.slice(1).sort(()=>rnd()-.5);
+  for(const r of order){ if(monsters.length>=5) break; if(rnd()<0.55) continue;
+    for(let t=0;t<30;t++){ const x=RI(r.x,r.x+r.w-1),z=RI(r.z,r.z+r.h-1),i=idx(x,z);
+      if(walk[i]&&dS[i]>32&&Math.hypot(x+0.5-startInfo.x,z+0.5-startInfo.z)>25){monsters.push(makeMonster(x+0.5,z+0.5));break;} } }
+  for(let k=0;k<1&&spawnable.length;k++){ const i=spawnable[RI(0,spawnable.length-1)]; if(cellType[i]===T_COR) monsters.push(makeMonster(i%W+0.5,((i/W)|0)+0.5)); }
+  return true;
+}
+function genLevel(){ for(let t=0;t<50;t++) if(tryGen()) return; alert('level gen failed, reload'); }
+
+// =====================================================================
+//  RAYCAST
+// =====================================================================
+let hitKind=0,hitNx=0,hitNy=0,hitNz=0;
+function cast(ox,oy,oz,dx,dy,dz,maxT){
+  let best=maxT; hitKind=0;
+  if(dy<-1e-6){const t=-oy/dy; if(t<best){best=t;hitKind=K_FLOOR;hitNx=0;hitNy=1;hitNz=0;}}
+  let cx=Math.floor(ox),cz=Math.floor(oz);
+  const sx=dx>0?1:-1, sz=dz>0?1:-1;
+  const ix=Math.abs(dx)<1e-9?1e9:1/dx, iy=Math.abs(dy)<1e-9?1e9:1/dy, iz=Math.abs(dz)<1e-9?1e9:1/dz;
+  const tdx=Math.abs(ix), tdz=Math.abs(iz), up=dy>1e-6;
+  let tmx=(dx>0?(cx+1-ox):(ox-cx))*tdx, tmz=(dz>0?(cz+1-oz):(oz-cz))*tdz;
+  let tIn=0, ax=-1;
+  const ch=castCeil, S0=cbS, SI=cbI, B=BX;
+  for(let it=0;it<300;it++){
+    if(tIn>=best||cx<0||cz<0||cx>=W||cz>=H) break;
+    const ci=cz*W+cx;
+    const c=ch[ci];
+    if(c<0){ if(ax>=0){ best=tIn; hitKind=K_WALL; hitNx=ax===0?-sx:0; hitNy=0; hitNz=ax===2?-sz:0; } break; }
+    if(ax>=0&&oy+dy*tIn>c){ best=tIn; hitKind=K_WALL; hitNx=ax===0?-sx:0; hitNy=0; hitNz=ax===2?-sz:0; break; } // step down in ceiling
+    const tOut=tmx<tmz?tmx:tmz;
+    if(up){ const t=(c-oy)*iy; if(t<best&&t<=tOut){ best=t; hitKind=K_CEIL; hitNx=0; hitNy=-1; hitNz=0; } }
+    for(let k=S0[ci],ke=S0[ci+1];k<ke;k++){ const o=SI[k]*7;{
+      let t0=-1e9,t1=1e9,a2=0,a,b,s;
+      a=(B[o]-ox)*ix; b=(B[o+3]-ox)*ix; if(a>b){s=a;a=b;b=s;} if(a>t0){t0=a;a2=0;} if(b<t1)t1=b;
+      a=(B[o+1]-oy)*iy; b=(B[o+4]-oy)*iy; if(a>b){s=a;a=b;b=s;} if(a>t0){t0=a;a2=1;} if(b<t1)t1=b;
+      a=(B[o+2]-oz)*iz; b=(B[o+5]-oz)*iz; if(a>b){s=a;a=b;b=s;} if(a>t0){t0=a;a2=2;} if(b<t1)t1=b;
+      if(t0<=t1&&t0>1e-4&&t0<best){ best=t0; hitKind=B[o+6]|0;
+        hitNx=a2===0?-sx:0; hitNy=a2===1?(dy>0?-1:1):0; hitNz=a2===2?-sz:0; }
+    }}
+    if(best<=tOut) break;
+    tIn=tOut;
+    if(tmx<tmz){tmx+=tdx;cx+=sx;ax=0;} else {tmz+=tdz;cz+=sz;ax=2;}
+  }
+  return best;
+}
+function los(ax,ay,az,bx,by,bz){ const dx=bx-ax,dy=by-ay,dz=bz-az,d=Math.hypot(dx,dy,dz); if(d<0.05) return true;
+  const t=cast(ax,ay,az,dx/d,dy/d,dz/d,d); return hitKind===0||t>=d-0.08; }
+
+// =====================================================================
+//  POINT BUFFER
+// =====================================================================
+const MAXP=700000, STRIDE=9;
+const pdata=new Float32Array(MAXP*STRIDE);
+let phead=0, wStart=0, wCount=0, now=0, totalW=0, fExp=-1, frameStartW=0; const liveHist=[];
+const F_NOISY=1,F_XRAY=2,F_BIG=4,F_SMALL=8;
+function pushPt(x,y,z,r,g,b,appear,life,flags){
+  if(wCount===0) wStart=phead; totalW++; const ex=appear+life; if(ex>fExp) fExp=ex;
+  const o=phead*STRIDE;
+  pdata[o]=x;pdata[o+1]=y;pdata[o+2]=z;pdata[o+3]=r;pdata[o+4]=g;pdata[o+5]=b;pdata[o+6]=appear;pdata[o+7]=life;pdata[o+8]=flags;
+  if(++phead===MAXP) phead=0; wCount++;
+}
+
+// echo emitter. returns some sample hits for audio
+const DIRN=1<<16, DIRS=new Float32Array(DIRN*3);
+for(let i=0;i<DIRN;i++){ const u=Math.random()*2-1, ph=Math.random()*6.283185, s=Math.sqrt(1-u*u); DIRS[i*3]=s*Math.cos(ph); DIRS[i*3+1]=u; DIRS[i*3+2]=s*Math.sin(ph); }
+let xs=(Math.random()*4294967295)>>>0||1;
+function frand(){ xs^=xs<<13; xs^=xs>>>17; xs^=xs<<5; return (xs>>>0)*2.3283064365386963e-10; }
+function matAt(x,z){ const cx=Math.floor(x),cz=Math.floor(z); return (cx>=0&&cz>=0&&cx<W&&cz<H)?mat[cz*W+cx]:0; }
+// Each ray hits a surface, leaves a dot, and may bounce on: plain walls reflect a little (faint dots behind
+// obstacles), reverb rooms keep bouncing wall to wall, carpet swallows it.
+const echoJobs=[];
+const FRAME_TARGET_MS=('ontouchstart' in window)?9:11;
+let echoBudget=4, otherWorkEMA=2;
+// rays are traced over several frames (the wave expands over time anyway) -> no frame hitches
+function emitEcho(o){
+  o.t0=now; o.left=o.n;
+  const samples=o.sync?emitChunk(o,Math.min(o.left,800)):[];
+  if(o.left>0) echoJobs.push(o);
+  return samples;
+}
+function processEchoJobs(){
+  const end=performance.now()+echoBudget;
+  while(echoJobs.length&&performance.now()<end){ const o=echoJobs[0]; emitChunk(o,Math.min(o.left,1200)); if(o.left<=0) echoJobs.shift(); }
+  let backlog=0; for(const j of echoJobs) backlog+=j.left;           // weak device: drop the oldest leftovers
+  while(backlog>120000&&echoJobs.length){ backlog-=echoJobs[0].left; echoJobs.shift(); }
+}
+function emitChunk(o,count){
+  o.left-=count; const t0=o.t0;
+  const samples=[]; const hasA=o.ax!==undefined, ax=hasA?o.ax:o.x, ay=hasA?o.ay:o.y, az=hasA?o.az:o.z;
+  const mons=o.mon?monsters.filter(m=>Math.hypot(m.x-o.x,m.z-o.z)<o.maxD&&m!==o.skip):[];
+  const maxB=o.bounce===undefined?1:o.bounce, jit=o.jit||0, col=o.col, fl=o.flags|0, sp=o.speed, life=o.life, I0=o.I, maxD=o.maxD;
+  for(let i=0;i<count;i++){
+    const di=((frand()*DIRN)|0)*3;
+    let dx=DIRS[di], dy=DIRS[di+1], dz=DIRS[di+2];
+    let ox=o.x, oy=o.y, oz=o.z, trav=0, pm=1, dAcc=0;
+    for(let b=0;b<9;b++){
+      const lim=(b?maxD*1.6:maxD)-trav; if(lim<0.2) break;
+      const t=cast(ox,oy,oz,dx,dy,dz,lim);
+      if(hitKind===0) break;
+      if(b===0&&mons.length){ let blocked=false;
+        for(const m of mons){ const fx=ox-m.x,fz=oz-m.z,a=dx*dx+dz*dz; if(a<1e-6) continue;
+          const bb=2*(fx*dx+fz*dz), c=fx*fx+fz*fz-0.09, D=bb*bb-4*a*c; if(D<0) continue;
+          const tt=(-bb-Math.sqrt(D))/(2*a); if(tt>0&&tt<t){ const y=oy+dy*tt; if(y>0&&y<2.1){blocked=true;break;} } }
+        if(blocked) break; }
+      const hk=hitKind, nx=hitNx, ny=hitNy, nz=hitNz;
+      const hx=ox+dx*t, hy=oy+dy*t, hz=oz+dz*t;
+      trav+=t;
+      const mt=matAt(hx+nx*0.05,hz+nz*0.05), carpetFloor=mt===2&&hk===K_FLOOR;
+      const cosT=Math.abs(dx*nx+dy*ny+dz*nz);
+      const span=b?maxD*1.6:maxD;
+      const fk=trav/span; let I=(0.35+0.65*cosT)*I0*pm/(1+trav*0.035);
+      if(fk>0.75){ const q=fk>=1?1:(fk-0.75)*4; I*=1-q*q*(3-2*q); }
+      I*=hk===K_FLOOR?0.7:hk===K_CEIL?0.5:hk===K_FURN||hk===K_LOCK?1.15:1;
+      if(carpetFloor) I*=0.45;
+      let r,g,bl;
+      if(col){ r=col[0];g=col[1];bl=col[2]; }
+      else { const k=Math.min(1,trav/24); r=0.9+(0.12-0.9)*k; g=0.97+(0.42-0.97)*k; bl=1;
+        if(hk===K_FURN||hk===K_LOCK){r+=0.12;g+=0.05;} }
+      if(mt===1){ r*=0.7; bl*=1.05; } else if(carpetFloor){ r=0.85; g=0.5; bl=0.35; }
+      if(b===0&&hasA){ const qx=hx-ax,qy=hy-ay,qz=hz-az; dAcc+=Math.sqrt(qx*qx+qy*qy+qz*qz); } else dAcc+=t;
+      if(I>0.015){
+        let px=hx,py=hy,pz=hz; if(jit){ px+=(frand()-.5)*jit; py+=(frand()-.5)*jit; pz+=(frand()-.5)*jit; }
+        const rr=frand();
+        pushPt(px,py,pz,r*I,g*I,bl*I, t0+dAcc/sp+rr*0.015, life*(0.75+rr*0.5), fl);
+        if(b===0&&samples.length<10&&rr<0.012) samples.push([px,py,pz,dAcc]);
+      }
+      // bounce?
+      if(b>=(mt===1?8:maxB)) break;
+      const refl=carpetFloor?0:MAT_REFL[mt], pr=refl*2.5<1?refl*2.5:1;
+      if(frand()>=pr) break;
+      pm*=refl/pr; if(pm<0.06) break;
+      const dn=dx*nx+dy*ny+dz*nz, dj=((frand()*DIRN)|0)*3; let rx=dx-2*dn*nx+DIRS[dj]*0.35, ry=dy-2*dn*ny+DIRS[dj+1]*0.35, rz=dz-2*dn*nz+DIRS[dj+2]*0.35;
+      if(rx*nx+ry*ny+rz*nz<0.1){ rx+=nx*0.4; ry+=ny*0.4; rz+=nz*0.4; }
+      const l=Math.sqrt(rx*rx+ry*ry+rz*rz); dx=rx/l; dy=ry/l; dz=rz/l;
+      ox=hx+nx*0.02; oy=hy+ny*0.02; oz=hz+nz*0.02;
+    }
+  }
+  return samples;
+}
+
+// tiny 3x5 font
+const FONT={E:['111','100','111','100','111'],X:['101','101','010','101','101'],I:['111','010','010','010','111'],T:['111','010','010','010','010']};
+function textPixels(str){ const px=[]; let cx=0; for(const ch of str){ const g=FONT[ch]; for(let r=0;r<5;r++) for(let c=0;c<3;c++) if(g[r][c]==='1') px.push([cx+c,4-r]); cx+=4; } return {px,w:cx-1}; }
+const EXIT_TXT=textPixels('EXIT');
+
+// Exit signs are fixed 3D objects: a double-sided blade sign hanging from the ceiling, aligned with the exit
+// direction (arrow is in the world, not a billboard), plus an arrow painted on the floor beneath it.
+const SIGN_L=0.5, SIGN_H=0.16, SIGN_T=0.04;
+function revealSign(s, appear){
+  const GR=[0.25,1,0.4], ux=s.dx, uz=s.dz, nx=-uz, nz=ux;
+  const P=(x,y,z,b)=>pushPt(x+(Math.random()-.5)*0.006,y+(Math.random()-.5)*0.006,z+(Math.random()-.5)*0.006,GR[0]*b,GR[1]*b,GR[2]*b,appear+Math.random()*0.02,1.5,0);
+  const ps=0.045;
+  for(const side of [1,-1]){
+    const fnx=nx*side, fnz=nz*side, rx=fnz, rz=-fnx;            // this face's normal and its reader's right
+    const ox=s.x+fnx*(SIGN_T+0.006), oz=s.z+fnz*(SIGN_T+0.006);
+    const ar=(ux*rx+uz*rz)>0?1:-1;                                // world exit dir is to reader's right(+1) or left(-1)
+    const tu0=ar>0?-0.47:-0.205, cu=ar>0?0.33:-0.33;
+    const F=(u,v,b)=>P(ox+rx*u, s.y+v, oz+rz*u, b);
+    for(const [c,r] of EXIT_TXT.px) for(let k=0;k<4;k++) F(tu0+(c+Math.random())*ps, -0.11+(r+Math.random())*ps, 1.3);
+    const tip=cu+0.12*ar;
+    for(let k=0;k<36;k++) F(cu-0.12*ar+0.24*ar*k/35, 0, 1.4);
+    for(const sg of [-1,1]) for(let k=0;k<14;k++){ const t=k/13; F(tip-0.085*ar*t, 0.075*sg*t, 1.4); }
+    for(let k=0;k<50;k++) F(MR(-SIGN_L,SIGN_L), MR(-SIGN_H,SIGN_H), 0.18);
+  }
+  // slab outline (12 edges) so it reads as a solid object
+  const C=(a,v,n)=>[s.x+ux*SIGN_L*a+nx*SIGN_T*n, s.y+SIGN_H*v, s.z+uz*SIGN_L*a+nz*SIGN_T*n];
+  const E=(A,B,n)=>{ for(let k=0;k<n;k++){ const t=Math.random(); P(A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t,A[2]+(B[2]-A[2])*t,0.55); } };
+  for(const v of [-1,1]) for(const n of [-1,1]) E(C(-1,v,n),C(1,v,n),26);
+  for(const a of [-1,1]) for(const n of [-1,1]) E(C(a,-1,n),C(a,1,n),9);
+  for(const a of [-1,1]) for(const v of [-1,1]) E(C(a,v,-1),C(a,v,1),3);
+  for(const a of [-0.8,0.8]) E([s.x+ux*SIGN_L*a, s.y+SIGN_H, s.z+uz*SIGN_L*a],[s.x+ux*SIGN_L*a, s.top, s.z+uz*SIGN_L*a],14); // hanging wires
+}
+function revealFloorArrow(s, appear){
+  const ux=s.dx, uz=s.dz, nx=-uz, nz=ux;
+  for(let k=0;k<260;k++){ const a=MR(-0.5,0.5), b=MR(-0.24,0.24);
+    if(!((a<0.12&&Math.abs(b)<0.075)||(a>=0.12&&Math.abs(b)<0.24*(0.5-a)/0.38))) continue;
+    pushPt(s.x+ux*a+nx*b, 0.012, s.z+uz*a+nz*b, 0.18,0.8,0.3, appear+Math.random()*0.02, 1.5, 0); }
+}
+function revealExit(appear,life){ life=life||1.8;
+  const e=exitInfo, GR=[0.3,1,0.45]; const rx=e.nz, rz=-e.nx; // right when facing the wall
+  const P=(u,y,b,j)=>{ const jj=j||0.01; pushPt(e.fx+e.nx*0.02+rx*u+(Math.random()-.5)*jj, y+(Math.random()-.5)*jj, e.fz+e.nz*0.02+rz*u+(Math.random()-.5)*jj, GR[0]*b,GR[1]*b,GR[2]*b, appear+Math.random()*0.03, life, 0); };
+  for(let k=0;k<260;k++){ const t=Math.random(); const s=k%3; if(s===0) P(-0.5+t,2.15,1.2); else if(s===1) P(-0.5,t*2.15,1.2); else P(0.5,t*2.15,1.2); }
+
+  const ps=0.06, w=EXIT_TXT.w*ps;
+  for(const [c,r] of EXIT_TXT.px) for(let k=0;k<6;k++) P(-w/2+(c+Math.random())*ps, 2.32+(r+Math.random())*ps, 1.6, 0.003);
+}
+
+// =====================================================================
+//  MONSTERS
+// =====================================================================
+function makeMonster(x,z){
+  return {x,z,yaw:rnd()*6.283,state:'idle',curSpeed:0,gait:rnd()*6,runB:0,target:null,susp:0,heardT:-99,lastKnown:null,
+    shriekT:0,wanderT:R(1,5),lingerT:0,freezeT:0,twX:0,twRoll:0,twT:0,armJ:[[0,0,0],[0,0,0]],jaw:0,seed:rnd()*100,
+    vx:0,vz:0,trailT:0,echoT:R(0.5,8),prevS:0,chitterT:R(3,9),deathK:0,neck:R(0.25,0.4)};
+}
+function ik(a,b,L,bend){ const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,mz=(a[2]+b[2])/2; const d=Math.hypot(b[0]-a[0],b[1]-a[1],b[2]-a[2]);
+  const h=Math.sqrt(Math.max(0,L*L-d*d/4)); return [mx+bend[0]*h,my+bend[1]*h,mz+bend[2]*h]; }
+function poseOf(m){
+  const run=m.runB, s=m.gait, mv=Math.min(1,m.curSpeed/0.8), D=m.deathK;
+  const fx=Math.sin(m.yaw),fz=Math.cos(m.yaw),rx=Math.cos(m.yaw),rz=-Math.sin(m.yaw);
+  const Wp=l=>[m.x+rx*l[0]+fx*l[2], l[1], m.z+rz*l[0]+fz*l[2]];
+  const RB=m.rearB||0; const lean=0.22+run*0.8-D*0.2-RB*0.5;
+  const bob=Math.abs(Math.sin(s))*0.07*mv;
+  const pel=[0,1.2-run*0.34+bob,0];
+  const che=[Math.sin(now*1.3+m.seed)*0.04, pel[1]+Math.cos(lean)*0.62, Math.sin(lean)*0.62];
+  const nk=[che[0]+m.twX*0.05, che[1]+Math.cos(lean+0.5)*m.neck, che[2]+Math.sin(lean+0.5)*m.neck+D*0.35];
+  const hd=[nk[0]+m.twX*0.13, nk[1]+0.09-run*0.05+D*0.08, nk[2]+0.12+D*0.3];
+  const L=[[pel,che,0.13],[che,nk,0.06],[nk,hd,0.04]];
+  L.push([[che[0]-0.24,che[1]-0.05,che[2]],[che[0]+0.24,che[1]-0.05,che[2]],0.06]); // shoulders
+  for(let k=0;k<4;k++){ const y=lerp(pel[1],che[1],0.35+k*0.15), zz=lerp(0,che[2],0.35+k*0.15); L.push([[-0.15,y,zz+0.05],[0.15,y,zz+0.05],0.025]); } // ribs
+  for(const sg of [-1,1]){
+    const ph=s+(sg>0?0:Math.PI), j=m.armJ[sg>0?1:0];
+    const hip=[sg*0.13,pel[1]-0.03,0], stride=(0.22+run*0.45)*mv;
+    const foot=[sg*0.2, Math.max(0,Math.sin(ph))*(0.12+run*0.2)*mv, Math.cos(ph)*stride];
+    const knee=ik(hip,foot,0.64,[0,0.15,-1]);
+    L.push([hip,knee,0.065],[knee,foot,0.045],[foot,[foot[0],0.02,foot[2]+0.2],0.03]);
+    const sh=[che[0]+sg*0.24,che[1]-0.05,che[2]];
+    const sw=Math.sin(ph+Math.PI)*0.25*mv;
+    const hI=[sg*0.34, Math.max(0.12,sh[1]-1.2), sh[2]+0.12+sw];
+    const hR=[sg*(0.35+0.12*Math.sin(now*9+sg)), sh[1]-0.35+Math.sin(ph)*0.28, sh[2]+0.75+Math.cos(ph)*0.22];
+    const hD=[sg*(0.55-D*0.25), sh[1]+0.25, sh[2]+0.75+D*0.2];
+    let hand=[lerp(lerp(hI[0],hR[0],run),hD[0],D)+j[0], lerp(lerp(hI[1],hR[1],run),hD[1],D)+j[1], lerp(lerp(hI[2],hR[2],run),hD[2],D)+j[2]];
+    if(RB>0) hand=[lerp(hand[0],sg*0.95,RB), lerp(hand[1],sh[1]+0.25,RB), lerp(hand[2],sh[2]+0.15,RB)];
+    const el=ik(sh,hand,0.7,[sg*0.75,0.1,-0.6]);
+    L.push([sh,el,0.045],[el,hand,0.035]);
+    let ux=hand[0]-el[0],uy=hand[1]-el[1],uz=hand[2]-el[2]; const ul=Math.hypot(ux,uy,uz)||1; ux/=ul;uy/=ul;uz/=ul;
+    for(let f=-1;f<=1;f++) L.push([hand,[hand[0]+ux*0.24+f*0.05,hand[1]+uy*0.24-0.03*Math.abs(f),hand[2]+uz*0.24+f*0.03],0.012]);
+  }
+  const segs=L.map(([a,b,r])=>[Wp(a),Wp(b),r]);
+  const head=Wp(hd);
+  let hfx=fx,hfy=-0.15-run*0.3+(m.rearB||0)*0.75,hfz=fz;
+  if(D>0){ const cx=player.x-head[0],cy=camY-head[1],cz=player.z-head[2],cl=Math.hypot(cx,cy,cz)||1; hfx=lerp(hfx,cx/cl,D);hfy=lerp(hfy,cy/cl,D);hfz=lerp(hfz,cz/cl,D); }
+  const hl=Math.hypot(hfx,hfy,hfz); hfx/=hl;hfy/=hl;hfz/=hl;
+  // right & up of head, then roll
+  let hrx=hfz,hry=0,hrz=-hfx; const rl=Math.hypot(hrx,hrz)||1; hrx/=rl;hrz/=rl;
+  let hux=hry*hfz-hrz*hfy, huy=hrz*hfx-hrx*hfz, huz=hrx*hfy-hry*hfx; if(huy<0){hux=-hux;huy=-huy;huz=-huz;}
+  const cr=Math.cos(m.twRoll), sr=Math.sin(m.twRoll);
+  const HR=[hrx*cr+hux*sr,hry*cr+huy*sr,hrz*cr+huz*sr], HU=[hux*cr-hrx*sr,huy*cr-hry*sr,huz*cr-hrz*sr];
+  return {segs,head,HF:[hfx,hfy,hfz],HR,HU};
+}
+function sampleMonster(m,n,appear,life,col,flags){
+  const P=poseOf(m); const segs=P.segs;
+  let tot=0; const w=segs.map(([a,b,r])=>{const l=Math.hypot(b[0]-a[0],b[1]-a[1],b[2]-a[2]); tot+=l*(r+0.03); return tot;});
+  const nb=Math.floor(n*0.68);
+  for(let i=0;i<nb;i++){
+    const q=Math.random()*tot; let k=0; while(w[k]<q) k++;
+    const [a,b,r]=segs[k]; const t=Math.random();
+    let ax=b[0]-a[0],ay=b[1]-a[1],az=b[2]-a[2]; const al=Math.hypot(ax,ay,az)||1; ax/=al;ay/=al;az/=al;
+    let vx=Math.random()-.5,vy=Math.random()-.5,vz=Math.random()-.5; const dp=vx*ax+vy*ay+vz*az; vx-=ax*dp;vy-=ay*dp;vz-=az*dp;
+    const vl=Math.hypot(vx,vy,vz)||1; const rr=r*(0.85+Math.random()*0.3)/vl;
+    const br=0.6+Math.random()*0.5;
+    pushPt(a[0]+(b[0]-a[0])*t+vx*rr, a[1]+(b[1]-a[1])*t+vy*rr, a[2]+(b[2]-a[2])*t+vz*rr, col[0]*br,col[1]*br,col[2]*br, appear+Math.random()*0.01, life, flags);
+  }
+  const h=P.head,F=P.HF,Rr=P.HR,U=P.HU, jaw=m.jaw;
+  const at=(o,a,b,c)=>[o[0]+Rr[0]*a+U[0]*b+F[0]*c, o[1]+Rr[1]*a+U[1]*b+F[1]*c, o[2]+Rr[2]*a+U[2]*b+F[2]*c];
+  const jc=at(h,0,-0.09-jaw*0.12,0.03+jaw*0.05);
+  const nh=n-nb;
+  for(let i=0;i<nh;i++){
+    let x=Math.random()-.5,y=Math.random()-.5,z=Math.random()-.5; const l=Math.hypot(x,y,z)||1; x/=l;y/=l;z/=l;
+    const sel=Math.random(); let p, br=0.6+Math.random()*0.5, c=col;
+    if(sel<0.6){ if(jaw>0.15&&z>0.2&&y<0.15) continue; p=at(h,x*0.11,y*0.16+0.03,z*0.13); }
+    else if(sel<0.82){ if(y>0.35) continue; p=at(jc,x*0.09,y*0.05,z*0.11); }
+    else { if(jaw<0.15) continue; const a=(Math.random()-.5)*2.4, up=Math.random()<.5, tl=Math.random();
+      const base=up?at(h,Math.sin(a)*0.09,-0.06-tl*(0.04+jaw*0.04),Math.cos(a)*0.1):at(jc,Math.sin(a)*0.08,0.04+tl*(0.04+jaw*0.04),Math.cos(a)*0.09);
+      p=base; c=[1,1,1]; br=1.3; }
+    pushPt(p[0],p[1],p[2],c[0]*br,c[1]*br,c[2]*br,appear+Math.random()*0.01,life,flags);
+  }
+}
+
+// nav
+const navCache=new Map();
+function getNav(ti){ let d=navCache.get(ti); if(!d){ d=bfs(ti,walk); navCache.set(ti,d); if(navCache.size>80) navCache.delete(navCache.keys().next().value); } return d; }
+function clearPath(ax,az,bx,bz,avoid){ const dx=bx-ax,dz=bz-az,L=Math.hypot(dx,dz); if(L<0.01) return true; const n=Math.ceil(L/0.25), px=-dz/L*0.3, pz=dx/L*0.3;
+  for(let i=0;i<=n;i++){ const x=ax+dx*i/n,z=az+dz*i/n; if(!walkAt(x,z)||!walkAt(x+px,z+pz)||!walkAt(x-px,z-pz)) return false; if(avoid&&matAt(x,z)===1) return false; } return true; }
+function navDir(m,tx,tz){
+  // calm monsters won't walk into reverb rooms (too loud in there) unless they are already inside
+  const avoid=m.state!=='hunt'&&matAt(m.x,m.z)!==1;
+  let dx=tx-m.x,dz=tz-m.z; const dl=Math.hypot(dx,dz)||1;
+  if(dl<1.0&&!(avoid&&matAt(tx,tz)===1)) return [dx/dl,dz/dl];
+  if(clearPath(m.x,m.z,tx,tz,avoid)) return [dx/dl,dz/dl];
+  const ti=idx(Math.floor(tx),Math.floor(tz)); if(!walk[ti]) return [dx/dl,dz/dl];
+  const d=getNav(ti), ci=idx(Math.floor(m.x),Math.floor(m.z)); if(d[ci]<0) return [dx/dl,dz/dl];
+  let cur=ci, goal=-1;
+  for(let s=0;s<8;s++){ let best=cur,bd=d[cur];
+    for(const o of [1,-1,W,-W]){ const n=cur+o; if(n>=0&&n<W*H&&d[n]>=0&&d[n]<bd&&!(avoid&&mat[n]===1)){bd=d[n];best=n;} }
+    if(best===cur) break; cur=best;
+    const gx=cur%W+0.5,gz=((cur/W)|0)+0.5;
+    if(goal<0||clearPath(m.x,m.z,gx,gz,avoid)) goal=cur; else break; }
+  if(goal<0) return avoid?null:[dx/dl,dz/dl];
+  dx=goal%W+0.5-m.x; dz=((goal/W)|0)+0.5-m.z; const l=Math.hypot(dx,dz)||1; return [dx/l,dz/l];
+}
+
+function enterAlert(m,x,z){ if(m.state==='hunt'||m.state==='kill') return; const was=m.state; m.state='alert'; m.target={x,z}; m.lingerT=0; m.freezeT=R(0.3,0.9);
+  if(was==='idle') sfxChitter([m.x,1.8,m.z],0.9); }
+// enterHunt(m): it heard/sensed you itself -> knows where you are now and which way you were going.
+// enterHunt(m,pos,t): told by another monster's scream or by the level's heat -> only that (maybe stale) spot, no heading;
+// ignored by a hunter that already has fresher information. Nothing ever hands them your live position: hiding works.
+function enterHunt(m,pos,t){ if(m.state==='kill') return;
+  if(pos&&m.state==='hunt'&&m.heardT>=t) return;
+  if(m.state!=='hunt'){ m.state='hunt'; m.windup=1.0; m.wShriek=true; m.shriekT=R(1.6,3.2); m.freezeT=0; }
+  m.overshot=false;
+  if(pos){ m.heardT=t; m.lastKnown={x:pos.x,z:pos.z}; m.lastDir=null; return; }
+  m.heardT=now; m.lastKnown={x:player.x,z:player.z}; noteHeard();
+  const v=Math.hypot(player.vx||0,player.vz||0); m.lastDir=v>0.6?{x:player.vx/v,z:player.vz/v}:null; }
+// the last time and place any monster actually heard or sensed you (what the level's "heat" can know)
+let lastNoise={x:0,z:0,t:-99};
+function noteHeard(){ lastNoise={x:player.x,z:player.z,t:now}; }
+
+// sound the player made at (x,z): kind 'echo' or 'step'
+// Sounds the player makes have a power that falls off with distance (walls muffle).
+// faint -> curious (walks toward the sound); clear, or several in a row -> shriek & chase.
+function hearPlayer(kind){
+  for(const m of monsters){ if(m.state==='kill') continue;
+    const d=Math.hypot(m.x-player.x,m.z-player.z); if(d>45) continue;
+    const eff=d*(los(player.x,EYE,player.z,m.x,1.5,m.z)?1:1.7);
+    const pm=matAt(player.x,player.z); const e2=eff*(pm===1?0.75:pm===2?(kind==='step'?1.6:1.25):1); // reverb carries, carpet muffles
+    const P=kind==='echo'?1/(1+(e2/8)**2):0.6*(1+fatigue)/(1+(e2/6.5)**2); // exhausted = stumbling, louder
+    if(P<0.05) continue;
+    noteHeard();
+    if(m.state==='hunt'){ enterHunt(m); continue; } // keeps tracking you
+    m.susp+=P;
+    if(P>=0.5||m.susp>=1.0) enterHunt(m);
+    else if(P>=0.15||m.susp>=0.35) enterAlert(m,player.x,player.z);
+  }
+}
+
+let frameNo=0, shriekFrame=-1;
+function shriek(m){
+  if(shriekFrame===frameNo) return false; shriekFrame=frameNo; // one shriek per frame: a chorus gets staggered, no frame spike
+  const hx=m.x, hz=m.z, hy=1.8;
+  const dur=clamp(2.2+(m.chaseT||0)*0.12,2.2,6);
+  m.shriekNode=sfxShriek([hx,hy,hz],2.6+heat*1.5,dur); m.shriekLeft=dur; m.shriekPulseT=0.45; heat=Math.min(1,heat+0.05);
+  emitEcho({x:hx,y:hy,z:hz,n:13000,maxD:45,speed:30,life:1.9,flags:0,col:[1,0.12,0.08],I:1.45,skip:m});
+  emitEcho({x:player.x,y:EYE,z:player.z,n:3500,maxD:30,speed:30,life:1.5,flags:F_NOISY,col:[0.7,0.05,0.08],I:0.8,ax:hx,ay:hy,az:hz});
+  const d=Math.hypot(player.x-hx,player.z-hz);
+  if(los(player.x,camY,player.z,m.x,1.4,m.z)) sampleMonster(m,520,now+d/30,1.8,[1,0.3,0.25],F_NOISY|F_BIG);
+  staticBoost=Math.max(staticBoost,clamp(1.2-d/35,0.35,1));
+  // the scream calls the others to where THIS one thinks you are (not where you really are)
+  const lk=m.lastKnown||{x:hx,z:hz}, lt=m.heardT||now;
+  const callR=28+heat*45; for(const o of monsters){ if(o===m||o.state==='kill') continue; const dd=Math.hypot(o.x-hx,o.z-hz); if(dd<callR) enterHunt(o,lk,lt); else if(dd<callR*1.7) enterAlert(o,lk.x,lk.z); }
+}
+// while it keeps screaming, the scream keeps flooding the area with echo
+function shriekPulse(m){
+  emitEcho({x:m.x,y:1.8,z:m.z,n:6500,maxD:42,speed:30,life:1.1,flags:0,col:[1,0.12,0.08],I:1.25,skip:m});
+  const d=Math.hypot(player.x-m.x,player.z-m.z);
+  if(los(player.x,camY,player.z,m.x,1.4,m.z)) sampleMonster(m,260,now+d/30,0.8,[1,0.3,0.25],F_NOISY|F_BIG);
+  staticBoost=Math.max(staticBoost,clamp(1-d/40,0.15,0.6));
+}
+function monsterStep(m){
+  const fx=Math.sin(m.yaw),fz=Math.cos(m.yaw);
+  const x=m.x+fx*0.3, z=m.z+fz*0.3;
+  emitEcho({x,y:0.25,z,n:420,maxD:9,speed:16,life:0.9,flags:0,col:[1,0.32,0.12],I:0.9,skip:m});
+  const d=Math.hypot(player.x-x,player.z-z);
+  if(los(player.x,camY,player.z,m.x,1.4,m.z)) sampleMonster(m,170,now+d/40,0.55,[1,0.45,0.32],F_BIG);
+  sfxThump([x,0.1,z],0.9);
+}
+
+function updateMonster(m,dt){
+  m.susp=Math.max(0,m.susp-dt*0.22);
+  if(m.state==='hunt') m.chaseT=(m.chaseT||0)+dt; else m.chaseT=Math.max(0,(m.chaseT||0)-dt*2); // a quick re-acquire keeps the long screams
+  if(m.shriekLeft>0){ m.shriekLeft-=dt; if(m.shriekNode&&(frameNo&1)){ spatial(m.shriekNode,m.x,1.8,m.z); spatial(m.shriekNode._rb,m.x,1.8,m.z); } // the scream moves with it, and turns with you
+    m.shriekPulseT-=dt; if(m.shriekPulseT<=0&&m.shriekLeft>0.2){ m.shriekPulseT=0.45; shriekPulse(m); } }
+  // its own echolocation: red dots splash on whatever surfaces around it you can see
+  m.echoT-=dt; if(m.echoT<=0){ const st=m.state, running=m.curSpeed>1.6, walking=m.curSpeed>0.2;
+    m.echoT=running?R(0.15,0.3):walking?R(0.35,0.7):st==='hunt'?R(0.6,1.2):st==='alert'?R(0.9,1.8):R(1.2,2.5);
+    const d=Math.hypot(player.x-m.x,player.z-m.z);
+    if(d<60){
+      emitEcho({x:m.x,y:1.9,z:m.z,n:running?1300:walking?1600:2600,maxD:running?18:st==='idle'?22:26,speed:24,life:running?0.8:1.2,flags:0,col:[1,0.13,0.08],I:1.15,skip:m});
+      // you only see its body when it is in your direct line of sight
+      if(los(player.x,camY,player.z,m.x,1.4,m.z)) sampleMonster(m,running?220:320,now+d/50,running?0.6:1.0,[1,0.5,0.4],F_BIG);
+      sfxMonClick([m.x,1.9,m.z],(st==='idle'?0.35:0.6)*(running?0.6:1));
+      const ER=running?18:st==='idle'?22:26; let seen=false;
+      if(d<ER&&los(m.x,1.9,m.z,player.x,1.3,player.z)){ const pw=Math.min(1.6,(player.spd||0)/2.4)*(1-d/ER); seen=pw>0.22; }
+      if(st==='hunt'){ if(seen) enterHunt(m); }
+      else if(seen){ m.spotN=(m.spotN||0)+1; if(m.spotN>=2){ m.spotN=0; enterHunt(m); } else enterAlert(m,player.x,player.z); }
+      else m.spotN=0; } }
+  // twitchy sample-and-hold
+  m.twT-=dt; if(m.twT<=0){ m.twX=(Math.random()-.5)*(Math.random()<.3?4:1.2); m.twRoll=Math.random()<.25?MR(-1.6,1.6):MR(-0.3,0.3);
+    for(const a of m.armJ){a[0]=MR(-.12,.12);a[1]=MR(-.15,.15);a[2]=MR(-.12,.12);} m.twT=m.state==='hunt'?MR(0.04,0.2):MR(0.1,0.8); }
+  let tx=null,tz=null,spd=0;
+  if(m.state==='idle'){
+    m.wanderT-=dt;
+    if(m.wanderT<=0){ if(Math.random()<.2){ m.target=null; } else { for(let t=0;t<30;t++){ const x=Math.floor(m.x)+RI(-14,14),z=Math.floor(m.z)+RI(-14,14); if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1){m.target={x:x+.5,z:z+.5};break;} } } m.wanderT=R(5,12); }
+    if(m.target){ tx=m.target.x;tz=m.target.z;spd=0.6; if(Math.hypot(tx-m.x,tz-m.z)<0.5) m.target=null; }
+    m.chitterT-=dt; if(m.chitterT<=0){ m.chitterT=R(5,12); if(Math.hypot(player.x-m.x,player.z-m.z)<13) sfxChitter([m.x,1.8,m.z],0.35); }
+  } else if(m.state==='alert'){
+    tx=m.target.x;tz=m.target.z;spd=0.88;
+    if(Math.hypot(tx-m.x,tz-m.z)<0.8){ spd=0; m.lingerT+=dt; if(m.lingerT>5){ m.state='idle'; m.target=null; m.wanderT=R(1,3);} }
+    if(Math.hypot(player.x-m.x,player.z-m.z)<2.2&&playerMoving) enterHunt(m);
+  } else if(m.state==='hunt'){
+    // it only knows where you were when it last heard/sensed you (no live tracking)
+    if(!m.lastKnown) m.lastKnown={x:m.x,z:m.z};
+    tx=m.lastKnown.x; tz=m.lastKnown.z;
+    spd=2.87*(0.85+0.25*Math.max(0,Math.sin(now*2.3+m.seed)));
+    if(m.windup>0){ // rears up, faces you and screams for ~1s before it charges
+      if(m.wShriek&&shriek(m)!==false){ m.wShriek=false; m.shriekT=Math.max(0.3,m.shriekLeft-0.25); }
+      m.windup-=dt; spd=0;
+      let dy=Math.atan2(tx-m.x,tz-m.z)-m.yaw; while(dy>Math.PI) dy-=6.283; while(dy<-Math.PI) dy+=6.283; m.yaw+=clamp(dy,-6*dt,6*dt);
+    }
+    if(!(m.windup>0)&&Math.hypot(tx-m.x,tz-m.z)<1.0){
+      // reached the spot: carry on a little the way you were heading, then give up and search
+      let next=null; if(!m.overshot&&m.lastDir){ for(let k=5;k>=2;k--){ const ox=tx+m.lastDir.x*k, oz=tz+m.lastDir.z*k; if(walkAt(ox,oz)&&clearPath(tx,tz,ox,oz)){ next={x:ox,z:oz}; break; } } }
+      m.overshot=true;
+      if(next) m.lastKnown=next; else { m.state='alert'; m.target={x:tx,z:tz}; m.lingerT=0; } }
+    m.shriekT-=dt; if(m.shriekT<=0&&!(m.windup>0)&&shriek(m)!==false) m.shriekT=Math.max(0.3,m.shriekLeft-0.25); // never goes quiet while hunting: next scream overlaps the tail of the last
+    // it is screaming/clattering as it runs: fresh dot snapshot of its body several times a second,
+    // older snapshots keep fading -> you see a stuttering trail of it closing in (visible through walls when unseen)
+    m.trailT-=dt; if(m.trailT<=0){ m.trailT=MR(0.09,0.15); const d=Math.hypot(player.x-m.x,player.z-m.z);
+      if(d<45&&los(player.x,camY,player.z,m.x,1.4,m.z)) sampleMonster(m,280,now+d/60,0.95,[1,0.6,0.5],F_BIG|(Math.random()<.35?F_NOISY:0)); }
+  }
+  if(m.state!=='hunt'){ if(m.freezeT>0){ m.freezeT-=dt; spd=0; } else if(Math.random()<dt*0.2) m.freezeT=MR(0.2,0.9); }
+  const ox=m.x,oz=m.z;
+  const nd=tx!==null&&spd>0?navDir(m,tx,tz):null;
+  let wvx=0,wvz=0;
+  if(nd){
+    const [dx,dz]=nd;
+    const want=Math.atan2(dx,dz); let dy=want-m.yaw; while(dy>Math.PI) dy-=6.283; while(dy<-Math.PI) dy+=6.283;
+    const tr=m.state==='hunt'?9:2.2; m.yaw+=clamp(dy,-tr*dt,tr*dt);
+    const face=Math.max(0,Math.cos(dy)); // must roughly face where it goes
+    const v=spd*(m.state==='hunt'?1:(0.4+0.6*face))*(0.7+0.6*Math.abs(Math.sin(now*1.7+m.seed*3)));
+    wvx=dx*v; wvz=dz*v;
+  } else if(m.state==='idle'&&Math.random()<dt*0.5) m.yaw+=MR(-1.2,1.2); // weird snap turns
+  // inertia: velocity chases the wanted velocity with limited acceleration -> they slide wide on sharp turns
+  { const acc=(m.state==='hunt'?7:3.5)*dt; let ex=wvx-m.vx, ez=wvz-m.vz; const el=Math.hypot(ex,ez); if(el>acc){ ex*=acc/el; ez*=acc/el; }
+    m.vx+=ex; m.vz+=ez;
+    const bx=m.x, bz=m.z, sp0=Math.hypot(m.vx,m.vz);
+    if(sp0>1e-3) moveCircle(m,m.vx*dt,m.vz*dt,0.3);
+    const ax=(m.x-bx)/Math.max(dt,1e-4), az=(m.z-bz)/Math.max(dt,1e-4), sp1=Math.hypot(ax,az);
+    m.vx=ax; m.vz=az;                                   // keep only what survived the collision (slides along walls)
+    m.bumpT=Math.max(0,(m.bumpT||0)-dt);
+    if(sp0>1.6&&sp1<sp0*0.55){ m.vx*=0.6; m.vz*=0.6;     // slammed into a wall: loses speed
+      if(m.bumpT<=0&&m.state==='hunt'){ m.bumpT=0.6; sfxThump([m.x,0.9,m.z],0.6); } } }
+  for(const o of monsters){ if(o===m) continue; const ddx=m.x-o.x,ddz=m.z-o.z,d=Math.hypot(ddx,ddz); if(d<0.65&&d>1e-4){ moveCircle(m,ddx/d*(0.65-d)*0.5,ddz/d*(0.65-d)*0.5,0.3);} }
+  const moved=Math.hypot(m.x-ox,m.z-oz)/Math.max(dt,1e-4);
+  m.curSpeed=lerp(m.curSpeed,moved,clamp(dt*8,0,1));
+  m.runB=lerp(m.runB,(m.state==='hunt'&&m.curSpeed>1.3)?1:0,clamp(dt*3,0,1));
+  m.rearB=lerp(m.rearB||0,(m.state==='hunt'&&m.windup>0)?1:0,clamp(dt*6,0,1));
+  m.jaw=lerp(m.jaw,(m.state==='hunt'&&m.windup>0)?1:m.state==='hunt'?0.35+0.3*Math.max(0,Math.sin(now*7+m.seed)):0,clamp(dt*4,0,1));
+  m.gait+=m.curSpeed*dt*(2.6+m.runB*0.6);
+  const sv=Math.sin(m.gait); if((sv>=0)!==(m.prevS>=0)&&m.curSpeed>1.6) monsterStep(m); m.prevS=sv;
+  const reach=m.state==='hunt'?1.5:m.state==='alert'?1.15:0.9; // long arms: you can't slip past one
+  if(!dead&&!won&&Math.hypot(player.x-m.x,player.z-m.z)<reach) die(m);
+}
+
+// =====================================================================
+//  PLAYER
+// =====================================================================
+const player={x:0,z:0,yaw:0,pitch:0,bob:0};
+let camY=EYE, playerMoving=false, sprinting=false, stepAcc=0;
+const keys={};
+function solidAt(cx,cz){ return !inb(cx,cz)||!walk[idx(cx,cz)]; }
+function collide(o,r){
+  for(let it=0;it<2;it++){ const cx=Math.floor(o.x),cz=Math.floor(o.z);
+    for(let dz=-1;dz<=1;dz++) for(let dx=-1;dx<=1;dx++){ const X=cx+dx,Z=cz+dz; if(!solidAt(X,Z)) continue;
+      let X0=X,Z0=Z,X1=X+1,Z1=Z+1;
+      if(inb(X,Z)&&cellType[idx(X,Z)]!==T_WALL){ const f=idx(X,Z)*4; X0=footprint[f];Z0=footprint[f+1];X1=footprint[f+2];Z1=footprint[f+3]; }
+      const px=clamp(o.x,X0,X1),pz=clamp(o.z,Z0,Z1),ex=o.x-px,ez=o.z-pz,d=Math.hypot(ex,ez);
+      if(d<r){ if(d<1e-6){ o.x+=(o.x-(X0+X1)/2)>0?r:-r; } else { o.x+=ex/d*(r-d); o.z+=ez/d*(r-d); } } } }
+}
+function moveCircle(o,dx,dz,r){ const n=Math.max(1,Math.ceil(Math.hypot(dx,dz)/0.2)); for(let i=0;i<n;i++){ o.x+=dx/n; o.z+=dz/n; collide(o,r); } }
+
+let lastEcho=-9;
+function runStepEcho(){
+  const ex=player.x, ey=0.15, ez=player.z, sp=24;
+  // sparse and always a bit broken; tiredness smears it in every direction until it's pure noise
+  const f=fatigue, jit=0.28+3.2*Math.pow(f,1.1);
+  emitEcho({x:ex,y:ey,z:ez,n:Math.round(ECHO_RAYS*0.35*(1-0.55*f)),maxD:30*(1-0.4*f),speed:sp,life:1.1*(1-0.45*f),
+    flags:F_SMALL|(f>0.15?F_NOISY:0),I:1.0*(1-0.45*f),jit,mon:true,bounce:0});
+  if(f>0.3) return; // only while fresh can you make out a shape in it (never signs)
+  for(const m of monsters){ const d=Math.hypot(m.x-ex,m.z-ez); if(d<22&&(los(ex,camY,ez,m.x,1.5,m.z)||los(ex,camY,ez,m.x,0.7,m.z))) sampleMonster(m,140,now+d/sp,0.9,[1,0.86,0.8],F_NOISY); }
+}
+function playerEcho(silent){
+  if(now-lastEcho<0.28) return; lastEcho=now;
+  const ex=player.x,ey=camY,ez=player.z;
+  const samples=emitEcho({x:ex,y:ey,z:ez,n:ECHO_RAYS,maxD:36,speed:24,life:1.5,flags:fatigue>0.6?F_NOISY:0,I:1.0,mon:true,sync:true,jit:1.6*Math.pow(fatigue,1.3)});
+  for(const m of monsters){ const d=Math.hypot(m.x-ex,1.4-ey,m.z-ez);
+    if(d<34&&(los(ex,ey,ez,m.x,1.5,m.z)||los(ex,ey,ez,m.x,0.7,m.z)||los(ex,ey,ez,m.x,1.95,m.z))) sampleMonster(m,520,now+d/24,1.5,[1,0.86,0.8],F_BIG); }
+  for(const s of signs){ const d=Math.hypot(s.x-ex,s.y-ey,s.z-ez); if(d<30&&los(ex,ey,ez,s.x,s.y,s.z)) revealSign(s,now+d/24);
+    const df=Math.hypot(s.x-ex,ey,s.z-ez); if(df<22&&los(ex,ey,ez,s.x,0.05,s.z)) revealFloorArrow(s,now+df/24); }
+  { const e=exitInfo, px=e.fx+e.nx*0.1, pz=e.fz+e.nz*0.1, d=Math.hypot(px-ex,1.2-ey,pz-ez); if(d<36&&(los(ex,ey,ez,px,1.2,pz)||los(ex,ey,ez,px,2.4,pz))) revealExit(now+d/24); }
+  sfxEcho(samples);
+  if(!silent) hearPlayer('echo');
+  if(!silent) document.getElementById('prompt').style.display='none';
+}
+
+// =====================================================================
+//  GAME STATE
+// =====================================================================
+let fatigue=0, heat=0, callT=8, ambushT=0, breathT=0, ambushed=0, debugView=false, exitPulseT=0, started=false, paused=true, dead=false, won=false, deathT=0, killer=null, staticBoost=0, fear=0, heartT=0, startTime=0, shake=0;
+function newGame(){
+  seed=(Date.now()^Math.floor(Math.random()*1e9))>>>0;
+  genLevel(); navCache.clear(); buildLevelMesh(); if(debugView) buildLitMesh();
+  pdata.fill(0); wStart=0; wCount=MAXP; phead=0; liveHist.length=0; echoJobs.length=0; fExp=-1; frameStartW=totalW;
+  player.x=startInfo.x; player.z=startInfo.z; player.yaw=startInfo.yaw; player.pitch=0; player.px0=player.x; player.pz0=player.z; player.spd=0; player.vx=0; player.vz=0;
+  dead=false; won=false; deathT=0; killer=null; staticBoost=0; fear=0; startTime=now; lastEcho=-9;
+  shake=0; heartT=0; fatigue=0; heat=0; lastNoise={x:player.x,z:player.z,t:-99}; callT=8; ambushT=0; ambushed=0; breathT=0; player.bob=0; stepAcc=0; camY=EYE; playerMoving=false; sprinting=false;
+  for(const k in keys) keys[k]=false; stick.id=null; stick.x=stick.y=0; stick.run=false; look.id=null; lastTap=null; restStick();
+  document.getElementById('vign').style.opacity=0; nc.style.opacity=0;
+  document.getElementById('flash').style.opacity=0;
+  document.getElementById('info').style.opacity=1;
+  setTimeout(()=>{ if(!dead) document.getElementById('info').style.opacity=0.0; },14000);
+  startExitBuzz();
+  document.getElementById('prompt').style.display='';
+}
+function updatePressure(dt){
+  // fatigue: ~10s of running wrecks you; walking/standing recovers
+  if(sprinting) fatigue=Math.min(1,fatigue+dt/6); else fatigue=Math.max(0,fatigue-dt/(playerMoving?14:7));
+  if(fatigue>0.25){ breathT-=dt; if(breathT<=0){ breathT=MR(1.0,1.15)-fatigue*0.55; sfxBreath(0.14+fatigue*0.3,breathT); } }
+  // heat: long chases and long runs pull the whole level toward you
+  // only hunters that heard you recently count: once you have shaken them off and gone quiet, the level cools down
+  const hunting=monsters.filter(m=>m.state==='hunt'&&now-m.heardT<6).length;
+  if(hunting||sprinting) heat=Math.min(1,heat+dt*(0.018*hunting+(sprinting?0.025:0)));
+  else heat=Math.max(0,heat-dt*(now-lastNoise.t>8?0.03:0.012));
+  // calls go to where you were last heard, give or take a few metres -- never to where you are hiding now
+  callT-=dt; if(callT<=0){ callT=R(4,7);
+    if(Math.random()<heat&&now-lastNoise.t<20){ const idle=monsters.filter(m=>m.state==='idle'), alert=monsters.filter(m=>m.state==='alert');
+      const fz=4+(now-lastNoise.t)*0.5, spot=()=>{ for(let k=0;k<20;k++){ const x=lastNoise.x+MR(-fz,fz), z=lastNoise.z+MR(-fz,fz); if(walkAt(x,z)) return {x,z}; } return {x:lastNoise.x,z:lastNoise.z}; };
+      if(idle.length){ const m=idle[(Math.random()*idle.length)|0], sp=spot(); if(heat>0.55&&now-lastNoise.t<4) enterHunt(m,sp,lastNoise.t); else enterAlert(m,sp.x,sp.z); }
+      else if(alert.length&&now-lastNoise.t<4) enterHunt(alert[(Math.random()*alert.length)|0],spot(),lastNoise.t); } }
+  // exit ambush: if you come near the exit after building heat, a few more of them were already on their way
+  const de=Math.hypot(player.x-exitInfo.px,player.z-exitInfo.pz);
+  ambushT-=dt;
+  if(de<32&&heat>0.25&&ambushT<=0&&ambushed<3&&monsters.length<11){ ambushT=R(2.5,5);
+    const want=Math.min(3,Math.ceil(heat*3)); if(ambushed<want&&spawnHidden(exitInfo.px,exitInfo.pz,9,20)) ambushed++; }
+}
+// spawn a monster out of sight, already on its way to you (never parked)
+function spawnHidden(cx,cz,r0,r1){
+  for(let t=0;t<80;t++){ const a=Math.random()*6.283, r=MR(r0,r1), x=Math.floor(cx+Math.sin(a)*r)+0.5, z=Math.floor(cz+Math.cos(a)*r)+0.5, i=idx(Math.floor(x),Math.floor(z));
+    if(Math.hypot(x-cx,z-cz)>r1) continue;
+    if(!inb(Math.floor(x),Math.floor(z))||!walk[i]||exitCell[i]||mat[i]===1) continue;
+    const dp=Math.hypot(x-player.x,z-player.z); if(dp<9) continue;
+    if(los(player.x,camY,player.z,x,1.4,z)||los(player.x,camY,player.z,x,0.4,z)) continue;
+    const m=makeMonster(x,z); monsters.push(m);
+    if(heat>0.6) enterHunt(m); else enterAlert(m,player.x,player.z);
+    return true; }
+  return false;
+}
+function die(m){
+  dead=true; deathT=0; killer=m; m.state='kill'; m.runB=0.4; m.curSpeed=0; m.jaw=0.2;
+  const a=Math.atan2(m.x-player.x,m.z-player.z);
+  m.x=player.x+Math.sin(a)*0.85; m.z=player.z+Math.cos(a)*0.85; m.yaw=a+Math.PI;
+  sfxShriek([m.x,1.7,m.z],2.6,0,true); staticBoost=1;
+}
+function win(){ won=true; sfxWin(); showOverlay('won',{s:Math.round(now-startTime)}); document.exitPointerLock&&document.exitPointerLock(); }
+function showOverlay(k,a){ ovState={k,a}; const o=document.getElementById('overlay'); o.innerHTML=overlayHTML(ovState); o.style.display='flex'; }
+
+function update(dt){
+  frameNo++;
+  // static / fear
+  staticBoost=Math.max(0,staticBoost-dt*0.8);
+  let f=0; for(const m of monsters) if(m.state==='hunt') f=Math.max(f,clamp(1-Math.hypot(m.x-player.x,m.z-player.z)/25,0,1));
+  fear=lerp(fear,f,clamp(dt*2,0,1));
+  if(dead){ updateDeath(dt); return; }
+  if(won) return;
+  // look & move
+  const fx=Math.sin(player.yaw),fz=Math.cos(player.yaw),rx=-Math.cos(player.yaw),rz=Math.sin(player.yaw);
+  let ix=(keys.KeyD?1:0)-(keys.KeyA?1:0)+stick.x, iz=(keys.KeyW?1:0)-(keys.KeyS?1:0)-stick.y;
+  const mag=Math.hypot(ix,iz); if(mag>1){ix/=mag;iz/=mag;}
+  playerMoving=mag>0.12; const stickRun=stick.run;
+  sprinting=playerMoving&&!!(keys.ShiftLeft||keys.ShiftRight||stickRun);
+  if(playerMoving){ const sp=sprinting?5.9*(1-0.15*fatigue):2.4; /* you can always run for your life; it's your senses that fail */ moveCircle(player,(fx*iz+rx*ix)*sp*dt,(fz*iz+rz*ix)*sp*dt,0.24);
+    player.bob+=dt*(sprinting?11:7.5); stepAcc+=dt*(sprinting?3.4:1.9);
+    if(stepAcc>=1){ stepAcc=0; sfxStep(sprinting);
+      if(sprinting){ runStepEcho(); hearPlayer('step'); } } }
+  { const ivx=(player.x-player.px0)/Math.max(dt,1e-4), ivz=(player.z-player.pz0)/Math.max(dt,1e-4);
+    player.vx=lerp(player.vx||0,ivx,0.3); player.vz=lerp(player.vz||0,ivz,0.3); player.spd=Math.hypot(player.vx,player.vz); player.px0=player.x; player.pz0=player.z; }
+  camY=EYE+Math.sin(player.bob)*(playerMoving?(sprinting?0.05:0.025):0);
+  for(const m of monsters) updateMonster(m,dt);
+  if(dead) return;
+  // win
+  if(Math.hypot(player.x-exitInfo.px,player.z-exitInfo.pz)<0.9) win();
+  // pressure systems: fatigue, heat (whole level converging), exit ambush
+  updatePressure(dt);
+  // heartbeat
+  if(fear>0.05){ heartT-=dt; if(heartT<=0){ sfxHeart(0.25+fear*0.6); heartT=1.1-fear*0.65; } }
+}
+function updateDeath(dt){
+  deathT+=dt; const m=killer;
+  m.deathK=Math.min(1,deathT/0.4); m.jaw=Math.min(1,0.2+deathT*1.8);
+  m.twT-=dt; if(m.twT<=0){ m.twRoll=MR(-0.5,0.5); m.twX=MR(-0.6,0.6); for(const a of m.armJ){a[0]=MR(-.1,.1);a[1]=MR(-.1,.1);a[2]=MR(-.1,.1);} m.twT=MR(0.03,0.12); }
+  const P=poseOf(m); const h=P.head;
+  const ty=Math.atan2(h[0]-player.x,h[2]-player.z), tp=Math.atan2(h[1]-camY,Math.hypot(h[0]-player.x,h[2]-player.z));
+  let dy=ty-player.yaw; while(dy>Math.PI) dy-=6.283; while(dy<-Math.PI) dy+=6.283;
+  player.yaw+=dy*clamp(dt*10,0,1); player.pitch=lerp(player.pitch,tp,clamp(dt*10,0,1));
+  shake=0.03+deathT*0.03;
+  if(deathT<1.4){ sampleMonster(m,260,now,0.09,[1,0.75,0.7],F_NOISY|F_XRAY|F_BIG);
+    if(Math.random()<dt*5) emitEcho({x:h[0],y:h[1],z:h[2],n:900,maxD:12,speed:40,life:0.4,flags:F_NOISY,col:[1,0.1,0.05],I:0.9,skip:m}); }
+  if(deathT>0.45){ if(Math.random()<dt*9){ sfxCrunch(); document.getElementById('flash').style.opacity=MR(0.3,0.8); } else document.getElementById('flash').style.opacity*=0.85; }
+  if(deathT>1.4){ document.getElementById('flash').style.opacity=Math.min(0.92,(deathT-1.4)*1.6); }
+  if(deathT>2.0&&document.getElementById('overlay').style.display!=='flex'){ showOverlay('dead'); document.exitPointerLock&&document.exitPointerLock(); }
+}
+
+// =====================================================================
+//  WEBGL
+// =====================================================================
+const cv=document.getElementById('gl');
+const gl=cv.getContext('webgl',{antialias:false,alpha:false,premultipliedAlpha:false});
+if(!gl){ showOverlay('noGL'); throw new Error('WebGL unavailable'); }
+function sh(type,src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; }
+function prog(vs,fs){ const p=gl.createProgram(); gl.attachShader(p,sh(gl.VERTEX_SHADER,vs)); gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs)); gl.linkProgram(p); if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw gl.getProgramInfoLog(p); return p; }
+const ptProg=prog(`
+attribute vec3 aPos; attribute vec3 aCol; attribute vec3 aT;
+uniform mat4 uVP; uniform float uTime; uniform vec3 uCam; uniform float uScale; uniform float uPass;
+varying vec3 vC; varying float vI;
+float h1(float n){return fract(sin(n)*43758.5453);}
+void main(){
+  float age=uTime-aT.x; float fl=aT.z;
+  float xr=step(1.5,mod(fl,4.0)); float nz=mod(fl,2.0); float big=step(3.5,mod(fl,8.0)); float small=step(7.5,mod(fl,16.0));
+  if(age<0.0||age>aT.y||abs(xr-uPass)>0.5){gl_Position=vec4(0.0,0.0,-2.0,1.0);gl_PointSize=0.0;return;}
+  float k=age/aT.y;
+  float flash=exp(-age*9.0);
+  float I=1.0-smoothstep(0.3,1.0,k);
+  vec3 p=aPos;
+  if(nz>0.5){
+    float s=dot(aPos,vec3(12.9898,78.233,37.719))+floor(uTime*24.0)*1.731;
+    p+=(vec3(h1(s),h1(s+1.3),h1(s+2.7))-0.5)*0.22;
+    I*=0.3+1.3*step(0.45,h1(s+5.1));
+  }
+  vec3 tc=uCam-p; float dc=length(tc);
+  p+=tc/max(dc,0.001)*min(0.06,dc*0.5);
+  vec4 cp=uVP*vec4(p,1.0);
+  gl_Position=cp;
+  float sz=(0.034+big*0.022)*(1.0-small*0.35)*(1.0+flash*1.3);
+  gl_PointSize=clamp(sz*uScale/max(cp.w,0.01),1.25,48.0);
+  vI=I+flash*1.5; vC=aCol;
+}`,`
+precision mediump float; varying vec3 vC; varying float vI;
+void main(){ vec2 d=gl_PointCoord-0.5; float r=dot(d,d)*4.0; if(r>1.0) discard; float a=exp(-r*3.2); gl_FragColor=vec4(vC*vI*a,1.0); }`);
+const dProg=prog(`attribute vec3 aPos; uniform mat4 uVP; void main(){ gl_Position=uVP*vec4(aPos,1.0); }`,`precision mediump float; void main(){ gl_FragColor=vec4(0.0); }`);
+const ptBuf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,ptBuf); gl.bufferData(gl.ARRAY_BUFFER,pdata.byteLength,gl.DYNAMIC_DRAW);
+const PL={pos:gl.getAttribLocation(ptProg,'aPos'),col:gl.getAttribLocation(ptProg,'aCol'),t:gl.getAttribLocation(ptProg,'aT'),
+  vp:gl.getUniformLocation(ptProg,'uVP'),time:gl.getUniformLocation(ptProg,'uTime'),cam:gl.getUniformLocation(ptProg,'uCam'),scale:gl.getUniformLocation(ptProg,'uScale'),pass:gl.getUniformLocation(ptProg,'uPass')};
+const DL={pos:gl.getAttribLocation(dProg,'aPos'),vp:gl.getUniformLocation(dProg,'uVP')};
+let lvlBuf=gl.createBuffer(), lvlCount=0;
+function buildLevelMesh(){
+  const v=[]; const f=[0,1,2,0,2,3,4,6,5,4,7,6,0,4,5,0,5,1,3,2,6,3,6,7,0,3,7,0,7,4,1,5,6,1,6,2];
+  const nb=BX.length/7;
+  for(let b=0;b<nb;b++){ const o=b*7,x0=BX[o],y0=BX[o+1],z0=BX[o+2],x1=BX[o+3],y1=BX[o+4],z1=BX[o+5];
+    const c=[[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0],[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]];
+    for(const i of f) v.push(c[i][0],c[i][1],c[i][2]); }
+  for(const sg of signs){ const ux=sg.dx,uz=sg.dz,nx=-uz,nz=ux;
+    const c=[]; for(const n of [-1,1]) for(const vv of [-1,1]) for(const a of [-1,1]) c.push([sg.x+ux*SIGN_L*a+nx*SIGN_T*n, sg.y+SIGN_H*vv, sg.z+uz*SIGN_L*a+nz*SIGN_T*n]);
+    // c index = n*4 + v*2 + a  -> remap to box corner order used by f[]
+    const q=[c[0],c[1],c[3],c[2],c[4],c[5],c[7],c[6]];
+    for(const i of f) v.push(q[i][0],q[i][1],q[i][2]); }
+  v.push(0,0,0,W,0,0,W,0,H,0,0,0,W,0,H,0,0,H);
+  v.push(0,MAXH,0,W,MAXH,0,W,MAXH,H,0,MAXH,0,W,MAXH,H,0,MAXH,H);
+  gl.bindBuffer(gl.ARRAY_BUFFER,lvlBuf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(v),gl.STATIC_DRAW); lvlCount=v.length/3;
+}
+// ---------- "letmesee": lit debug view with procedural materials ----------
+const litProg=prog(`
+attribute vec3 aPos; attribute vec3 aNor; attribute float aMat; uniform mat4 uVP;
+varying vec3 vP; varying vec3 vN; varying float vM;
+void main(){ vP=aPos; vN=aNor; vM=aMat; gl_Position=uVP*vec4(aPos,1.0); }`,`
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+varying vec3 vP; varying vec3 vN; varying float vM;
+uniform vec3 uCam; uniform float uTime; uniform float uDim; uniform sampler2D uSkin;
+float h(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+float n2(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f); return mix(mix(h(i),h(i+vec2(1.0,0.0)),f.x),mix(h(i+vec2(0.0,1.0)),h(i+vec2(1.0,1.0)),f.x),f.y); }
+float fbm(vec2 p){ float s=0.0,a=0.5; for(int i=0;i<4;i++){ s+=a*n2(p); p*=2.03; a*=0.5; } return s; }
+void main(){
+  vec3 N=normalize(vN), P=vP; vec3 V=uCam-P; float d=length(V); V/=d;
+  if(dot(N,V)<0.0) N=-N;                                  // two-sided
+  int m=int(vM+0.5);
+  vec2 uv=abs(N.y)>0.5?P.xz:(abs(N.x)>0.5?vec2(P.z,P.y):vec2(P.x,P.y));
+  vec3 c=vec3(0.5); float spec=0.0; vec3 emis=vec3(0.0);
+  if(m==0){ // yellowed striped wallpaper, stains, skirting board
+    float st=step(0.5,fract(uv.x*5.0)); c=mix(vec3(0.74,0.66,0.42),vec3(0.67,0.59,0.37),st);
+    c*=0.82+0.3*fbm(uv*3.0); c=mix(c,vec3(0.42,0.35,0.22),smoothstep(0.55,0.85,fbm(uv*0.7+3.0))*0.6);
+    c*=1.0-0.35*smoothstep(0.6,0.0,P.y)*fbm(uv*9.0);
+    if(P.y<0.12) c=vec3(0.30,0.22,0.15)*(0.8+0.3*n2(uv*20.0));
+  } else if(m==1){ // concrete corridor with panel seams
+    c=vec3(0.48,0.48,0.46)*(0.72+0.42*fbm(uv*4.0)); if(fract(P.y/1.2)<0.015||fract(uv.x/2.4)<0.006) c*=0.55;
+    c=mix(c,vec3(0.3,0.33,0.3),smoothstep(0.6,0.9,fbm(uv*1.3+7.0))*0.5);
+  } else if(m==2){ // glossy tiles (reverb)
+    vec2 g=fract(uv*4.0); float grout=step(0.05,g.x)*step(0.05,g.y)*step(g.x,0.95)*step(g.y,0.95);
+    c=mix(vec3(0.22,0.26,0.26),vec3(0.80,0.90,0.90)*(0.88+0.12*h(floor(uv*4.0))),grout); spec=1.2*grout;
+  } else if(m==3){ // patterned carpet
+    vec2 q=abs(fract(uv*1.4)-0.5); c=vec3(0.40,0.08,0.10)*(0.65+0.6*n2(uv*70.0)); c*=0.8+0.35*step(0.4,q.x+q.y);
+    c=mix(c,vec3(0.6,0.45,0.2),step(0.47,q.x+q.y)*0.5);
+  } else if(m==4){ // linoleum checker with scuffs
+    vec2 cc=floor(uv*2.0); float k=mod(cc.x+cc.y,2.0); c=mix(vec3(0.62,0.60,0.54),vec3(0.42,0.40,0.37),k)*(0.82+0.25*fbm(uv*5.0)); spec=0.35;
+  } else if(m==9){ c=vec3(0.36,0.35,0.33)*(0.7+0.45*fbm(uv*3.0)); // corridor concrete floor
+  } else if(m==5){ // acoustic ceiling tiles + flickering fluorescent panels
+    vec2 g=fract(uv/0.6); float gr=step(0.04,g.x)*step(0.04,g.y); c=mix(vec3(0.28),vec3(0.80,0.78,0.72),gr)*(0.85+0.2*n2(uv*25.0));
+    vec2 cl=floor(uv/0.6); if(mod(cl.x,4.0)<0.5&&mod(cl.y,3.0)<0.5){ float fl=0.75+0.25*step(0.08,h(cl+floor(uTime*9.0))); emis=vec3(1.0,0.97,0.86)*fl*gr; }
+  } else if(m==6){ c=vec3(0.44,0.31,0.19)*(0.7+0.4*n2(vec2(uv.x*3.0,uv.y*40.0)+P.y)); spec=0.15; // wood
+  } else if(m==7){ c=vec3(0.32,0.19,0.10)*(0.65+0.45*n2(vec2(uv.x*2.0,uv.y*30.0)+P.x*3.0)); // planks
+  } else if(m==8){ c=vec3(0.16,0.32,0.2)*(0.7+0.5*fbm(uv*3.0)); float fl=0.55+0.45*step(0.25,h(vec2(floor(uTime*14.0),1.0))); emis=vec3(0.05,0.45,0.16)*fl*(0.6+0.4*fbm(uv*1.5)); spec=0.4;
+  } else if(m==10){ c=vec3(0.0); emis=vec3(0.35,1.0,0.5)*1.4;
+  } else if(m==14){ c=vec3(0.03,0.09,0.04); emis=vec3(0.02,0.12,0.05);
+  } else if(m==11){ // monster skin: embedded texture, triplanar
+    vec3 w=abs(N); w/=w.x+w.y+w.z;
+    c=texture2D(uSkin,P.yz*1.6).rgb*w.x+texture2D(uSkin,P.xz*1.6).rgb*w.y+texture2D(uSkin,P.xy*1.6).rgb*w.z; spec=0.9;
+  } else if(m==12){ c=vec3(0.92,0.88,0.74); spec=0.7;
+  } else { c=vec3(0.18,0.02,0.03); }
+  vec3 Hh=normalize(V+V); float ndl=max(dot(N,V),0.0);
+  float lantern=ndl*2.4/(1.0+d*d*0.05);
+  float hemi=0.30+0.22*N.y;
+  float ao=mix(0.5,1.0,smoothstep(0.0,0.7,P.y));
+  float sp=pow(ndl,48.0)*spec*lantern;
+  vec3 col=c*(hemi*ao*vec3(1.0,0.95,0.84)+lantern*vec3(1.0,0.93,0.8))+sp;
+  float fog=exp(-d*0.05);
+  col=(col*fog+emis*(0.6+0.4*fog))*uDim;
+  gl_FragColor=vec4(col,1.0);
+}`);
+const LL={pos:gl.getAttribLocation(litProg,'aPos'),nor:gl.getAttribLocation(litProg,'aNor'),mat:gl.getAttribLocation(litProg,'aMat'),
+  vp:gl.getUniformLocation(litProg,'uVP'),cam:gl.getUniformLocation(litProg,'uCam'),time:gl.getUniformLocation(litProg,'uTime'),dim:gl.getUniformLocation(litProg,'uDim'),skin:gl.getUniformLocation(litProg,'uSkin')};
+let litBuf=gl.createBuffer(), litCount=0; const monBuf=gl.createBuffer(); let monData=new Float32Array(7*30000);
+// embedded skin texture, painted procedurally at load: pale mottled flesh, bruises, dark veins, wet speckle
+const skinTex=(()=>{ const S=256, c=document.createElement('canvas'); c.width=c.height=S; const x=c.getContext('2d');
+  x.fillStyle='#b9a99a'; x.fillRect(0,0,S,S);
+  for(let i=0;i<220;i++){ const r=8+Math.random()*40, px=Math.random()*S, py=Math.random()*S, g=x.createRadialGradient(px,py,0,px,py,r);
+    const tone=Math.random()<0.5?'120,80,80':Math.random()<0.5?'205,190,170':'95,95,110'; g.addColorStop(0,`rgba(${tone},0.35)`); g.addColorStop(1,`rgba(${tone},0)`);
+    for(const ox of [-S,0,S]) for(const oy of [-S,0,S]){ x.save(); x.translate(ox,oy); x.fillStyle=g; x.fillRect(px-r,py-r,2*r,2*r); x.restore(); } }
+  x.lineCap='round';
+  for(let v=0;v<26;v++){ let px=Math.random()*S, py=Math.random()*S, a=Math.random()*6.28; x.strokeStyle=`rgba(${70+Math.random()*40},30,${60+Math.random()*40},${0.35+Math.random()*0.35})`;
+    for(let k=0;k<40;k++){ const nx=px+Math.cos(a)*5, ny=py+Math.sin(a)*5; x.lineWidth=Math.max(0.4,2.2-k*0.05);
+      for(const ox of [-S,0,S]) for(const oy of [-S,0,S]){ x.beginPath(); x.moveTo(px+ox,py+oy); x.lineTo(nx+ox,ny+oy); x.stroke(); }
+      px=nx; py=ny; a+=(Math.random()-0.5)*0.9; if(Math.random()<0.08) a+=(Math.random()-0.5)*2.5; } }
+  const im=x.getImageData(0,0,S,S), d=im.data; for(let i=0;i<d.length;i+=4){ const n=(Math.random()-0.5)*26; d[i]+=n; d[i+1]+=n; d[i+2]+=n; if(Math.random()<0.004){ d[i]=d[i+1]=d[i+2]=235; } }
+  x.putImageData(im,0,0);
+  const t=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,t); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);
+  gl.generateMipmap(gl.TEXTURE_2D); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
+  return t; })();
+function buildLitMesh(){
+  const v=[];
+  const tri=(a,b,c,m)=>{ const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2],wx=c[0]-a[0],wy=c[1]-a[1],wz=c[2]-a[2];
+    let nx=uy*wz-uz*wy, ny=uz*wx-ux*wz, nz=ux*wy-uy*wx; const l=Math.hypot(nx,ny,nz)||1; nx/=l;ny/=l;nz/=l;
+    v.push(a[0],a[1],a[2],nx,ny,nz,m, b[0],b[1],b[2],nx,ny,nz,m, c[0],c[1],c[2],nx,ny,nz,m); };
+  const Q=(a,b,c,d,m)=>{ tri(a,b,c,m); tri(a,c,d,m); };
+  for(let z=0;z<H;z++) for(let x=0;x<W;x++){ const i=idx(x,z); if(cellType[i]===T_WALL) continue;
+    const ch=ceilH[i], rv=mat[i]===1, cp=mat[i]===2, ex=exitCell[i], room=cellType[i]===T_ROOM;
+    const fm=ex?8:cp?3:rv?2:room?4:9, cm=rv?2:ex?8:5, wm=rv?2:ex?8:room?0:1;
+    Q([x,0,z],[x+1,0,z],[x+1,0,z+1],[x,0,z+1],fm);
+    Q([x,ch,z],[x+1,ch,z],[x+1,ch,z+1],[x,ch,z+1],cm);
+    for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){ const X=x+dx,Z=z+dz, solid=!inb(X,Z)||cellType[idx(X,Z)]===T_WALL;
+      const bot=solid?0:(ceilH[idx(X,Z)]<ch?ceilH[idx(X,Z)]:-1); if(bot<0) continue;
+      let a,b; if(dx===1){a=[x+1,z];b=[x+1,z+1];} else if(dx===-1){a=[x,z+1];b=[x,z];} else if(dz===1){a=[x+1,z+1];b=[x,z+1];} else {a=[x,z];b=[x+1,z];}
+      Q([a[0],bot,a[1]],[b[0],bot,b[1]],[b[0],ch,b[1]],[a[0],ch,a[1]],solid?wm:(rv?2:1)); } }
+  const f=[0,1,2,0,2,3,4,6,5,4,7,6,0,4,5,0,5,1,3,2,6,3,6,7,0,3,7,0,7,4,1,5,6,1,6,2];
+  const box=(c,m)=>{ for(let k=0;k<36;k+=3) tri(c[f[k]],c[f[k+1]],c[f[k+2]],m); };
+  for(let b=0;b<BX.length/7;b++){ const o=b*7, kd=BX[o+6]; if(kd!==K_FURN&&kd!==K_LOCK) continue;
+    const x0=BX[o],y0=BX[o+1],z0=BX[o+2],x1=BX[o+3],y1=BX[o+4],z1=BX[o+5];
+    box([[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0],[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]],kd===K_LOCK?7:6); }
+  for(const sg of signs){ const ux=sg.dx,uz=sg.dz,nx=-uz,nz=ux, c=[];
+    for(const n of [-1,1]) for(const vv of [-1,1]) for(const a of [-1,1]) c.push([sg.x+ux*SIGN_L*a+nx*SIGN_T*n, sg.y+SIGN_H*vv, sg.z+uz*SIGN_L*a+nz*SIGN_T*n]);
+    box([c[0],c[1],c[3],c[2],c[4],c[5],c[7],c[6]],14);
+    for(const side of [1,-1]){ const fnx=nx*side, fnz=nz*side, rx=fnz, rz=-fnx, ox=sg.x+fnx*(SIGN_T+0.004), oz=sg.z+fnz*(SIGN_T+0.004);
+      const ar=(ux*rx+uz*rz)>0?1:-1, tu0=ar>0?-0.47:-0.205, cu=ar>0?0.33:-0.33, ps=0.045;
+      const W3=(u,v)=>[ox+rx*u, sg.y+v, oz+rz*u];
+      const rect=(u0,v0,u1,v1)=>Q(W3(u0,v0),W3(u1,v0),W3(u1,v1),W3(u0,v1),10);
+      const seg=(u0,v0,u1,v1,w)=>{ const du=u1-u0,dv=v1-v0,l=Math.hypot(du,dv)||1, pu=-dv/l*w, pv=du/l*w; Q(W3(u0+pu,v0+pv),W3(u1+pu,v1+pv),W3(u1-pu,v1-pv),W3(u0-pu,v0-pv),10); };
+      for(const [cc,rr] of EXIT_TXT.px) rect(tu0+cc*ps,-0.11+rr*ps,tu0+(cc+1)*ps,-0.11+(rr+1)*ps);
+      const tip=cu+0.12*ar; seg(cu-0.12*ar,0,tip,0,0.016); seg(tip,0,tip-0.085*ar,0.075,0.016); seg(tip,0,tip-0.085*ar,-0.075,0.016); } }
+  gl.bindBuffer(gl.ARRAY_BUFFER,litBuf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(v),gl.STATIC_DRAW); litCount=v.length/7;
+}
+// monsters as real geometry: tapered limbs, skull, hinged jaw, teeth
+function buildMonsterMesh(){
+  let n=0; const D=monData;
+  const V=(x,y,z,nx,ny,nz,m)=>{ if(n+7>D.length) return; D[n++]=x;D[n++]=y;D[n++]=z;D[n++]=nx;D[n++]=ny;D[n++]=nz;D[n++]=m; };
+  const cyl=(a,b,r0,r1,m)=>{ let ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2]; const l=Math.hypot(ux,uy,uz)||1; ux/=l;uy/=l;uz/=l;
+    let ex=Math.abs(uy)<0.9?0:1, ey=Math.abs(uy)<0.9?1:0, ez=0; // helper vector
+    let px=uy*ez-uz*ey, py=uz*ex-ux*ez, pz=ux*ey-uy*ex; const pl=Math.hypot(px,py,pz)||1; px/=pl;py/=pl;pz/=pl;
+    const qx=uy*pz-uz*py, qy=uz*px-ux*pz, qz=ux*py-uy*px; const S=8;
+    for(let k=0;k<S;k++){ const a0=k/S*6.2832, a1=(k+1)/S*6.2832, c0=Math.cos(a0),s0=Math.sin(a0),c1=Math.cos(a1),s1=Math.sin(a1);
+      const n0=[px*c0+qx*s0,py*c0+qy*s0,pz*c0+qz*s0], n1=[px*c1+qx*s1,py*c1+qy*s1,pz*c1+qz*s1];
+      const A0=[a[0]+n0[0]*r0,a[1]+n0[1]*r0,a[2]+n0[2]*r0], A1=[a[0]+n1[0]*r0,a[1]+n1[1]*r0,a[2]+n1[2]*r0];
+      const B0=[b[0]+n0[0]*r1,b[1]+n0[1]*r1,b[2]+n0[2]*r1], B1=[b[0]+n1[0]*r1,b[1]+n1[1]*r1,b[2]+n1[2]*r1];
+      V(...A0,...n0,m); V(...A1,...n1,m); V(...B1,...n1,m); V(...A0,...n0,m); V(...B1,...n1,m); V(...B0,...n0,m); } };
+  const ell=(c,Rv,Uv,Fv,rx,ry,rz,m)=>{ const SL=10, ST=7, P=(i,j)=>{ const th=j/ST*Math.PI, ph=i/SL*6.2832, x=Math.sin(th)*Math.cos(ph), y=Math.cos(th), z=Math.sin(th)*Math.sin(ph);
+      const p=[c[0]+Rv[0]*x*rx+Uv[0]*y*ry+Fv[0]*z*rz, c[1]+Rv[1]*x*rx+Uv[1]*y*ry+Fv[1]*z*rz, c[2]+Rv[2]*x*rx+Uv[2]*y*ry+Fv[2]*z*rz];
+      let nx=Rv[0]*x/rx+Uv[0]*y/ry+Fv[0]*z/rz, ny=Rv[1]*x/rx+Uv[1]*y/ry+Fv[1]*z/rz, nz=Rv[2]*x/rx+Uv[2]*y/ry+Fv[2]*z/rz; const l=Math.hypot(nx,ny,nz)||1; return [p,[nx/l,ny/l,nz/l]]; };
+    for(let i=0;i<SL;i++) for(let j=0;j<ST;j++){ const a=P(i,j),b=P(i+1,j),cc=P(i+1,j+1),d=P(i,j+1);
+      V(...a[0],...a[1],m); V(...b[0],...b[1],m); V(...cc[0],...cc[1],m); V(...a[0],...a[1],m); V(...cc[0],...cc[1],m); V(...d[0],...d[1],m); } };
+  for(const m of monsters){ if(Math.hypot(m.x-player.x,m.z-player.z)>45) continue;
+    const P=poseOf(m);
+    for(const [a,b,r] of P.segs) cyl(a,b,r*1.35,r*1.1,11);
+    const h=P.head,F=P.HF,Rr=P.HR,U=P.HU, jaw=m.jaw;
+    const at=(o,a,b,c)=>[o[0]+Rr[0]*a+U[0]*b+F[0]*c, o[1]+Rr[1]*a+U[1]*b+F[1]*c, o[2]+Rr[2]*a+U[2]*b+F[2]*c];
+    ell(at(h,0,0.03,0),Rr,U,F,0.11,0.16,0.13,11);
+    const jc=at(h,0,-0.09-jaw*0.12,0.03+jaw*0.05);
+    ell(jc,Rr,U,F,0.085,0.05,0.10,11);
+    if(jaw>0.15){ ell(at(h,0,-0.07-jaw*0.06,0.06),Rr,U,F,0.07,0.035+jaw*0.05,0.06,13);
+      for(let k=0;k<9;k++){ const a=-1.1+k*0.275; const up=at(h,Math.sin(a)*0.085,-0.055,Math.cos(a)*0.095), lo=at(jc,Math.sin(a)*0.075,0.035,Math.cos(a)*0.085);
+        cyl(up,at(h,Math.sin(a)*0.08,-0.10-jaw*0.04,Math.cos(a)*0.09),0.009,0.001,12); cyl(lo,at(jc,Math.sin(a)*0.07,0.08+jaw*0.04,Math.cos(a)*0.08),0.008,0.001,12); } } }
+  gl.bindBuffer(gl.ARRAY_BUFFER,monBuf); gl.bufferData(gl.ARRAY_BUFFER,D.subarray(0,n),gl.DYNAMIC_DRAW); return n/7;
+}
+function drawLit(buf,count,VP,eye){
+  gl.useProgram(litProg); gl.uniformMatrix4fv(LL.vp,false,VP); gl.uniform3f(LL.cam,eye[0],eye[1],eye[2]); gl.uniform1f(LL.time,now); gl.uniform1f(LL.dim,0.62);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,skinTex); gl.uniform1i(LL.skin,0);
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.enableVertexAttribArray(LL.pos); gl.enableVertexAttribArray(LL.nor); gl.enableVertexAttribArray(LL.mat);
+  gl.vertexAttribPointer(LL.pos,3,gl.FLOAT,false,28,0); gl.vertexAttribPointer(LL.nor,3,gl.FLOAT,false,28,12); gl.vertexAttribPointer(LL.mat,1,gl.FLOAT,false,28,24);
+  gl.drawArrays(gl.TRIANGLES,0,count);
+  gl.disableVertexAttribArray(LL.pos); gl.disableVertexAttribArray(LL.nor); gl.disableVertexAttribArray(LL.mat);
+}
+function uploadPts(){
+  if(!wCount) return; gl.bindBuffer(gl.ARRAY_BUFFER,ptBuf);
+  if(wCount>=MAXP) gl.bufferSubData(gl.ARRAY_BUFFER,0,pdata);
+  else { const end=wStart+wCount;
+    if(end<=MAXP) gl.bufferSubData(gl.ARRAY_BUFFER,wStart*STRIDE*4,pdata.subarray(wStart*STRIDE,end*STRIDE));
+    else { gl.bufferSubData(gl.ARRAY_BUFFER,wStart*STRIDE*4,pdata.subarray(wStart*STRIDE)); gl.bufferSubData(gl.ARRAY_BUFFER,0,pdata.subarray(0,(end-MAXP)*STRIDE)); } }
+  wCount=0;
+}
+function persp(fov,asp,n,f){ const t=1/Math.tan(fov/2); return [t/asp,0,0,0, 0,t,0,0, 0,0,(f+n)/(n-f),-1, 0,0,2*f*n/(n-f),0]; }
+function viewM(e,f){ const ux=0,uy=1,uz=0; let sx=f[1]*uz-f[2]*uy, sy=f[2]*ux-f[0]*uz, sz=f[0]*uy-f[1]*ux; const sl=Math.hypot(sx,sy,sz); sx/=sl;sy/=sl;sz/=sl;
+  const vx=sy*f[2]-sz*f[1], vy=sz*f[0]-sx*f[2], vz=sx*f[1]-sy*f[0];
+  return [sx,vx,-f[0],0, sy,vy,-f[1],0, sz,vz,-f[2],0, -(sx*e[0]+sy*e[1]+sz*e[2]), -(vx*e[0]+vy*e[1]+vz*e[2]), (f[0]*e[0]+f[1]*e[1]+f[2]*e[2]),1]; }
+function mmul(a,b){ const o=new Float32Array(16); for(let c=0;c<4;c++) for(let r=0;r<4;r++){ let s=0; for(let k=0;k<4;k++) s+=a[k*4+r]*b[c*4+k]; o[c*4+r]=s; } return o; }
+const FOV=75*Math.PI/180;
+function resize(){ const dpr=Math.min(window.devicePixelRatio||1,1.5); cv.width=Math.floor(innerWidth*dpr); cv.height=Math.floor(innerHeight*dpr); }
+addEventListener('resize',resize); resize();
+
+function render(){
+  uploadPts();
+  gl.viewport(0,0,cv.width,cv.height);
+  gl.clearColor(0,0,0,1); gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  if(!BX) return;
+  const sway=fatigue*fatigue*0.9; const sx=(Math.random()-.5)*shake+Math.sin(now*6.1)*0.035*sway, sy=(Math.random()-.5)*shake+Math.sin(now*11.3)*0.025*sway;
+  const cp=Math.cos(player.pitch+sy);
+  const f=[Math.sin(player.yaw+sx)*cp, Math.sin(player.pitch+sy), Math.cos(player.yaw+sx)*cp];
+  const eye=[player.x,camY,player.z];
+  const VP=mmul(persp(FOV,cv.width/cv.height,0.03,140),viewM(eye,f));
+  gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL); gl.depthMask(true); gl.disable(gl.BLEND);
+  if(debugView&&litCount){ // lit world (writes colour + depth), dots go on top
+    gl.colorMask(true,true,true,true); drawLit(litBuf,litCount,VP,eye);
+    const mc=buildMonsterMesh(); if(mc) drawLit(monBuf,mc,VP,eye);
+  } else { // depth prepass so dots hide behind walls
+    gl.colorMask(false,false,false,false);
+    gl.useProgram(dProg); gl.uniformMatrix4fv(DL.vp,false,VP);
+    gl.bindBuffer(gl.ARRAY_BUFFER,lvlBuf); gl.enableVertexAttribArray(DL.pos); gl.vertexAttribPointer(DL.pos,3,gl.FLOAT,false,0,0);
+    gl.drawArrays(gl.TRIANGLES,0,lvlCount); gl.disableVertexAttribArray(DL.pos); }
+  // points
+  gl.colorMask(true,true,true,true); gl.depthMask(false); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE,gl.ONE);
+  gl.useProgram(ptProg);
+  gl.uniformMatrix4fv(PL.vp,false,VP); gl.uniform1f(PL.time,now); gl.uniform3f(PL.cam,eye[0],eye[1],eye[2]);
+  gl.uniform1f(PL.scale,cv.height/(2*Math.tan(FOV/2)));
+  gl.bindBuffer(gl.ARRAY_BUFFER,ptBuf);
+  gl.enableVertexAttribArray(PL.pos); gl.enableVertexAttribArray(PL.col); gl.enableVertexAttribArray(PL.t);
+  gl.vertexAttribPointer(PL.pos,3,gl.FLOAT,false,36,0); gl.vertexAttribPointer(PL.col,3,gl.FLOAT,false,36,12); gl.vertexAttribPointer(PL.t,3,gl.FLOAT,false,36,24);
+  // only the dots written in the last ~7s can still be visible (max delay + max life)
+  // only draw back to the oldest frame whose dots haven't all expired yet
+  if(totalW>frameStartW){ liveHist.push(fExp,frameStartW); fExp=-1; frameStartW=totalW; }
+  let h0=0; while(h0<liveHist.length&&liveHist[h0]<now) h0+=2; if(h0) liveHist.splice(0,h0);
+  const live=liveHist.length?Math.min(MAXP,totalW-liveHist[1]):0, st=(phead-live+MAXP)%MAXP;
+  const draw=()=>{ if(!live) return; if(st+live<=MAXP) gl.drawArrays(gl.POINTS,st,live); else { gl.drawArrays(gl.POINTS,st,MAXP-st); gl.drawArrays(gl.POINTS,0,phead); } };
+  gl.uniform1f(PL.pass,0); draw();
+  if(dead){ gl.disable(gl.DEPTH_TEST); gl.uniform1f(PL.pass,1); draw(); }
+  gl.disableVertexAttribArray(PL.pos); gl.disableVertexAttribArray(PL.col); gl.disableVertexAttribArray(PL.t);
+}
+
+// static noise overlay + vignette
+const nc=document.getElementById('noise'), nctx=nc.getContext('2d'), nimg=nctx.createImageData(nc.width,nc.height);
+function drawNoise(){
+  const amt=Math.max(staticBoost, fear*0.35, dead?0.5:0);
+  nc.style.opacity=amt*0.55;
+  document.getElementById('vign').style.opacity=clamp(fear*0.7+(dead?0.8:0)+staticBoost*0.3,0,1)*(0.85+0.15*Math.sin(now*8));
+  if(amt<0.01) return;
+  const d=nimg.data; for(let i=0;i<d.length;i+=4){ const v=Math.random()<0.5?0:Math.random()*255; d[i]=v; d[i+1]=v*0.4; d[i+2]=v*0.4; d[i+3]=255; }
+  nctx.putImageData(nimg,0,0);
+}
+
+// =====================================================================
+//  AUDIO
+// =====================================================================
+let AC=null, master, revSend, noiseBuf, distCurve, exitBuzz=null, exitBuzzNode=null, watchA=null;
+// watchdog: the ambient drone always plays, so a dead output (silence or NaN from a stuck node) means the audio broke:
+// rebuild the whole audio graph instead of leaving the player in silence. A suspended context is resumed.
+const watchBuf=new Float32Array(1024); let watchT=0, silentN=0;
+function audioWatch(){ if(!AC||!watchA||document.hidden||!started||paused) return; const t=performance.now(); if(t<watchT) return; watchT=t+500;
+  if(AC.state!=='running'){ try{ AC.resume().catch(()=>{}); }catch(e){} return; }
+  watchA.getFloatTimeDomainData(watchBuf); let bad=false, ss=0; for(let i=0;i<watchBuf.length;i++){ const v=watchBuf[i]; if(!isFinite(v)){ bad=true; break; } ss+=v*v; }
+  silentN=(!bad&&ss<1e-9)?silentN+1:0;
+  if(bad||silentN>=3) resetAudio(); }
+function resetAudio(){ const old=AC; AC=null; exitBuzz=null; exitBuzzNode=null; silentN=0; shriekEnds.length=0; for(const m of monsters) m.shriekNode=null;
+  try{ old.close(); }catch(e){} initAudio(); if(started) startExitBuzz(); resetAudio.n=(resetAudio.n||0)+1; }
+function initAudio(){
+  if(AC) return; AC=new (window.AudioContext||window.webkitAudioContext)();
+  master=AC.createGain(); master.gain.value=0.55;
+  // a limiter, not a pump: several screams at once stay loud but clean
+  const comp=AC.createDynamicsCompressor(); comp.threshold.value=-10; comp.knee.value=6; comp.ratio.value=12; comp.attack.value=0.003; comp.release.value=0.25;
+  master.connect(comp); comp.connect(AC.destination);
+  watchA=AC.createAnalyser(); watchA.fftSize=1024; comp.connect(watchA);
+  const rev=AC.createConvolver(); const len=Math.floor(AC.sampleRate*2.4), ir=AC.createBuffer(2,len,AC.sampleRate);
+  for(let c=0;c<2;c++){ const d=ir.getChannelData(c); for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.2); }
+  rev.buffer=ir; revSend=AC.createGain(); revSend.gain.value=0.55; revSend.connect(rev); rev.connect(master);
+  noiseBuf=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate); const nd=noiseBuf.getChannelData(0); for(let i=0;i<nd.length;i++) nd[i]=Math.random()*2-1;
+  distCurve=new Float32Array(1024); for(let i=0;i<1024;i++){ const x=i/512-1; distCurve[i]=Math.tanh(x*6); }
+  // ambient drone
+  const dg=AC.createGain(); dg.gain.value=0.05; dg.connect(master);
+  for(const fr of [41,61.7,82.5]){ const o=AC.createOscillator(); o.frequency.value=fr; const g=AC.createGain(); g.gain.value=fr<50?1:0.35; o.connect(g); g.connect(dg); o.start();
+    const l=AC.createOscillator(); l.frequency.value=0.05+Math.random()*0.1; const lg=AC.createGain(); lg.gain.value=1.5; l.connect(lg); lg.connect(o.frequency); l.start(); }
+  const n=noiseSrc(), lp=AC.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=180; const ng=AC.createGain(); ng.gain.value=0.5; n.connect(lp); lp.connect(ng); ng.connect(dg); n.start();
+}
+function noiseSrc(){ const s=AC.createBufferSource(); s.buffer=noiseBuf; s.loop=true; return s; }
+// (re)place a positional sound relative to where you are and where you look now
+function spatial(g,x,y,z){ if(!g||!g._p) return; setPos(g._p,x,y,z);
+  const dx=x-player.x, dz=z-player.z, d=Math.hypot(dx,dz);
+  const ahead=d>0.05?(dx*Math.sin(player.yaw)+dz*Math.cos(player.yaw))/d:1;   // 1 in front, -1 straight behind
+  g._sh.gain.value=-12*clamp(-ahead,0,1);                                       // behind: highs drop (pinna shadow)
+  const wall=d>1.2&&!los(player.x,camY,player.z,x,Math.max(0.3,Math.min(y,MAXH-0.2)),z);
+  g._lp.frequency.value=wall?Math.max(450,1100-d*12):Math.max(4500,19000-d*320); }  // through walls: muffled; far: a bit duller
+function setPos(p,x,y,z){ if(p.positionX){p.positionX.value=x;p.positionY.value=y;p.positionZ.value=z;} else p.setPosition(x,y,z); }
+// 3D sound: every sound with a position goes  gain -> "behind" shelf -> wall/air lowpass -> HRTF panner (headphones: left/right,
+// up/down, front/back). Real ears hear sounds behind you duller and sounds behind a wall muffled; the filters add exactly
+// those cues on top of the HRTF, so you can tell "behind me, on the left" apart from "in front, on the left".
+function dest(pos,gain,rev,ref,roll){
+  const g=AC.createGain(); g.gain.value=gain; let o=g;
+  if(pos){ const p=AC.createPanner(); p.panningModel='HRTF'; p.distanceModel='inverse'; p.refDistance=ref||1.5; p.rolloffFactor=roll||1.1; p.maxDistance=90;
+    const sh=AC.createBiquadFilter(); sh.type='highshelf'; sh.frequency.value=2600; const lp=AC.createBiquadFilter(); lp.type='lowpass'; lp.Q.value=0.6;
+    g.connect(sh); sh.connect(lp); lp.connect(p); o=p; g._p=p; g._sh=sh; g._lp=lp; spatial(g,pos[0],pos[1],pos[2]); }
+  o.connect(master); if(rev>0){ const s=AC.createGain(); s.gain.value=rev; o.connect(s); s.connect(revSend); }
+  return g;
+}
+function envG(t,a,peak,d){ const g=AC.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(peak,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+a+d); return g; }
+function burst(out,t,freq,q,type,a,peak,d){ const n=noiseSrc(), f=AC.createBiquadFilter(); f.type=type||'bandpass'; f.frequency.value=freq; f.Q.value=q; const g=envG(t,a,peak,d); n.connect(f); f.connect(g); g.connect(out); n.start(t,Math.random()); n.stop(t+a+d+0.05); }
+function updateListener(){
+  if(!AC) return; const L=AC.listener, cp=Math.cos(player.pitch), fx=Math.sin(player.yaw)*cp, fy=Math.sin(player.pitch), fz=Math.cos(player.yaw)*cp;
+  if(L.positionX){ L.positionX.value=player.x;L.positionY.value=camY;L.positionZ.value=player.z; L.forwardX.value=fx;L.forwardY.value=fy;L.forwardZ.value=fz;L.upX.value=0;L.upY.value=1;L.upZ.value=0; }
+  else { L.setPosition(player.x,camY,player.z); L.setOrientation(fx,fy,fz,0,1,0); }
+  if(exitBuzzNode&&(frameNo&3)===0) spatial(exitBuzzNode,exitInfo.fx,2.4,exitInfo.fz);
+}
+function sfxEcho(samples){
+  if(!AC) return; const t=AC.currentTime, o=dest(null,0.6,0.9);
+  burst(o,t,3400,1.3,'bandpass',0.002,1.0,0.045);
+  const os=AC.createOscillator(); os.frequency.setValueAtTime(4300,t); os.frequency.exponentialRampToValueAtTime(1400,t+0.03);
+  const g=envG(t,0.001,0.35,0.035); os.connect(g); g.connect(o); os.start(t); os.stop(t+0.08);
+  for(const s of samples){ const delay=s[3]/24; const oo=dest([s[0],s[1],s[2]],0.5/(1+s[3]*0.15),0.2); burst(oo,t+delay,MR(1800,3600),2,'bandpass',0.001,0.6,0.03); }
+}
+function sfxThump(pos,v){ if(!AC) return; const t=AC.currentTime, o=dest(pos,v,0.35);
+  const os=AC.createOscillator(); os.frequency.setValueAtTime(95,t); os.frequency.exponentialRampToValueAtTime(38,t+0.12); const g=envG(t,0.003,0.9,0.14); os.connect(g); g.connect(o); os.start(t); os.stop(t+0.2);
+  burst(o,t,500,0.8,'lowpass',0.002,0.7,0.07); burst(o,t+0.01,MR(2500,4500),4,'bandpass',0.001,0.5,0.02); }
+function sfxMonClick(pos,v){ if(!AC) return; const t=AC.currentTime, o=dest(pos,v*2.2,0.7,4,0.65); // carries far; place it with headphones
+  const gap=MR(0.05,0.09);
+  for(const dt of [0,gap,gap*2.1]){ burst(o,t+dt,MR(2600,3800),3.5,'bandpass',0.0008,1,0.018);   // sharp tongue clack
+    burst(o,t+dt+0.004,MR(900,1300),6,'bandpass',0.001,0.7,0.05);                               // wet throat resonance
+    const os=AC.createOscillator(); os.type='triangle'; os.frequency.setValueAtTime(MR(520,700),t+dt); os.frequency.exponentialRampToValueAtTime(160,t+dt+0.045);
+    const g=envG(t+dt,0.001,0.45,0.05); os.connect(g); g.connect(o); os.start(t+dt); os.stop(t+dt+0.09); } }
+// breathing: air through mouth and throat = noise shaped by a couple of moving formants, a soft hiss on top,
+// smooth swells (no clicks); inhale rises, exhale falls and is longer; exhausted = shorter, rougher, a bit of voice
+function breathPart(o,t0,dur,peak,f0,f1,hiss,voice){
+  const n=noiseSrc(), env=AC.createGain(); env.gain.setValueAtTime(0,t0);
+  env.gain.linearRampToValueAtTime(peak,t0+dur*0.3); env.gain.setValueAtTime(peak,t0+dur*0.45); env.gain.setTargetAtTime(0,t0+dur*0.5,dur*0.17); env.connect(o);
+  for(const [k,q,gv] of [[1,1.6,1],[2.3,3,0.45]]){ const bp=AC.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=q;
+    bp.frequency.setValueAtTime(f0*k,t0); bp.frequency.linearRampToValueAtTime(f1*k,t0+dur); const g=AC.createGain(); g.gain.value=gv; n.connect(bp); bp.connect(g); g.connect(env); }
+  const hp=AC.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=3800; const hg=AC.createGain(); hg.gain.value=hiss; n.connect(hp); hp.connect(hg); hg.connect(env);
+  n.start(t0,Math.random()*1.5); n.stop(t0+dur*1.6+0.1);
+  if(voice>0){ const os=AC.createOscillator(); os.type='sawtooth'; os.frequency.setValueAtTime(MR(105,135),t0); os.frequency.linearRampToValueAtTime(MR(85,100),t0+dur);
+    const vf=AC.createBiquadFilter(); vf.type='bandpass'; vf.frequency.value=f0*0.9; vf.Q.value=2.5; const vg=AC.createGain(); vg.gain.value=voice;
+    const jit=AC.createGain(); jit.gain.value=0.6; const jn=noiseSrc(), jl=AC.createBiquadFilter(); jl.type='lowpass'; jl.frequency.value=60; const jg=AC.createGain(); jg.gain.value=0.5;
+    jn.connect(jl); jl.connect(jg); jg.connect(jit.gain);   // rough, irregular voicing
+    os.connect(vf); vf.connect(jit); jit.connect(vg); vg.connect(env); os.start(t0); os.stop(t0+dur*1.6+0.1); jn.start(t0,Math.random()); jn.stop(t0+dur*1.6+0.1); }
+}
+function sfxBreath(v,cycle){ if(!AC) return; const t=AC.currentTime, o=dest(null,v,0.06); cycle=cycle||1;
+  const tired=clamp((fatigue-0.25)/0.75,0,1), inD=cycle*MR(0.36,0.42), exD=cycle*MR(0.46,0.54);
+  breathPart(o,t,inD,0.55,MR(800,950),MR(1150,1350),0.25+tired*0.2,0);                                    // inhale
+  breathPart(o,t+inD+cycle*0.04,exD,0.85,MR(950,1100),MR(560,680),0.18+tired*0.15,tired>0.45?0.05*tired:0); // exhale
+}
+function sfxStep(sprint){ if(!AC) return; const t=AC.currentTime, o=dest(null,sprint?0.22:0.08,0.15); burst(o,t,sprint?700:450,0.7,'lowpass',0.003,0.8,0.06); }
+function sfxChitter(pos,v){ if(!AC) return; const t=AC.currentTime, o=dest(pos,v,0.4); const n=RI(5,12);
+  for(let i=0;i<n;i++) burst(o,t+i*MR(0.025,0.06),MR(1200,3200),6,'bandpass',0.001,0.8,0.02); }
+const harshCurve=(()=>{ const c=new Float32Array(2048); for(let i=0;i<2048;i++){ const x=i/1024-1; c[i]=Math.tanh(x*14)*0.8+Math.sign(x)*Math.pow(Math.abs(x),0.3)*0.2; } return c; })();
+const shriekEnds=[];   // end times of the full scream voices playing now
+function sfxShriek(pos,vol,D,must){ if(!AC) return null; const t=AC.currentTime;
+  const dur=D||MR(2.2,2.9), t1=t+0.22; // short wet gasp, then the scream
+  for(let i=shriekEnds.length-1;i>=0;i--) if(shriekEnds[i]<t) shriekEnds.splice(i,1);
+  if(shriekEnds.length>=2&&!must) return sfxShriekLite(pos,vol,dur);   // a chorus: keep the audio thread (phones!) from choking
+  shriekEnds.push(t1+dur);
+  const o=dest(pos,vol,1.7,2,0.8);
+  { const rb=dest(pos,0.25*vol,2.4,6,0.5); o._rb=rb; const os=AC.createOscillator(); os.type='sawtooth'; os.frequency.setValueAtTime(150,t1); os.frequency.exponentialRampToValueAtTime(65,t1+dur); // low resonance through walls
+    const lp=AC.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=360; const g=envG(t1,0.1,0.6,dur); os.connect(lp); lp.connect(g); g.connect(rb); os.start(t1); os.stop(t1+dur+0.2); }
+  burst(o,t,MR(900,1300),1.5,'bandpass',0.06,0.5,0.16); // inhale
+  const ws=AC.createWaveShaper(); ws.curve=harshCurve; ws.oversample='2x';
+  const amp=AC.createGain(); amp.gain.setValueAtTime(0.0001,t1); amp.gain.exponentialRampToValueAtTime(0.65,t1+0.03);
+  // stutters / chokes inside the scream
+  for(let k=0;k<5;k++){ const ts=t1+MR(0.25,dur-0.3); amp.gain.setValueAtTime(0.65,ts); amp.gain.linearRampToValueAtTime(0.08,ts+0.03); amp.gain.linearRampToValueAtTime(0.65,ts+MR(0.05,0.12)); }
+  amp.gain.setValueAtTime(0.65,t1+dur-0.35); amp.gain.exponentialRampToValueAtTime(0.0001,t1+dur);
+  // rattling tremolo in the throat
+  const trem=AC.createGain(); trem.gain.value=0.6; const tl=AC.createOscillator(); tl.type='square'; tl.frequency.setValueAtTime(MR(24,34),t1); tl.frequency.linearRampToValueAtTime(MR(45,60),t1+dur);
+  const tg=AC.createGain(); tg.gain.value=0.4; tl.connect(tg); tg.connect(trem.gain); tl.start(t1); tl.stop(t1+dur+0.1);
+  ws.connect(trem); trem.connect(amp); amp.connect(o);
+  const hp=AC.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=500; hp.connect(ws);
+  const base=MR(850,1250);
+  for(const [k,type,gv] of [[1,'sawtooth',0.22],[1.33,'square',0.12],[1.99,'sawtooth',0.14],[2.71,'sawtooth',0.08]]){ const os=AC.createOscillator(); os.type=type;
+    // erratic sample-and-hold pitch: the voice cracks and jumps
+    let tt=t1; os.frequency.setValueAtTime(base*k*0.7,tt); os.frequency.exponentialRampToValueAtTime(base*k*MR(1.5,1.9),tt+0.08);
+    tt+=0.08; while(tt<t1+dur){ const step=MR(0.05,0.16); os.frequency.setValueAtTime(base*k*MR(0.9,2.1),tt); os.frequency.linearRampToValueAtTime(base*k*MR(0.85,2.0),tt+step); tt+=step; }
+    os.detune.value=MR(-60,60);
+    const l=AC.createOscillator(); l.frequency.value=MR(38,55); const lg=AC.createGain(); lg.gain.value=base*k*0.06; l.connect(lg); lg.connect(os.frequency);
+    const og=AC.createGain(); og.gain.value=gv; os.connect(og); og.connect(hp); os.start(t1); os.stop(t1+dur+0.05); l.start(t1); l.stop(t1+dur+0.05); }
+  // piercing hiss on top
+  for(const [f0,f1] of [[2400,3600],[4200,6000]]){ const n=noiseSrc(), bp=AC.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=7;
+    bp.frequency.setValueAtTime(f0,t1); bp.frequency.linearRampToValueAtTime(f1,t1+dur*0.4); bp.frequency.linearRampToValueAtTime(f0*1.1,t1+dur);
+    const ng=AC.createGain(); ng.gain.value=0.55; n.connect(bp); bp.connect(ng); ng.connect(hp); n.start(t1,Math.random()); n.stop(t1+dur+0.05); }
+  return o;
+}
+function sfxShriekLite(pos,vol,dur){ const t=AC.currentTime, t1=t+0.22, o=dest(pos,vol*0.8,1.2,2,0.8);
+  const ws=AC.createWaveShaper(); ws.curve=harshCurve; const amp=envG(t1,0.03,0.55,dur); ws.connect(amp); amp.connect(o);
+  const base=MR(850,1250);
+  for(const [k,gv] of [[1,0.3],[1.99,0.18]]){ const os=AC.createOscillator(); os.type='sawtooth';
+    let tt=t1; os.frequency.setValueAtTime(base*k,tt); while(tt<t1+dur){ const step=MR(0.06,0.18); os.frequency.linearRampToValueAtTime(base*k*MR(0.85,2.0),tt+step); tt+=step; }
+    const og=AC.createGain(); og.gain.value=gv; os.connect(og); og.connect(ws); os.start(t1); os.stop(t1+dur+0.05); }
+  const n=noiseSrc(), bp=AC.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=6; bp.frequency.value=MR(2600,3600); const ng=AC.createGain(); ng.gain.value=0.4;
+  n.connect(bp); bp.connect(ng); ng.connect(ws); n.start(t1,Math.random()); n.stop(t1+dur+0.05);
+  return o;
+}
+function sfxCrunch(){ if(!AC) return; const t=AC.currentTime, o=dest(null,0.9,0.3); const ws=AC.createWaveShaper(); ws.curve=distCurve; ws.connect(o);
+  for(let i=0;i<RI(3,7);i++) burst(ws,t+i*MR(0.01,0.04),MR(400,1800),MR(1,5),'bandpass',0.002,0.7,MR(0.03,0.1));
+  const os=AC.createOscillator(); os.frequency.setValueAtTime(70,t); os.frequency.exponentialRampToValueAtTime(30,t+0.2); const g=envG(t,0.002,0.8,0.2); os.connect(g); g.connect(o); os.start(t); os.stop(t+0.3); }
+function sfxHeart(v){ if(!AC) return; const t=AC.currentTime, o=dest(null,v,0);
+  for(const dt of [0,0.16]){ const os=AC.createOscillator(); os.frequency.setValueAtTime(60,t+dt); os.frequency.exponentialRampToValueAtTime(35,t+dt+0.12); const g=envG(t+dt,0.01,dt?0.6:1,0.14); os.connect(g); g.connect(o); os.start(t+dt); os.stop(t+dt+0.2); } }
+function sfxWin(){ if(!AC) return; const t=AC.currentTime, o=dest(null,0.3,0.8);
+  [220,277,330,440].forEach((f,i)=>{ const os=AC.createOscillator(); os.type='triangle'; os.frequency.value=f; const g=envG(t+i*0.15,0.05,0.5,2.5); os.connect(g); g.connect(o); os.start(t+i*0.15); os.stop(t+i*0.15+3); }); }
+function startExitBuzz(){ if(!AC) return; if(exitBuzz){ try{exitBuzz.forEach(n=>n.stop());}catch(e){} }
+  const o=dest([exitInfo.fx,2.4,exitInfo.fz],0.0,0.2); const p=o; p.gain.value=0.22; exitBuzzNode=o;
+  const a=AC.createOscillator(); a.type='sawtooth'; a.frequency.value=60; const b=AC.createOscillator(); b.type='square'; b.frequency.value=120.5;
+  const lp=AC.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=700; const bg=AC.createGain(); bg.gain.value=0.15;
+  a.connect(lp); b.connect(bg); bg.connect(lp); lp.connect(p); a.start(); b.start(); exitBuzz=[a,b]; }
+
+// =====================================================================
+//  INPUT / LOOP
+// =====================================================================
+let cheatBuf='';
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.opacity=1; clearTimeout(toast.h); toast.h=setTimeout(()=>t.style.opacity=0,1600); }
+function toggleFS(){ if(isFS()){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); } else goFS(); }
+addEventListener('keydown',e=>{
+  if(e.key&&e.key.length===1){ cheatBuf=(cheatBuf+e.key.toLowerCase()).slice(-8);
+    if(cheatBuf==='letmesee'){ cheatBuf=''; debugView=!debugView; if(debugView&&BX) buildLitMesh(); toast(T(debugView?'dbgOn':'dbgOff')); } }
+  if(e.code==='KeyF'&&!e.repeat){ toggleFS(); }
+});
+addEventListener('keydown',e=>{ keys[e.code]=true; if(e.code==='Space'){ e.preventDefault(); if(canSkipDeath()&&!e.repeat){ play(); keys.Space=false; } else if(started&&!paused&&!dead&&!won) playerEcho(false); } });
+addEventListener('keyup',e=>{ keys[e.code]=false; });
+addEventListener('blur',()=>{ for(const k in keys) keys[k]=false; });
+addEventListener('mousemove',e=>{ if(document.pointerLockElement!==cv||dead) return; player.yaw-=e.movementX*0.0022; player.pitch=clamp(player.pitch-e.movementY*0.0022,-1.45,1.45); });
+function play(){
+  if(isTouch&&fsSupported&&!isFS()) goFS();   // phones: always full screen, sideways
+  initAudio(); if(AC.state!=='running') AC.resume();
+  if(!started||dead||won||frame.crashed){ frame.crashed=false; started=true; newGame(); }
+  document.getElementById('overlay').style.display='none';
+  paused=false; if(!isTouch) lockMouse();
+}
+document.getElementById('overlay').addEventListener('click',()=>{ if(ovState.k!=='noGL') play(); });
+// while being eaten: a click, tap or Space skips straight to a new game
+const canSkipDeath=()=>dead&&deathT>0.4;
+// newer browsers return a promise that rejects when the lock is refused (too soon after Esc, other window...): not an error
+function lockMouse(){ try{ const p=cv.requestPointerLock&&cv.requestPointerLock(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} }
+cv.addEventListener('click',()=>{ if(canSkipDeath()) play(); else if(!isTouch&&started&&!dead&&!won) lockMouse(); });
+document.addEventListener('pointerlockchange',()=>{
+  if(isTouch) return;
+  if(document.pointerLockElement!==cv&&started&&!dead&&!won){ paused=true; showOverlay('paused'); }
+  else if(document.pointerLockElement===cv) paused=false;
+});
+// ---------------- mobile: touch joypad + fullscreen ----------------
+// left thumb: floating stick (inner ring walk, past the dashed outer ring run); right thumb: drag to look, double-tap to echo
+const ECHO_RAYS=isTouch?11000:20000;
+const fsSupported=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);
+const isFS=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+const lockLandscape=()=>{ try{ screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{}); }catch(e){} };
+function goFS(){ const el=document.documentElement; try{ const p=(el.requestFullscreen||el.webkitRequestFullscreen).call(el,{navigationUI:'hide'});
+  if(p&&p.then) p.then(lockLandscape).catch(()=>{}); else lockLandscape(); }catch(e){} }
+const isPortrait=()=>isTouch&&innerHeight>innerWidth;
+const touchEl=document.getElementById('touch'), stickBase=document.getElementById('stickBase'), stickKnob=document.getElementById('stickKnob'), lookHint=document.getElementById('lookHint');
+const stick={id:null,ox:0,oy:0,x:0,y:0,run:false}, look={id:null,lx:0,ly:0,t0:0,sx:0,sy:0}, STICK_R=58, RUN_R=84, KNOB_MAX=104;
+let lastTap=null;   // {t,x,y} of the last short tap on the right side
+function restStick(){ stickBase.style.left=Math.max(120,innerWidth*0.16)+'px'; stickBase.style.top=(innerHeight-Math.max(118,innerHeight*0.27))+'px';
+  stickKnob.style.transform=''; stickKnob.classList.remove('run'); stickBase.classList.remove('run'); stickBase.style.opacity=0.55; }
+restStick(); addEventListener('resize',()=>{ restStick(); if(isPortrait()&&canPlay()){ paused=true; showOverlay('paused'); } });
+const canPlay=()=>started&&!paused&&!dead&&!won;
+function tapFx(x,y){ const d=document.createElement('div'); d.className='tapFx'; d.style.left=x+'px'; d.style.top=y+'px'; touchEl.appendChild(d); setTimeout(()=>d.remove(),500); }
+touchEl.addEventListener('touchstart',e=>{ e.preventDefault(); initAudio(); if(AC&&AC.state==='suspended') AC.resume();
+  for(const t of e.changedTouches){
+    if(t.clientX<innerWidth*0.45&&stick.id===null){ stick.id=t.identifier; stick.ox=t.clientX; stick.oy=t.clientY; stick.x=stick.y=0; stick.run=false;
+      stickBase.style.left=t.clientX+'px'; stickBase.style.top=t.clientY+'px'; stickBase.style.opacity=1; }
+    else if(t.clientX>=innerWidth*0.45&&look.id===null){ look.id=t.identifier; look.lx=look.sx=t.clientX; look.ly=look.sy=t.clientY; look.t0=performance.now();
+      // second tap of a double-tap: echo right away (on touch down, so it feels instant)
+      if(lastTap&&look.t0-lastTap.t<380&&Math.hypot(t.clientX-lastTap.x,t.clientY-lastTap.y)<90){ lastTap=null; look.t0=-1e9;
+        if(canPlay()) playerEcho(false); tapFx(t.clientX,t.clientY); } } } },{passive:false});
+touchEl.addEventListener('touchmove',e=>{ e.preventDefault();
+  for(const t of e.changedTouches){
+    if(t.identifier===stick.id){ let dx=t.clientX-stick.ox, dy=t.clientY-stick.oy; const l=Math.hypot(dx,dy);
+      if(l>KNOB_MAX){dx*=KNOB_MAX/l;dy*=KNOB_MAX/l;}
+      const m=Math.min(l,STICK_R)/STICK_R/(l||1); stick.x=dx*m; stick.y=dy*m;   // direction, full speed at the inner ring
+      stick.run=l>RUN_R; stickKnob.classList.toggle('run',stick.run); stickBase.classList.toggle('run',stick.run);
+      stickKnob.style.transform=`translate(${dx}px,${dy}px)`; }
+    else if(t.identifier===look.id){ if(!dead){ player.yaw-=(t.clientX-look.lx)*0.0065; player.pitch=clamp(player.pitch-(t.clientY-look.ly)*0.0065,-1.45,1.45); }
+      look.lx=t.clientX; look.ly=t.clientY; } } },{passive:false});
+function touchEnd(e){ e.preventDefault(); for(const t of e.changedTouches){
+  if(t.identifier===stick.id){ stick.id=null; stick.x=stick.y=0; stick.run=false; restStick(); }
+  if(t.identifier===look.id){ look.id=null; const n=performance.now();
+    lastTap=(n-look.t0<260&&Math.hypot(t.clientX-look.sx,t.clientY-look.sy)<24)?{t:n,x:t.clientX,y:t.clientY}:null; } } }
+touchEl.addEventListener('touchend',touchEnd,{passive:false}); touchEl.addEventListener('touchcancel',touchEnd,{passive:false});
+// phones: leaving full screen (back button) or turning upright pauses; going full screen (also from the top bar) turns sideways
+function onFS(){ if(isFS()){ if(isTouch) lockLandscape(); } else if(isTouch&&canPlay()){ paused=true; showOverlay('paused'); } }
+document.addEventListener('fullscreenchange',onFS); document.addEventListener('webkitfullscreenchange',onFS);
+document.getElementById('rotate').addEventListener('click',()=>{ if(fsSupported&&!isFS()) goFS(); });
+// the top bar's help panel pauses the game
+addEventListener('l102:help',e=>{ if(e.detail&&canPlay()){ paused=true; showOverlay('paused'); } });
+let lastTouchUI='';
+function updateTouchUI(){ const ovHidden=document.getElementById('overlay').style.display==='none';
+  const st=(isTouch&&started&&ovHidden&&!paused&&!dead&&!won?'1':'0');
+  if(st===lastTouchUI) return; lastTouchUI=st; touchEl.style.display=st==='1'?'block':'none';
+  if(st==='1'){ lookHint.style.opacity=1; clearTimeout(updateTouchUI.h); updateTouchUI.h=setTimeout(()=>lookHint.style.opacity=0.25,9000); } }
+document.addEventListener('visibilitychange',()=>{ if(document.hidden&&started&&!dead&&!won&&!paused){ paused=true; showOverlay('paused'); } });
+paintTexts(); document.getElementById('overlay').style.display='flex';
+let last=performance.now();
+function frame(ts){
+  const dt=Math.min(0.05,(ts-last)/1000); last=ts;
+  requestAnimationFrame(frame);
+  const tA=performance.now();
+  try{
+    if(started&&(!paused||dead)){ now+=dt; update(dt); }
+    const tB=performance.now(); processEchoJobs(); const tC=performance.now();
+    updateListener(); audioWatch(); render(); drawNoise(); updateTouchUI();
+    const other=(tB-tA)+(performance.now()-tC); otherWorkEMA=otherWorkEMA*0.9+other*0.1;
+    echoBudget=clamp(FRAME_TARGET_MS-Math.max(other,otherWorkEMA),1.5,7); frame.last=[other,tC-tB];
+  }catch(e){ console.error(e); if(!frame.crashed){ frame.crashed=true; paused=true; crash(e.message); } }
+}
+requestAnimationFrame(frame);
+</script>
+<template id="l102help-text">
+<div data-lang="en"><p>You cannot see: click your tongue to light up the halls for a moment, find the exit, and don't let the blind creatures hear you. Headphones help a lot.</p><h3>On a computer</h3><ul><li>Click the screen to start; the mouse is captured to look around. <b>Esc</b> lets go of it and pauses.</li><li><b>W A S D</b> walk, <b>mouse</b> look, hold <b>Shift</b> to run (loud).</li><li><b>Space</b> echolocates: a wave of dots shows the walls. Monsters hear it, so don't overdo it.</li><li>Follow the green <b>EXIT</b> signs. <b>F</b> switches to full screen.</li></ul><h3>On a phone or tablet</h3><ul><li>Tap to start: the game goes full screen with the phone sideways.</li><li><b>Left thumb</b>: touch anywhere on the left and drag to walk. Push past the dashed outer ring to <b>run</b>.</li><li><b>Right thumb</b>: drag to look around. <b>Double-tap</b> the right side to echolocate.</li><li>You can walk, run, look and echo at the same time. Leaving full screen pauses the game.</li></ul></div>
+<div data-lang="es"><p>No puedes ver: chasquea la lengua para iluminar los pasillos un instante, encuentra la salida y que no te oigan las criaturas ciegas. Con auriculares es mucho mejor.</p><h3>En un ordenador</h3><ul><li>Haz clic en la pantalla para empezar; el ratón queda capturado para mirar. <b>Esc</b> lo suelta y pone pausa.</li><li><b>W A S D</b> para andar, el <b>ratón</b> para mirar y mantén <b>Mayús</b> para correr (hace ruido).</li><li><b>Espacio</b> ecolocaliza: una onda de puntos muestra las paredes. Los monstruos lo oyen, así que no abuses.</li><li>Sigue las señales verdes de <b>EXIT</b>. <b>F</b> pone la pantalla completa.</li></ul><h3>En un móvil o tableta</h3><ul><li>Toca para empezar: el juego se pone en pantalla completa con el móvil en horizontal.</li><li><b>Pulgar izquierdo</b>: toca en cualquier sitio de la izquierda y arrastra para andar. Llévalo más allá del anillo discontinuo para <b>correr</b>.</li><li><b>Pulgar derecho</b>: arrastra para mirar. <b>Doble toque</b> a la derecha para ecolocalizar.</li><li>Puedes andar, correr, mirar y hacer eco a la vez. Salir de la pantalla completa pone pausa.</li></ul></div>
+<div data-lang="de"><p>Du kannst nichts sehen: Schnalze mit der Zunge, damit die Gänge kurz aufleuchten, finde den Ausgang und lass dich von den blinden Wesen nicht hören. Mit Kopfhörern geht es viel besser.</p><h3>Am Computer</h3><ul><li>Klicke ins Bild, um zu starten; die Maus wird zum Umsehen eingefangen. <b>Esc</b> gibt sie frei und pausiert.</li><li><b>W A S D</b> gehen, <b>Maus</b> umsehen, <b>Shift</b> gedrückt halten zum Rennen (laut).</li><li>Die <b>Leertaste</b> macht ein Echo: Eine Welle aus Punkten zeigt die Wände. Die Monster hören das, also nicht zu oft.</li><li>Folge den grünen <b>EXIT</b>-Schildern. <b>F</b> schaltet auf Vollbild.</li></ul><h3>Auf dem Handy oder Tablet</h3><ul><li>Tippe zum Starten: Das Spiel geht ins Vollbild, mit quer gehaltenem Handy.</li><li><b>Linker Daumen</b>: irgendwo links auflegen und ziehen zum Gehen. Über den gestrichelten äußeren Ring hinaus schieben zum <b>Rennen</b>.</li><li><b>Rechter Daumen</b>: ziehen zum Umsehen. Rechts <b>doppelt tippen</b> für ein Echo.</li><li>Gehen, rennen, umsehen und Echo gehen gleichzeitig. Wer das Vollbild verlässt, pausiert das Spiel.</li></ul></div>
+</template>
+</body>
+</html>

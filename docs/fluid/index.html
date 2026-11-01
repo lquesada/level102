@@ -8,7 +8,9 @@
      known before the first paint (no flash of English).
      Gives the page: <html lang> = en|es|de (saved choice > OS language > English), CSS var --fs (text scale 0.8..1.8, default 1.1),
      a download link (the page itself, offline), a full-screen toggle (hidden where the browser can't do it), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
-     setLang(l), setFs(v) }, and the events 'l102:lang' and 'l102:fs' on window. -->
+     setLang(l), setFs(v), help(open) }, and the events 'l102:lang', 'l102:fs' and 'l102:help' (detail: true = opened, false = closed) on window.
+     A "?" button opens a help panel: "How to play" (from the page's own <template id="l102help-text"> with one <div data-lang="en|es|de">
+     per language, anywhere in the page) + "About" (author, source code, licence). While it is open, keys, clicks and touches don't reach the game. -->
 <style>
 :root{--l102-bar-h:34px;--fs:1.1}
 .l102bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:var(--l102-bar-h);box-sizing:border-box;display:flex;align-items:center;gap:6px;
@@ -27,6 +29,24 @@
 .l102bar a:focus-visible,.l102bar button:focus-visible,.l102bar select:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
 .l102bar button:disabled{opacity:.4;cursor:default}
 @media (max-width:340px){.l102bar{gap:4px}.l102bar a{padding:0 7px}}
+.l102bar #l102help{font-weight:800;font-size:15px}
+.l102dlg{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+  padding:calc(var(--l102-bar-h) + 8px) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+  background:rgba(8,4,20,.6);font:400 calc(var(--fs)*14px)/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;touch-action:pan-y}
+.l102dlg[hidden]{display:none!important}
+.l102box{position:relative;box-sizing:border-box;width:100%;max-width:540px;max-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding:14px 18px 16px;border-radius:16px;background:rgba(28,16,58,.97);box-shadow:0 10px 40px rgba(0,0,0,.5);-webkit-user-select:text;user-select:text;text-align:left}
+.l102box h2{margin:2px 40px 6px 0;font-size:1.25em;line-height:1.2}
+.l102box h2+h2,.l102box #l102how+h2{margin-top:16px}
+.l102box h3{margin:10px 0 4px;font-size:1.02em;color:#ffd84d}
+.l102box p{margin:4px 0}
+.l102box ul{margin:4px 0;padding-left:1.3em}
+.l102box li{margin:2px 0}
+.l102box a{color:#9fd4ff}
+.l102box #l102x{position:absolute;top:8px;right:8px;width:34px;height:34px;border:0;border-radius:17px;background:rgba(255,255,255,.14);color:#fff;
+  font:700 20px/1 system-ui,sans-serif;cursor:pointer}
+.l102box #l102x:hover{background:rgba(255,255,255,.26)}
+.l102box a:focus-visible,.l102box button:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
 </style>
 <script>
 (function(){
@@ -112,20 +132,49 @@ body{font:600 calc(15px * var(--fs))/1.25 system-ui,-apple-system,"Segoe UI",Rob
 <nav class="l102bar" id="l102bar">
   <a id="l102back" href="https://level102.com">&lsaquo; Back to level102.com</a>
   <span class="l102sp"></span>
+  <button type="button" id="l102help" aria-label="Help" title="Help" aria-haspopup="dialog">?</button>
   <select id="l102lang" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option></select>
   <button type="button" id="l102minus" aria-label="Smaller text">A&minus;</button>
   <button type="button" id="l102plus" aria-label="Bigger text">A+</button>
   <button type="button" id="l102full" aria-label="Full screen" title="Full screen"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path id="l102fullp" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <a class="l102dl" id="l102dl" href="./" download="level102.html" aria-label="Download for offline use" title="Download for offline use"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </nav>
+<div class="l102dlg" id="l102dlg" role="dialog" aria-modal="true" aria-labelledby="l102how-h" hidden><div class="l102box">
+  <button type="button" id="l102x" aria-label="Close">&times;</button>
+  <h2 id="l102how-h">How to play</h2><div id="l102how"></div>
+  <h2 id="l102about-h">About</h2><div id="l102about"></div>
+</div></div>
 <script>
 (function(){
-  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen"],
-         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa"],
-         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden"]};
+  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen","Help","How to play","About","Close",
+    "Made by Luis Quesada.","It is free software (GNU GPL v3 or later): you can play it, share it and change it.","Source code on GitHub"],
+         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa","Ayuda","Cómo se juega","Acerca de","Cerrar",
+    "Hecho por Luis Quesada.","Es software libre (GNU GPL v3 o posterior): puedes jugarlo, compartirlo y modificarlo.","Código fuente en GitHub"],
+         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden","Hilfe","So wird gespielt","Über","Schließen",
+    "Gemacht von Luis Quesada.","Es ist freie Software (GNU GPL v3 oder neuer): Du darfst es spielen, teilen und verändern.","Quellcode auf GitHub"]};
   var back=document.getElementById("l102back"),sel=document.getElementById("l102lang"),
       minus=document.getElementById("l102minus"),plus=document.getElementById("l102plus"),dl=document.getElementById("l102dl"),
-      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement;
+      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement,
+      help=document.getElementById("l102help"),dlg=document.getElementById("l102dlg"),x=document.getElementById("l102x"),
+      how=document.getElementById("l102how"),howH=document.getElementById("l102how-h"),about=document.getElementById("l102about"),aboutH=document.getElementById("l102about-h");
+  // help panel: the page's <template id="l102help-text"> (one <div data-lang> per language) + About; the game gets 'l102:help' to pause
+  function fillHelp(){var t=T[L102.lang],tp=d.getElementById("l102help-text"),c=tp&&tp.content,
+      el=c&&(c.querySelector('[data-lang="'+L102.lang+'"]')||c.querySelector('[data-lang="en"]'));
+    how.innerHTML="";if(el)how.appendChild(el.cloneNode(true));howH.hidden=how.hidden=!el;dlg.setAttribute("aria-labelledby",el?"l102how-h":"l102about-h");
+    howH.textContent=t[8];aboutH.textContent=t[9];x.setAttribute("aria-label",t[10]);x.title=t[10];
+    about.innerHTML="<p>"+t[11]+"</p><p>"+t[12]+"</p><p><a href=\"https://github.com/lquesada/level102\" target=\"_blank\" rel=\"noopener\">"+t[13]+": github.com/lquesada/level102</a></p>";}
+  function openHelp(o){o=!!o;if(o===!dlg.hidden)return;if(o){fillHelp();dlg.hidden=false;try{d.exitPointerLock&&d.pointerLockElement&&d.exitPointerLock();}catch(e){}
+      dlg.querySelector(".l102box").scrollTop=0;x.focus();}else{dlg.hidden=true;help.focus();}
+    help.setAttribute("aria-expanded",o);dispatchEvent(new CustomEvent("l102:help",{detail:o}));}
+  L102.help=openHelp;
+  help.addEventListener("click",function(e){e.stopPropagation();openHelp(dlg.hidden);});
+  x.addEventListener("click",function(){openHelp(false);});
+  dlg.addEventListener("click",function(e){if(e.target===dlg)openHelp(false);});
+  // nothing inside the panel reaches the game underneath
+  ["pointerdown","pointerup","pointermove","mousedown","mouseup","mousemove","click","dblclick","contextmenu","wheel","touchstart","touchmove","touchend","touchcancel"]
+    .forEach(function(n){dlg.addEventListener(n,function(e){e.stopPropagation();},{passive:true});});
+  ["keydown","keyup","keypress"].forEach(function(n){addEventListener(n,function(e){if(dlg.hidden)return;e.stopImmediatePropagation();
+    if(n==="keydown"&&e.key==="Escape"){e.preventDefault();openHelp(false);}},true);});
   // full screen: browser's own exit (Esc, Android back) also works; hidden where unsupported (e.g. iPhone)
   function isFull(){return !!(d.fullscreenElement||d.webkitFullscreenElement);}
   if(!(d.fullscreenEnabled||d.webkitFullscreenEnabled))full.hidden=true;
@@ -141,7 +190,7 @@ body{font:600 calc(15px * var(--fs))/1.25 system-ui,-apple-system,"Segoe UI",Rob
     dl.setAttribute("aria-label",t[4]);dl.title=t[4];
     var f=isFull();full.setAttribute("aria-label",t[f?6:5]);full.title=t[f?6:5];full.setAttribute("aria-pressed",f);
     fullp.setAttribute("d",f?"M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5":"M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5");
-    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;}
+    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;help.setAttribute("aria-label",t[7]);help.title=t[7];if(!dlg.hidden)fillHelp();}
   sel.addEventListener("change",function(){L102.setLang(sel.value);});
   minus.addEventListener("click",function(){L102.setFs(L102.fs-.1);});
   plus.addEventListener("click",function(){L102.setFs(L102.fs+.1);});
@@ -557,5 +606,10 @@ window.FL={flat:()=>flat,amount:()=>AMOUNTS[AMI],realtime:()=>FL_RT,qual:()=>QUA
   gravity:()=>[gx,gy],running:()=>!!raf,maxSpeed(){let v=0;for(let i=0;i<N;i++)v=Math.max(v,Math.hypot(VX[i],VY[i]));return v;},
   density(){let s=0;for(let i=0;i<N;i++)s+=RHO[i];return s/N;},S:()=>S,HR:()=>HR,shp:()=>({...shp}),size:()=>[W,H]};
 </script>
+<template id="l102help-text">
+<div data-lang="en"><p>A liquid toy: there is nothing to win, just slosh, splash and play with the liquid.</p><h3>On a computer</h3><ul><li>Drag the liquid with the mouse. Click next to it and the nearest drops flow to the pointer.</li><li>The <b>arrow keys</b> tilt it: the liquid falls towards that side.</li><li><b>Space</b> or the shake button splashes it around.</li><li>The round buttons on the right change the shape (full screen, circle, square), the color (Ocean, Lava, Slime, Grape, Bubblegum), the speed (<b>×1</b>) and how much liquid there is. The game remembers your choices.</li></ul><h3>On a phone or tablet</h3><ul><li>Tap <b>Start</b> (or <b>Start in full screen</b>) and allow the motion sensor if your phone asks.</li><li>Tilt your phone and the liquid flows downhill; shake it to make it slosh.</li><li>Drag the liquid with your fingers, even with several fingers at once.</li><li>The round buttons on the right work like on a computer: shape, color, speed, amount and shake.</li></ul></div>
+<div data-lang="es"><p>Un juguete de líquido: no hay que ganar nada, solo agitar, salpicar y jugar con el líquido.</p><h3>En un ordenador</h3><ul><li>Arrastra el líquido con el ratón. Si haces clic al lado, las gotas más cercanas fluyen hacia el puntero.</li><li>Las <b>flechas</b> lo inclinan: el líquido cae hacia ese lado.</li><li>La <b>barra espaciadora</b> o el botón Agitar lo hacen salpicar.</li><li>Los botones redondos de la derecha cambian la forma (pantalla completa, círculo, cuadrado), el color (Océano, Lava, Moco, Uva, Chicle), la velocidad (<b>×1</b>) y la cantidad de líquido. El juego recuerda lo que elijas.</li></ul><h3>En un móvil o tableta</h3><ul><li>Toca <b>Empezar</b> (o <b>Empezar en pantalla completa</b>) y deja usar el sensor de movimiento si el móvil lo pregunta.</li><li>Inclina el móvil y el líquido cae hacia abajo; agítalo para que salpique.</li><li>Arrastra el líquido con los dedos, incluso con varios a la vez.</li><li>Los botones redondos de la derecha funcionan igual que en el ordenador: forma, color, velocidad, cantidad y agitar.</li></ul></div>
+<div data-lang="de"><p>Ein Flüssigkeits-Spielzeug: Hier gibt es nichts zu gewinnen, einfach schwappen, spritzen und mit der Flüssigkeit spielen.</p><h3>Am Computer</h3><ul><li>Zieh die Flüssigkeit mit der Maus. Klickst du daneben, fließen die nächsten Tropfen zum Mauszeiger.</li><li>Die <b>Pfeiltasten</b> kippen sie: Die Flüssigkeit fällt zu dieser Seite.</li><li>Die <b>Leertaste</b> oder der Schütteln-Knopf lässt sie herumspritzen.</li><li>Die runden Knöpfe rechts ändern die Form (ganzer Bildschirm, Kreis, Quadrat), die Farbe (Ozean, Lava, Schleim, Traube, Kaugummi), das Tempo (<b>×1</b>) und wie viel Flüssigkeit es gibt. Das Spiel merkt sich deine Wahl.</li></ul><h3>Auf dem Handy oder Tablet</h3><ul><li>Tipp auf <b>Los geht's</b> (oder <b>Im Vollbild starten</b>) und erlaube den Bewegungssensor, wenn dein Handy fragt.</li><li>Neige dein Handy, und die Flüssigkeit fließt nach unten; schüttle es, damit sie schwappt.</li><li>Zieh die Flüssigkeit mit den Fingern, auch mit mehreren gleichzeitig.</li><li>Die runden Knöpfe rechts funktionieren wie am Computer: Form, Farbe, Tempo, Menge und Schütteln.</li></ul></div>
+</template>
 </body>
 </html>

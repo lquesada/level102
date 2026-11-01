@@ -7,8 +7,10 @@
      HEAD part: paste right after <meta name="viewport">, before the game's own styles, so language and text size are
      known before the first paint (no flash of English).
      Gives the page: <html lang> = en|es|de (saved choice > OS language > English), CSS var --fs (text scale 0.8..1.8, default 1.1),
-     a download link (the page itself, offline), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
-     setLang(l), setFs(v) }, and the events 'l102:lang' and 'l102:fs' on window. -->
+     a download link (the page itself, offline), a full-screen toggle (hidden where the browser can't do it), CSS var --l102-bar-h (height of the bar; the game must keep its own UI below it), window.L102 = { lang, fs, langs,
+     setLang(l), setFs(v), help(open) }, and the events 'l102:lang', 'l102:fs' and 'l102:help' (detail: true = opened, false = closed) on window.
+     A "?" button opens a help panel: "How to play" (from the page's own <template id="l102help-text"> with one <div data-lang="en|es|de">
+     per language, anywhere in the page) + "About" (author, source code, licence). While it is open, keys, clicks and touches don't reach the game. -->
 <style>
 :root{--l102-bar-h:34px;--fs:1.1}
 .l102bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;height:var(--l102-bar-h);box-sizing:border-box;display:flex;align-items:center;gap:6px;
@@ -27,6 +29,24 @@
 .l102bar a:focus-visible,.l102bar button:focus-visible,.l102bar select:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
 .l102bar button:disabled{opacity:.4;cursor:default}
 @media (max-width:340px){.l102bar{gap:4px}.l102bar a{padding:0 7px}}
+.l102bar #l102help{font-weight:800;font-size:15px}
+.l102dlg{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+  padding:calc(var(--l102-bar-h) + 8px) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));
+  background:rgba(8,4,20,.6);font:400 calc(var(--fs)*14px)/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;touch-action:pan-y}
+.l102dlg[hidden]{display:none!important}
+.l102box{position:relative;box-sizing:border-box;width:100%;max-width:540px;max-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding:14px 18px 16px;border-radius:16px;background:rgba(28,16,58,.97);box-shadow:0 10px 40px rgba(0,0,0,.5);-webkit-user-select:text;user-select:text;text-align:left}
+.l102box h2{margin:2px 40px 6px 0;font-size:1.25em;line-height:1.2}
+.l102box h2+h2,.l102box #l102how+h2{margin-top:16px}
+.l102box h3{margin:10px 0 4px;font-size:1.02em;color:#ffd84d}
+.l102box p{margin:4px 0}
+.l102box ul{margin:4px 0;padding-left:1.3em}
+.l102box li{margin:2px 0}
+.l102box a{color:#9fd4ff}
+.l102box #l102x{position:absolute;top:8px;right:8px;width:34px;height:34px;border:0;border-radius:17px;background:rgba(255,255,255,.14);color:#fff;
+  font:700 20px/1 system-ui,sans-serif;cursor:pointer}
+.l102box #l102x:hover{background:rgba(255,255,255,.26)}
+.l102box a:focus-visible,.l102box button:focus-visible{outline:2px solid #ffd84d;outline-offset:1px}
 </style>
 <script>
 (function(){
@@ -321,20 +341,49 @@ button:focus-visible{outline:3px solid #7a4cff;outline-offset:2px}
 <nav class="l102bar" id="l102bar">
   <a id="l102back" href="https://level102.com">&lsaquo; Back to level102.com</a>
   <span class="l102sp"></span>
+  <button type="button" id="l102help" aria-label="Help" title="Help" aria-haspopup="dialog">?</button>
   <select id="l102lang" aria-label="Language"><option value="en">EN</option><option value="es">ES</option><option value="de">DE</option></select>
   <button type="button" id="l102minus" aria-label="Smaller text">A&minus;</button>
   <button type="button" id="l102plus" aria-label="Bigger text">A+</button>
   <button type="button" id="l102full" aria-label="Full screen" title="Full screen"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path id="l102fullp" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <a class="l102dl" id="l102dl" href="./" download="level102.html" aria-label="Download for offline use" title="Download for offline use"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-5-5 5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </nav>
+<div class="l102dlg" id="l102dlg" role="dialog" aria-modal="true" aria-labelledby="l102how-h" hidden><div class="l102box">
+  <button type="button" id="l102x" aria-label="Close">&times;</button>
+  <h2 id="l102how-h">How to play</h2><div id="l102how"></div>
+  <h2 id="l102about-h">About</h2><div id="l102about"></div>
+</div></div>
 <script>
 (function(){
-  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen"],
-         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa"],
-         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden"]};
+  var T={en:["Back to level102.com","Language","Smaller text","Bigger text","Download for offline use","Full screen","Exit full screen","Help","How to play","About","Close",
+    "Made by Luis Quesada.","It is free software (GNU GPL v3 or later): you can play it, share it and change it.","Source code on GitHub"],
+         es:["Volver a level102.com","Idioma","Texto más pequeño","Texto más grande","Descargar para jugar sin conexión","Pantalla completa","Salir de pantalla completa","Ayuda","Cómo se juega","Acerca de","Cerrar",
+    "Hecho por Luis Quesada.","Es software libre (GNU GPL v3 o posterior): puedes jugarlo, compartirlo y modificarlo.","Código fuente en GitHub"],
+         de:["Zurück zu level102.com","Sprache","Kleinere Schrift","Größere Schrift","Zum Offline-Spielen herunterladen","Vollbild","Vollbild beenden","Hilfe","So wird gespielt","Über","Schließen",
+    "Gemacht von Luis Quesada.","Es ist freie Software (GNU GPL v3 oder neuer): Du darfst es spielen, teilen und verändern.","Quellcode auf GitHub"]};
   var back=document.getElementById("l102back"),sel=document.getElementById("l102lang"),
       minus=document.getElementById("l102minus"),plus=document.getElementById("l102plus"),dl=document.getElementById("l102dl"),
-      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement;
+      full=document.getElementById("l102full"),fullp=document.getElementById("l102fullp"),d=document,de=d.documentElement,
+      help=document.getElementById("l102help"),dlg=document.getElementById("l102dlg"),x=document.getElementById("l102x"),
+      how=document.getElementById("l102how"),howH=document.getElementById("l102how-h"),about=document.getElementById("l102about"),aboutH=document.getElementById("l102about-h");
+  // help panel: the page's <template id="l102help-text"> (one <div data-lang> per language) + About; the game gets 'l102:help' to pause
+  function fillHelp(){var t=T[L102.lang],tp=d.getElementById("l102help-text"),c=tp&&tp.content,
+      el=c&&(c.querySelector('[data-lang="'+L102.lang+'"]')||c.querySelector('[data-lang="en"]'));
+    how.innerHTML="";if(el)how.appendChild(el.cloneNode(true));howH.hidden=how.hidden=!el;dlg.setAttribute("aria-labelledby",el?"l102how-h":"l102about-h");
+    howH.textContent=t[8];aboutH.textContent=t[9];x.setAttribute("aria-label",t[10]);x.title=t[10];
+    about.innerHTML="<p>"+t[11]+"</p><p>"+t[12]+"</p><p><a href=\"https://github.com/lquesada/level102\" target=\"_blank\" rel=\"noopener\">"+t[13]+": github.com/lquesada/level102</a></p>";}
+  function openHelp(o){o=!!o;if(o===!dlg.hidden)return;if(o){fillHelp();dlg.hidden=false;try{d.exitPointerLock&&d.pointerLockElement&&d.exitPointerLock();}catch(e){}
+      dlg.querySelector(".l102box").scrollTop=0;x.focus();}else{dlg.hidden=true;help.focus();}
+    help.setAttribute("aria-expanded",o);dispatchEvent(new CustomEvent("l102:help",{detail:o}));}
+  L102.help=openHelp;
+  help.addEventListener("click",function(e){e.stopPropagation();openHelp(dlg.hidden);});
+  x.addEventListener("click",function(){openHelp(false);});
+  dlg.addEventListener("click",function(e){if(e.target===dlg)openHelp(false);});
+  // nothing inside the panel reaches the game underneath
+  ["pointerdown","pointerup","pointermove","mousedown","mouseup","mousemove","click","dblclick","contextmenu","wheel","touchstart","touchmove","touchend","touchcancel"]
+    .forEach(function(n){dlg.addEventListener(n,function(e){e.stopPropagation();},{passive:true});});
+  ["keydown","keyup","keypress"].forEach(function(n){addEventListener(n,function(e){if(dlg.hidden)return;e.stopImmediatePropagation();
+    if(n==="keydown"&&e.key==="Escape"){e.preventDefault();openHelp(false);}},true);});
   // full screen: browser's own exit (Esc, Android back) also works; hidden where unsupported (e.g. iPhone)
   function isFull(){return !!(d.fullscreenElement||d.webkitFullscreenElement);}
   if(!(d.fullscreenEnabled||d.webkitFullscreenEnabled))full.hidden=true;
@@ -350,7 +399,7 @@ button:focus-visible{outline:3px solid #7a4cff;outline-offset:2px}
     dl.setAttribute("aria-label",t[4]);dl.title=t[4];
     var f=isFull();full.setAttribute("aria-label",t[f?6:5]);full.title=t[f?6:5];full.setAttribute("aria-pressed",f);
     fullp.setAttribute("d",f?"M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5":"M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5");
-    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;}
+    minus.disabled=L102.fs<=.8;plus.disabled=L102.fs>=1.8;help.setAttribute("aria-label",t[7]);help.title=t[7];if(!dlg.hidden)fillHelp();}
   sel.addEventListener("change",function(){L102.setLang(sel.value);});
   minus.addEventListener("click",function(){L102.setFs(L102.fs-.1);});
   plus.addEventListener("click",function(){L102.setFs(L102.fs+.1);});
@@ -2025,5 +2074,10 @@ window.CS={get phase(){return phase;},get ct(){return CT;},bag:()=>bag.map(e=>e.
 Object.assign(window.CS,{inv:()=>invLoad(),invReload(){inv=null;return invLoad().length;},openColl,closeColl,openView,closeView,save:doSave,edit:i=>editItem(invLoad()[i]),rel:()=>bag.map(e=>e.b&&e.b.zone==="in"?relPos(e.b,GEO):null),itemCandies:i=>itemCandies(invLoad()[i]).map(([K,v,x,y,a])=>[K.id,v,x,y,a]),
   snap:()=>{const it=snapItem("",0);return it&&itemCandies(it).map(([K])=>K.id);},picture:i=>renderPicture(invLoad()[i]).toDataURL("image/png"),share:i=>shareItem(i===undefined?doneItem():invLoad()[i]),genName,secs:()=>SECS.map(s=>s[0])});
 </script>
+<template id="l102help-text">
+<div data-lang="en"><p>Fill a bag, a box or a big cup with your favourite candies, then pay for them at the counter with your Sugar Coins.</p><h3>On a computer</h3><ul><li>Pick a <b>Bag</b>, a <b>Box</b> or a <b>Big cup</b>. Click a candy bin to drop one candy in; click your container (or press <b>Backspace</b>) to take the last one out. Too full and it spills!</li><li>Move along the shelves with the arrow buttons, the mouse wheel, the coloured section buttons at the top, or the <b>&larr;</b> <b>&rarr;</b> keys. You can also drag the shelves sideways.</li><li>The buttons at the bottom let you change container, open <b>My collection</b>, turn the sound on or off, and <b>Start over</b>.</li><li>Press <b>Pay</b>. At the counter, click coins and bills in your wallet to put them on the counter (click them again to take them back), then press <b>Pay</b> and get your change.</li><li>Afterwards you can give your candy a name, <b>Save</b> it to your collection, <b>Share</b> a picture of it, or <b>Play again</b>. In the collection, click one to see it, rename it, edit it or remove it.</li><li><b>Esc</b> goes back or closes a window.</li></ul><h3>On a phone or tablet</h3><ul><li>Tap a bin to grab a candy, and tap your container to take the last one out.</li><li>Swipe the shelves left and right to see more candy, or tap a section button at the top.</li><li>At the counter, tap your money or drag it onto the counter, then tap <b>Pay</b>.</li><li>Everything else works the same as on a computer, just by tapping. Your container is kept if you close the page and come back.</li></ul></div>
+<div data-lang="es"><p>Llena una bolsa, una caja o un vaso grande con tus golosinas favoritas y luego págalas en el mostrador con tus monedas de azúcar.</p><h3>En un ordenador</h3><ul><li>Elige una <b>Bolsa</b>, una <b>Caja</b> o un <b>Vaso grande</b>. Haz clic en un cajón para echar una golosina; haz clic en tu recipiente (o pulsa <b>Retroceso</b>) para sacar la última. Si lo llenas demasiado, ¡se cae!</li><li>Muévete por las estanterías con los botones de flecha, la rueda del ratón, los botones de colores de las secciones de arriba o las teclas <b>&larr;</b> <b>&rarr;</b>. También puedes arrastrar las estanterías hacia los lados.</li><li>Los botones de abajo sirven para cambiar de recipiente, abrir <b>Mi colección</b>, activar o quitar el sonido y <b>Empezar de nuevo</b>.</li><li>Pulsa <b>Pagar</b>. En el mostrador, haz clic en las monedas y billetes de tu monedero para ponerlos en el mostrador (otro clic los recupera), pulsa <b>Pagar</b> y recoge tu cambio.</li><li>Después puedes ponerle nombre, <b>Guardar</b> en tu colección, <b>Compartir</b> una imagen o <b>Jugar otra vez</b>. En la colección, haz clic en una para verla, cambiarle el nombre, editarla o quitarla.</li><li><b>Esc</b> vuelve atrás o cierra una ventana.</li></ul><h3>En un móvil o tableta</h3><ul><li>Toca un cajón para coger una golosina y toca tu recipiente para sacar la última.</li><li>Desliza las estanterías a izquierda y derecha para ver más golosinas, o toca una sección arriba.</li><li>En el mostrador, toca tu dinero o arrástralo al mostrador y luego toca <b>Pagar</b>.</li><li>Todo lo demás funciona igual que en el ordenador, tocando. Tu recipiente se guarda si cierras la página y vuelves.</li></ul></div>
+<div data-lang="de"><p>Füll eine Tüte, eine Schachtel oder einen großen Becher mit deinen Lieblingssüßigkeiten und bezahl sie dann an der Theke mit deinen Zuckermünzen.</p><h3>Am Computer</h3><ul><li>Nimm eine <b>Tüte</b>, eine <b>Schachtel</b> oder einen <b>Großen Becher</b>. Klicke auf ein Fach, um eine Süßigkeit hineinzutun; klicke auf deinen Behälter (oder drück die <b>Rücktaste</b>), um die letzte wieder herauszunehmen. Zu voll? Dann fällt etwas heraus!</li><li>Bewege dich durch die Regale mit den Pfeil-Knöpfen, dem Mausrad, den bunten Abteilungs-Knöpfen oben oder den Tasten <b>&larr;</b> <b>&rarr;</b>. Du kannst die Regale auch seitlich ziehen.</li><li>Mit den Knöpfen unten kannst du den Behälter wechseln, <b>Meine Sammlung</b> öffnen, den Ton an- oder ausschalten und <b>Neu anfangen</b>.</li><li>Drück <b>Bezahlen</b>. Klicke an der Theke auf Münzen und Scheine in deinem Geldbeutel, um sie auf die Theke zu legen (nochmal klicken holt sie zurück), dann <b>Bezahlen</b> und Rückgeld bekommen.</li><li>Danach kannst du einen Namen eingeben, <b>Speichern</b> in deiner Sammlung, ein Bild <b>Teilen</b> oder <b>Nochmal spielen</b>. In der Sammlung klickst du auf eine, um sie anzusehen, umzubenennen, zu bearbeiten oder zu entfernen.</li><li><b>Esc</b> geht zurück oder schließt ein Fenster.</li></ul><h3>Auf dem Handy oder Tablet</h3><ul><li>Tippe auf ein Fach, um eine Süßigkeit zu nehmen, und auf deinen Behälter, um die letzte herauszunehmen.</li><li>Wische die Regale nach links und rechts, um mehr zu sehen, oder tippe oben auf eine Abteilung.</li><li>An der Theke tippst du auf dein Geld oder ziehst es auf die Theke, dann tippst du auf <b>Bezahlen</b>.</li><li>Alles andere geht genauso wie am Computer, nur mit Tippen. Dein Behälter bleibt erhalten, wenn du die Seite schließt und wiederkommst.</li></ul></div>
+</template>
 </body>
 </html>

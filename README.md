@@ -12,6 +12,7 @@ Play them at **https://level102.com**.
 - **Candy Shop** -- https://level102.com/candyshop/
 - **Fluid** -- https://level102.com/fluid/
 - **Arcade Claw** -- https://level102.com/arcadeclaw/
+- **Echoloc** -- https://level102.com/echoloc/
 
 ## Repository
 

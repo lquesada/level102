@@ -16,6 +16,7 @@ const INFO = {
   infinitedungeon: { title: "Infinite Dungeon", desc: "Fight your way through an endless dungeon train. How far can you go?", bg: ["#2a1a48", "#0e0918"], ink: "#ffe9a8" },
   fluid: { title: "Fluid", desc: "A pocket of glowing liquid: tilt and shake your phone, or drag it around.", bg: ["#1d2a66", "#070b1c"], ink: "#bfeaff" },
   arcadeclaw: { title: "Arcade Claw", desc: "A pixel-art claw machine: insert a coin, steer the claw and grab a plush toy.", bg: ["#2a1450", "#0b0716"], ink: "#ffe08a" },
+  echoloc: { title: "Echoloc", desc: "You cannot see. Echolocate through dark halls, find the exit, and don't let them hear you.", bg: ["#0d2a44", "#000000"], ink: "#bfe9ff" },
   candyshop: { title: "Candy Shop", desc: "Fill your bag from a huge wall of candy jars, then pay at the counter.", bg: ["#ffeef6", "#ffd9ea"], ink: "#7a1747" },
 };
 

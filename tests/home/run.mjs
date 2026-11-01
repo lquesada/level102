@@ -45,7 +45,7 @@ for (const page of ["", ...games]) {
 // home page: shared top bar (language + text size; the back link is hidden there), labels per language
 const homeHtml = readFileSync(join(docs, "index.html"), "utf8");
 ok("home: shared top bar pasted verbatim (head + body)", homeHtml.includes(tplHead) && homeHtml.includes(tplBody));
-const LABELS = { "en-US": ["Drink Mixer", "Infinite Dungeon", "Candy Shop", "Fluid", "Arcade Claw"], "es-ES": ["Mezclador de bebidas", "Mazmorra Infinita", "Tienda de golosinas", "Fluido", "Máquina de Gancho"], "de-DE": ["Getränke-Mixer", "Endloser Dungeon", "Süßigkeitenladen", "Flüssigkeit", "Greifautomat"], "fr-FR": ["Drink Mixer", "Infinite Dungeon", "Candy Shop", "Fluid", "Arcade Claw"] };
+const LABELS = { "en-US": ["Drink Mixer", "Infinite Dungeon", "Candy Shop", "Fluid", "Arcade Claw", "Echoloc"], "es-ES": ["Mezclador de bebidas", "Mazmorra Infinita", "Tienda de golosinas", "Fluido", "Máquina de Gancho", "Echoloc"], "de-DE": ["Getränke-Mixer", "Endloser Dungeon", "Süßigkeitenladen", "Flüssigkeit", "Greifautomat", "Echoloc"], "fr-FR": ["Drink Mixer", "Infinite Dungeon", "Candy Shop", "Fluid", "Arcade Claw", "Echoloc"] };
 for (const [lang, want] of Object.entries(LABELS)) for (const [W, H, touch] of [[360, 740, true], [1280, 800, false]]) {
   const b = await launch({ url: "file://" + join(docs, "index.html"), width: W, height: H, touch, lang });
   const tag = `home ${lang} ${W}x${H}`;
