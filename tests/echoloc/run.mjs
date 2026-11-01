@@ -563,6 +563,19 @@ T('audio is 3D: left/right, front/behind (duller behind), follows your turning, 
   assert(!r.thru||!r.clear||(r.thru.lp<1200&&r.clear.lp>4000&&r.thru.bright<r.clear.bright*0.6),'sound behind a wall is not muffled '+JSON.stringify([r.thru,r.clear]));
 });
 
+
+T('monsters: a hand or head poking out past a corner is enough to see its body (not only the chest)', async()=>{
+  const r=await ev(`(()=>{ newGame(); paused=false; const m=monsters[0]; m.state='hunt'; m.runB=1; m.armJ.forEach(a=>{a[0]=a[1]=a[2]=0;});
+    let partly=0, hidden=0, visible=0, wrong=0;
+    for(let k=0;k<4000&&partly<5;k++){ const a=Math.random()*6.283, d=2+Math.random()*12; m.x=player.x+Math.sin(a)*d; m.z=player.z+Math.cos(a)*d; m.yaw=Math.random()*6.283;
+      if(!walkAt(m.x,m.z)) continue;
+      const centre=los(player.x,camY,player.z,m.x,1.4,m.z), sees=seesMonster(m);
+      if(centre&&!sees) wrong++; if(centre) visible++; else if(sees) partly++; else hidden++; }
+    return {partly,hidden,visible,wrong}; })()`);
+  assert(r.wrong===0,'visible chest but not seen');
+  assert(r.partly>=3,'never saw a monster that only shows a part past a corner '+JSON.stringify(r)); assert(r.hidden>0,'monsters behind walls should stay unseen');
+});
+
 T('no uncaught page errors during the whole run', async()=>{ assert(pageErrors.length===0,'page errors: '+pageErrors.slice(0,3).join(' | ')); });
 
 // =========================================================== run
