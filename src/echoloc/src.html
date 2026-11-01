@@ -23,6 +23,8 @@
   #overlay h1.red{color:#ffb0a0;text-shadow:0 0 12px #f22,0 0 40px #a00}
   #overlay h1.green{color:#c0ffc8;text-shadow:0 0 12px #2f6,0 0 40px #0a3}
   #overlay p{max-width:600px;color:#6f93ad;line-height:1.7;font-size:calc(14px*var(--fs));margin:6px 0}
+  #overlay p.secret{color:#7fe0a0;border:1px dashed rgba(120,230,160,.4);border-radius:6px;padding:8px 12px;margin-top:14px}
+  .eyesBtn{margin-top:14px;padding:12px 20px;font:inherit;font-size:calc(14px*var(--fs));letter-spacing:.2em;color:#032;background:#8fe8b0;border:0;border-radius:6px;box-shadow:0 0 18px #2c8;cursor:pointer}
   #overlay .go{margin-top:26px;font-size:calc(14px*var(--fs));color:#cfefff;letter-spacing:.3em;animation:pulse 1.6s infinite}
   kbd{color:#bfe9ff;border:1px solid #2a4a66;padding:0 5px;border-radius:3px}
   #touch{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);z-index:10;display:none;touch-action:none}
@@ -33,10 +35,13 @@
   #stickBase.run{border-color:rgba(255,140,120,.85);border-style:solid}
   #stickKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(120,200,255,.25);border:2px solid rgba(160,220,255,.5);box-sizing:border-box}
   #stickKnob.run{background:rgba(255,120,100,.4);border-color:rgba(255,160,140,.8)}
+  #echoBtn{position:fixed;right:calc(max(4%,env(safe-area-inset-right)) + 22px);bottom:calc(9% + 136px);width:76px;height:76px;border-radius:50%;box-sizing:border-box;
+    border:2px solid rgba(140,215,255,.75);background:rgba(20,70,120,.3);color:#cfefff;display:flex;align-items:center;justify-content:center;
+    font-size:calc(13px*var(--fs));letter-spacing:.15em;text-shadow:0 0 8px #3af;box-shadow:0 0 14px rgba(60,170,255,.35)}
+  #echoBtn.on{background:rgba(140,215,255,.6);color:#fff}
+  @media (max-height:380px){#echoBtn{bottom:calc(6% + 128px);width:66px;height:66px}}
   #lookHint{position:fixed;right:max(4%,env(safe-area-inset-right));bottom:9%;width:120px;height:120px;border-radius:50%;border:2px dotted rgba(120,200,255,.3);
     display:flex;align-items:center;justify-content:center;text-align:center;font-size:calc(10px*var(--fs));letter-spacing:.12em;line-height:1.5;color:rgba(160,215,255,.6);pointer-events:none;transition:opacity 1.5s}
-  .tapFx{position:fixed;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:2px solid #9fe0ff;box-shadow:0 0 18px #3af;pointer-events:none;animation:tapfx .45s ease-out forwards}
-  @keyframes tapfx{from{transform:scale(.3);opacity:1}to{transform:scale(1.6);opacity:0}}
   #rotate{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;
     background:#000;color:#cfefff;text-align:center;padding:16px;box-sizing:border-box;font-size:calc(15px*var(--fs));letter-spacing:.2em}
   #rotate p{margin:0;color:#6f93ad;letter-spacing:.05em;font-size:calc(13px*var(--fs))}
@@ -64,7 +69,7 @@
 <div id="flash"></div>
 <div id="prompt"></div>
 <div id="toast"></div>
-<div id="touch"><div id="stickBase"><div id="stickRun"></div><div id="stickKnob"></div></div><div id="lookHint"></div></div>
+<div id="touch"><div id="stickBase"><div id="stickRun"></div><div id="stickKnob"></div></div><div id="lookHint"></div><div id="echoBtn"></div></div>
 <div id="info"></div>
 <div id="overlay"></div>
 <div id="rotate"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="20" y="6" width="24" height="52" rx="5" fill="none" stroke="#9fd8ff" stroke-width="3"/><circle cx="32" cy="51" r="2.5" fill="#9fd8ff"/></svg><div id="rotT"></div><p id="rotP"></p></div>
@@ -86,51 +91,57 @@ const STR={
  en:{intro1:'You cannot see. Click your tongue to see.',
   intro2:'Something lives in these halls. It cannot see either, but it hears everything. Echo too close, or too often, and it will come. When it runs, it screams. When it screams, others answer.',
   ctlPC:'<kbd>WASD</kbd> move · <kbd>MOUSE</kbd> look · <kbd>SHIFT</kbd> run · <kbd>SPACE</kbd> echolocate · <kbd>F</kbd> full screen · headphones recommended',
-  ctlTouch:'<kbd>LEFT THUMB</kbd> move · push it past the dashed ring to <kbd>RUN</kbd> · <kbd>RIGHT THUMB</kbd> every touch echolocates, hold and drag to look · headphones recommended',
+  ctlTouch:'<kbd>LEFT THUMB</kbd> move · push it past the dashed ring to <kbd>RUN</kbd> · <kbd>RIGHT THUMB</kbd> drag to look, tap <kbd>ECHO</kbd> to echolocate · headphones recommended',
   fsNote:'Plays in full screen, with the phone sideways.',
-  begin:['CLICK TO BEGIN','TAP TO BEGIN'],prompt:['PRESS [ SPACE ]','TAP [ RIGHT SIDE ]'],
+  begin:['CLICK TO BEGIN','TAP TO BEGIN'],prompt:['PRESS [ SPACE ]','TAP [ ECHO ]'],
   info1:'<b>FIND THE EXIT</b> — follow the green signs',
   infoPC:'<kbd>WASD</kbd> move &nbsp; <kbd>MOUSE</kbd> look &nbsp; <kbd>SHIFT</kbd> run (loud)<br><kbd>SPACE</kbd> echolocate — they hear echoes &amp; running; when they click, freeze.',
-  infoTouch:'left thumb: move, push far to run · right thumb: tap to echo, hold and drag to look<br>they hear echoes &amp; running; when they click, freeze.',
+  infoTouch:'left thumb: move, push far to run · right thumb: drag to look, tap ECHO to echolocate<br>they hear echoes &amp; running; when they click, freeze.',
   paused:'PAUSED',pausedMsg:'The dark waits.',resume:['CLICK TO RESUME','TAP TO RESUME'],
   won:'ESCAPED',wonMsg:'You found the exit in {s} s.',again:['CLICK TO PLAY AGAIN','TAP TO PLAY AGAIN'],
   dead:'CONSUMED',deadMsg:'It heard you.',retry:['CLICK TO TRY AGAIN','TAP TO TRY AGAIN'],
   error:'ERROR',restart:['CLICK TO RESTART','TAP TO RESTART'],
   noGL:'NO WEBGL',noGLMsg:'This browser has WebGL turned off. Try Chrome or Firefox with hardware acceleration on.',
-  rot:'TURN YOUR PHONE SIDEWAYS',rotMsg:'Echoloc is played in landscape.',rotTap:'Or tap here to play in full screen.',run:'RUN',look:'TAP<br>TO ECHO<br><br>HOLD + DRAG<br>TO LOOK',
-  dbgOn:'DEBUG LIGHTS ON',dbgOff:'DEBUG LIGHTS OFF'},
+  rot:'TURN YOUR PHONE SIDEWAYS',rotMsg:'Echoloc is played in landscape.',rotTap:'Or tap here to play in full screen.',run:'RUN',look:'DRAG<br>TO LOOK',echo:'ECHO',
+  dbgOn:'EYES OPEN',dbgOff:'EYES CLOSED',
+  secret:'A secret for those who escape: type <kbd>LETMESEE</kbd> (no spaces) while playing and you will open your eyes, and see what is really out there. Type it again to close them.',
+  secretTouch:'A secret for those who escape: you can open your eyes, and see what is really out there.',eyes:['OPEN YOUR EYES','CLOSE YOUR EYES']},
  es:{intro1:'No puedes ver. Chasquea la lengua para ver.',
   intro2:'Algo vive en estos pasillos. Tampoco ve, pero lo oye todo. Si haces eco demasiado cerca o demasiado a menudo, vendrá. Cuando corre, chilla. Cuando chilla, otros responden.',
   ctlPC:'<kbd>WASD</kbd> moverte · <kbd>RATÓN</kbd> mirar · <kbd>MAYÚS</kbd> correr · <kbd>ESPACIO</kbd> ecolocalizar · <kbd>F</kbd> pantalla completa · mejor con auriculares',
-  ctlTouch:'<kbd>PULGAR IZQUIERDO</kbd> moverte · empújalo más allá del anillo discontinuo para <kbd>CORRER</kbd> · <kbd>PULGAR DERECHO</kbd> cada toque ecolocaliza; mantén y arrastra para mirar · mejor con auriculares',
+  ctlTouch:'<kbd>PULGAR IZQUIERDO</kbd> moverte · empújalo más allá del anillo discontinuo para <kbd>CORRER</kbd> · <kbd>PULGAR DERECHO</kbd> arrastra para mirar, toca <kbd>ECO</kbd> para ecolocalizar · mejor con auriculares',
   fsNote:'Se juega en pantalla completa, con el móvil en horizontal.',
-  begin:['HAZ CLIC PARA EMPEZAR','TOCA PARA EMPEZAR'],prompt:['PULSA [ ESPACIO ]','TOCA [ A LA DERECHA ]'],
+  begin:['HAZ CLIC PARA EMPEZAR','TOCA PARA EMPEZAR'],prompt:['PULSA [ ESPACIO ]','TOCA [ ECO ]'],
   info1:'<b>ENCUENTRA LA SALIDA</b>: sigue las señales verdes',
   infoPC:'<kbd>WASD</kbd> moverte &nbsp; <kbd>RATÓN</kbd> mirar &nbsp; <kbd>MAYÚS</kbd> correr (hace ruido)<br><kbd>ESPACIO</kbd> ecolocalizar: oyen los ecos y las carreras; cuando chasquean, quieto.',
-  infoTouch:'pulgar izquierdo: moverte, empuja lejos para correr · pulgar derecho: toca para el eco, mantén y arrastra para mirar<br>oyen los ecos y las carreras; cuando chasquean, quieto.',
+  infoTouch:'pulgar izquierdo: moverte, empuja lejos para correr · pulgar derecho: arrastra para mirar, toca ECO para ecolocalizar<br>oyen los ecos y las carreras; cuando chasquean, quieto.',
   paused:'PAUSA',pausedMsg:'La oscuridad espera.',resume:['HAZ CLIC PARA SEGUIR','TOCA PARA SEGUIR'],
   won:'ESCAPASTE',wonMsg:'Encontraste la salida en {s} s.',again:['HAZ CLIC PARA JUGAR OTRA VEZ','TOCA PARA JUGAR OTRA VEZ'],
   dead:'DEVORADO',deadMsg:'Te ha oído.',retry:['HAZ CLIC PARA REINTENTAR','TOCA PARA REINTENTAR'],
   error:'ERROR',restart:['HAZ CLIC PARA REINICIAR','TOCA PARA REINICIAR'],
   noGL:'SIN WEBGL',noGLMsg:'Este navegador tiene WebGL desactivado. Prueba Chrome o Firefox con la aceleración por hardware activada.',
-  rot:'GIRA EL MÓVIL',rotMsg:'Echoloc se juega en horizontal.',rotTap:'O toca aquí para jugar en pantalla completa.',run:'CORRER',look:'TOCA<br>PARA EL ECO<br><br>ARRASTRA<br>PARA MIRAR',
-  dbgOn:'LUCES DE DEPURACIÓN: SÍ',dbgOff:'LUCES DE DEPURACIÓN: NO'},
+  rot:'GIRA EL MÓVIL',rotMsg:'Echoloc se juega en horizontal.',rotTap:'O toca aquí para jugar en pantalla completa.',run:'CORRER',look:'ARRASTRA<br>PARA MIRAR',echo:'ECO',
+  dbgOn:'OJOS ABIERTOS',dbgOff:'OJOS CERRADOS',
+  secret:'Un secreto para quien escapa: escribe <kbd>LETMESEE</kbd> (sin espacios) mientras juegas y abrirás los ojos, y verás lo que hay de verdad ahí fuera. Escríbelo otra vez para cerrarlos.',
+  secretTouch:'Un secreto para quien escapa: puedes abrir los ojos y ver lo que hay de verdad ahí fuera.',eyes:['ABRE LOS OJOS','CIERRA LOS OJOS']},
  de:{intro1:'Du kannst nichts sehen. Schnalze mit der Zunge, um zu sehen.',
   intro2:'Etwas lebt in diesen Gängen. Es kann auch nicht sehen, aber es hört alles. Ein Echo zu nah oder zu oft, und es kommt. Wenn es rennt, kreischt es. Wenn es kreischt, antworten andere.',
   ctlPC:'<kbd>WASD</kbd> gehen · <kbd>MAUS</kbd> umsehen · <kbd>SHIFT</kbd> rennen · <kbd>LEERTASTE</kbd> Echo · <kbd>F</kbd> Vollbild · am besten mit Kopfhörern',
-  ctlTouch:'<kbd>LINKER DAUMEN</kbd> gehen · über den gestrichelten Ring hinaus schieben zum <kbd>RENNEN</kbd> · <kbd>RECHTER DAUMEN</kbd> jedes Tippen macht ein Echo, halten und ziehen zum Umsehen · am besten mit Kopfhörern',
+  ctlTouch:'<kbd>LINKER DAUMEN</kbd> gehen · über den gestrichelten Ring hinaus schieben zum <kbd>RENNEN</kbd> · <kbd>RECHTER DAUMEN</kbd> ziehen zum Umsehen, <kbd>ECHO</kbd> antippen für ein Echo · am besten mit Kopfhörern',
   fsNote:'Wird im Vollbild und mit quer gehaltenem Handy gespielt.',
-  begin:['KLICKEN ZUM STARTEN','TIPPEN ZUM STARTEN'],prompt:['DRÜCKE [ LEERTASTE ]','TIPPEN [ RECHTS ]'],
+  begin:['KLICKEN ZUM STARTEN','TIPPEN ZUM STARTEN'],prompt:['DRÜCKE [ LEERTASTE ]','TIPPE [ ECHO ]'],
   info1:'<b>FINDE DEN AUSGANG</b>: folge den grünen Schildern',
   infoPC:'<kbd>WASD</kbd> gehen &nbsp; <kbd>MAUS</kbd> umsehen &nbsp; <kbd>SHIFT</kbd> rennen (laut)<br><kbd>LEERTASTE</kbd> Echo: sie hören Echos und Rennen; wenn sie klicken, erstarre.',
-  infoTouch:'linker Daumen: gehen, weit schieben zum Rennen · rechter Daumen: tippen für ein Echo, halten und ziehen zum Umsehen<br>sie hören Echos und Rennen; wenn sie klicken, erstarre.',
+  infoTouch:'linker Daumen: gehen, weit schieben zum Rennen · rechter Daumen: ziehen zum Umsehen, ECHO antippen für ein Echo<br>sie hören Echos und Rennen; wenn sie klicken, erstarre.',
   paused:'PAUSE',pausedMsg:'Die Dunkelheit wartet.',resume:['KLICKEN ZUM WEITERSPIELEN','TIPPEN ZUM WEITERSPIELEN'],
   won:'ENTKOMMEN',wonMsg:'Du hast den Ausgang in {s} s gefunden.',again:['KLICKEN FÜR EIN NEUES SPIEL','TIPPEN FÜR EIN NEUES SPIEL'],
   dead:'GEFRESSEN',deadMsg:'Es hat dich gehört.',retry:['KLICKEN FÜR EINEN NEUEN VERSUCH','TIPPEN FÜR EINEN NEUEN VERSUCH'],
   error:'FEHLER',restart:['KLICKEN ZUM NEUSTART','TIPPEN ZUM NEUSTART'],
   noGL:'KEIN WEBGL',noGLMsg:'In diesem Browser ist WebGL ausgeschaltet. Probiere Chrome oder Firefox mit eingeschalteter Hardwarebeschleunigung.',
-  rot:'HANDY QUER HALTEN',rotMsg:'Echoloc wird im Querformat gespielt.',rotTap:'Oder hier tippen, um im Vollbild zu spielen.',run:'RENNEN',look:'TIPPEN<br>FÜR ECHO<br><br>ZIEHEN ZUM<br>UMSEHEN',
-  dbgOn:'DEBUG-LICHT AN',dbgOff:'DEBUG-LICHT AUS'}};
+  rot:'HANDY QUER HALTEN',rotMsg:'Echoloc wird im Querformat gespielt.',rotTap:'Oder hier tippen, um im Vollbild zu spielen.',run:'RENNEN',look:'ZIEHEN ZUM<br>UMSEHEN',echo:'ECHO',
+  dbgOn:'AUGEN AUF',dbgOff:'AUGEN ZU',
+  secret:'Ein Geheimnis für alle, die entkommen: Tippe beim Spielen <kbd>LETMESEE</kbd> (ohne Leerzeichen), dann öffnest du die Augen und siehst, was da draußen wirklich ist. Nochmal tippen schließt sie wieder.',
+  secretTouch:'Ein Geheimnis für alle, die entkommen: Du kannst die Augen öffnen und sehen, was da draußen wirklich ist.',eyes:['AUGEN ÖFFNEN','AUGEN SCHLIESSEN']}};
 const lang=()=>(window.L102&&STR[L102.lang])?L102.lang:'en';
 function T(k,a){ let v=STR[lang()][k]; if(Array.isArray(v)) v=v[isTouch?1:0]; if(a) for(const n in a) v=v.replace('{'+n+'}',a[n]); return v; }
 // the overlay is described by a state so a language switch can redraw it in place
@@ -140,13 +151,18 @@ function overlayHTML(st){
     +(isTouch&&fsSupported?`<div class="sub">${T('fsNote')}</div>`:'')+`<div class="go">${T('begin')}</div>`;
   const M={paused:['','pausedMsg','resume'],won:['green','wonMsg','again'],dead:['red','deadMsg','retry'],error:['red',null,'restart'],noGL:['red','noGLMsg',null]}[st.k];
   const msg=M[1]?T(M[1],st.a):String(st.msg).replace(/</g,'&lt;');
-  return `<h1 class="${M[0]}">${T(st.k)}</h1><p>${msg}</p>${M[2]?`<div class="go">${T(M[2])}</div>`:''}`;
+  const eyesBtn=isTouch&&(st.k==='won'||(st.k==='paused'&&hasEscaped()))?`<button type="button" class="eyesBtn" id="eyesBtn">${STR[lang()].eyes[debugView?1:0]}</button>`:'';
+  const secret=st.k==='won'?`<p class="secret">${T(isTouch?'secretTouch':'secret')}</p>`:'';
+  return `<h1 class="${M[0]}">${T(st.k)}</h1><p>${msg}</p>${secret}${eyesBtn}${M[2]?`<div class="go">${T(M[2])}</div>`:''}`;
 }
+// the LETMESEE secret: lit view of the level and the monsters (for players who have escaped once)
+function hasEscaped(){ try{ return localStorage.getItem('echoloc.escaped')==='1'; }catch(e){ return false; } }
+function toggleEyes(){ debugView=!debugView; if(debugView&&BX) buildLitMesh(); toast(T(debugView?'dbgOn':'dbgOff')); }
 function paintTexts(){
   const o=document.getElementById('overlay'); if(o) o.innerHTML=overlayHTML(ovState);
   document.getElementById('prompt').textContent=T('prompt');
   document.getElementById('info').innerHTML=T('info1')+'<br>'+T(isTouch?'infoTouch':'infoPC');
-  document.getElementById('stickRun').textContent=T('run'); document.getElementById('lookHint').innerHTML=T('look');
+  document.getElementById('stickRun').textContent=T('run'); document.getElementById('lookHint').innerHTML=T('look'); document.getElementById('echoBtn').textContent=T('echo');
   document.getElementById('rotT').textContent=T('rot'); document.getElementById('rotP').textContent=T('rotMsg')+(fsSupported?' '+T('rotTap'):'');
   document.title='Echoloc';
 }
@@ -963,7 +979,7 @@ function die(m){
   m.x=player.x+Math.sin(a)*0.85; m.z=player.z+Math.cos(a)*0.85; m.yaw=a+Math.PI;
   sfxShriek([m.x,1.7,m.z],2.6,0,true); staticBoost=1;
 }
-function win(){ won=true; sfxWin(); showOverlay('won',{s:Math.round(now-startTime)}); document.exitPointerLock&&document.exitPointerLock(); }
+function win(){ won=true; sfxWin(); try{ localStorage.setItem('echoloc.escaped','1'); }catch(e){} showOverlay('won',{s:Math.round(now-startTime)}); document.exitPointerLock&&document.exitPointerLock(); }
 function showOverlay(k,a){ ovState={k,a}; const o=document.getElementById('overlay'); o.innerHTML=overlayHTML(ovState); o.style.display='flex'; }
 
 function update(dt){
@@ -1452,7 +1468,7 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 function toggleFS(){ if(isFS()){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); } else goFS(); }
 addEventListener('keydown',e=>{
   if(e.key&&e.key.length===1){ cheatBuf=(cheatBuf+e.key.toLowerCase()).slice(-8);
-    if(cheatBuf==='letmesee'){ cheatBuf=''; debugView=!debugView; if(debugView&&BX) buildLitMesh(); toast(T(debugView?'dbgOn':'dbgOff')); } }
+    if(cheatBuf==='letmesee'){ cheatBuf=''; toggleEyes(); } }
   if(e.code==='KeyF'&&!e.repeat){ toggleFS(); }
 });
 addEventListener('keydown',e=>{ keys[e.code]=true; if(e.code==='Space'){ e.preventDefault(); if(canSkipDeath()&&!e.repeat){ play(); keys.Space=false; } else if(started&&!paused&&!dead&&!won) playerEcho(false); } });
@@ -1466,7 +1482,9 @@ function play(){
   document.getElementById('overlay').style.display='none';
   paused=false; if(!isTouch) lockMouse();
 }
-document.getElementById('overlay').addEventListener('click',()=>{ if(ovState.k!=='noGL') play(); });
+document.getElementById('overlay').addEventListener('click',e=>{
+  if(e.target.closest&&e.target.closest('#eyesBtn')){ toggleEyes(); document.getElementById('overlay').innerHTML=overlayHTML(ovState); return; }
+  if(ovState.k!=='noGL') play(); });
 // while being eaten: a click, tap or Space skips straight to a new game
 const canSkipDeath=()=>dead&&deathT>0.4;
 // newer browsers return a promise that rejects when the lock is refused (too soon after Esc, other window...): not an error
@@ -1478,7 +1496,8 @@ document.addEventListener('pointerlockchange',()=>{
   else if(document.pointerLockElement===cv) paused=false;
 });
 // ---------------- mobile: touch joypad + fullscreen ----------------
-// left thumb: floating stick (inner ring walk, past the dashed outer ring run); right thumb: every touch echoes, hold + drag looks
+// left thumb: floating stick (inner ring walk, past the dashed outer ring run); right thumb: drag looks; the ECHO button echoes,
+// but only when a touch STARTS on it (sliding onto it while looking does nothing)
 const ECHO_RAYS=isTouch?11000:20000;
 const fsSupported=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);
 const isFS=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
@@ -1486,19 +1505,18 @@ const lockLandscape=()=>{ try{ screen.orientation&&screen.orientation.lock&&scre
 function goFS(){ const el=document.documentElement; try{ const p=(el.requestFullscreen||el.webkitRequestFullscreen).call(el,{navigationUI:'hide'});
   if(p&&p.then) p.then(lockLandscape).catch(()=>{}); else lockLandscape(); }catch(e){} }
 const isPortrait=()=>isTouch&&innerHeight>innerWidth;
-const touchEl=document.getElementById('touch'), stickBase=document.getElementById('stickBase'), stickKnob=document.getElementById('stickKnob'), lookHint=document.getElementById('lookHint');
+const touchEl=document.getElementById('touch'), stickBase=document.getElementById('stickBase'), stickKnob=document.getElementById('stickKnob'), lookHint=document.getElementById('lookHint'), echoBtn=document.getElementById('echoBtn');
 const stick={id:null,ox:0,oy:0,x:0,y:0,run:false}, look={id:null,lx:0,ly:0}, STICK_R=58, RUN_R=84, KNOB_MAX=104;
 function restStick(){ stickBase.style.left=Math.max(120,innerWidth*0.16)+'px'; stickBase.style.top=(innerHeight-Math.max(118,innerHeight*0.27))+'px';
   stickKnob.style.transform=''; stickKnob.classList.remove('run'); stickBase.classList.remove('run'); stickBase.style.opacity=0.55; }
 restStick(); addEventListener('resize',()=>{ restStick(); if(isPortrait()&&canPlay()){ paused=true; showOverlay('paused'); } });
 const canPlay=()=>started&&!paused&&!dead&&!won;
-function tapFx(x,y){ const d=document.createElement('div'); d.className='tapFx'; d.style.left=x+'px'; d.style.top=y+'px'; touchEl.appendChild(d); setTimeout(()=>d.remove(),500); }
 touchEl.addEventListener('touchstart',e=>{ e.preventDefault(); initAudio(); if(AC&&AC.state==='suspended') AC.resume();
   for(const t of e.changedTouches){
+    if(t.target===echoBtn){ if(canPlay()) playerEcho(false); echoBtn.classList.add('on'); setTimeout(()=>echoBtn.classList.remove('on'),150); continue; }
     if(t.clientX<innerWidth*0.45&&stick.id===null){ stick.id=t.identifier; stick.ox=t.clientX; stick.oy=t.clientY; stick.x=stick.y=0; stick.run=false;
       stickBase.style.left=t.clientX+'px'; stickBase.style.top=t.clientY+'px'; stickBase.style.opacity=1; }
-    else if(t.clientX>=innerWidth*0.45&&look.id===null){ look.id=t.identifier; look.lx=t.clientX; look.ly=t.clientY;
-      if(canPlay()) playerEcho(false); tapFx(t.clientX,t.clientY); } } },{passive:false});   // touch down = echo, right away
+    else if(t.clientX>=innerWidth*0.45&&look.id===null){ look.id=t.identifier; look.lx=t.clientX; look.ly=t.clientY; } } },{passive:false});
 touchEl.addEventListener('touchmove',e=>{ e.preventDefault();
   for(const t of e.changedTouches){
     if(t.identifier===stick.id){ let dx=t.clientX-stick.ox, dy=t.clientY-stick.oy; const l=Math.hypot(dx,dy);
@@ -1541,9 +1559,9 @@ function frame(ts){
 requestAnimationFrame(frame);
 </script>
 <template id="l102help-text">
-<div data-lang="en"><p>You cannot see: click your tongue to light up the halls for a moment, find the exit, and don't let the blind creatures hear you. Headphones help a lot.</p><h3>On a computer</h3><ul><li>Click the screen to start; the mouse is captured to look around. <b>Esc</b> lets go of it and pauses.</li><li><b>W A S D</b> walk, <b>mouse</b> look, hold <b>Shift</b> to run (loud).</li><li><b>Space</b> echolocates: a wave of dots shows the walls. Monsters hear it, so don't overdo it.</li><li>Follow the green <b>EXIT</b> signs. <b>F</b> switches to full screen.</li></ul><h3>On a phone or tablet</h3><ul><li>Tap to start: the game goes full screen with the phone sideways.</li><li><b>Left thumb</b>: touch anywhere on the left and drag to walk. Push past the dashed outer ring to <b>run</b>.</li><li><b>Right thumb</b>: every touch on the right side echolocates. Keep holding and drag to look around; lift and touch again for the next echo.</li><li>You can walk, run, look and echo at the same time. Leaving full screen pauses the game.</li></ul></div>
-<div data-lang="es"><p>No puedes ver: chasquea la lengua para iluminar los pasillos un instante, encuentra la salida y que no te oigan las criaturas ciegas. Con auriculares es mucho mejor.</p><h3>En un ordenador</h3><ul><li>Haz clic en la pantalla para empezar; el ratón queda capturado para mirar. <b>Esc</b> lo suelta y pone pausa.</li><li><b>W A S D</b> para andar, el <b>ratón</b> para mirar y mantén <b>Mayús</b> para correr (hace ruido).</li><li><b>Espacio</b> ecolocaliza: una onda de puntos muestra las paredes. Los monstruos lo oyen, así que no abuses.</li><li>Sigue las señales verdes de <b>EXIT</b>. <b>F</b> pone la pantalla completa.</li></ul><h3>En un móvil o tableta</h3><ul><li>Toca para empezar: el juego se pone en pantalla completa con el móvil en horizontal.</li><li><b>Pulgar izquierdo</b>: toca en cualquier sitio de la izquierda y arrastra para andar. Llévalo más allá del anillo discontinuo para <b>correr</b>.</li><li><b>Pulgar derecho</b>: cada toque a la derecha ecolocaliza. Mantén el dedo y arrastra para mirar; levántalo y vuelve a tocar para el siguiente eco.</li><li>Puedes andar, correr, mirar y hacer eco a la vez. Salir de la pantalla completa pone pausa.</li></ul></div>
-<div data-lang="de"><p>Du kannst nichts sehen: Schnalze mit der Zunge, damit die Gänge kurz aufleuchten, finde den Ausgang und lass dich von den blinden Wesen nicht hören. Mit Kopfhörern geht es viel besser.</p><h3>Am Computer</h3><ul><li>Klicke ins Bild, um zu starten; die Maus wird zum Umsehen eingefangen. <b>Esc</b> gibt sie frei und pausiert.</li><li><b>W A S D</b> gehen, <b>Maus</b> umsehen, <b>Shift</b> gedrückt halten zum Rennen (laut).</li><li>Die <b>Leertaste</b> macht ein Echo: Eine Welle aus Punkten zeigt die Wände. Die Monster hören das, also nicht zu oft.</li><li>Folge den grünen <b>EXIT</b>-Schildern. <b>F</b> schaltet auf Vollbild.</li></ul><h3>Auf dem Handy oder Tablet</h3><ul><li>Tippe zum Starten: Das Spiel geht ins Vollbild, mit quer gehaltenem Handy.</li><li><b>Linker Daumen</b>: irgendwo links auflegen und ziehen zum Gehen. Über den gestrichelten äußeren Ring hinaus schieben zum <b>Rennen</b>.</li><li><b>Rechter Daumen</b>: Jede Berührung rechts macht ein Echo. Finger liegen lassen und ziehen zum Umsehen; anheben und neu tippen für das nächste Echo.</li><li>Gehen, rennen, umsehen und Echo gehen gleichzeitig. Wer das Vollbild verlässt, pausiert das Spiel.</li></ul></div>
+<div data-lang="en"><p>You cannot see: click your tongue to light up the halls for a moment, find the exit, and don't let the blind creatures hear you. Headphones help a lot.</p><h3>On a computer</h3><ul><li>Click the screen to start; the mouse is captured to look around. <b>Esc</b> lets go of it and pauses.</li><li><b>W A S D</b> walk, <b>mouse</b> look, hold <b>Shift</b> to run (loud).</li><li><b>Space</b> echolocates: a wave of dots shows the walls. Monsters hear it, so don't overdo it.</li><li>Follow the green <b>EXIT</b> signs. <b>F</b> switches to full screen.</li></ul><h3>On a phone or tablet</h3><ul><li>Tap to start: the game goes full screen with the phone sideways.</li><li><b>Left thumb</b>: touch anywhere on the left and drag to walk. Push past the dashed outer ring to <b>run</b>.</li><li><b>Right thumb</b>: drag anywhere on the right to look around. To echolocate, tap the round <b>ECHO</b> button above it (sliding onto it while looking does nothing: it has to be a tap).</li><li>You can walk, run, look and echo at the same time. Leaving full screen pauses the game.</li></ul></div>
+<div data-lang="es"><p>No puedes ver: chasquea la lengua para iluminar los pasillos un instante, encuentra la salida y que no te oigan las criaturas ciegas. Con auriculares es mucho mejor.</p><h3>En un ordenador</h3><ul><li>Haz clic en la pantalla para empezar; el ratón queda capturado para mirar. <b>Esc</b> lo suelta y pone pausa.</li><li><b>W A S D</b> para andar, el <b>ratón</b> para mirar y mantén <b>Mayús</b> para correr (hace ruido).</li><li><b>Espacio</b> ecolocaliza: una onda de puntos muestra las paredes. Los monstruos lo oyen, así que no abuses.</li><li>Sigue las señales verdes de <b>EXIT</b>. <b>F</b> pone la pantalla completa.</li></ul><h3>En un móvil o tableta</h3><ul><li>Toca para empezar: el juego se pone en pantalla completa con el móvil en horizontal.</li><li><b>Pulgar izquierdo</b>: toca en cualquier sitio de la izquierda y arrastra para andar. Llévalo más allá del anillo discontinuo para <b>correr</b>.</li><li><b>Pulgar derecho</b>: arrastra en cualquier sitio de la derecha para mirar. Para ecolocalizar, toca el botón redondo <b>ECO</b> que hay encima (deslizar el dedo hasta él mientras miras no hace nada: hay que tocarlo).</li><li>Puedes andar, correr, mirar y hacer eco a la vez. Salir de la pantalla completa pone pausa.</li></ul></div>
+<div data-lang="de"><p>Du kannst nichts sehen: Schnalze mit der Zunge, damit die Gänge kurz aufleuchten, finde den Ausgang und lass dich von den blinden Wesen nicht hören. Mit Kopfhörern geht es viel besser.</p><h3>Am Computer</h3><ul><li>Klicke ins Bild, um zu starten; die Maus wird zum Umsehen eingefangen. <b>Esc</b> gibt sie frei und pausiert.</li><li><b>W A S D</b> gehen, <b>Maus</b> umsehen, <b>Shift</b> gedrückt halten zum Rennen (laut).</li><li>Die <b>Leertaste</b> macht ein Echo: Eine Welle aus Punkten zeigt die Wände. Die Monster hören das, also nicht zu oft.</li><li>Folge den grünen <b>EXIT</b>-Schildern. <b>F</b> schaltet auf Vollbild.</li></ul><h3>Auf dem Handy oder Tablet</h3><ul><li>Tippe zum Starten: Das Spiel geht ins Vollbild, mit quer gehaltenem Handy.</li><li><b>Linker Daumen</b>: irgendwo links auflegen und ziehen zum Gehen. Über den gestrichelten äußeren Ring hinaus schieben zum <b>Rennen</b>.</li><li><b>Rechter Daumen</b>: irgendwo rechts ziehen zum Umsehen. Für ein Echo den runden <b>ECHO</b>-Knopf darüber antippen (beim Umsehen darüber zu wischen zählt nicht: Er muss angetippt werden).</li><li>Gehen, rennen, umsehen und Echo gehen gleichzeitig. Wer das Vollbild verlässt, pausiert das Spiel.</li></ul></div>
 </template>
 </body>
 </html>

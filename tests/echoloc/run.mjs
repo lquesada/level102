@@ -259,6 +259,16 @@ T('debug: typing "letmesee" toggles lit view, renders without GL errors', async(
   assert(await ev('debugView')===false,'second "letmesee" did not turn it off');
 });
 
+T('win: the escape screen tells the LETMESEE secret; typing it in capitals works too', async()=>{
+  await ev('(newGame(), paused=false, debugView=false, win(), 1)');
+  const r=await ev(`({h1:document.querySelector('#overlay h1').textContent, secret:(document.querySelector('#overlay .secret')||{}).textContent||'', btn:!!document.getElementById('eyesBtn')})`);
+  assert(r.h1==='ESCAPED'&&/LETMESEE/.test(r.secret)&&/no spaces/.test(r.secret)&&!r.btn,'secret missing on the win screen '+JSON.stringify(r));
+  for(const ch of 'LETMESEE') await key('Key'+ch,ch,ch);
+  const on=await ev('debugView'); for(const ch of 'LETMESEE') await key('Key'+ch,ch,ch);
+  assert(on&&await ev('debugView')===false,'LETMESEE in capitals did not toggle the view');
+  await ev('(won=false, document.getElementById("overlay").style.display="none", paused=false, 1)');
+});
+
 T('input: F toggles fullscreen', async()=>{
   await ev('(window.__fs=0, window.goFS=()=>{__fs++;}, 1)');
   await key('KeyF','f','f'); await key('KeyF','f','f',false);
@@ -266,7 +276,7 @@ T('input: F toggles fullscreen', async()=>{
 });
 
 T('level102 top bar: shown on top, the start screen sits below it, help text in every language', async()=>{
-  const r=await ev(`(()=>{ const b=document.getElementById('l102bar').getBoundingClientRect(), o=document.getElementById('overlay').getBoundingClientRect(), tp=document.getElementById('l102help-text');
+  const r=await ev(`(()=>{ const ov=document.getElementById('overlay'), d0=ov.style.display; ov.style.display='flex'; const b=document.getElementById('l102bar').getBoundingClientRect(), o=ov.getBoundingClientRect(); ov.style.display=d0; const tp=document.getElementById('l102help-text');
     return {bar:b.height>20&&b.top===0, below:o.top>=b.bottom-1, help:!!document.getElementById('l102help'),
       langs:['en','es','de'].every(l=>tp&&tp.content.querySelector('[data-lang="'+l+'"]')&&tp.content.querySelector('[data-lang="'+l+'"]').textContent.length>200)}; })()`);
   assert(r.bar&&r.below&&r.help&&r.langs,JSON.stringify(r));
@@ -278,7 +288,7 @@ T('help (?) pauses the game, shows how to play + about, Esc closes it; keys do n
   const r=await ev(`({open:!document.getElementById('l102dlg').hidden, paused, ov:document.getElementById('overlay').style.display, h1:document.querySelector('#overlay h1').textContent,
     how:document.getElementById('l102how').textContent, about:document.getElementById('l102about').innerHTML})`);
   assert(r.open&&r.paused&&r.ov==='flex'&&r.h1==='PAUSED','help did not pause '+JSON.stringify(r).slice(0,300));
-  assert(/Space/.test(r.how)&&/every touch on the right side echolocates/.test(r.how),'how-to-play text missing');
+  assert(/Space/.test(r.how)&&/round ECHO button/.test(r.how),'how-to-play text missing');
   assert(/Luis Quesada/.test(r.about)&&/github\.com\/lquesada\/level102/.test(r.about)&&/GPL/.test(r.about),'about text missing');
   const e0=await ev('lastEcho'); await key('Space',' ',' '); await key('Space',' ',' ',false); await sleep(50);
   assert(await ev('lastEcho')===e0,'Space reached the game while help was open');
@@ -315,7 +325,7 @@ T('mobile: start tap goes full screen sideways; stick walks, past the outer ring
   for(let i=1;i<=6;i++){ await touch('touchMove',[{x:120,y:252-i*8,id:2}]); await sleep(30); }
   await ev('(lastEcho=-9, playerEcho(false), lastEcho=-9, 1)'); await sleep(350); await shot('phone_run');
   await sleep(250); const run=await ev('({sprinting, run:stick.run, ring:document.getElementById("stickBase").classList.contains("run")})');
-  // look with the right thumb while running (its touch down echoes too)
+  // look with the right thumb while running (looking never echoes)
   await ev('(lastEcho=-9, 1)');
   await touch('touchStart',[{x:120,y:204,id:2},{x:600,y:150,id:6}]);
   for(let i=1;i<=5;i++){ await touch('touchMove',[{x:120,y:204,id:2},{x:600+i*14,y:150,id:6}]); await sleep(30); }
@@ -325,25 +335,47 @@ T('mobile: start tap goes full screen sideways; stick walks, past the outer ring
   assert(Math.hypot(p1[0]-p0[0],p1[1]-p0[1])>0.2,'stick did not move the player');
   assert(run.sprinting&&run.run&&run.ring,'stick past the outer ring did not run '+JSON.stringify(run));
   assert(Math.abs(p2[2]-p0[2])>0.05,'look drag did not turn');
-  assert(await ev('lastEcho')>0,'touching the right side to look did not echo');
+  assert(await ev('lastEcho')===-9,'touching the right side to look echoed');
 });
 
-T('mobile: every touch on the right side echoes, one echo per touch (holding does not repeat), also while running', async()=>{
-  await ev('(lastEcho=-9, fatigue=0, 1)');
-  const n0=await ev('(window.__echoN=0, window.__pe=window.__pe||playerEcho, playerEcho=function(s){ __echoN++; return __pe(s); }, 0)');
-  await touch('touchStart',[{x:650,y:200,id:7}]); await sleep(60);
-  const one=await ev('lastEcho>0');
-  await sleep(700); await touch('touchEnd',[]);                        // held for a while: still one echo
-  const held=await ev('__echoN');
-  await sleep(350); await touch('touchStart',[{x:650,y:200,id:7}]); await sleep(40); await touch('touchEnd',[]); await sleep(50);
-  const again=await ev('__echoN');
+T('mobile: the ECHO button echoes on a tap (also while running); looking, or sliding onto it while looking, does not', async()=>{
+  await ev('(lastEcho=-9, fatigue=0, window.__echoN=0, window.__pe=window.__pe||playerEcho, playerEcho=function(s){ __echoN++; return __pe(s); }, 1)');
+  const B=JSON.parse(await ev('JSON.stringify(echoBtn.getBoundingClientRect())')), L=JSON.parse(await ev('JSON.stringify(lookHint.getBoundingClientRect())'));
+  const bx=B.x+B.width/2, by=B.y+B.height/2;
+  // separate from the look area, above it, big enough to hit
+  const layout=B.bottom<=L.top+2&&B.width>=60&&B.left>844*0.45;
+  // a tap somewhere on the right side: look only
+  await touch('touchStart',[{x:650,y:300,id:7}]); await sleep(40); await touch('touchEnd',[]); await sleep(50);
+  const plain=await ev('__echoN');
+  // a look drag that slides over the button
+  await touch('touchStart',[{x:bx-120,y:by+60,id:7}]); for(let i=1;i<=6;i++){ await touch('touchMove',[{x:bx-120+i*20,y:by+60-i*10,id:7}]); await sleep(20); }
+  await touch('touchEnd',[]); await sleep(50);
+  const slid=await ev('__echoN');
+  // a real tap on the button
+  await touch('touchStart',[{x:bx,y:by,id:7}]); await sleep(60); const tap=await ev('__echoN'); await touch('touchEnd',[]); await sleep(350);
   // while running with the left thumb
   await touch('touchStart',[{x:120,y:300,id:2}]); for(let i=1;i<=8;i++){ await touch('touchMove',[{x:120,y:300-i*13,id:2}]); await sleep(20); }
-  await sleep(350); await touch('touchStart',[{x:120,y:196,id:2},{x:650,y:200,id:8}]); await sleep(60);
+  await touch('touchStart',[{x:120,y:196,id:2},{x:bx,y:by,id:8}]); await sleep(60);
   const r=await ev('({n:__echoN, sprinting})');
   await touch('touchEnd',[]); await sleep(100); await ev('(playerEcho=__pe, 1)');
-  assert(one,'a single touch did not echo'); assert(held===1,'holding repeated the echo: '+held); assert(again===2,'touching again did not echo again: '+again);
-  assert(r.n===3&&r.sprinting,'touch while running did not echo, or stopped the run '+JSON.stringify(r));
+  assert(layout,'ECHO button not above / separate from the look area '+JSON.stringify([B,L]));
+  assert(plain===0,'a plain touch on the right echoed'); assert(slid===0,'sliding onto the button while looking echoed');
+  assert(tap===1,'tapping ECHO did not echo: '+tap); assert(r.n===2&&r.sprinting,'ECHO while running '+JSON.stringify(r));
+});
+
+T('mobile: after escaping, an OPEN YOUR EYES button (win screen, and pause screen later) toggles the view without restarting', async()=>{
+  await ev('(localStorage.removeItem("echoloc.escaped"), debugView=false, paused=true, showOverlay("paused"), 1)');
+  const before=await ev('!!document.getElementById("eyesBtn")');
+  await ev('(win(), 1)');
+  const r=await ev(`({secret:(document.querySelector('#overlay .secret')||{}).textContent||'', btn:(document.getElementById('eyesBtn')||{}).textContent})`);
+  const b=await ev('JSON.stringify(document.getElementById("eyesBtn").getBoundingClientRect())'); const B=JSON.parse(b);
+  await touch('touchStart',[{x:B.x+B.width/2,y:B.y+B.height/2,id:3}]); await touch('touchEnd',[]); await sleep(300);
+  const after=await ev(`({eyes:debugView, won, ov:document.getElementById('overlay').style.display, btn:document.getElementById('eyesBtn').textContent})`);
+  await ev('(won=false, paused=true, showOverlay("paused"), 1)'); const onPause=await ev('!!document.getElementById("eyesBtn")');
+  await ev('(debugView=false, paused=false, document.getElementById("overlay").style.display="none", 1)');
+  assert(!before,'eyes button shown before ever escaping'); assert(/open your eyes/.test(r.secret)&&r.btn==='OPEN YOUR EYES','win screen on phones '+JSON.stringify(r));
+  assert(after.eyes&&after.won&&after.ov==='flex'&&after.btn==='CLOSE YOUR EYES','button did not toggle (or restarted) '+JSON.stringify(after));
+  assert(onPause,'no eyes button on the pause screen after escaping');
 });
 
 T('mobile: holding the phone upright pauses and asks to turn it sideways', async()=>{
