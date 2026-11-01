@@ -278,7 +278,7 @@ T('help (?) pauses the game, shows how to play + about, Esc closes it; keys do n
   const r=await ev(`({open:!document.getElementById('l102dlg').hidden, paused, ov:document.getElementById('overlay').style.display, h1:document.querySelector('#overlay h1').textContent,
     how:document.getElementById('l102how').textContent, about:document.getElementById('l102about').innerHTML})`);
   assert(r.open&&r.paused&&r.ov==='flex'&&r.h1==='PAUSED','help did not pause '+JSON.stringify(r).slice(0,300));
-  assert(/Space/.test(r.how)&&/Double-tap/.test(r.how),'how-to-play text missing');
+  assert(/Space/.test(r.how)&&/every touch on the right side echolocates/.test(r.how),'how-to-play text missing');
   assert(/Luis Quesada/.test(r.about)&&/github\.com\/lquesada\/level102/.test(r.about)&&/GPL/.test(r.about),'about text missing');
   const e0=await ev('lastEcho'); await key('Space',' ',' '); await key('Space',' ',' ',false); await sleep(50);
   assert(await ev('lastEcho')===e0,'Space reached the game while help was open');
@@ -315,7 +315,8 @@ T('mobile: start tap goes full screen sideways; stick walks, past the outer ring
   for(let i=1;i<=6;i++){ await touch('touchMove',[{x:120,y:252-i*8,id:2}]); await sleep(30); }
   await ev('(lastEcho=-9, playerEcho(false), lastEcho=-9, 1)'); await sleep(350); await shot('phone_run');
   await sleep(250); const run=await ev('({sprinting, run:stick.run, ring:document.getElementById("stickBase").classList.contains("run")})');
-  // look with the right thumb while running
+  // look with the right thumb while running (its touch down echoes too)
+  await ev('(lastEcho=-9, 1)');
   await touch('touchStart',[{x:120,y:204,id:2},{x:600,y:150,id:6}]);
   for(let i=1;i<=5;i++){ await touch('touchMove',[{x:120,y:204,id:2},{x:600+i*14,y:150,id:6}]); await sleep(30); }
   await touch('touchEnd',[]); await sleep(100);
@@ -324,21 +325,25 @@ T('mobile: start tap goes full screen sideways; stick walks, past the outer ring
   assert(Math.hypot(p1[0]-p0[0],p1[1]-p0[1])>0.2,'stick did not move the player');
   assert(run.sprinting&&run.run&&run.ring,'stick past the outer ring did not run '+JSON.stringify(run));
   assert(Math.abs(p2[2]-p0[2])>0.05,'look drag did not turn');
-  assert(await ev('lastEcho')===-9,'a look drag echoed');
+  assert(await ev('lastEcho')>0,'touching the right side to look did not echo');
 });
 
-T('mobile: double-tap on the right side echoes (also while running); a single tap does not', async()=>{
-  await ev('(lastEcho=-9, lastTap=null, 1)');
-  await touch('touchStart',[{x:650,y:200,id:7}]); await sleep(40); await touch('touchEnd',[]); await sleep(500);
-  await touch('touchStart',[{x:650,y:200,id:7}]); await sleep(40); await touch('touchEnd',[]); await sleep(100);
-  assert(await ev('lastEcho')===-9,'two slow single taps echoed');
-  await ev('(fatigue=0, lastTap=null, 1)');
+T('mobile: every touch on the right side echoes, one echo per touch (holding does not repeat), also while running', async()=>{
+  await ev('(lastEcho=-9, fatigue=0, 1)');
+  const n0=await ev('(window.__echoN=0, window.__pe=window.__pe||playerEcho, playerEcho=function(s){ __echoN++; return __pe(s); }, 0)');
+  await touch('touchStart',[{x:650,y:200,id:7}]); await sleep(60);
+  const one=await ev('lastEcho>0');
+  await sleep(700); await touch('touchEnd',[]);                        // held for a while: still one echo
+  const held=await ev('__echoN');
+  await sleep(350); await touch('touchStart',[{x:650,y:200,id:7}]); await sleep(40); await touch('touchEnd',[]); await sleep(50);
+  const again=await ev('__echoN');
+  // while running with the left thumb
   await touch('touchStart',[{x:120,y:300,id:2}]); for(let i=1;i<=8;i++){ await touch('touchMove',[{x:120,y:300-i*13,id:2}]); await sleep(20); }
-  await touch('touchStart',[{x:120,y:196,id:2},{x:650,y:200,id:8}]); await sleep(40); await touch('touchEnd',[{x:650,y:200,id:8}]); await sleep(90);   // lifts finger 8 only
-  await touch('touchStart',[{x:120,y:196,id:2},{x:655,y:205,id:9}]); await sleep(60);
-  const r=await ev('({echo:lastEcho>0, sprinting})');
-  await touch('touchEnd',[]); await sleep(100);
-  assert(r.echo,'double-tap did not echo '+JSON.stringify(r)); assert(r.sprinting,'running stopped during the double-tap');
+  await sleep(350); await touch('touchStart',[{x:120,y:196,id:2},{x:650,y:200,id:8}]); await sleep(60);
+  const r=await ev('({n:__echoN, sprinting})');
+  await touch('touchEnd',[]); await sleep(100); await ev('(playerEcho=__pe, 1)');
+  assert(one,'a single touch did not echo'); assert(held===1,'holding repeated the echo: '+held); assert(again===2,'touching again did not echo again: '+again);
+  assert(r.n===3&&r.sprinting,'touch while running did not echo, or stopped the run '+JSON.stringify(r));
 });
 
 T('mobile: holding the phone upright pauses and asks to turn it sideways', async()=>{
