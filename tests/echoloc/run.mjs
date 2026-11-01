@@ -82,13 +82,15 @@ T('levelgen: invariants hold over 12 random levels', async()=>{
       if(exitDist[st]<0) bad.push(k+': exit unreachable');
       for(let z=1;z<H-1;z++) for(let x=1;x<W-1;x++){ const i=idx(x,z); if(cellType[i]!==T_COR) continue;
         if((cellType[i-1]===T_WALL&&cellType[i+1]===T_WALL)||(cellType[i-W]===T_WALL&&cellType[i+W]===T_WALL)){ bad.push(k+': 1-wide corridor at '+x+','+z); break; } }
-      // signs: in every room and along the corridors; each points the shortest way out (a few steps along it gets closer to the exit)
-      for(const s of signs){ const i=idx(Math.floor(s.x),Math.floor(s.z)); if(!walk[i]) bad.push(k+': sign in a wall');
-        let cur=i; for(let t=0;t<5;t++){ let best=cur,bd=exitDist[cur]; for(const o of [1,-1,W,-W]){ const n=cur+o; if(walk[n]&&exitDist[n]>=0&&exitDist[n]<bd){bd=exitDist[n];best=n;} } if(best===cur) break; cur=best; }
-        const ex=(cur%W)-(i%W), ez=((cur/W)|0)-((i/W)|0), el=Math.hypot(ex,ez);   // net direction of the next steps along the shortest way out
-        if(!(el>0&&(s.dx*ex+s.dz*ez)/el>0.7)) bad.push(k+': sign does not point the way out'); }
-      const roomsSigned=rooms.filter(r=>signs.some(s=>Math.floor(s.x)>=r.x&&Math.floor(s.x)<r.x+r.w&&Math.floor(s.z)>=r.z&&Math.floor(s.z)<r.z+r.h)).length;
-      if(roomsSigned<rooms.length-2) bad.push(k+': rooms without a sign '+(rooms.length-roomsSigned));
+      // signs: few, and each one points straight at a way that gets closer to the exit (never into a wall)
+      if(signs.length<3||signs.length>30) bad.push(k+': sign count '+signs.length);
+      for(const s of signs){ const i=idx(Math.floor(s.x),Math.floor(s.z)); if(!walk[i]){ bad.push(k+': sign in a wall'); continue; }
+        if(roomOf[i]>=0){ // in a room: the line it points along leaves the room through a doorway that leads closer to the exit
+          let x=s.x,z=s.z,j=i; for(let t=0;t<400&&roomOf[j]===roomOf[i];t++){ x+=s.dx*0.1; z+=s.dz*0.1; j=idx(Math.floor(x),Math.floor(z)); }
+          if(!((cellType[j]===T_DOOR||cellType[j]===T_COR)&&walk[j]&&exitDist[j]>=0&&exitDist[j]<exitDist[i])) bad.push(k+': room sign does not point at the right doorway '+cellType[j]); }
+        else { // at a junction: straight down a corridor, which gets closer to the exit
+          const ax=Math.abs(s.dx)<1e-6||Math.abs(s.dz)<1e-6; let ok=ax; for(let t=1;t<=3&&ok;t++) if(!walkAt(s.x+s.dx*t,s.z+s.dz*t)) ok=false;
+          if(!ok||exitDist[idx(Math.floor(s.x+s.dx*3),Math.floor(s.z+s.dz*3))]>=exitDist[i]) bad.push(k+': corridor sign does not point down the way out'); } }
       if(rooms.length<24) bad.push(k+': too few rooms '+rooms.length);
       const rv=rooms.filter(r=>r.mat===1).length, cp=rooms.filter(r=>r.mat===2).length; if(rv!==2||cp<1||cp>3) bad.push(k+': materials rv='+rv+' cp='+cp);
       let locks=0; for(let b=0;b<BX.length/7;b++) if(BX[b*7+6]===K_LOCK) locks++; if(locks<8) bad.push(k+': locked door missing');
@@ -646,7 +648,7 @@ T('audio is 3D: left/right, front/behind (duller behind), follows your turning, 
 T('monsters: a hand or head poking out past a corner is enough to see its body (not only the chest)', async()=>{
   const r=await ev(`(()=>{ newGame(); paused=false; const m=monsters[0]; m.state='hunt'; m.runB=1; m.armJ.forEach(a=>{a[0]=a[1]=a[2]=0;});
     let partly=0, hidden=0, visible=0, wrong=0;
-    for(let k=0;k<4000&&partly<5;k++){ const a=Math.random()*6.283, d=2+Math.random()*12; m.x=player.x+Math.sin(a)*d; m.z=player.z+Math.cos(a)*d; m.yaw=Math.random()*6.283;
+    for(let k=0;k<6000&&(partly<5||hidden<1);k++){ const a=Math.random()*6.283, d=2+Math.random()*12; m.x=player.x+Math.sin(a)*d; m.z=player.z+Math.cos(a)*d; m.yaw=Math.random()*6.283;
       if(!walkAt(m.x,m.z)) continue;
       const centre=los(player.x,camY,player.z,m.x,1.4,m.z), sees=seesMonster(m);
       if(centre&&!sees) wrong++; if(centre) visible++; else if(sees){ partly++;

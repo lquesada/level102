@@ -561,19 +561,56 @@ function tryGen(){
   exitDist=bfs(target,walk);
   const mainGrid=new Uint8Array(W*H); for(let i=0;i<W*H;i++) if(walk[i]&&(cellType[i]===T_ROOM||mainCor[i]||exitCell[i])) mainGrid[i]=1;
   const dMain=bfs(target,mainGrid);
+  // EXIT signs, only where there is a real choice to make:
+  //  - rooms on a near-shortest route (at most 5% longer) with 2+ doorways: one sign pointing straight at
+  //    the doorway the shortest way out leaves by. Off those routes you are on your own: find the trail again.
+  //  - junctions on those routes (3+ ways meet): one sign pointing straight down the branch that gets closer to the exit
+  // Few on purpose: the player has to explore.
   signs=[];
-  const signDir=(i)=>{ const D=exitDist; let cur=i; for(let s=0;s<5;s++){ let best=cur,bd=D[cur];
-      for(const o of [1,-1,W,-W]){ const n=cur+o; if(n>=0&&n<W*H&&D[n]>=0&&D[n]<bd){bd=D[n];best=n;} }
-      if(best===cur) break; cur=best; }
-    if(cur===i) return null; const dx=(cur%W)-(i%W), dz=((cur/W)|0)-((i/W)|0), l=Math.hypot(dx,dz); return [dx/l,dz/l]; };
-  const addSign=(i)=>{ const d=signDir(i); if(!d) return; const x=i%W,z=(i/W)|0;
-    signs.push({x:x+0.5,z:z+0.5,y:Math.min(ceilH[i]-0.32,2.45),top:ceilH[i],dx:d[0],dz:d[1]}); };
-  for(const r of rooms){ let best=-1,bd=1e9;   // free floor nearest the room centre (furniture may stand on the centre)
+  const addSign=(i,dx,dz)=>{ const l=Math.hypot(dx,dz); if(!l) return; const x=i%W,z=(i/W)|0;
+    signs.push({x:x+0.5,z:z+0.5,y:Math.min(ceilH[i]-0.32,2.45),top:ceilH[i],dx:dx/l,dz:dz/l}); };
+  const downhill=c=>{ let best=c,bd=exitDist[c]; for(const o of [1,-1,W,-W]){ const n=c+o; if(walk[n]&&exitDist[n]>=0&&exitDist[n]<bd){bd=exitDist[n];best=n;} } return best; };
+  const dFromStart=bfs(startCell,walk), best0=dFromStart[target];
+  for(const r of rooms){
+    { let m=1e9; for(let z=r.z;z<r.z+r.h;z++) for(let x=r.x;x<r.x+r.w;x++){ const i=idx(x,z); if(dFromStart[i]>=0&&exitDist[i]>=0) m=Math.min(m,dFromStart[i]+exitDist[i]); }
+      if(m>best0*1.05) continue; }
+    // doorways of this room = groups of door cells touching it (the exit passage counts as one)
+    const seen=new Uint8Array(W*H); let doorways=0;
+    for(let z=r.z-1;z<=r.z+r.h;z++) for(let x=r.x-1;x<=r.x+r.w;x++){ if(!inb(x,z)) continue; const i0=idx(x,z);
+      if(cellType[i0]!==T_DOOR||seen[i0]) continue; doorways++; const st=[i0]; seen[i0]=1;
+      while(st.length){ const c=st.pop(); for(const o of [1,-1,W,-W]){ const n=c+o; if(cellType[n]===T_DOOR&&!seen[n]){ seen[n]=1; st.push(n); } } } }
+    if(doorways<2) continue;   // a dead end: its only doorway is obvious
+    let best=-1,bd=1e9;   // free floor nearest the room centre (furniture may stand on the centre)
     for(let z=r.z;z<r.z+r.h;z++) for(let x=r.x;x<r.x+r.w;x++){ const i=idx(x,z), d=Math.hypot(x+.5-r.cx,z+.5-r.cz); if(walk[i]&&exitDist[i]>0&&d<bd){bd=d;best=i;} }
-    if(best>=0) addSign(best); }
-  const cor=[]; for(let i=0;i<W*H;i++) if(cellType[i]===T_COR&&!exitCell[i]&&exitDist[i]>=0) cor.push(i);
-  for(let k=cor.length-1;k>0;k--){const j=RI(0,k);[cor[k],cor[j]]=[cor[j],cor[k]];}
-  for(const i of cor){ const x=i%W+0.5,z=((i/W)|0)+0.5; if(signs.every(s=>Math.hypot(s.x-x,s.z-z)>10)) addSign(i); }
+    if(best<0) continue;
+    let c=best; for(let t=0;t<400&&roomOf[c]===r.id;t++){ const n=downhill(c); if(n===c) break; c=n; }   // follow the way out to the doorway
+    if(roomOf[c]===r.id) continue;
+    // aim at the middle of that doorway, and only if the straight line really goes out through it (not into the frame)
+    const grp=[c]; if(cellType[c]===T_DOOR){ const sn=new Set([c]); for(let q=0;q<grp.length;q++) for(const o of [1,-1,W,-W]){ const n=grp[q]+o; if(cellType[n]===T_DOOR&&!sn.has(n)&&Math.abs((n%W)-(c%W))<=3&&Math.abs(((n/W)|0)-((c/W)|0))<=3){ sn.add(n); grp.push(n); } } }
+    const tx=grp.reduce((a,g)=>a+g%W,0)/grp.length+.5, tz=grp.reduce((a,g)=>a+((g/W)|0),0)/grp.length+.5;
+    const goesOut=(dx,dz)=>{ const l=Math.hypot(dx,dz); let x=best%W+.5,z=((best/W)|0)+.5,j=best; for(let t=0;t<400&&roomOf[j]===r.id;t++){ x+=dx/l*0.1; z+=dz/l*0.1; j=idx(Math.floor(x),Math.floor(z)); }
+      return walk[j]&&roomOf[j]!==r.id&&exitDist[j]>=0&&exitDist[j]<exitDist[best]; };
+    for(const [ax,az] of [[tx,tz],[c%W+.5,((c/W)|0)+.5]]){ const dx=ax-(best%W+.5), dz=az-(((best/W)|0)+.5); if(goesOut(dx,dz)){ addSign(best,dx,dz); break; } } }
+  { const RING=[]; for(let k=0;k<24;k++){ const a=k/24*6.283; RING.push([Math.sin(a)*3.5,Math.cos(a)*3.5]); }
+    const cand=[];
+    for(let z=4;z<H-4;z++) for(let x=4;x<W-4;x++){ const i=idx(x,z); if(cellType[i]!==T_COR||exitCell[i]||exitDist[i]<=0||dFromStart[i]<0||dFromStart[i]+exitDist[i]>best0*1.05) continue;
+      const on=RING.map(([rx,rz])=>walkAt(x+.5+rx,z+.5+rz)); if(on.every(v=>v)) continue;
+      const arms=[]; for(let k=0;k<24;k++) if(on[k]&&!on[(k+23)%24]){ let e=k; while(on[(e+1)%24]) e++; arms.push((k+e)/2); }
+      if(arms.length<3) continue;
+      let open=0; for(let dz=-1;dz<=1;dz++) for(let dx=-1;dx<=1;dx++) open+=walk[idx(x+dx,z+dz)];
+      cand.push({i,x,z,arms,open}); }
+    cand.sort((a,b)=>b.open-a.open||rnd()-.5);
+    for(const c of cand){ const px=c.x+.5, pz=c.z+.5;
+      if(!signs.every(s=>Math.hypot(s.x-px,s.z-pz)>18)) continue;
+      // the branch that leads closer to the exit, as a straight axis direction (corridors are axis-aligned)
+      let bestA=null,bd=1e9; for(const k of c.arms){ const a=k/24*6.283, ax=Math.sin(a), az=Math.cos(a); const j=idx(Math.floor(px+ax*3.5),Math.floor(pz+az*3.5));
+        if(exitDist[j]>=0&&exitDist[j]<bd){ bd=exitDist[j]; bestA=[ax,az]; } }
+      if(!bestA||bd>=exitDist[c.i]) continue;
+      const d=Math.abs(bestA[0])>Math.abs(bestA[1])?[Math.sign(bestA[0]),0]:[0,Math.sign(bestA[1])];
+      let ok=true; for(let k=1;k<=3&&ok;k++) if(!walkAt(px+d[0]*k,pz+d[1]*k)) ok=false;   // straight down a corridor, not into a wall
+      if(!ok||exitDist[idx(Math.floor(px+d[0]*3),Math.floor(pz+d[1]*3))]>=exitDist[c.i]) continue;
+      addSign(c.i,d[0],d[1]); } }
+  if(signs.length>25){ for(let k=signs.length-1;k>0;k--){ const j=RI(0,k); [signs[k],signs[j]]=[signs[j],signs[k]]; } signs.length=25; }   // never a forest of signs
   // monsters
   monsters=[];
   const spawnable=[]; for(let i=0;i<W*H;i++) if(walk[i]&&dS[i]>32&&!reserved[i]&&Math.hypot(i%W+0.5-startInfo.x,((i/W)|0)+0.5-startInfo.z)>25) spawnable.push(i);
