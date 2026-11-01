@@ -98,6 +98,7 @@
   #overlay h1.green{color:#c0ffc8;text-shadow:0 0 12px #2f6,0 0 40px #0a3}
   #overlay p{max-width:600px;color:#6f93ad;line-height:1.7;font-size:calc(14px*var(--fs));margin:6px 0}
   #overlay p.secret{color:#7fe0a0;border:1px dashed rgba(120,230,160,.4);border-radius:6px;padding:8px 12px;margin-top:14px}
+  .eyesBtn.helpBtn{display:block;margin:14px auto 0;color:#cfefff;background:rgba(40,90,140,.6);box-shadow:none;border:1px solid #2a4a66}
   .eyesBtn{margin-top:14px;padding:12px 20px;font:inherit;font-size:calc(14px*var(--fs));letter-spacing:.2em;color:#032;background:#8fe8b0;border:0;border-radius:6px;box-shadow:0 0 18px #2c8;cursor:pointer}
   #overlay .go{margin-top:26px;font-size:calc(14px*var(--fs));color:#cfefff;letter-spacing:.3em;animation:pulse 1.6s infinite}
   kbd{color:#bfe9ff;border:1px solid #2a4a66;padding:0 5px;border-radius:3px}
@@ -123,7 +124,9 @@
   @keyframes tilt{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
   @media (orientation:portrait){html.touch #rotate{display:flex}}
   html:fullscreen #info{display:none}
+  html:fullscreen{--l102-bar-h:0px} html:fullscreen .l102bar{display:none}
   html:-webkit-full-screen #info{display:none}
+  html:-webkit-full-screen{--l102-bar-h:0px} html:-webkit-full-screen .l102bar{display:none}
   .sub{margin-top:10px;font-size:calc(12px*var(--fs));color:#5b7f99}
   #toast{position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:50;font-size:calc(13px*var(--fs));white-space:nowrap;letter-spacing:.3em;color:#ffe9a0;text-shadow:0 0 10px #f90;opacity:0;transition:opacity .4s;pointer-events:none}
   @media (max-height:520px){
@@ -248,7 +251,7 @@ const STR={
   rot:'TURN YOUR PHONE SIDEWAYS',rotMsg:'Echoloc is played in landscape.',rotTap:'Or tap here to play in full screen.',run:'RUN',look:'DRAG<br>TO LOOK',echo:'ECHO',
   dbgOn:'EYES OPEN',dbgOff:'EYES CLOSED',
   secret:'A secret for those who escape: type <kbd>LETMESEE</kbd> (no spaces) while playing and you will open your eyes, and see what is really out there. Type it again to close them.',
-  secretTouch:'A secret for those who escape: you can open your eyes, and see what is really out there.',eyes:['OPEN YOUR EYES','CLOSE YOUR EYES']},
+  secretTouch:'A secret for those who escape: you can open your eyes, and see what is really out there.',eyes:['OPEN YOUR EYES','CLOSE YOUR EYES'],howTo:'HOW TO PLAY'},
  es:{intro1:'No puedes ver. Chasquea la lengua para ver.',
   intro2:'Algo vive en estos pasillos. Tampoco ve, pero lo oye todo. Si haces eco demasiado cerca o demasiado a menudo, vendrá. Cuando corre, chilla. Cuando chilla, otros responden.',
   ctlPC:'<kbd>WASD</kbd> moverte · <kbd>RATÓN</kbd> mirar · <kbd>MAYÚS</kbd> correr · <kbd>ESPACIO</kbd> ecolocalizar · <kbd>F</kbd> pantalla completa · mejor con auriculares',
@@ -266,7 +269,7 @@ const STR={
   rot:'GIRA EL MÓVIL',rotMsg:'Echoloc se juega en horizontal.',rotTap:'O toca aquí para jugar en pantalla completa.',run:'CORRER',look:'ARRASTRA<br>PARA MIRAR',echo:'ECO',
   dbgOn:'OJOS ABIERTOS',dbgOff:'OJOS CERRADOS',
   secret:'Un secreto para quien escapa: escribe <kbd>LETMESEE</kbd> (sin espacios) mientras juegas y abrirás los ojos, y verás lo que hay de verdad ahí fuera. Escríbelo otra vez para cerrarlos.',
-  secretTouch:'Un secreto para quien escapa: puedes abrir los ojos y ver lo que hay de verdad ahí fuera.',eyes:['ABRE LOS OJOS','CIERRA LOS OJOS']},
+  secretTouch:'Un secreto para quien escapa: puedes abrir los ojos y ver lo que hay de verdad ahí fuera.',eyes:['ABRE LOS OJOS','CIERRA LOS OJOS'],howTo:'CÓMO SE JUEGA'},
  de:{intro1:'Du kannst nichts sehen. Schnalze mit der Zunge, um zu sehen.',
   intro2:'Etwas lebt in diesen Gängen. Es kann auch nicht sehen, aber es hört alles. Ein Echo zu nah oder zu oft, und es kommt. Wenn es rennt, kreischt es. Wenn es kreischt, antworten andere.',
   ctlPC:'<kbd>WASD</kbd> gehen · <kbd>MAUS</kbd> umsehen · <kbd>SHIFT</kbd> rennen · <kbd>LEERTASTE</kbd> Echo · <kbd>F</kbd> Vollbild · am besten mit Kopfhörern',
@@ -284,7 +287,7 @@ const STR={
   rot:'HANDY QUER HALTEN',rotMsg:'Echoloc wird im Querformat gespielt.',rotTap:'Oder hier tippen, um im Vollbild zu spielen.',run:'RENNEN',look:'ZIEHEN ZUM<br>UMSEHEN',echo:'ECHO',
   dbgOn:'AUGEN AUF',dbgOff:'AUGEN ZU',
   secret:'Ein Geheimnis für alle, die entkommen: Tippe beim Spielen <kbd>LETMESEE</kbd> (ohne Leerzeichen), dann öffnest du die Augen und siehst, was da draußen wirklich ist. Nochmal tippen schließt sie wieder.',
-  secretTouch:'Ein Geheimnis für alle, die entkommen: Du kannst die Augen öffnen und sehen, was da draußen wirklich ist.',eyes:['AUGEN ÖFFNEN','AUGEN SCHLIESSEN']}};
+  secretTouch:'Ein Geheimnis für alle, die entkommen: Du kannst die Augen öffnen und sehen, was da draußen wirklich ist.',eyes:['AUGEN ÖFFNEN','AUGEN SCHLIESSEN'],howTo:'SO WIRD GESPIELT'}};
 const lang=()=>(window.L102&&STR[L102.lang])?L102.lang:'en';
 function T(k,a){ let v=STR[lang()][k]; if(Array.isArray(v)) v=v[isTouch?1:0]; if(a) for(const n in a) v=v.replace('{'+n+'}',a[n]); return v; }
 // the overlay is described by a state so a language switch can redraw it in place
@@ -296,7 +299,9 @@ function overlayHTML(st){
   const msg=M[1]?T(M[1],st.a):String(st.msg).replace(/</g,'&lt;');
   const eyesBtn=isTouch&&(st.k==='won'||(st.k==='paused'&&hasEscaped()))?`<button type="button" class="eyesBtn" id="eyesBtn">${STR[lang()].eyes[debugView?1:0]}</button>`:'';
   const secret=st.k==='won'?`<p class="secret">${T(isTouch?'secretTouch':'secret')}</p>`:'';
-  return `<h1 class="${M[0]}">${T(st.k)}</h1><p>${msg}</p>${secret}${eyesBtn}${M[2]?`<div class="go">${T(M[2])}</div>`:''}`;
+  // full screen hides the top bar: its help moves onto the pause screen
+  const helpBtn=st.k==='paused'&&typeof isFS==='function'&&isFS()?`<button type="button" class="eyesBtn helpBtn" id="helpBtn">${T('howTo')}</button>`:'';
+  return `<h1 class="${M[0]}">${T(st.k)}</h1><p>${msg}</p>${secret}${eyesBtn}${helpBtn}${M[2]?`<div class="go">${T(M[2])}</div>`:''}`;
 }
 // the LETMESEE secret: lit view of the level and the monsters (for players who have escaped once)
 function hasEscaped(){ try{ return localStorage.getItem('echoloc.escaped')==='1'; }catch(e){ return false; } }
@@ -326,7 +331,7 @@ const smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);};
 // =====================================================================
 //  LEVEL
 // =====================================================================
-const W=92, H=92, MAXH=4.6, EYE=1.6;
+const W=128, H=128, MAXH=4.6, EYE=1.6;
 const T_WALL=0,T_ROOM=1,T_COR=2,T_DOOR=3;
 const MAT_REFL=[0.14,0.82,0.05]; // plain, reverb (tiles), carpet
 const K_WALL=1,K_CEIL=2,K_FURN=3,K_FLOOR=4,K_TOP=5,K_MON=6,K_LOCK=7;
@@ -423,14 +428,14 @@ function makeCrates(x,z){ const b=[]; let y=0, s=R(0.6,0.9); const n=RI(1,3);
 function tryGen(){
   cellType=new Uint8Array(W*H); roomOf=new Int16Array(W*H).fill(-1); rooms=[];
   mainCor=new Uint8Array(W*H); exitCell=new Uint8Array(W*H); footprint=new Float32Array(W*H*4);
-  for(let a=0;a<3000&&rooms.length<24;a++){
+  for(let a=0;a<6000&&rooms.length<40;a++){
     const w=RI(6,16),h=RI(6,16),x=RI(2,W-w-2),z=RI(2,H-h-2);
     let ok=true; for(const r of rooms) if(x<r.x+r.w+3&&x+w+3>r.x&&z<r.z+r.h+3&&z+h+3>r.z){ok=false;break;}
     if(!ok) continue;
     const r={x,z,w,h,id:rooms.length,cx:x+w/2,cz:z+h/2}; rooms.push(r);
     for(let zz=z;zz<z+h;zz++) for(let xx=x;xx<x+w;xx++){cellType[idx(xx,zz)]=T_ROOM;roomOf[idx(xx,zz)]=r.id;}
   }
-  if(rooms.length<12) return false;
+  if(rooms.length<24) return false;
   { // biggest room becomes room 0 = start room
     let L=0; for(const r of rooms) if(r.w*r.h>rooms[L].w*rooms[L].h) L=r.id;
     if(L!==0){ const A=rooms[0],B=rooms[L]; rooms[0]=B; rooms[L]=A; B.id=0; A.id=L;
@@ -439,19 +444,19 @@ function tryGen(){
     mat=new Uint8Array(W*H); const pool=rooms.slice(1).sort(()=>rnd()-.5); let nr=0,nc=0;
     for(const r of pool){ let m=0; if(nr<2&&r.w*r.h>=48){m=1;nr++;} else if(nc<3){m=2;nc++;} else continue; r.mat=m;
       for(let z=r.z;z<r.z+r.h;z++) for(let x=r.x;x<r.x+r.w;x++) mat[idx(x,z)]=m; } }
-  // main route = MST (gets exit signs). Everything else = unsigned side passages.
+  // main route = MST; plus many side passages and shortcuts, so there are always other ways round (some without monsters)
   const tree=[0], out=rooms.slice(1).map(r=>r.id), mainE=[], sideE=[];
   const rd=(a,b)=>Math.hypot(rooms[a].cx-rooms[b].cx,rooms[a].cz-rooms[b].cz);
   while(out.length){ let best=1e9,bi=0,bj=0;
     for(const a of tree) for(let j=0;j<out.length;j++){const d=rd(a,out[j]); if(d<best){best=d;bi=a;bj=j;}}
     mainE.push([bi,out[bj]]); tree.push(out[bj]); out.splice(bj,1); }
-  for(let k=0;k<30;k++){ const a=RI(0,rooms.length-1),b=RI(0,rooms.length-1); if(a!==b&&rd(a,b)<42) sideE.push([a,b]); }
-  for(const r of rooms){ const near=rooms.filter(o=>o!==r).sort((a,b)=>rd(r.id,a.id)-rd(r.id,b.id)).slice(0,3); for(const o of near) if(rnd()<0.55) sideE.push([r.id,o.id]); }
+  for(let k=0;k<70;k++){ const a=RI(0,rooms.length-1),b=RI(0,rooms.length-1); if(a!==b&&rd(a,b)<42) sideE.push([a,b]); }
+  for(const r of rooms){ const near=rooms.filter(o=>o!==r).sort((a,b)=>rd(r.id,a.id)-rd(r.id,b.id)).slice(0,3); for(const o of near) if(rnd()<0.75) sideE.push([r.id,o.id]); }
   for(const [a,b] of sideE) carveCorridor(rooms[a],rooms[b],false);
   for(const [a,b] of mainE) carveCorridor(rooms[a],rooms[b],true);
-  // service tunnels: corridor-to-corridor shortcuts (unsigned)
+  // service tunnels: corridor-to-corridor shortcuts
   const corCells=[]; for(let i=0;i<W*H;i++) if(cellType[i]===T_COR) corCells.push(i);
-  for(let k=0;k<18&&corCells.length;k++){ const a=corCells[RI(0,corCells.length-1)];
+  for(let k=0;k<55&&corCells.length;k++){ const a=corCells[RI(0,corCells.length-1)];
     for(let t=0;t<25;t++){ const b=corCells[RI(0,corCells.length-1)]; const d=Math.hypot(a%W-b%W,((a/W)|0)-((b/W)|0));
       if(d>=8&&d<=28){ carveBetween(a%W,(a/W)|0,b%W,(b/W)|0,false); break; } } }
   // doors
@@ -551,27 +556,29 @@ function tryGen(){
   cbS=new Int32Array(W*H+1); let tot=0; for(let i=0;i<W*H;i++){ cbS[i]=tot; if(cellBoxes[i]) tot+=cellBoxes[i].length; } cbS[W*H]=tot;
   cbI=new Int32Array(tot); for(let i=0;i<W*H;i++) if(cellBoxes[i]) cbI.set(cellBoxes[i],cbS[i]);
   castCeil=new Float32Array(W*H); for(let i=0;i<W*H;i++) castCeil[i]=cellType[i]===T_WALL?-1:ceilH[i];
-  // exit flow. signs follow the MAIN network only; side passages stay unsigned.
+  // exit flow: every sign points along the shortest way out (to the nearest corridor that leads to the exit)
   const target=idx(exitInfo.ex,exitInfo.ez);
   exitDist=bfs(target,walk);
   const mainGrid=new Uint8Array(W*H); for(let i=0;i<W*H;i++) if(walk[i]&&(cellType[i]===T_ROOM||mainCor[i]||exitCell[i])) mainGrid[i]=1;
   const dMain=bfs(target,mainGrid);
   signs=[];
-  const signDir=(i)=>{ const D=dMain[i]>=0?dMain:exitDist; let cur=i; for(let s=0;s<5;s++){ let best=cur,bd=D[cur];
+  const signDir=(i)=>{ const D=exitDist; let cur=i; for(let s=0;s<5;s++){ let best=cur,bd=D[cur];
       for(const o of [1,-1,W,-W]){ const n=cur+o; if(n>=0&&n<W*H&&D[n]>=0&&D[n]<bd){bd=D[n];best=n;} }
       if(best===cur) break; cur=best; }
     if(cur===i) return null; const dx=(cur%W)-(i%W), dz=((cur/W)|0)-((i/W)|0), l=Math.hypot(dx,dz); return [dx/l,dz/l]; };
   const addSign=(i)=>{ const d=signDir(i); if(!d) return; const x=i%W,z=(i/W)|0;
     signs.push({x:x+0.5,z:z+0.5,y:Math.min(ceilH[i]-0.32,2.45),top:ceilH[i],dx:d[0],dz:d[1]}); };
-  for(const r of rooms){ const i=idx(Math.floor(r.cx),Math.floor(r.cz)); if(cellType[i]===T_ROOM) addSign(i); }
-  const cor=[]; for(let i=0;i<W*H;i++) if(cellType[i]===T_COR&&mainCor[i]&&!exitCell[i]&&dMain[i]>=0) cor.push(i);
+  for(const r of rooms){ let best=-1,bd=1e9;   // free floor nearest the room centre (furniture may stand on the centre)
+    for(let z=r.z;z<r.z+r.h;z++) for(let x=r.x;x<r.x+r.w;x++){ const i=idx(x,z), d=Math.hypot(x+.5-r.cx,z+.5-r.cz); if(walk[i]&&exitDist[i]>0&&d<bd){bd=d;best=i;} }
+    if(best>=0) addSign(best); }
+  const cor=[]; for(let i=0;i<W*H;i++) if(cellType[i]===T_COR&&!exitCell[i]&&exitDist[i]>=0) cor.push(i);
   for(let k=cor.length-1;k>0;k--){const j=RI(0,k);[cor[k],cor[j]]=[cor[j],cor[k]];}
-  for(const i of cor){ const x=i%W+0.5,z=((i/W)|0)+0.5; if(signs.every(s=>Math.hypot(s.x-x,s.z-z)>9)) addSign(i); }
+  for(const i of cor){ const x=i%W+0.5,z=((i/W)|0)+0.5; if(signs.every(s=>Math.hypot(s.x-x,s.z-z)>10)) addSign(i); }
   // monsters
   monsters=[];
   const spawnable=[]; for(let i=0;i<W*H;i++) if(walk[i]&&dS[i]>32&&!reserved[i]&&Math.hypot(i%W+0.5-startInfo.x,((i/W)|0)+0.5-startInfo.z)>25) spawnable.push(i);
   const order=rooms.slice(1).sort(()=>rnd()-.5);
-  for(const r of order){ if(monsters.length>=5) break; if(rnd()<0.55) continue;
+  for(const r of order){ if(monsters.length>=6) break; if(rnd()<0.55) continue;
     for(let t=0;t<30;t++){ const x=RI(r.x,r.x+r.w-1),z=RI(r.z,r.z+r.h-1),i=idx(x,z);
       if(walk[i]&&dS[i]>32&&Math.hypot(x+0.5-startInfo.x,z+0.5-startInfo.z)>25){monsters.push(makeMonster(x+0.5,z+0.5));break;} } }
   for(let k=0;k<1&&spawnable.length;k++){ const i=spawnable[RI(0,spawnable.length-1)]; if(cellType[i]===T_COR) monsters.push(makeMonster(i%W+0.5,((i/W)|0)+0.5)); }
@@ -917,8 +924,10 @@ function shriek(m){
   if(seesMonster(m)) sampleMonster(m,520,now+d/30,1.8,[1,0.3,0.25],F_NOISY|F_BIG);
   staticBoost=Math.max(staticBoost,clamp(1.2-d/35,0.35,1));
   // the scream calls the others to where THIS one thinks you are (not where you really are)
-  const lk=m.lastKnown||{x:hx,z:hz}, lt=m.heardT||now;
-  const callR=28+heat*45; for(const o of monsters){ if(o===m||o.state==='kill') continue; const dd=Math.hypot(o.x-hx,o.z-hz); if(dd<callR) enterHunt(o,lk,lt); else if(dd<callR*1.7) enterAlert(o,lk.x,lk.z); }
+  // fresh news (it heard you in the last few seconds) -> the others join the chase; stale news -> they only come and look
+  const lk=m.lastKnown||{x:hx,z:hz}, lt=m.heardT||now, fresh=now-lt<3;
+  const callR=20+heat*30; for(const o of monsters){ if(o===m||o.state==='kill') continue; const dd=Math.hypot(o.x-hx,o.z-hz);
+    if(dd<callR&&fresh) enterHunt(o,lk,lt); else if(dd<callR*1.5) enterAlert(o,lk.x+MR(-4,4),lk.z+MR(-4,4)); }
 }
 // while it keeps screaming, the scream keeps flooding the area with echo
 function shriekPulse(m){
@@ -936,6 +945,11 @@ function monsterStep(m){
   sfxThump([x,0.1,z],0.9);
 }
 
+// lost you: go idle and head for somewhere at least 15 m away from where it searched
+function giveUp(m,sx,sz){ m.state='idle'; m.target=null; m.spotN=0; m.susp=0;
+  for(let t=0;t<60;t++){ const x=Math.floor(m.x)+RI(-26,26), z=Math.floor(m.z)+RI(-26,26);
+    if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&Math.hypot(x+.5-sx,z+.5-sz)>15&&Math.hypot(x+.5-player.x,z+.5-player.z)>10){ m.target={x:x+.5,z:z+.5}; break; } }
+  m.wanderT=R(14,22); }
 function updateMonster(m,dt){
   m.susp=Math.max(0,m.susp-dt*0.22);
   if(m.state==='hunt') m.chaseT=(m.chaseT||0)+dt; else m.chaseT=Math.max(0,(m.chaseT||0)-dt*2); // a quick re-acquire keeps the long screams
@@ -963,10 +977,13 @@ function updateMonster(m,dt){
     m.wanderT-=dt;
     if(m.wanderT<=0){ if(Math.random()<.2){ m.target=null; } else { for(let t=0;t<30;t++){ const x=Math.floor(m.x)+RI(-14,14),z=Math.floor(m.z)+RI(-14,14); if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1){m.target={x:x+.5,z:z+.5};break;} } } m.wanderT=R(5,12); }
     if(m.target){ tx=m.target.x;tz=m.target.z;spd=0.6; if(Math.hypot(tx-m.x,tz-m.z)<0.5) m.target=null; }
+    if(!playerMoving&&Math.hypot(player.x-m.x,player.z-m.z)<2.2&&m.target){ m.target=null; m.wanderT=R(0.5,1.5); }   // brushes past nothing, turns away
     m.chitterT-=dt; if(m.chitterT<=0){ m.chitterT=R(5,12); if(Math.hypot(player.x-m.x,player.z-m.z)<13) sfxChitter([m.x,1.8,m.z],0.35); }
   } else if(m.state==='alert'){
     tx=m.target.x;tz=m.target.z;spd=0.88;
-    if(Math.hypot(tx-m.x,tz-m.z)<0.8){ spd=0; m.lingerT+=dt; if(m.lingerT>5){ m.state='idle'; m.target=null; m.wanderT=R(1,3);} }
+    // searching: walk to the spot, look around a few seconds, then get bored and wander off somewhere far away
+    if(Math.hypot(tx-m.x,tz-m.z)<0.8||(!playerMoving&&Math.hypot(player.x-m.x,player.z-m.z)<2.2)){ spd=0; m.lingerT+=dt;
+      if(m.lingerT>(m.lingerMax||(m.lingerMax=R(3,6)))){ m.lingerMax=0; giveUp(m,tx,tz); } }
     if(Math.hypot(player.x-m.x,player.z-m.z)<2.2&&playerMoving) enterHunt(m);
   } else if(m.state==='hunt'){
     // it only knows where you were when it last heard/sensed you (no live tracking)
@@ -1020,7 +1037,7 @@ function updateMonster(m,dt){
   m.gait+=m.curSpeed*dt*(2.6+m.runB*0.6);
   const sv=Math.sin(m.gait); if((sv>=0)!==(m.prevS>=0)&&m.curSpeed>1.6) monsterStep(m); m.prevS=sv;
   const reach=m.state==='hunt'?1.5:m.state==='alert'?1.15:0.9; // long arms: you can't slip past one
-  if(!dead&&!won&&Math.hypot(player.x-m.x,player.z-m.z)<reach) die(m);
+  if(!dead&&!won&&Math.hypot(player.x-m.x,player.z-m.z)<reach&&(m.state==='hunt'||playerMoving)) die(m);   // keep still and a wandering one won't find you
 }
 
 // =====================================================================
@@ -1048,14 +1065,14 @@ function runStepEcho(){
   emitEcho({x:ex,y:ey,z:ez,n:Math.round(ECHO_RAYS*0.35*(1-0.55*f)),maxD:30*(1-0.4*f),speed:sp,life:1.1*(1-0.45*f),
     flags:F_SMALL|(f>0.15?F_NOISY:0),I:1.0*(1-0.45*f),jit,mon:true,bounce:0});
   if(f>0.3) return; // only while fresh can you make out a shape in it (never signs)
-  for(const m of monsters){ const d=Math.hypot(m.x-ex,m.z-ez); if(d<22&&(los(ex,camY,ez,m.x,1.5,m.z)||los(ex,camY,ez,m.x,0.7,m.z))) sampleMonster(m,140,now+d/sp,0.9,[1,0.86,0.8],F_NOISY); }
+  for(const m of monsters){ const d=Math.hypot(m.x-ex,m.z-ez); if(d<22&&seesMonster(m)) sampleMonster(m,140,now+d/sp,0.9,[1,0.86,0.8],F_NOISY); }
 }
 function playerEcho(silent){
   if(now-lastEcho<0.28) return; lastEcho=now;
   const ex=player.x,ey=camY,ez=player.z;
   const samples=emitEcho({x:ex,y:ey,z:ez,n:ECHO_RAYS,maxD:36,speed:24,life:1.5,flags:fatigue>0.6?F_NOISY:0,I:1.0,mon:true,sync:true,jit:1.6*Math.pow(fatigue,1.3)});
   for(const m of monsters){ const d=Math.hypot(m.x-ex,1.4-ey,m.z-ez);
-    if(d<34&&(los(ex,ey,ez,m.x,1.5,m.z)||los(ex,ey,ez,m.x,0.7,m.z)||los(ex,ey,ez,m.x,1.95,m.z))) sampleMonster(m,520,now+d/24,1.5,[1,0.86,0.8],F_BIG); }
+    if(d<34&&seesMonster(m)) sampleMonster(m,520,now+d/24,1.5,[1,0.86,0.8],F_BIG); }
   for(const s of signs){ const d=Math.hypot(s.x-ex,s.y-ey,s.z-ez); if(d<30&&los(ex,ey,ez,s.x,s.y,s.z)) revealSign(s,now+d/24);
     const df=Math.hypot(s.x-ex,ey,s.z-ez); if(df<22&&los(ex,ey,ez,s.x,0.05,s.z)) revealFloorArrow(s,now+df/24); }
   { const e=exitInfo, px=e.fx+e.nx*0.1, pz=e.fz+e.nz*0.1, d=Math.hypot(px-ex,1.2-ey,pz-ez); if(d<36&&(los(ex,ey,ez,px,1.2,pz)||los(ex,ey,ez,px,2.4,pz))) revealExit(now+d/24); }
@@ -1094,8 +1111,8 @@ function updatePressure(dt){
   else heat=Math.max(0,heat-dt*(now-lastNoise.t>8?0.03:0.012));
   // calls go to where you were last heard, give or take a few metres -- never to where you are hiding now
   callT-=dt; if(callT<=0){ callT=R(4,7);
-    if(Math.random()<heat&&now-lastNoise.t<20){ const idle=monsters.filter(m=>m.state==='idle'), alert=monsters.filter(m=>m.state==='alert');
-      const fz=4+(now-lastNoise.t)*0.5, spot=()=>{ for(let k=0;k<20;k++){ const x=lastNoise.x+MR(-fz,fz), z=lastNoise.z+MR(-fz,fz); if(walkAt(x,z)) return {x,z}; } return {x:lastNoise.x,z:lastNoise.z}; };
+    if(Math.random()<heat&&now-lastNoise.t<5){ const idle=monsters.filter(m=>m.state==='idle'), alert=monsters.filter(m=>m.state==='alert');
+      const fz=6+(now-lastNoise.t), spot=()=>{ for(let k=0;k<20;k++){ const x=lastNoise.x+MR(-fz,fz), z=lastNoise.z+MR(-fz,fz); if(walkAt(x,z)) return {x,z}; } return {x:lastNoise.x,z:lastNoise.z}; };
       if(idle.length){ const m=idle[(Math.random()*idle.length)|0], sp=spot(); if(heat>0.55&&now-lastNoise.t<4) enterHunt(m,sp,lastNoise.t); else enterAlert(m,sp.x,sp.z); }
       else if(alert.length&&now-lastNoise.t<4) enterHunt(alert[(Math.random()*alert.length)|0],spot(),lastNoise.t); } }
   // exit ambush: if you come near the exit after building heat, a few more of them were already on their way
@@ -1626,6 +1643,7 @@ function play(){
   paused=false; if(!isTouch) lockMouse();
 }
 document.getElementById('overlay').addEventListener('click',e=>{
+  if(e.target.closest&&e.target.closest('#helpBtn')){ L102.help(true); return; }
   if(e.target.closest&&e.target.closest('#eyesBtn')){ toggleEyes(); document.getElementById('overlay').innerHTML=overlayHTML(ovState); return; }
   if(ovState.k!=='noGL') play(); });
 // while being eaten: a click, tap or Space skips straight to a new game

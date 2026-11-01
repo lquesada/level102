@@ -78,11 +78,18 @@ T('levelgen: invariants hold over 12 random levels', async()=>{
       if(reach!==wc) bad.push(k+': not all walkable cells connected');
       if(rooms[0].w*rooms[0].h!==Math.max(...rooms.map(r=>r.w*r.h))) bad.push(k+': start room not the biggest');
       const nm=Math.min(...monsters.map(m=>Math.hypot(m.x-player.x,m.z-player.z))); if(nm<25) bad.push(k+': monster '+nm.toFixed(1)+'m from start');
-      if(monsters.length<1||monsters.length>6) bad.push(k+': monster count '+monsters.length);
+      if(monsters.length<1||monsters.length>7) bad.push(k+': monster count '+monsters.length);
       if(exitDist[st]<0) bad.push(k+': exit unreachable');
       for(let z=1;z<H-1;z++) for(let x=1;x<W-1;x++){ const i=idx(x,z); if(cellType[i]!==T_COR) continue;
         if((cellType[i-1]===T_WALL&&cellType[i+1]===T_WALL)||(cellType[i-W]===T_WALL&&cellType[i+W]===T_WALL)){ bad.push(k+': 1-wide corridor at '+x+','+z); break; } }
-      for(const s of signs){ const i=idx(Math.floor(s.x),Math.floor(s.z)); if(!(cellType[i]===T_ROOM||mainCor[i])) bad.push(k+': sign off the main route'); }
+      // signs: in every room and along the corridors; each points the shortest way out (a few steps along it gets closer to the exit)
+      for(const s of signs){ const i=idx(Math.floor(s.x),Math.floor(s.z)); if(!walk[i]) bad.push(k+': sign in a wall');
+        let cur=i; for(let t=0;t<5;t++){ let best=cur,bd=exitDist[cur]; for(const o of [1,-1,W,-W]){ const n=cur+o; if(walk[n]&&exitDist[n]>=0&&exitDist[n]<bd){bd=exitDist[n];best=n;} } if(best===cur) break; cur=best; }
+        const ex=(cur%W)-(i%W), ez=((cur/W)|0)-((i/W)|0), el=Math.hypot(ex,ez);   // net direction of the next steps along the shortest way out
+        if(!(el>0&&(s.dx*ex+s.dz*ez)/el>0.7)) bad.push(k+': sign does not point the way out'); }
+      const roomsSigned=rooms.filter(r=>signs.some(s=>Math.floor(s.x)>=r.x&&Math.floor(s.x)<r.x+r.w&&Math.floor(s.z)>=r.z&&Math.floor(s.z)<r.z+r.h)).length;
+      if(roomsSigned<rooms.length-2) bad.push(k+': rooms without a sign '+(rooms.length-roomsSigned));
+      if(rooms.length<24) bad.push(k+': too few rooms '+rooms.length);
       const rv=rooms.filter(r=>r.mat===1).length, cp=rooms.filter(r=>r.mat===2).length; if(rv!==2||cp<1||cp>3) bad.push(k+': materials rv='+rv+' cp='+cp);
       let locks=0; for(let b=0;b<BX.length/7;b++) if(BX[b*7+6]===K_LOCK) locks++; if(locks<8) bad.push(k+': locked door missing');
       if(!(exitCell.some(v=>v))) bad.push(k+': no exit passage');
@@ -509,7 +516,11 @@ T('hiding: a scream passes on only what the screamer knows; calls never reveal w
     const old={x:player.x+30,z:player.z+30}; a.state='hunt'; a.windup=0; a.lastKnown={...old}; a.heardT=now-10; a.x=player.x+20; a.z=player.z;
     b.state='idle'; b.x=a.x+3; b.z=a.z; c.state='hunt'; c.windup=0; c.lastKnown={x:player.x+5,z:player.z}; c.heardT=now-1; c.x=a.x-3; c.z=a.z;
     shriekFrame=-1; shriek(a);
-    const bTold=b.state==='hunt'&&Math.hypot(b.lastKnown.x-old.x,b.lastKnown.z-old.z)<0.01;
+    // stale news (10 s old): b only comes to look around the old spot, it does not start a chase
+    const bTold=b.state==='alert'&&Math.hypot(b.target.x-old.x,b.target.z-old.z)<6;
+    // fresh news: b joins the chase, toward what a knows (not toward you)
+    b.state='idle'; a.heardT=now-1; shriekFrame=-1; frameNo++; shriek(a);
+    const bFresh=b.state==='hunt'&&Math.hypot(b.lastKnown.x-old.x,b.lastKnown.z-old.z)<0.01;
     const cKept=c.lastKnown.x===player.x+5;            // c had fresher information: not overwritten by stale news
     // heat calls: you were last heard 15 s ago at the old spot; you are hiding still
     lastNoise={x:old.x,z:old.z,t:now-15}; heat=1; let closest=1e9;
@@ -518,8 +529,8 @@ T('hiding: a scream passes on only what the screamer knows; calls never reveal w
       for(const m of monsters.slice(3)){ const t=m.state==='hunt'?m.lastKnown:m.state==='alert'?m.target:null; if(t) closest=Math.min(closest,Math.hypot(t.x-hide.x,t.z-hide.z)); } }
     // nobody hunting with fresh information and you stay quiet: heat goes down
     monsters.forEach(m=>{ m.state='idle'; }); heat=0.8; lastNoise.t=now-10; for(let i=0;i<60*20;i++){ now+=1/60; updatePressure(1/60); }
-    return {bTold, cKept, closest, heat}; })()`);
-  assert(r.bTold,'the called monster did not go to the stale spot the screamer knew'); assert(r.cKept,'fresher knowledge was overwritten by a scream');
+    return {bTold, bFresh, cKept, closest, heat}; })()`);
+  assert(r.bTold,'stale news: the called monster did not just come to look at the old spot'); assert(r.bFresh,'fresh news: the called monster did not chase toward what the screamer knew'); assert(r.cKept,'fresher knowledge was overwritten by a scream');
   assert(r.closest>12,'a heat call pointed a monster at your hiding place: '+r.closest.toFixed(1)+' m');
   assert(r.heat<0.3,'the level did not cool down while you hid: '+r.heat);
 });
@@ -539,6 +550,37 @@ T('hiding: you can shake off two hunters and hide (they do not keep each other u
     hearPlayer=__hearOrig;
     return {worst, dead, states:[a.state,b.state]}; })()`);
   assert(r.worst>5,'hunters learned where you hide without hearing you: '+r.worst.toFixed(1)+' m');
+});
+
+T('hiding: turn a corner and wait quietly: the hunter searches, gets bored and wanders off without finding you', async()=>{
+  const r=await ev(`(()=>{ let tries=0, res=null;
+    while(tries++<20&&!res){ newGame(); paused=false; window.__hearOrig=window.__hearOrig||hearPlayer; hearPlayer=()=>{};
+      // you stand still; it heard you last at a spot 3-6 m away that has no line of sight to you (round a corner)
+      let spot=null; for(let k=0;k<600&&!spot;k++){ const a=Math.random()*6.283, d=3+Math.random()*3, x=player.x+Math.sin(a)*d, z=player.z+Math.cos(a)*d;
+        if(walkAt(x,z)&&!los(player.x,camY,player.z,x,1.4,z)) spot={x,z}; }
+      if(!spot){ hearPlayer=__hearOrig; continue; }
+      const m=monsters[0]; monsters.slice(1).forEach(o=>{ o.state='idle'; o.x=o.z=-999; });
+      m.x=spot.x; m.z=spot.z; m.state='hunt'; m.windup=0; m.heardT=now-2; m.lastKnown={...spot}; m.lastDir=null;
+      player.vx=player.vz=0; player.spd=0; playerMoving=false; let states=new Set(), minD=1e9;
+      for(let i=0;i<60*45;i++){ now+=1/60; frameNo++; updateMonster(m,1/60); updatePressure(1/60); states.add(m.state); minD=Math.min(minD,Math.hypot(m.x-player.x,m.z-player.z)); if(dead) break; }
+      hearPlayer=__hearOrig;
+      res={dead, state:m.state, far:Math.hypot(m.x-player.x,m.z-player.z), states:[...states], minD}; }
+    return res; })()`);
+  assert(r&&!r.dead,'the monster found you while you hid '+JSON.stringify(r));
+  assert(r.state==='idle'&&r.far>8,'it did not give up and wander off '+JSON.stringify(r));
+});
+
+T('full screen: no top bar (the game uses the whole screen); the pause screen offers HOW TO PLAY instead', async()=>{
+  await send('Runtime.evaluate',{expression:'document.documentElement.requestFullscreen()',userGesture:true,awaitPromise:true}); await sleep(400);
+  const r=await ev(`(()=>{ const fs=!!document.fullscreenElement; paused=true; showOverlay('paused');
+    return {fs, bar:getComputedStyle(document.getElementById('l102bar')).display, top:document.getElementById('overlay').getBoundingClientRect().top, help:!!document.getElementById('helpBtn')}; })()`);
+  if(r.fs){ await ev('document.getElementById("helpBtn").click(), 1'); await sleep(100); }
+  const opened=await ev('!document.getElementById("l102dlg").hidden');
+  await ev('(L102.help(false), document.exitFullscreen&&document.fullscreenElement&&document.exitFullscreen(), 1)'); await sleep(400);
+  const after=await ev(`(paused=false, document.getElementById('overlay').style.display='none', getComputedStyle(document.getElementById('l102bar')).display)`);
+  assert(r.fs,'could not enter full screen in the test browser');
+  assert(r.bar==='none'&&r.top===0,'top bar still shown in full screen '+JSON.stringify(r)); assert(r.help&&opened,'no HOW TO PLAY on the pause screen in full screen');
+  assert(after!=='none','top bar not back after leaving full screen');
 });
 
 T('death: shorter; a click (or Space) after a moment skips straight to a new game', async()=>{
@@ -607,10 +649,13 @@ T('monsters: a hand or head poking out past a corner is enough to see its body (
     for(let k=0;k<4000&&partly<5;k++){ const a=Math.random()*6.283, d=2+Math.random()*12; m.x=player.x+Math.sin(a)*d; m.z=player.z+Math.cos(a)*d; m.yaw=Math.random()*6.283;
       if(!walkAt(m.x,m.z)) continue;
       const centre=los(player.x,camY,player.z,m.x,1.4,m.z), sees=seesMonster(m);
-      if(centre&&!sees) wrong++; if(centre) visible++; else if(sees) partly++; else hidden++; }
-    return {partly,hidden,visible,wrong}; })()`);
+      if(centre&&!sees) wrong++; if(centre) visible++; else if(sees){ partly++;
+        // your own echo must draw it as well (it used to test only the centre)
+        if(partly===1){ const orig=sampleMonster; let n=0; window.sampleMonster=(...a)=>{ if(a[0]===m) n++; return orig(...a); }; lastEcho=-9; monsters.forEach(o=>{ if(o!==m) o.x=o.z=-999; }); playerEcho(true); window.sampleMonster=orig; window.__echoSaw=n; } }
+      else hidden++; }
+    return {partly,hidden,visible,wrong,echoSaw:window.__echoSaw}; })()`);
   assert(r.wrong===0,'visible chest but not seen');
-  assert(r.partly>=3,'never saw a monster that only shows a part past a corner '+JSON.stringify(r)); assert(r.hidden>0,'monsters behind walls should stay unseen');
+  assert(r.partly>=3,'never saw a monster that only shows a part past a corner '+JSON.stringify(r)); assert(r.echoSaw>0,'your echo did not show a partly visible monster'); assert(r.hidden>0,'monsters behind walls should stay unseen');
 });
 
 T('no uncaught page errors during the whole run', async()=>{ assert(pageErrors.length===0,'page errors: '+pageErrors.slice(0,3).join(' | ')); });
