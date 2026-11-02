@@ -294,6 +294,62 @@ T('win: the escape screen tells the LETMESEE secret; typing it in capitals works
   await ev('(won=false, document.getElementById("overlay").style.display="none", paused=false, 1)');
 });
 
+T('cheat letmechoose: one-screen slider panel, values apply live and show as JSON; "reset" then starts a new game keeping them', async()=>{
+  await ev('(newGame(), paused=false, document.getElementById("overlay").style.display="none", window.__g0=BX, 1)');
+  for(const ch of 'reset') await key('Key'+ch.toUpperCase(),ch,ch);
+  const noReset=await ev('BX===__g0');   // "reset" means nothing before letmechoose
+  for(const ch of 'letmechoose') await key('Key'+ch.toUpperCase(),ch,ch);
+  await sleep(100); await shot('desktop_letmechoose');
+  const r=await ev(`(()=>{ const el=document.getElementById('tune'), rows=el.querySelectorAll('.tuneRow');
+    const fits=el.scrollHeight<=el.clientHeight+1&&el.getBoundingClientRect().bottom<=innerHeight+1;
+    const row=el.querySelector('[data-k="walk"]'), inp=row.querySelector('input'); inp.value='3.5'; inp.dispatchEvent(new Event('input',{bubbles:true}));
+    el.querySelector('[data-a="export"]').click(); const json=el.querySelector('.tuneOut').value;
+    return {open:getComputedStyle(el).display==='flex', paused, rows:rows.length, fits, walk:TUNE.walk, changed:row.classList.contains('changed'), json}; })()`);
+  await ev('(paused=false, Object.keys(keys).forEach(k=>keys[k]=false), keys.KeyW=true, 1)'); const p0=await ev('[player.x,player.z]');
+  await ev('(()=>{ for(let i=0;i<60;i++){ now+=1/60; update(1/60); } keys.KeyW=false; return 1; })()'); const p1=await ev('[player.x,player.z]');
+  for(const ch of 'reset') await key('Key'+ch.toUpperCase(),ch,ch);
+  const after=await ev(`({newLevel:BX!==__g0, started, paused, open:document.getElementById('tune').style.display, walk:TUNE.walk})`);
+  // import: a string with two values (one out of range -> clamped, one unknown -> ignored) replaces the current set
+  const imp=await ev(`(()=>{ const el=document.getElementById('tune'); openTune(); el.querySelector('.tuneOut').value='{"chase":2.2,"run":99,"nonsense":5}';
+    el.querySelector('[data-a="import"]').click(); const bad=tuneImport('not json');
+    return {chase:TUNE.chase, run:TUNE.run, walk:TUNE.walk, bad, shown:el.querySelector('[data-k="chase"] output').textContent}; })()`);
+  // map size: a smaller map next game, still a proper level
+  const small=await ev(`(()=>{ TUNE.mapSize=72; newGame(); const r={W, rooms:rooms.length, exit:exitDist[startCell]>0, mons:monsters.length}; for(const d of TUNE_DEF) if(d.length>1) TUNE[d[0]]=d[1]; closeTune(); newGame(); r.back=W; return r; })()`);
+  assert(imp.chase===2.2&&imp.run===10&&imp.walk===2.4&&imp.bad===false&&imp.shown==='2.2','import '+JSON.stringify(imp));
+  assert(small.W===72&&small.rooms>=5&&small.exit&&small.back===128,'map size '+JSON.stringify(small));
+  assert(noReset,'"reset" did something before letmechoose');
+  assert(r.open&&r.paused&&r.rows>=30,'panel did not open / pause '+JSON.stringify(r)); assert(r.fits,'panel does not fit on one screen (1280x720)');
+  assert(r.walk===3.5&&r.changed&&r.json==='{"walk":3.5}','slider did not apply / export '+JSON.stringify(r));
+  assert(Math.abs(Math.hypot(p1[0]-p0[0],p1[1]-p0[1])-3.5)<0.6,'walk speed not used live: '+Math.hypot(p1[0]-p0[0],p1[1]-p0[1]).toFixed(2)+' m in 1 s');
+  assert(after.newLevel&&after.started&&!after.paused&&after.open==='none'&&after.walk===3.5,'"reset" did not start a new game keeping the values '+JSON.stringify(after));
+});
+
+T('cheats letmemap (map turning with you) and letmecheat (list of codes for 2 s)', async()=>{
+  await ev('(newGame(), paused=false, document.getElementById("overlay").style.display="none", Object.keys(keys).forEach(k=>keys[k]=false), 1)');
+  for(const ch of 'letmemap') await key('Key'+ch.toUpperCase(),ch,ch);
+  await sleep(150);
+  const m=await ev(`(()=>{ const c=document.getElementById('map'); render(); drawMap(); const x=c.getContext('2d');
+    // the exit arrow on the rim: green pixels somewhere; the middle: you (light)
+    const d=x.getImageData(0,0,c.width,c.height).data; let green=0,red=0; for(let i=0;i<d.length;i+=4){ if(d[i+1]>180&&d[i]<120) green++; if(d[i]>200&&d[i+1]<90) red++; }
+    const mid=x.getImageData(c.width/2,c.height/2-3,1,1).data;
+    return {shown:getComputedStyle(c).display==='block', green, mid:[...mid]}; })()`);
+  // turning: face the exit -> its arrow is at the top of the rim; turn 90 degrees right -> the exit is on your left
+  const ang=await ev(`(()=>{ const y0=player.yaw, ex=exitInfo.px-player.x, ez=exitInfo.pz-player.z, norm=a=>Math.atan2(Math.sin(a),Math.cos(a));
+    player.yaw=Math.atan2(ex,ez); drawMap(); const ahead=norm(drawMap.exitA);
+    player.yaw-=Math.PI/2; drawMap(); const right=norm(drawMap.exitA); player.yaw=y0; return {ahead, right}; })()`);
+  for(const ch of 'letmemap') await key('Key'+ch.toUpperCase(),ch,ch);
+  const hidden=await ev('getComputedStyle(document.getElementById("map")).display==="none"');
+  for(const ch of 'letmecheat') await key('Key'+ch.toUpperCase(),ch,ch);
+  const list=await ev(`({shown:getComputedStyle(document.getElementById('cheats')).display==='block', text:document.getElementById('cheats').textContent})`);
+  await sleep(2300); const gone=await ev('getComputedStyle(document.getElementById("cheats")).display==="none"');
+  assert(m.shown&&m.green>20&&m.mid[2]>150,'map not drawn '+JSON.stringify(m));
+  assert(Math.abs(ang.ahead+Math.PI/2)<0.05,'facing the exit, its arrow is not at the top: '+ang.ahead);
+  assert(Math.abs(Math.abs(ang.right)-Math.PI)<0.05,'after turning right the exit arrow is not on the left: '+ang.right);
+  assert(hidden,'letmemap again did not hide it');
+  assert(list.shown&&/letmesee/.test(list.text)&&/letmemap/.test(list.text)&&/letmechoose/.test(list.text)&&/reset/.test(list.text)&&/letmecheat/.test(list.text),'cheat list '+JSON.stringify(list));
+  assert(gone,'cheat list still shown after 2 s');
+});
+
 T('input: F toggles fullscreen', async()=>{
   await ev('(window.__fs=0, window.goFS=()=>{__fs++;}, 1)');
   await key('KeyF','f','f'); await key('KeyF','f','f',false);

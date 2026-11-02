@@ -54,6 +54,21 @@
   html:-webkit-full-screen #info{display:none}
   html:-webkit-full-screen{--l102-bar-h:0px} html:-webkit-full-screen .l102bar{display:none}
   .sub{margin-top:10px;font-size:calc(12px*var(--fs));color:#5b7f99}
+  #map{position:fixed;left:auto;bottom:auto;right:max(10px,env(safe-area-inset-right));top:calc(var(--l102-bar-h) + 10px);width:min(300px,42vh);height:min(300px,42vh);z-index:20;display:none;pointer-events:none;border-radius:50%}
+  #cheats{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;display:none;padding:14px 20px;background:rgba(0,8,16,.92);border:1px solid #2a4a66;border-radius:8px;
+    color:#bfe9ff;font-size:calc(13px*var(--fs));line-height:1.8;letter-spacing:.08em;white-space:nowrap;pointer-events:none}
+  #cheats b{color:#7fe0a0;font-weight:normal}
+  /* letmechoose panel: everything on one screen */
+  #tune{position:fixed;left:0;right:0;bottom:0;top:var(--l102-bar-h);z-index:45;display:none;flex-direction:column;gap:6px;padding:8px 12px;box-sizing:border-box;
+    background:rgba(0,6,14,.94);color:#9fd8ff;font:11px/1.25 "Courier New",monospace;overflow-y:auto}
+  #tune .tuneHead{color:#6f93ad} #tune .tuneHead b{color:#cfefff;letter-spacing:.2em}
+  #tune .tuneGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:2px 16px;align-content:start}
+  #tune .tuneGroup{grid-column:1/-1;color:#7fe0a0;letter-spacing:.2em;text-transform:uppercase;margin-top:4px;border-bottom:1px solid #1d3a50}
+  #tune .tuneRow{display:grid;grid-template-columns:1fr 92px 38px;align-items:center;gap:6px;min-height:20px}
+  #tune .tuneRow span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis} #tune .tuneRow.changed span,#tune .tuneRow.changed output{color:#ffd84d}
+  #tune input[type=range]{width:100%;margin:0;accent-color:#4cf} #tune output{text-align:right;color:#cfefff}
+  #tune .tuneBtns{display:flex;gap:8px;flex-wrap:wrap} #tune button{font:inherit;padding:6px 10px;border:1px solid #2a4a66;background:#0d2a44;color:#cfefff;border-radius:4px;cursor:pointer}
+  #tune .tuneOut{width:100%;box-sizing:border-box;font:inherit;background:#000;color:#ffd84d;border:1px solid #1d3a50;resize:none}
   #toast{position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:50;font-size:calc(13px*var(--fs));white-space:nowrap;letter-spacing:.3em;color:#ffe9a0;text-shadow:0 0 10px #f90;opacity:0;transition:opacity .4s;pointer-events:none}
   @media (max-height:520px){
     #overlay{justify-content:flex-start;overflow-y:auto;padding-top:10px}
@@ -75,6 +90,9 @@
 <div id="touch"><div id="stickBase"><div id="stickRun"></div><div id="stickKnob"></div></div><div id="lookHint"></div><div id="echoBtn"></div></div>
 <div id="info"></div>
 <div id="overlay"></div>
+<div id="tune"></div>
+<canvas id="map" width="300" height="300"></canvas>
+<div id="cheats"></div>
 <div id="rotate"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="20" y="6" width="24" height="52" rx="5" fill="none" stroke="#9fd8ff" stroke-width="3"/><circle cx="32" cy="51" r="2.5" fill="#9fd8ff"/></svg><div id="rotT"></div><p id="rotP"></p></div>
 <script>
 'use strict';
@@ -173,6 +191,49 @@ function paintTexts(){
 }
 addEventListener('l102:lang',paintTexts);
 // =====================================================================
+//  TUNING (cheat "letmechoose": sliders for all of these, for this session only; "reset" then starts a new game)
+// =====================================================================
+const TUNE_DEF=[
+ ['You'],
+ ['walk',2.4,1,5,0.1,'walk speed (m/s)'],['run',5.9,3,10,0.1,'run speed (m/s)'],['tireTime',6,1,30,0.5,'running until exhausted (s)'],
+ ['recover',1,0.2,5,0.1,'tiredness recovers ×'],['look',1,0.3,3,0.05,'look sensitivity ×'],
+ ['Your echo'],
+ ['echoRays',1,0.2,3,0.05,'echo dots ×'],['echoRange',36,10,80,1,'echo range (m)'],['echoSpeed',24,8,80,1,'echo wave speed (m/s)'],
+ ['echoLife',1.5,0.3,5,0.1,'echo dots last (s)'],['runEcho',1,0,3,0.05,'running-step echo dots ×'],['dotSize',1,0.3,3,0.05,'dot size ×'],
+ ['Monsters'],
+ ['mapSize',128,48,192,8,'map size, cells (next game)'],['count',6,0,15,1,'monsters in rooms (next game)'],['chase',2.87,1,8,0.05,'chase speed (m/s)'],['wander',0.6,0.1,3,0.05,'wander speed (m/s)'],
+ ['roam',0.35,0,0.85,0.05,'chance to walk to another room'],['reach',1,0.3,2,0.05,'grab reach ×'],['clickEvery',1,0.2,5,0.05,'their clicks: interval ×'],
+ ['seeRange',1,0.2,3,0.05,'their clicks: range ×'],['seeMove',0.22,0,1,0.01,'movement they notice (lower = more)'],
+ ['Hearing'],
+ ['hearEcho',8,1,30,0.5,'hear your echo (distance scale, m)'],['hearStep',6.5,1,30,0.5,'hear your running (distance scale, m)'],
+ ['walls',2.2,1,5,0.1,'walls / corners muffle ×'],['trackOpen',0.08,0.01,0.5,0.01,'chaser keeps track: loudness (open)'],
+ ['trackWall',0.12,0.01,0.5,0.01,'chaser keeps track: loudness (round corners)'],['rough',0.25,0,1,0.01,'position error round corners (× distance)'],
+ ['breath',2.5,0,8,0.1,'hear you breathe, rested (m)'],['breathTired',3,0,10,0.1,'… extra when exhausted (m)'],
+ ['Giving up, screams, heat'],
+ ['search',4.5,0.5,20,0.5,'search before giving up (s)'],['bored',30,0,120,5,'then avoid that area (s)'],['screamCall',18,0,60,1,'a scream draws others within (m)'],
+ ['heat',1,0,5,0.05,'heat build-up ×'],
+ ['Screen and sound'],
+ ['red',1,0,3,0.05,'red screen ×'],['redRange',28,5,80,1,'red fades out by (m)'],['volume',1,0,2,0.05,'volume ×']];
+const TUNE={}; for(const d of TUNE_DEF) if(d.length>1) TUNE[d[0]]=d[1];
+let tuneOn=false;   // "letmechoose" typed this session
+function tuneChanged(){ const o={}; for(const d of TUNE_DEF) if(d.length>1&&TUNE[d[0]]!==d[1]) o[d[0]]=TUNE[d[0]]; return o; }
+function openTune(){ tuneOn=true; const el=document.getElementById('tune');
+  if(started&&!dead&&!won&&!paused){ paused=true; showOverlay('paused'); } try{ document.exitPointerLock&&document.exitPointerLock(); }catch(e){}
+  let h='<div class="tuneHead"><b>LETMECHOOSE</b> · this session only (refresh = defaults) · type <kbd>reset</kbd> for a new game with these values</div><div class="tuneGrid">';
+  for(const d of TUNE_DEF){ if(d.length===1){ h+=`<div class="tuneGroup">${d[0]}</div>`; continue; }
+    const [k,def,mn,mx,st,lab]=d; h+=`<label class="tuneRow${TUNE[k]!==def?' changed':''}" data-k="${k}" title="${lab} (default ${def})"><span>${lab}</span><input type="range" min="${mn}" max="${mx}" step="${st}" value="${TUNE[k]}"><output>${TUNE[k]}</output></label>`; }
+  h+='</div><div class="tuneBtns"><button type="button" data-a="export">EXPORT</button><button type="button" data-a="import">IMPORT</button><button type="button" data-a="def">DEFAULTS</button><button type="button" data-a="new">NEW GAME</button><button type="button" data-a="close">CLOSE</button></div><textarea class="tuneOut" rows="2" spellcheck="false" placeholder="EXPORT puts the changed values here; paste a string here and press IMPORT"></textarea>';
+  el.innerHTML=h; el.style.display='flex'; }
+// export string: only the values that differ from the defaults, e.g. {"walk":3.5,"chase":2.4}; import accepts the same (unknown keys ignored, values clamped)
+function tuneExport(){ return JSON.stringify(tuneChanged()); }
+function tuneImport(str){ let o; try{ o=JSON.parse(String(str).trim()||'{}'); }catch(e){ return false; } if(!o||typeof o!=='object') return false;
+  for(const d of TUNE_DEF) if(d.length>1) TUNE[d[0]]=d[1];
+  for(const d of TUNE_DEF) if(d.length>1&&typeof o[d[0]]==='number'&&isFinite(o[d[0]])) TUNE[d[0]]=clamp(o[d[0]],d[2],d[3]);
+  applyTune(); return true; }
+function closeTune(){ document.getElementById('tune').style.display='none'; }
+function applyTune(){ if(master) master.gain.value=0.55*TUNE.volume; }
+function tuneNewGame(){ closeTune(); initAudio(); started=true; newGame(); document.getElementById('overlay').style.display='none'; paused=false; if(!isTouch) lockMouse(); }
+// =====================================================================
 //  RNG / helpers
 // =====================================================================
 let seed = (Date.now() ^ 0x9e3779b9) >>> 0;
@@ -188,7 +249,7 @@ const smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);};
 // =====================================================================
 //  LEVEL
 // =====================================================================
-const W=128, H=128, MAXH=4.6, EYE=1.6;
+let W=128, H=128; const MAXH=4.6, EYE=1.6;   // W/H: TUNE.mapSize, applied at each new level
 const T_WALL=0,T_ROOM=1,T_COR=2,T_DOOR=3;
 const MAT_REFL=[0.14,0.82,0.05]; // plain, reverb (tiles), carpet
 const K_WALL=1,K_CEIL=2,K_FURN=3,K_FLOOR=4,K_TOP=5,K_MON=6,K_LOCK=7;
@@ -283,16 +344,18 @@ function makeCrates(x,z){ const b=[]; let y=0, s=R(0.6,0.9); const n=RI(1,3);
   return b; }
 
 function tryGen(){
+  W=H=TUNE.mapSize;
   cellType=new Uint8Array(W*H); roomOf=new Int16Array(W*H).fill(-1); rooms=[];
   mainCor=new Uint8Array(W*H); exitCell=new Uint8Array(W*H); footprint=new Float32Array(W*H*4);
-  for(let a=0;a<6000&&rooms.length<40;a++){
+  const SC=(W*H)/(128*128);   // everything below scales with the map area
+  for(let a=0;a<6000*Math.max(1,SC)&&rooms.length<Math.round(40*SC);a++){
     const w=RI(6,16),h=RI(6,16),x=RI(2,W-w-2),z=RI(2,H-h-2);
     let ok=true; for(const r of rooms) if(x<r.x+r.w+3&&x+w+3>r.x&&z<r.z+r.h+3&&z+h+3>r.z){ok=false;break;}
     if(!ok) continue;
     const r={x,z,w,h,id:rooms.length,cx:x+w/2,cz:z+h/2}; rooms.push(r);
     for(let zz=z;zz<z+h;zz++) for(let xx=x;xx<x+w;xx++){cellType[idx(xx,zz)]=T_ROOM;roomOf[idx(xx,zz)]=r.id;}
   }
-  if(rooms.length<24) return false;
+  if(rooms.length<Math.max(5,Math.round(24*SC))) return false;
   { // biggest room becomes room 0 = start room
     let L=0; for(const r of rooms) if(r.w*r.h>rooms[L].w*rooms[L].h) L=r.id;
     if(L!==0){ const A=rooms[0],B=rooms[L]; rooms[0]=B; rooms[L]=A; B.id=0; A.id=L;
@@ -307,13 +370,13 @@ function tryGen(){
   while(out.length){ let best=1e9,bi=0,bj=0;
     for(const a of tree) for(let j=0;j<out.length;j++){const d=rd(a,out[j]); if(d<best){best=d;bi=a;bj=j;}}
     mainE.push([bi,out[bj]]); tree.push(out[bj]); out.splice(bj,1); }
-  for(let k=0;k<70;k++){ const a=RI(0,rooms.length-1),b=RI(0,rooms.length-1); if(a!==b&&rd(a,b)<42) sideE.push([a,b]); }
+  for(let k=0;k<70*SC;k++){ const a=RI(0,rooms.length-1),b=RI(0,rooms.length-1); if(a!==b&&rd(a,b)<42) sideE.push([a,b]); }
   for(const r of rooms){ const near=rooms.filter(o=>o!==r).sort((a,b)=>rd(r.id,a.id)-rd(r.id,b.id)).slice(0,3); for(const o of near) if(rnd()<0.75) sideE.push([r.id,o.id]); }
   for(const [a,b] of sideE) carveCorridor(rooms[a],rooms[b],false);
   for(const [a,b] of mainE) carveCorridor(rooms[a],rooms[b],true);
   // service tunnels: corridor-to-corridor shortcuts
   const corCells=[]; for(let i=0;i<W*H;i++) if(cellType[i]===T_COR) corCells.push(i);
-  for(let k=0;k<55&&corCells.length;k++){ const a=corCells[RI(0,corCells.length-1)];
+  for(let k=0;k<55*SC&&corCells.length;k++){ const a=corCells[RI(0,corCells.length-1)];
     for(let t=0;t<25;t++){ const b=corCells[RI(0,corCells.length-1)]; const d=Math.hypot(a%W-b%W,((a/W)|0)-((b/W)|0));
       if(d>=8&&d<=28){ carveBetween(a%W,(a/W)|0,b%W,(b/W)|0,false); break; } } }
   // doors
@@ -470,11 +533,12 @@ function tryGen(){
   if(signs.length>25){ for(let k=signs.length-1;k>0;k--){ const j=RI(0,k); [signs[k],signs[j]]=[signs[j],signs[k]]; } signs.length=25; }   // never a forest of signs
   // monsters
   monsters=[];
-  const spawnable=[]; for(let i=0;i<W*H;i++) if(walk[i]&&dS[i]>32&&!reserved[i]&&Math.hypot(i%W+0.5-startInfo.x,((i/W)|0)+0.5-startInfo.z)>25) spawnable.push(i);
+  const nearS=Math.min(32,W*0.25), nearD=Math.min(25,W*0.2);   // no monsters near the start (less strict on small maps)
+  const spawnable=[]; for(let i=0;i<W*H;i++) if(walk[i]&&dS[i]>nearS&&!reserved[i]&&Math.hypot(i%W+0.5-startInfo.x,((i/W)|0)+0.5-startInfo.z)>nearD) spawnable.push(i);
   const order=rooms.slice(1).sort(()=>rnd()-.5);
-  for(const r of order){ if(monsters.length>=6) break; if(rnd()<0.55) continue;
+  for(const r of order){ if(monsters.length>=TUNE.count) break; if(rnd()<0.55) continue;
     for(let t=0;t<30;t++){ const x=RI(r.x,r.x+r.w-1),z=RI(r.z,r.z+r.h-1),i=idx(x,z);
-      if(walk[i]&&dS[i]>32&&Math.hypot(x+0.5-startInfo.x,z+0.5-startInfo.z)>25){monsters.push(makeMonster(x+0.5,z+0.5));break;} } }
+      if(walk[i]&&dS[i]>nearS&&Math.hypot(x+0.5-startInfo.x,z+0.5-startInfo.z)>nearD){monsters.push(makeMonster(x+0.5,z+0.5));break;} } }
   for(let k=0;k<1&&spawnable.length;k++){ const i=spawnable[RI(0,spawnable.length-1)]; if(cellType[i]===T_COR) monsters.push(makeMonster(i%W+0.5,((i/W)|0)+0.5)); }
   return true;
 }
@@ -796,17 +860,17 @@ function noteHeard(){ lastNoise={x:player.x,z:player.z,t:now}; }
 // faint -> curious (walks toward the sound); clear, or several in a row -> shriek & chase.
 // heard with a clear line: it knows where you are and which way you go. Heard round corners/through walls: only roughly
 // where (2-8 m off, more the farther), no heading -- so it goes to about where it last heard you and has to search there.
-function roughly(d){ const e=clamp(d*0.25,2,8); for(let t=0;t<12;t++){ const x=player.x+MR(-e,e), z=player.z+MR(-e,e); if(walkAt(x,z)) return {x,z}; } return {x:player.x,z:player.z}; }
+function roughly(d){ const e=clamp(d*TUNE.rough,TUNE.rough*8,TUNE.rough*32); for(let t=0;t<12;t++){ const x=player.x+MR(-e,e), z=player.z+MR(-e,e); if(walkAt(x,z)) return {x,z}; } return {x:player.x,z:player.z}; }
 function hearPlayer(kind){
   for(const m of monsters){ if(m.state==='kill') continue;
     const d=Math.hypot(m.x-player.x,m.z-player.z); if(d>45) continue;
-    const clear=los(player.x,EYE,player.z,m.x,1.5,m.z), eff=d*(clear?1:2.2);   // walls and corners muffle a lot
+    const clear=los(player.x,EYE,player.z,m.x,1.5,m.z), eff=d*(clear?1:TUNE.walls);   // walls and corners muffle a lot
     const pm=matAt(player.x,player.z); const e2=eff*(pm===1?0.75:pm===2?(kind==='step'?1.6:1.25):1); // reverb carries, carpet muffles
-    const P=kind==='echo'?1/(1+(e2/8)**2):0.6*(1+fatigue)/(1+(e2/6.5)**2); // exhausted = stumbling, louder
+    const P=kind==='echo'?1/(1+(e2/TUNE.hearEcho)**2):0.6*(1+fatigue)/(1+(e2/TUNE.hearStep)**2); // exhausted = stumbling, louder
     if(P<0.05) continue;
     const heard=()=>{ if(clear) enterHunt(m); else { const q=roughly(d); enterHunt(m,q,now); lastNoise={x:q.x,z:q.z,t:now}; } };
     if(clear) noteHeard();
-    if(m.state==='hunt'){ if(P>=(clear?0.08:0.12)) heard(); continue; } // keeps tracking you -- round corners only if it is loud
+    if(m.state==='hunt'){ if(P>=(clear?TUNE.trackOpen:TUNE.trackWall)) heard(); continue; } // keeps tracking you -- round corners only if it is loud
     m.susp+=P;
     if(P>=0.5||m.susp>=1.0) heard();
     else if(P>=0.15||m.susp>=0.35){ const q=clear?{x:player.x,z:player.z}:roughly(d); enterAlert(m,q.x,q.z); }
@@ -827,13 +891,13 @@ function shriek(m){
   staticBoost=Math.max(staticBoost,k);
   // the scream draws the others that are fairly close (~18 m) to come and look around roughly where it came from:
   // the farther, and the more walls in between, the rougher. They search; they do not join the chase.
-  for(const o of monsters){ if(o===m||o.state==='kill'||o.state==='hunt') continue; const dd=Math.hypot(o.x-hx,o.z-hz); if(dd>18+heat*6) continue;
+  for(const o of monsters){ if(o===m||o.state==='kill'||o.state==='hunt') continue; const dd=Math.hypot(o.x-hx,o.z-hz); if(dd>TUNE.screamCall*(1+heat/3)) continue;
     const e=clamp(dd*(los(o.x,1.8,o.z,hx,1.8,hz)?0.15:0.35),1.5,7); let tx=hx,tz=hz;
     for(let t=0;t<10;t++){ const x=hx+MR(-e,e), z=hz+MR(-e,e); if(walkAt(x,z)){ tx=x; tz=z; break; } }
     enterAlert(o,tx,tz); }
 }
 // while it keeps screaming, the scream keeps flooding the area with echo
-const nearK=d=>Math.pow(clamp(1-d/28,0,1),1.6);   // 1 right next to you .. 0 from ~28 m
+const nearK=d=>Math.pow(clamp(1-d/TUNE.redRange,0,1),1.6);   // 1 right next to you .. 0 from ~28 m
 function shriekPulse(m){
   const d=Math.hypot(player.x-m.x,player.z-m.z), k=nearK(d);
   emitEcho({x:m.x,y:1.8,z:m.z,n:Math.round(3000+3500*k),maxD:42,speed:30,life:1.1,flags:0,col:[1,0.12,0.08],I:0.5+0.75*k,skip:m});
@@ -849,8 +913,8 @@ function monsterStep(m){
   sfxThump([x,0.1,z],0.9);
 }
 
-// after giving up somewhere it keeps away from there (12 m) for a while: if you hid nearby, it won't stumble back onto you
-const isBored=(m,x,z)=>m.bored&&now<m.bored.until&&Math.hypot(x-m.bored.x,z-m.bored.z)<12;
+// after giving up somewhere it keeps away from there (16 m) for a while: if you hid nearby, it won't stumble back onto you
+const isBored=(m,x,z)=>m.bored&&now<m.bored.until&&Math.hypot(x-m.bored.x,z-m.bored.z)<16;
 // a walk to another room 15-50 m away (never a reverb room): free floor near its middle
 function roomTrip(m){ const here=roomOf[idx(Math.floor(m.x),Math.floor(m.z))];
   const opts=rooms.filter(r=>r.id!==here&&r.mat!==1&&!isBored(m,r.cx,r.cz)&&Math.hypot(r.cx-m.x,r.cz-m.z)>15&&Math.hypot(r.cx-m.x,r.cz-m.z)<50); if(!opts.length) return false;
@@ -859,7 +923,7 @@ function roomTrip(m){ const here=roomOf[idx(Math.floor(m.x),Math.floor(m.z))];
   return false; }
 // lost you: go idle and head for somewhere at least 15 m away from where it searched
 function giveUp(m,sx,sz){ m.state='idle'; m.target=null; m.trip=false; m.spotN=0; m.susp=0;
-  m.bored={x:sx,z:sz,until:now+30};   /* lost interest in that area for a while */
+  m.bored={x:sx,z:sz,until:now+TUNE.bored};   /* lost interest in that area for a while */
   // somewhere 15+ m from where it searched, on the far side from you (so its way there doesn't lead back past you)
   const ax=m.x-player.x, az=m.z-player.z, al=Math.hypot(ax,az)||1; let fallback=null;
   for(let t=0;t<80;t++){ const x=Math.floor(m.x)+RI(-26,26), z=Math.floor(m.z)+RI(-26,26);
@@ -869,7 +933,7 @@ function giveUp(m,sx,sz){ m.state='idle'; m.target=null; m.trip=false; m.spotN=0
   if(!m.target) m.target=fallback;
   m.wanderT=R(14,22); }
 // how close a monster must be to hear you breathe: ~2.5 m rested, up to ~5.5 m out of breath; less through a wall
-function hearsBreath(m){ const d=Math.hypot(player.x-m.x,player.z-m.z), r=2.5+3*clamp((fatigue-0.25)/0.75,0,1); if(d>r) return false;
+function hearsBreath(m){ const d=Math.hypot(player.x-m.x,player.z-m.z), r=TUNE.breath+TUNE.breathTired*clamp((fatigue-0.25)/0.75,0,1); if(d>r) return false;
   return d<r*0.6||los(m.x,1.5,m.z,player.x,EYE,player.z); }
 function updateMonster(m,dt){
   if(m.state!=='kill'&&!dead&&!won&&hearsBreath(m)&&!(m.state==='hunt'&&now-m.heardT<0.5)) enterHunt(m);   // right next to you: it hears you breathe
@@ -879,15 +943,15 @@ function updateMonster(m,dt){
     m.shriekPulseT-=dt; if(m.shriekPulseT<=0&&m.shriekLeft>0.2){ m.shriekPulseT=0.45; shriekPulse(m); } }
   // its own echolocation: red dots splash on whatever surfaces around it you can see
   m.echoT-=dt; if(m.echoT<=0){ const st=m.state, running=m.curSpeed>1.6, walking=m.curSpeed>0.2;
-    m.echoT=running?R(0.15,0.3):walking?R(0.35,0.7):st==='hunt'?R(0.6,1.2):st==='alert'?R(0.9,1.8):R(1.2,2.5);
+    m.echoT=(running?R(0.15,0.3):walking?R(0.35,0.7):st==='hunt'?R(0.6,1.2):st==='alert'?R(0.9,1.8):R(1.2,2.5))*TUNE.clickEvery;
     const d=Math.hypot(player.x-m.x,player.z-m.z);
     if(d<60){
       emitEcho({x:m.x,y:1.9,z:m.z,n:running?1300:walking?1600:2600,maxD:running?18:st==='idle'?22:26,speed:24,life:running?0.8:1.2,flags:0,col:[1,0.13,0.08],I:1.15,skip:m});
       // you only see its body when it is in your direct line of sight
       if(seesMonster(m)) sampleMonster(m,running?220:320,now+d/50,running?0.6:1.0,[1,0.5,0.4],F_BIG);
       sfxMonClick([m.x,1.9,m.z],(st==='idle'?0.35:0.6)*(running?0.6:1));
-      const ER=running?18:st==='idle'?22:26; let seen=false;
-      if(d<ER&&los(m.x,1.9,m.z,player.x,1.3,player.z)){ const pw=Math.min(1.6,(player.spd||0)/2.4)*(1-d/ER); seen=pw>0.22; }
+      const ER=(running?18:st==='idle'?22:26)*TUNE.seeRange; let seen=false;
+      if(d<ER&&los(m.x,1.9,m.z,player.x,1.3,player.z)){ const pw=Math.min(1.6,(player.spd||0)/2.4)*(1-d/ER); seen=pw>TUNE.seeMove; }
       if(st==='hunt'){ if(seen) enterHunt(m); }
       else if(seen){ m.spotN=(m.spotN||0)+1; if(m.spotN>=2){ m.spotN=0; enterHunt(m); } else enterAlert(m,player.x,player.z); }
       else m.spotN=0; } }
@@ -901,21 +965,21 @@ function updateMonster(m,dt){
     if(m.wanderT<=0){ const p=Math.random(); m.wanderT=R(5,12);
       m.trip=false;
       if(p<.15) m.target=null;
-      else if(p<.5&&roomTrip(m)) m.wanderT=R(40,70);
+      else if(p<.15+TUNE.roam&&roomTrip(m)) m.wanderT=R(40,70);
       else { for(let t=0;t<30;t++){ const x=Math.floor(m.x)+RI(-14,14),z=Math.floor(m.z)+RI(-14,14); if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&!isBored(m,x+.5,z+.5)){m.target={x:x+.5,z:z+.5};break;} } } }
-    if(m.target){ tx=m.target.x;tz=m.target.z;spd=m.trip?0.8:0.6; if(Math.hypot(tx-m.x,tz-m.z)<0.5){ m.target=null; if(m.trip){ m.trip=false; m.wanderT=Math.min(m.wanderT,R(3,8)); } } }
+    if(m.target){ tx=m.target.x;tz=m.target.z;spd=TUNE.wander*(m.trip?1.33:1); if(Math.hypot(tx-m.x,tz-m.z)<0.5){ m.target=null; if(m.trip){ m.trip=false; m.wanderT=Math.min(m.wanderT,R(3,8)); } } }
     m.chitterT-=dt; if(m.chitterT<=0){ m.chitterT=R(5,12); if(Math.hypot(player.x-m.x,player.z-m.z)<13) sfxChitter([m.x,1.8,m.z],0.35); }
   } else if(m.state==='alert'){
-    tx=m.target.x;tz=m.target.z;spd=0.88;
+    tx=m.target.x;tz=m.target.z;spd=TUNE.wander*1.47;
     // searching: walk to the spot, look around a few seconds, then get bored and wander off somewhere far away
     if(Math.hypot(tx-m.x,tz-m.z)<0.8){ spd=0; m.lingerT+=dt;
-      if(m.lingerT>(m.lingerMax||(m.lingerMax=R(3,6)))){ m.lingerMax=0; giveUp(m,tx,tz); } }
+      if(m.lingerT>(m.lingerMax||(m.lingerMax=R(TUNE.search*0.67,TUNE.search*1.33)))){ m.lingerMax=0; giveUp(m,tx,tz); } }
     if(Math.hypot(player.x-m.x,player.z-m.z)<2.2&&playerMoving) enterHunt(m);
   } else if(m.state==='hunt'){
     // it only knows where you were when it last heard/sensed you (no live tracking)
     if(!m.lastKnown) m.lastKnown={x:m.x,z:m.z};
     tx=m.lastKnown.x; tz=m.lastKnown.z;
-    spd=2.87*(0.85+0.25*Math.max(0,Math.sin(now*2.3+m.seed)));
+    spd=TUNE.chase*(0.85+0.25*Math.max(0,Math.sin(now*2.3+m.seed)));
     if(m.windup>0){ // rears up, faces you and screams for ~1s before it charges
       if(m.wShriek&&shriek(m)!==false){ m.wShriek=false; m.shriekT=Math.max(0.3,m.shriekLeft-0.25); }
       m.windup-=dt; spd=0;
@@ -963,7 +1027,7 @@ function updateMonster(m,dt){
   m.jaw=lerp(m.jaw,(m.state==='hunt'&&m.windup>0)?1:m.state==='hunt'?0.35+0.3*Math.max(0,Math.sin(now*7+m.seed)):0,clamp(dt*4,0,1));
   m.gait+=m.curSpeed*dt*(2.6+m.runB*0.6);
   const sv=Math.sin(m.gait); if((sv>=0)!==(m.prevS>=0)&&m.curSpeed>1.6) monsterStep(m); m.prevS=sv;
-  const reach=m.state==='hunt'?1.5:m.state==='alert'?1.15:0.9; // long arms: you can't slip past one
+  const reach=(m.state==='hunt'?1.5:m.state==='alert'?1.15:0.9)*TUNE.reach; // long arms: you can't slip past one
   if(!dead&&!won&&Math.hypot(player.x-m.x,player.z-m.z)<reach) die(m);
 }
 
@@ -989,7 +1053,7 @@ function runStepEcho(){
   const ex=player.x, ey=0.15, ez=player.z, sp=24;
   // sparse and always a bit broken; tiredness smears it in every direction until it's pure noise
   const f=fatigue, jit=0.28+3.2*Math.pow(f,1.1);
-  emitEcho({x:ex,y:ey,z:ez,n:Math.round(ECHO_RAYS*0.35*(1-0.55*f)),maxD:30*(1-0.4*f),speed:sp,life:1.1*(1-0.45*f),
+  if(TUNE.runEcho>0) emitEcho({x:ex,y:ey,z:ez,n:Math.round(ECHO_RAYS*0.35*TUNE.runEcho*(1-0.55*f)),maxD:30*(1-0.4*f),speed:sp,life:1.1*(1-0.45*f),
     flags:F_SMALL|(f>0.15?F_NOISY:0),I:1.0*(1-0.45*f),jit,mon:true,bounce:0});
   if(f>0.3) return; // only while fresh can you make out a shape in it (never signs)
   for(const m of monsters){ const d=Math.hypot(m.x-ex,m.z-ez); if(d<22&&seesMonster(m)) sampleMonster(m,140,now+d/sp,0.9,[1,0.86,0.8],F_NOISY); }
@@ -997,7 +1061,7 @@ function runStepEcho(){
 function playerEcho(silent){
   if(now-lastEcho<0.28) return; lastEcho=now;
   const ex=player.x,ey=camY,ez=player.z;
-  const samples=emitEcho({x:ex,y:ey,z:ez,n:ECHO_RAYS,maxD:36,speed:24,life:1.5,flags:fatigue>0.6?F_NOISY:0,I:1.0,mon:true,sync:true,jit:1.6*Math.pow(fatigue,1.3)});
+  const samples=emitEcho({x:ex,y:ey,z:ez,n:Math.round(ECHO_RAYS*TUNE.echoRays),maxD:TUNE.echoRange,speed:TUNE.echoSpeed,life:TUNE.echoLife,flags:fatigue>0.6?F_NOISY:0,I:1.0,mon:true,sync:true,jit:1.6*Math.pow(fatigue,1.3)});
   for(const m of monsters){ const d=Math.hypot(m.x-ex,1.4-ey,m.z-ez);
     if(d<34&&seesMonster(m)) sampleMonster(m,520,now+d/24,1.5,[1,0.86,0.8],F_BIG); }
   for(const s of signs){ const d=Math.hypot(s.x-ex,s.y-ey,s.z-ez); if(d<30&&los(ex,ey,ez,s.x,s.y,s.z)) revealSign(s,now+d/24);
@@ -1029,12 +1093,12 @@ function newGame(){
 }
 function updatePressure(dt){
   // fatigue: ~10s of running wrecks you; walking/standing recovers
-  if(sprinting) fatigue=Math.min(1,fatigue+dt/6); else fatigue=Math.max(0,fatigue-dt/(playerMoving?14:7));
+  if(sprinting) fatigue=Math.min(1,fatigue+dt/TUNE.tireTime); else fatigue=Math.max(0,fatigue-dt*TUNE.recover/(playerMoving?14:7));
   if(fatigue>0.25){ breathT-=dt; if(breathT<=0){ breathT=MR(1.0,1.15)-fatigue*0.55; sfxBreath(0.14+fatigue*0.3,breathT); } }
   // heat: long chases and long runs pull the whole level toward you
   // only hunters that heard you recently count: once you have shaken them off and gone quiet, the level cools down
   const hunting=monsters.filter(m=>m.state==='hunt'&&now-m.heardT<6).length;
-  if(hunting||sprinting) heat=Math.min(1,heat+dt*(0.018*hunting+(sprinting?0.025:0)));
+  if(hunting||sprinting) heat=Math.min(1,heat+dt*TUNE.heat*(0.018*hunting+(sprinting?0.025:0)));
   else heat=Math.max(0,heat-dt*(now-lastNoise.t>8?0.03:0.012));
   // calls go to where you were last heard, give or take a few metres -- never to where you are hiding now
   callT-=dt; if(callT<=0){ callT=R(4,7);
@@ -1083,7 +1147,7 @@ function update(dt){
   const mag=Math.hypot(ix,iz); if(mag>1){ix/=mag;iz/=mag;}
   playerMoving=mag>0.12; const stickRun=stick.run;
   sprinting=playerMoving&&!!(keys.ShiftLeft||keys.ShiftRight||stickRun);
-  if(playerMoving){ const sp=sprinting?5.9*(1-0.15*fatigue):2.4; /* you can always run for your life; it's your senses that fail */ moveCircle(player,(fx*iz+rx*ix)*sp*dt,(fz*iz+rz*ix)*sp*dt,0.24);
+  if(playerMoving){ const sp=sprinting?TUNE.run*(1-0.15*fatigue):TUNE.walk; /* you can always run for your life; it's your senses that fail */ moveCircle(player,(fx*iz+rx*ix)*sp*dt,(fz*iz+rz*ix)*sp*dt,0.24);
     player.bob+=dt*(sprinting?11:7.5); stepAcc+=dt*(sprinting?3.4:1.9);
     if(stepAcc>=1){ stepAcc=0; sfxStep(sprinting);
       if(sprinting){ runStepEcho(); hearPlayer('step'); } } }
@@ -1364,7 +1428,7 @@ function render(){
   gl.colorMask(true,true,true,true); gl.depthMask(false); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE,gl.ONE);
   gl.useProgram(ptProg);
   gl.uniformMatrix4fv(PL.vp,false,VP); gl.uniform1f(PL.time,now); gl.uniform3f(PL.cam,eye[0],eye[1],eye[2]);
-  gl.uniform1f(PL.scale,cv.height/(2*Math.tan(FOV/2)));
+  gl.uniform1f(PL.scale,cv.height/(2*Math.tan(FOV/2))*TUNE.dotSize);
   gl.bindBuffer(gl.ARRAY_BUFFER,ptBuf);
   gl.enableVertexAttribArray(PL.pos); gl.enableVertexAttribArray(PL.col); gl.enableVertexAttribArray(PL.t);
   gl.vertexAttribPointer(PL.pos,3,gl.FLOAT,false,36,0); gl.vertexAttribPointer(PL.col,3,gl.FLOAT,false,36,12); gl.vertexAttribPointer(PL.t,3,gl.FLOAT,false,36,24);
@@ -1384,8 +1448,8 @@ const nc=document.getElementById('noise'), nctx=nc.getContext('2d'), nimg=nctx.c
 function drawNoise(){
   // red static + red vignette: only strong when something is right on you (fear and staticBoost both fall off with distance)
   const amt=Math.max(staticBoost, fear*fear*0.35, dead?0.5:0);
-  nc.style.opacity=amt*0.4;
-  document.getElementById('vign').style.opacity=clamp(fear*fear*0.7+(dead?0.8:0)+staticBoost*0.25,0,1)*(0.85+0.15*Math.sin(now*8));
+  nc.style.opacity=Math.min(1,amt*0.4*TUNE.red);
+  document.getElementById('vign').style.opacity=clamp((fear*fear*0.7+staticBoost*0.25)*TUNE.red+(dead?0.8:0),0,1)*(0.85+0.15*Math.sin(now*8));
   if(amt<0.01) return;
   const d=nimg.data; for(let i=0;i<d.length;i+=4){ const v=Math.random()<0.5?0:Math.random()*255; d[i]=v; d[i+1]=v*0.4; d[i+2]=v*0.4; d[i+3]=255; }
   nctx.putImageData(nimg,0,0);
@@ -1407,7 +1471,7 @@ function resetAudio(){ const old=AC; AC=null; exitBuzz=null; exitBuzzNode=null; 
   try{ old.close(); }catch(e){} initAudio(); if(started) startExitBuzz(); resetAudio.n=(resetAudio.n||0)+1; }
 function initAudio(){
   if(AC) return; AC=new (window.AudioContext||window.webkitAudioContext)();
-  master=AC.createGain(); master.gain.value=0.55;
+  master=AC.createGain(); master.gain.value=0.55*TUNE.volume;
   // a limiter, not a pump: several screams at once stay loud but clean
   const comp=AC.createDynamicsCompressor(); comp.threshold.value=-10; comp.knee.value=6; comp.ratio.value=12; comp.attack.value=0.003; comp.release.value=0.25;
   master.connect(comp); comp.connect(AC.destination);
@@ -1552,17 +1616,52 @@ function startExitBuzz(){ if(!AC) return; if(exitBuzz){ try{exitBuzz.forEach(n=>
 //  INPUT / LOOP
 // =====================================================================
 let cheatBuf='';
+// letmecheat: every cheat code, for 2 seconds
+function showCheats(){ const el=document.getElementById('cheats');
+  el.innerHTML='<b>letmesee</b> &nbsp;open your eyes (lit view)<br><b>letmemap</b> &nbsp;map that turns with you<br><b>letmechoose</b> &nbsp;sliders for every value (this session)<br><b>reset</b> &nbsp;new game, keeping those values (after letmechoose)<br><b>letmecheat</b> &nbsp;this list';
+  el.style.display='block'; clearTimeout(showCheats.h); showCheats.h=setTimeout(()=>el.style.display='none',2000); }
+// letmemap: top-down map, turned so that where you look is up. Walls, furniture, signs with their arrows, the exit
+// (plus an arrow on the rim pointing to it), monsters coloured by mood (red chasing, orange searching, dim wandering).
+let mapOn=false, mapImg=null, mapFor=null;
+function buildMapImg(){ const c=document.createElement('canvas'); c.width=W; c.height=H; const x=c.getContext('2d'), id=x.createImageData(W,H), d=id.data;
+  for(let i=0;i<W*H;i++){ const o=i*4; let col=null;
+    if(exitCell[i]) col=[40,220,110]; else if(walk[i]) col=cellType[i]===T_DOOR?[40,80,110]:mat[i]===1?[22,52,78]:mat[i]===2?[14,30,40]:[16,40,58];
+    else if(cellType[i]!==T_WALL) col=[90,120,140];   // furniture / obstacles
+    if(col){ d[o]=col[0]; d[o+1]=col[1]; d[o+2]=col[2]; d[o+3]=235; } }
+  x.putImageData(id,0,0); mapImg=c; mapFor=BX; }
+function drawMap(){ if(!mapOn||!BX) return; if(mapFor!==BX) buildMapImg();
+  const c=document.getElementById('map'), x=c.getContext('2d'), S=c.width, k=S/2/36;   // 36 m from the centre to the rim
+  const fx=Math.sin(player.yaw), fz=Math.cos(player.yaw), th=-Math.PI/2-Math.atan2(fz,fx);
+  x.clearRect(0,0,S,S); x.save(); x.beginPath(); x.arc(S/2,S/2,S/2-1,0,6.283); x.fillStyle='rgba(0,0,0,.72)'; x.fill(); x.clip();
+  x.translate(S/2,S/2); x.rotate(th); x.scale(k,k); x.translate(-player.x,-player.z);
+  x.imageSmoothingEnabled=false; x.drawImage(mapImg,0,0);
+  x.lineWidth=0.25; x.strokeStyle='#3f6'; x.fillStyle='#3f6';
+  for(const sg of signs){ x.beginPath(); x.moveTo(sg.x-sg.dx*0.9,sg.z-sg.dz*0.9); x.lineTo(sg.x+sg.dx*0.9,sg.z+sg.dz*0.9); x.stroke();
+    x.beginPath(); x.moveTo(sg.x+sg.dx*1.3,sg.z+sg.dz*1.3); x.lineTo(sg.x+sg.dx*0.5-sg.dz*0.5,sg.z+sg.dz*0.5+sg.dx*0.5); x.lineTo(sg.x+sg.dx*0.5+sg.dz*0.5,sg.z+sg.dz*0.5-sg.dx*0.5); x.fill(); }
+  x.fillStyle='#4f8'; x.fillRect(exitInfo.px-1,exitInfo.pz-1,2,2);
+  for(const m of monsters){ x.fillStyle=m.state==='hunt'||m.state==='kill'?'#ff3a2a':m.state==='alert'?'#ffa030':'#a0403a';
+    x.beginPath(); x.arc(m.x,m.z,0.6,0,6.283); x.fill(); x.strokeStyle=x.fillStyle; x.lineWidth=0.2; x.beginPath(); x.moveTo(m.x,m.z); x.lineTo(m.x+Math.sin(m.yaw)*1.4,m.z+Math.cos(m.yaw)*1.4); x.stroke(); }
+  x.restore();
+  // you, in the middle, looking up; the exit's direction on the rim
+  x.fillStyle='#bfe9ff'; x.beginPath(); x.moveTo(S/2,S/2-9); x.lineTo(S/2-6,S/2+6); x.lineTo(S/2+6,S/2+6); x.fill();
+  const ex=exitInfo.px-player.x, ez=exitInfo.pz-player.z, a=th+Math.atan2(ez,ex), R0=S/2-12; drawMap.exitA=a;
+  x.save(); x.translate(S/2+Math.cos(a)*R0,S/2+Math.sin(a)*R0); x.rotate(a); x.fillStyle='#4f8'; x.beginPath(); x.moveTo(9,0); x.lineTo(-5,-6); x.lineTo(-5,6); x.fill(); x.restore();
+  x.strokeStyle='rgba(120,200,255,.5)'; x.lineWidth=2; x.beginPath(); x.arc(S/2,S/2,S/2-1,0,6.283); x.stroke(); }
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.opacity=1; clearTimeout(toast.h); toast.h=setTimeout(()=>t.style.opacity=0,1600); }
 function toggleFS(){ if(isFS()){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); } else goFS(); }
 addEventListener('keydown',e=>{
-  if(e.key&&e.key.length===1){ cheatBuf=(cheatBuf+e.key.toLowerCase()).slice(-8);
-    if(cheatBuf==='letmesee'){ cheatBuf=''; toggleEyes(); } }
-  if(e.code==='KeyF'&&!e.repeat){ toggleFS(); }
+  if(e.key&&e.key.length===1){ cheatBuf=(cheatBuf+e.key.toLowerCase()).slice(-12);
+    if(cheatBuf.endsWith('letmesee')){ cheatBuf=''; toggleEyes(); }
+    else if(cheatBuf.endsWith('letmechoose')){ cheatBuf=''; openTune(); }
+    else if(cheatBuf.endsWith('letmemap')){ cheatBuf=''; mapOn=!mapOn; document.getElementById('map').style.display=mapOn?'block':'none'; }
+    else if(cheatBuf.endsWith('letmecheat')){ cheatBuf=''; showCheats(); }
+    else if(tuneOn&&cheatBuf.endsWith('reset')){ cheatBuf=''; tuneNewGame(); } }
+  if(e.code==='KeyF'&&!e.repeat&&document.getElementById('tune').style.display!=='flex'){ toggleFS(); }
 });
 addEventListener('keydown',e=>{ keys[e.code]=true; if(e.code==='Space'){ e.preventDefault(); if(canSkipDeath()&&!e.repeat){ play(); keys.Space=false; } else if(started&&!paused&&!dead&&!won) playerEcho(false); } });
 addEventListener('keyup',e=>{ keys[e.code]=false; });
 addEventListener('blur',()=>{ for(const k in keys) keys[k]=false; });
-addEventListener('mousemove',e=>{ if(document.pointerLockElement!==cv||dead) return; player.yaw-=e.movementX*0.0022; player.pitch=clamp(player.pitch-e.movementY*0.0022,-1.45,1.45); });
+addEventListener('mousemove',e=>{ if(document.pointerLockElement!==cv||dead) return; player.yaw-=e.movementX*0.0022*TUNE.look; player.pitch=clamp(player.pitch-e.movementY*0.0022*TUNE.look,-1.45,1.45); });
 function play(){
   if(isTouch&&fsSupported&&!isFS()) goFS();   // phones: always full screen, sideways
   initAudio(); if(AC.state!=='running') AC.resume();
@@ -1613,7 +1712,7 @@ touchEl.addEventListener('touchmove',e=>{ e.preventDefault();
       const m=Math.min(l,STICK_R)/STICK_R/(l||1); stick.x=dx*m; stick.y=dy*m;   // direction, full speed at the inner ring
       stick.run=l>RUN_R; stickKnob.classList.toggle('run',stick.run); stickBase.classList.toggle('run',stick.run);
       stickKnob.style.transform=`translate(${dx}px,${dy}px)`; }
-    else if(t.identifier===look.id){ if(!dead){ player.yaw-=(t.clientX-look.lx)*0.0065; player.pitch=clamp(player.pitch-(t.clientY-look.ly)*0.0065,-1.45,1.45); }
+    else if(t.identifier===look.id){ if(!dead){ player.yaw-=(t.clientX-look.lx)*0.0065*TUNE.look; player.pitch=clamp(player.pitch-(t.clientY-look.ly)*0.0065*TUNE.look,-1.45,1.45); }
       look.lx=t.clientX; look.ly=t.clientY; } } },{passive:false});
 function touchEnd(e){ e.preventDefault(); for(const t of e.changedTouches){
   if(t.identifier===stick.id){ stick.id=null; stick.x=stick.y=0; stick.run=false; restStick(); }
@@ -1625,6 +1724,17 @@ document.addEventListener('fullscreenchange',onFS); document.addEventListener('w
 document.getElementById('rotate').addEventListener('click',()=>{ if(fsSupported&&!isFS()) goFS(); });
 // the top bar's help panel pauses the game
 addEventListener('l102:help',e=>{ if(e.detail&&canPlay()){ paused=true; showOverlay('paused'); } });
+// letmechoose panel: sliders change the values live; buttons copy / defaults / new game / close
+{ const el=document.getElementById('tune');
+  el.addEventListener('input',e=>{ const row=e.target.closest('.tuneRow'); if(!row) return; const k=row.dataset.k, d=TUNE_DEF.find(x=>x[0]===k);
+    TUNE[k]=+e.target.value; row.querySelector('output').textContent=TUNE[k]; row.classList.toggle('changed',TUNE[k]!==d[1]); applyTune(); });
+  el.addEventListener('click',e=>{ const a=e.target.dataset&&e.target.dataset.a; if(!a) return;
+    if(a==='export'){ const t=tuneExport(), out=el.querySelector('.tuneOut'); out.value=t; out.select(); try{ navigator.clipboard.writeText(t).then(()=>toast('EXPORTED + COPIED'),()=>toast('EXPORTED')); }catch(err){ toast('EXPORTED'); } }
+    else if(a==='import'){ const v=el.querySelector('.tuneOut').value; if(tuneImport(v)){ openTune(); el.querySelector('.tuneOut').value=v; toast('IMPORTED'); } else toast('NOT A VALID STRING'); }
+    else if(a==='def'){ for(const d of TUNE_DEF) if(d.length>1) TUNE[d[0]]=d[1]; applyTune(); openTune(); }
+    else if(a==='new') tuneNewGame();
+    else if(a==='close') closeTune(); });
+}
 let lastTouchUI='';
 function updateTouchUI(){ const ovHidden=document.getElementById('overlay').style.display==='none';
   const st=(isTouch&&started&&ovHidden&&!paused&&!dead&&!won?'1':'0');
@@ -1640,7 +1750,7 @@ function frame(ts){
   try{
     if(started&&(!paused||dead)){ now+=dt; update(dt); }
     const tB=performance.now(); processEchoJobs(); const tC=performance.now();
-    updateListener(); audioWatch(); render(); drawNoise(); updateTouchUI();
+    updateListener(); audioWatch(); render(); drawNoise(); drawMap(); updateTouchUI();
     const other=(tB-tA)+(performance.now()-tC); otherWorkEMA=otherWorkEMA*0.9+other*0.1;
     echoBudget=clamp(FRAME_TARGET_MS-Math.max(other,otherWorkEMA),1.5,7); frame.last=[other,tC-tB];
   }catch(e){ console.error(e); if(!frame.crashed){ frame.crashed=true; paused=true; crash(e.message); } }
