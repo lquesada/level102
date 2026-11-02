@@ -548,18 +548,17 @@ T('monsters: idle ones now and then walk over to another room (rooms empty out, 
   assert(travellers>=Math.ceil(r.rooms.length/2),'idle monsters stay in their room '+JSON.stringify(r));
 });
 
-T('hiding: a scream passes on only what the screamer knows; calls never reveal where you hide; the level cools down', async()=>{
+T('hiding: a scream only draws nearby monsters to search roughly where it came from (no chase); calls never reveal where you hide; the level cools down', async()=>{
   const r=await ev(`(()=>{ newGame(); paused=false;
     const [a,b,c]=monsters; const hide={x:player.x,z:player.z};
     // a heard you 10 s ago at an old spot far from where you hide now
     const old={x:player.x+30,z:player.z+30}; a.state='hunt'; a.windup=0; a.lastKnown={...old}; a.heardT=now-10; a.x=player.x+20; a.z=player.z;
     b.state='idle'; b.x=a.x+3; b.z=a.z; c.state='hunt'; c.windup=0; c.lastKnown={x:player.x+5,z:player.z}; c.heardT=now-1; c.x=a.x-3; c.z=a.z;
-    shriekFrame=-1; shriek(a);
-    // stale news (10 s old): b only comes to look around the old spot, it does not start a chase
-    const bTold=b.state==='alert'&&Math.hypot(b.target.x-old.x,b.target.z-old.z)<6;
-    // fresh news: b joins the chase, toward what a knows (not toward you)
-    b.state='idle'; a.heardT=now-1; shriekFrame=-1; frameNo++; shriek(a);
-    const bFresh=b.state==='hunt'&&Math.hypot(b.lastKnown.x-old.x,b.lastKnown.z-old.z)<0.01;
+    const d0=monsters[3]; if(d0){ d0.state='idle'; d0.x=a.x+40; d0.z=a.z; }
+    a.heardT=now-1; shriekFrame=-1; shriek(a);
+    // b (3 m from the scream) comes to search around where the scream came from -- not a chase, not toward you
+    const bTold=b.state==='alert'&&Math.hypot(b.target.x-a.x,b.target.z-a.z)<8&&Math.hypot(b.target.x-hide.x,b.target.z-hide.z)>10;
+    const bFresh=!d0||d0.state==='idle';   // a monster 40 m away does not come at all
     const cKept=c.lastKnown.x===player.x+5;            // c had fresher information: not overwritten by stale news
     // heat calls: you were last heard 15 s ago at the old spot; you are hiding still
     lastNoise={x:old.x,z:old.z,t:now-15}; heat=1; let closest=1e9;
@@ -569,9 +568,32 @@ T('hiding: a scream passes on only what the screamer knows; calls never reveal w
     // nobody hunting with fresh information and you stay quiet: heat goes down
     monsters.forEach(m=>{ m.state='idle'; }); heat=0.8; lastNoise.t=now-10; for(let i=0;i<60*20;i++){ now+=1/60; updatePressure(1/60); }
     return {bTold, bFresh, cKept, closest, heat}; })()`);
-  assert(r.bTold,'stale news: the called monster did not just come to look at the old spot'); assert(r.bFresh,'fresh news: the called monster did not chase toward what the screamer knew'); assert(r.cKept,'fresher knowledge was overwritten by a scream');
+  assert(r.bTold,'a nearby monster did not come to search where the scream came from'); assert(r.bFresh,'a monster far away was drawn by the scream'); assert(r.cKept,'fresher knowledge was overwritten by a scream');
   assert(r.closest>12,'a heat call pointed a monster at your hiding place: '+r.closest.toFixed(1)+' m');
   assert(r.heat<0.3,'the level did not cool down while you hid: '+r.heat);
+});
+
+T('hiding: heard round a corner it only knows roughly where you were; right next to you it hears you breathe even when you keep still', async()=>{
+  const r=await ev(`(()=>{ let res=null;
+    for(let tries=0;tries<30&&!res;tries++){ newGame(); paused=false; const m=monsters[0]; monsters.length=1; m.state='idle';
+      // a spot 8-14 m away with no line of sight to you
+      let spot=null; for(let k=0;k<2000&&!spot;k++){ const a=Math.random()*6.283, d=8+Math.random()*6, x=player.x+Math.sin(a)*d, z=player.z+Math.cos(a)*d;
+        if(walkAt(x,z)&&!los(player.x,EYE,player.z,x,1.5,z)) spot={x,z}; }
+      if(!spot) continue;
+      m.x=spot.x; m.z=spot.z; fatigue=1; const errs=[]; for(let k=0;k<20;k++){ m.state='idle'; m.susp=0; hearPlayer('echo'); hearPlayer('step'); hearPlayer('step');
+        if(m.state==='hunt') errs.push(Math.hypot(m.lastKnown.x-player.x,m.lastKnown.z-player.z)); }
+      const dir=m.lastDir;
+      // breathing: rested and still, 2 m away in the open -> found; 4 m away -> not; exhausted 4 m away -> found
+      const open=[]; for(let k=0;k<400&&open.length<1;k++){ const a=Math.random()*6.283, x=player.x+Math.sin(a)*2, z=player.z+Math.cos(a)*2, x4=player.x+Math.sin(a)*4, z4=player.z+Math.cos(a)*4;
+        if(walkAt(x,z)&&walkAt(x4,z4)&&los(player.x,EYE,player.z,x4,1.5,z4)) open.push([x,z,x4,z4]); }
+      if(!open.length) continue; const [x2,z2,x4,z4]=open[0];
+      const hearAt=(x,z,f)=>{ fatigue=f; m.state='idle'; m.x=x; m.z=z; m.heardT=-99; return hearsBreath(m); };
+      res={errs, dir, near:hearAt(x2,z2,0), far:hearAt(x4,z4,0), farTired:hearAt(x4,z4,1)}; fatigue=0; }
+    return res; })()`);
+  assert(r,'no test spot found');
+  assert(r.errs.length===0||Math.max(...r.errs)>1.2,'round a corner it still knew exactly where you were '+JSON.stringify(r.errs));
+  assert(r.dir===null||r.dir===undefined,'round a corner it knew which way you were going');
+  assert(r.near&&!r.far&&r.farTired,'breathing range wrong '+JSON.stringify(r));
 });
 
 T('hiding: you can shake off two hunters and hide (they do not keep each other updated on your live position)', async()=>{
@@ -594,8 +616,8 @@ T('hiding: you can shake off two hunters and hide (they do not keep each other u
 T('hiding: turn a corner and wait quietly: the hunter searches, gets bored and wanders off without finding you', async()=>{
   const r=await ev(`(()=>{ let tries=0, res=null;
     while(tries++<20&&!res){ newGame(); paused=false; window.__hearOrig=window.__hearOrig||hearPlayer; hearPlayer=()=>{};
-      // you stand still; it heard you last at a spot 3-6 m away that has no line of sight to you (round a corner)
-      let spot=null; for(let k=0;k<600&&!spot;k++){ const a=Math.random()*6.283, d=3+Math.random()*3, x=player.x+Math.sin(a)*d, z=player.z+Math.cos(a)*d;
+      // you stand still (rested); it heard you last at a spot 7-10 m away with no line of sight to you (round a corner)
+      fatigue=0; let spot=null; for(let k=0;k<1500&&!spot;k++){ const a=Math.random()*6.283, d=7+Math.random()*3, x=player.x+Math.sin(a)*d, z=player.z+Math.cos(a)*d;
         if(walkAt(x,z)&&!los(player.x,camY,player.z,x,1.4,z)) spot={x,z}; }
       if(!spot){ hearPlayer=__hearOrig; continue; }
       const m=monsters[0]; monsters.slice(1).forEach(o=>{ o.state='idle'; o.x=o.z=-999; });

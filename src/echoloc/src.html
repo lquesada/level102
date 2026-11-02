@@ -794,18 +794,22 @@ function noteHeard(){ lastNoise={x:player.x,z:player.z,t:now}; }
 // sound the player made at (x,z): kind 'echo' or 'step'
 // Sounds the player makes have a power that falls off with distance (walls muffle).
 // faint -> curious (walks toward the sound); clear, or several in a row -> shriek & chase.
+// heard with a clear line: it knows where you are and which way you go. Heard round corners/through walls: only roughly
+// where (2-8 m off, more the farther), no heading -- so it goes to about where it last heard you and has to search there.
+function roughly(d){ const e=clamp(d*0.25,2,8); for(let t=0;t<12;t++){ const x=player.x+MR(-e,e), z=player.z+MR(-e,e); if(walkAt(x,z)) return {x,z}; } return {x:player.x,z:player.z}; }
 function hearPlayer(kind){
   for(const m of monsters){ if(m.state==='kill') continue;
     const d=Math.hypot(m.x-player.x,m.z-player.z); if(d>45) continue;
-    const eff=d*(los(player.x,EYE,player.z,m.x,1.5,m.z)?1:1.7);
+    const clear=los(player.x,EYE,player.z,m.x,1.5,m.z), eff=d*(clear?1:2.2);   // walls and corners muffle a lot
     const pm=matAt(player.x,player.z); const e2=eff*(pm===1?0.75:pm===2?(kind==='step'?1.6:1.25):1); // reverb carries, carpet muffles
     const P=kind==='echo'?1/(1+(e2/8)**2):0.6*(1+fatigue)/(1+(e2/6.5)**2); // exhausted = stumbling, louder
     if(P<0.05) continue;
-    noteHeard();
-    if(m.state==='hunt'){ enterHunt(m); continue; } // keeps tracking you
+    const heard=()=>{ if(clear) enterHunt(m); else { const q=roughly(d); enterHunt(m,q,now); lastNoise={x:q.x,z:q.z,t:now}; } };
+    if(clear) noteHeard();
+    if(m.state==='hunt'){ if(P>=(clear?0.08:0.12)) heard(); continue; } // keeps tracking you -- round corners only if it is loud
     m.susp+=P;
-    if(P>=0.5||m.susp>=1.0) enterHunt(m);
-    else if(P>=0.15||m.susp>=0.35) enterAlert(m,player.x,player.z);
+    if(P>=0.5||m.susp>=1.0) heard();
+    else if(P>=0.15||m.susp>=0.35){ const q=clear?{x:player.x,z:player.z}:roughly(d); enterAlert(m,q.x,q.z); }
   }
 }
 
@@ -821,11 +825,12 @@ function shriek(m){
   if(k>0.05) emitEcho({x:player.x,y:EYE,z:player.z,n:Math.round(3500*k),maxD:30,speed:30,life:1.5,flags:F_NOISY,col:[0.7,0.05,0.08],I:0.8*k,ax:hx,ay:hy,az:hz});
   if(seesMonster(m)) sampleMonster(m,520,now+d/30,1.8,[1,0.3,0.25],F_NOISY|F_BIG);
   staticBoost=Math.max(staticBoost,k);
-  // the scream calls the others to where THIS one thinks you are (not where you really are)
-  // fresh news (it heard you in the last few seconds) -> the others join the chase; stale news -> they only come and look
-  const lk=m.lastKnown||{x:hx,z:hz}, lt=m.heardT||now, fresh=now-lt<3;
-  const callR=20+heat*30; for(const o of monsters){ if(o===m||o.state==='kill') continue; const dd=Math.hypot(o.x-hx,o.z-hz);
-    if(dd<callR&&fresh) enterHunt(o,lk,lt); else if(dd<callR*1.5) enterAlert(o,lk.x+MR(-4,4),lk.z+MR(-4,4)); }
+  // the scream draws the others that are fairly close (~18 m) to come and look around roughly where it came from:
+  // the farther, and the more walls in between, the rougher. They search; they do not join the chase.
+  for(const o of monsters){ if(o===m||o.state==='kill'||o.state==='hunt') continue; const dd=Math.hypot(o.x-hx,o.z-hz); if(dd>18+heat*6) continue;
+    const e=clamp(dd*(los(o.x,1.8,o.z,hx,1.8,hz)?0.15:0.35),1.5,7); let tx=hx,tz=hz;
+    for(let t=0;t<10;t++){ const x=hx+MR(-e,e), z=hz+MR(-e,e); if(walkAt(x,z)){ tx=x; tz=z; break; } }
+    enterAlert(o,tx,tz); }
 }
 // while it keeps screaming, the scream keeps flooding the area with echo
 const nearK=d=>Math.pow(clamp(1-d/28,0,1),1.6);   // 1 right next to you .. 0 from ~28 m
@@ -844,23 +849,30 @@ function monsterStep(m){
   sfxThump([x,0.1,z],0.9);
 }
 
-// head off somewhere 6-20 m away on the far side from the (still, unnoticed) player
-function turnAway(m){ const ax=m.x-player.x, az=m.z-player.z, al=Math.hypot(ax,az)||1; m.trip=false; m.target=null; m.awayT=6;
-  for(let t=0;t<60;t++){ const x=Math.floor(m.x)+RI(-20,20), z=Math.floor(m.z)+RI(-20,20), dx=x+.5-m.x, dz=z+.5-m.z, dl=Math.hypot(dx,dz);
-    if(dl>6&&inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&(dx*ax+dz*az)/(dl*al)>0.3){ m.target={x:x+.5,z:z+.5}; break; } }
-  m.wanderT=R(10,16); }
+// after giving up somewhere it keeps away from there (12 m) for a while: if you hid nearby, it won't stumble back onto you
+const isBored=(m,x,z)=>m.bored&&now<m.bored.until&&Math.hypot(x-m.bored.x,z-m.bored.z)<12;
 // a walk to another room 15-50 m away (never a reverb room): free floor near its middle
 function roomTrip(m){ const here=roomOf[idx(Math.floor(m.x),Math.floor(m.z))];
-  const opts=rooms.filter(r=>r.id!==here&&r.mat!==1&&Math.hypot(r.cx-m.x,r.cz-m.z)>15&&Math.hypot(r.cx-m.x,r.cz-m.z)<50); if(!opts.length) return false;
+  const opts=rooms.filter(r=>r.id!==here&&r.mat!==1&&!isBored(m,r.cx,r.cz)&&Math.hypot(r.cx-m.x,r.cz-m.z)>15&&Math.hypot(r.cx-m.x,r.cz-m.z)<50); if(!opts.length) return false;
   const r=opts[(Math.random()*opts.length)|0];
   for(let t=0;t<20;t++){ const x=RI(r.x+1,r.x+r.w-2), z=RI(r.z+1,r.z+r.h-2); if(walk[idx(x,z)]){ m.target={x:x+.5,z:z+.5}; m.trip=true; return true; } }
   return false; }
 // lost you: go idle and head for somewhere at least 15 m away from where it searched
 function giveUp(m,sx,sz){ m.state='idle'; m.target=null; m.trip=false; m.spotN=0; m.susp=0;
-  for(let t=0;t<60;t++){ const x=Math.floor(m.x)+RI(-26,26), z=Math.floor(m.z)+RI(-26,26);
-    if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&Math.hypot(x+.5-sx,z+.5-sz)>15&&Math.hypot(x+.5-player.x,z+.5-player.z)>10){ m.target={x:x+.5,z:z+.5}; break; } }
+  m.bored={x:sx,z:sz,until:now+30};   /* lost interest in that area for a while */
+  // somewhere 15+ m from where it searched, on the far side from you (so its way there doesn't lead back past you)
+  const ax=m.x-player.x, az=m.z-player.z, al=Math.hypot(ax,az)||1; let fallback=null;
+  for(let t=0;t<80;t++){ const x=Math.floor(m.x)+RI(-26,26), z=Math.floor(m.z)+RI(-26,26);
+    if(!(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&Math.hypot(x+.5-sx,z+.5-sz)>15&&Math.hypot(x+.5-player.x,z+.5-player.z)>10)) continue;
+    const dx=x+.5-m.x, dz=z+.5-m.z, dl=Math.hypot(dx,dz)||1;
+    if((dx*ax+dz*az)/(dl*al)>0.2){ m.target={x:x+.5,z:z+.5}; break; } else if(!fallback) fallback={x:x+.5,z:z+.5}; }
+  if(!m.target) m.target=fallback;
   m.wanderT=R(14,22); }
+// how close a monster must be to hear you breathe: ~2.5 m rested, up to ~5.5 m out of breath; less through a wall
+function hearsBreath(m){ const d=Math.hypot(player.x-m.x,player.z-m.z), r=2.5+3*clamp((fatigue-0.25)/0.75,0,1); if(d>r) return false;
+  return d<r*0.6||los(m.x,1.5,m.z,player.x,EYE,player.z); }
 function updateMonster(m,dt){
+  if(m.state!=='kill'&&!dead&&!won&&hearsBreath(m)&&!(m.state==='hunt'&&now-m.heardT<0.5)) enterHunt(m);   // right next to you: it hears you breathe
   m.susp=Math.max(0,m.susp-dt*0.22);
   if(m.state==='hunt') m.chaseT=(m.chaseT||0)+dt; else m.chaseT=Math.max(0,(m.chaseT||0)-dt*2); // a quick re-acquire keeps the long screams
   if(m.shriekLeft>0){ m.shriekLeft-=dt; if(m.shriekNode&&(frameNo&1)){ spatial(m.shriekNode,m.x,1.8,m.z); spatial(m.shriekNode._rb,m.x,1.8,m.z); } // the scream moves with it, and turns with you
@@ -890,15 +902,13 @@ function updateMonster(m,dt){
       m.trip=false;
       if(p<.15) m.target=null;
       else if(p<.5&&roomTrip(m)) m.wanderT=R(40,70);
-      else { for(let t=0;t<30;t++){ const x=Math.floor(m.x)+RI(-14,14),z=Math.floor(m.z)+RI(-14,14); if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1){m.target={x:x+.5,z:z+.5};break;} } } }
+      else { for(let t=0;t<30;t++){ const x=Math.floor(m.x)+RI(-14,14),z=Math.floor(m.z)+RI(-14,14); if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&!isBored(m,x+.5,z+.5)){m.target={x:x+.5,z:z+.5};break;} } } }
     if(m.target){ tx=m.target.x;tz=m.target.z;spd=m.trip?0.8:0.6; if(Math.hypot(tx-m.x,tz-m.z)<0.5){ m.target=null; if(m.trip){ m.trip=false; m.wanderT=Math.min(m.wanderT,R(3,8)); } } }
-    if(!playerMoving&&Math.hypot(player.x-m.x,player.z-m.z)<2.2&&m.target&&!m.awayT){ turnAway(m); }   // brushes past nothing, turns away (not back past you)
-    if(m.awayT) m.awayT=Math.max(0,m.awayT-dt);
     m.chitterT-=dt; if(m.chitterT<=0){ m.chitterT=R(5,12); if(Math.hypot(player.x-m.x,player.z-m.z)<13) sfxChitter([m.x,1.8,m.z],0.35); }
   } else if(m.state==='alert'){
     tx=m.target.x;tz=m.target.z;spd=0.88;
     // searching: walk to the spot, look around a few seconds, then get bored and wander off somewhere far away
-    if(Math.hypot(tx-m.x,tz-m.z)<0.8||(!playerMoving&&Math.hypot(player.x-m.x,player.z-m.z)<2.2)){ spd=0; m.lingerT+=dt;
+    if(Math.hypot(tx-m.x,tz-m.z)<0.8){ spd=0; m.lingerT+=dt;
       if(m.lingerT>(m.lingerMax||(m.lingerMax=R(3,6)))){ m.lingerMax=0; giveUp(m,tx,tz); } }
     if(Math.hypot(player.x-m.x,player.z-m.z)<2.2&&playerMoving) enterHunt(m);
   } else if(m.state==='hunt'){
@@ -954,7 +964,7 @@ function updateMonster(m,dt){
   m.gait+=m.curSpeed*dt*(2.6+m.runB*0.6);
   const sv=Math.sin(m.gait); if((sv>=0)!==(m.prevS>=0)&&m.curSpeed>1.6) monsterStep(m); m.prevS=sv;
   const reach=m.state==='hunt'?1.5:m.state==='alert'?1.15:0.9; // long arms: you can't slip past one
-  if(!dead&&!won&&Math.hypot(player.x-m.x,player.z-m.z)<reach&&(m.state==='hunt'||playerMoving)) die(m);   // keep still and a wandering one won't find you
+  if(!dead&&!won&&Math.hypot(player.x-m.x,player.z-m.z)<reach) die(m);
 }
 
 // =====================================================================
@@ -1030,8 +1040,8 @@ function updatePressure(dt){
   callT-=dt; if(callT<=0){ callT=R(4,7);
     if(Math.random()<heat&&now-lastNoise.t<5){ const idle=monsters.filter(m=>m.state==='idle'), alert=monsters.filter(m=>m.state==='alert');
       const fz=6+(now-lastNoise.t), spot=()=>{ for(let k=0;k<20;k++){ const x=lastNoise.x+MR(-fz,fz), z=lastNoise.z+MR(-fz,fz); if(walkAt(x,z)) return {x,z}; } return {x:lastNoise.x,z:lastNoise.z}; };
-      if(idle.length){ const m=idle[(Math.random()*idle.length)|0], sp=spot(); if(heat>0.55&&now-lastNoise.t<4) enterHunt(m,sp,lastNoise.t); else enterAlert(m,sp.x,sp.z); }
-      else if(alert.length&&now-lastNoise.t<4) enterHunt(alert[(Math.random()*alert.length)|0],spot(),lastNoise.t); } }
+      if(idle.length){ const m=idle[(Math.random()*idle.length)|0], sp=spot(); enterAlert(m,sp.x,sp.z); }
+    } }
   // exit ambush: if you come near the exit after building heat, a few more of them were already on their way
   const de=Math.hypot(player.x-exitInfo.px,player.z-exitInfo.pz);
   ambushT-=dt;
