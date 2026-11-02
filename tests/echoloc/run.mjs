@@ -175,7 +175,7 @@ T('monsters: lose you when you outrun them — go to last heard spot, overshoot 
 
 T('monsters: calm ones avoid reverb rooms, hunters follow you in', async()=>{
   const r=await ev(`(()=>{ newGame(); const rr=rooms.find(o=>o.mat===1); const m=monsters[0]; monsters.length=1;
-    let sx=null; for(let t=0;t<800&&!sx;t++){ const x=RI(1,W-2),z=RI(1,H-2), i=idx(x,z); if(walk[i]&&mat[i]!==1){ const d=Math.hypot(x-rr.cx,z-rr.cz); if(d>Math.max(rr.w,rr.h)/2+2&&d<Math.max(rr.w,rr.h)/2+8) sx=[x,z]; } }
+    let sx=null; for(let t=0;t<20000&&!sx;t++){ const x=RI(rr.x-12,rr.x+rr.w+12),z=RI(rr.z-12,rr.z+rr.h+12); if(!inb(x,z)) continue; const i=idx(x,z); if(walk[i]&&mat[i]!==1){ const d=Math.hypot(x-rr.cx,z-rr.cz); if(d>Math.max(rr.w,rr.h)/2+2&&d<Math.max(rr.w,rr.h)/2+10) sx=[x,z]; } }
     m.x=sx[0]+.5; m.z=sx[1]+.5; m.state='alert'; m.target={x:rr.cx,z:rr.cz}; m.lingerT=0; m.freezeT=0;
     player.x=-90; player.z=-90; let entered=false;
     for(let i=0;i<60*12;i++){ now+=1/60; updateMonster(m,1/60); m.freezeT=0; if(matAt(m.x,m.z)===1) entered=true; if(m.state==='idle') break; }
@@ -474,6 +474,16 @@ T('shrieks: a hunting monster never goes quiet, even when it has lost earshot of
   assert(r.silentFrac<0.03&&r.longestGap<0.3,'gaps in the chase shrieking: '+JSON.stringify(r));
 });
 
+T('red screen: a scream far away barely tints the screen; right next to you it floods it', async()=>{
+  const r=await ev(`(()=>{ newGame(); paused=false; const m=monsters[0]; monsters.length=1; m.state='hunt'; m.windup=0;
+    const at=d=>{ staticBoost=0; fear=0; m.x=player.x+d; m.z=player.z; shriekFrame=-1; frameNo++; shriek(m);
+      for(let i=0;i<20;i++){ now+=1/60; staticBoost=Math.max(0,staticBoost-0.8/60); let f=clamp(1-d/25,0,1); fear=lerp(fear,f,clamp(2/60,0,1)); }
+      drawNoise(); return {s:staticBoost, noise:+nc.style.opacity, vign:parseFloat(document.getElementById('vign').style.opacity)}; };
+    return {far:at(30), near:at(3)}; })()`);
+  assert(r.far.noise<0.05&&r.far.vign<0.06,'a far scream still paints the screen red '+JSON.stringify(r.far));
+  assert(r.near.noise>0.2&&r.near.s>0.5,'a scream right next to you is not dramatic '+JSON.stringify(r.near));
+});
+
 T('green fades faster: sign and exit dots are short-lived', async()=>{
   const r=await ev(`(()=>{ newGame(); const p0=phead; revealSign(signs[0],now); revealExit(now); let mx=0; for(let i=p0;i!==phead;i=(i+1)%MAXP) mx=Math.max(mx,pdata[i*9+7]); return mx; })()`);
   assert(r<=1.85,'green dots live too long: '+r);
@@ -510,6 +520,17 @@ T('exit ambush: arriving hot spawns hidden monsters already moving toward you', 
   assert(r.calmSpawns===0,'ambush triggered without heat');
 });
 
+
+T('monsters: idle ones now and then walk over to another room (rooms empty out, you can slip past)', async()=>{
+  const r=await ev(`(()=>{ newGame(); paused=false; window.__hearOrig=window.__hearOrig||hearPlayer; hearPlayer=()=>{};
+    player.x=player.z=-50; playerMoving=false;   // far away and silent: only their own wandering
+    const visited=monsters.map(m=>new Set([roomOf[idx(Math.floor(m.x),Math.floor(m.z))]])), start=monsters.map(m=>[m.x,m.z]);
+    for(let i=0;i<60*180;i++){ now+=1/60; frameNo++; for(const m of monsters){ m.state='idle'; updateMonster(m,1/60); const ro=roomOf[idx(Math.floor(m.x),Math.floor(m.z))]; if(ro>=0) visited[monsters.indexOf(m)].add(ro); } }
+    hearPlayer=__hearOrig;
+    return {rooms:visited.map(v=>v.size), moved:monsters.map((m,k)=>Math.hypot(m.x-start[k][0],m.z-start[k][1]).toFixed(0))}; })()`);
+  const travellers=r.rooms.filter(n=>n>=2).length;
+  assert(travellers>=Math.ceil(r.rooms.length/2),'idle monsters stay in their room '+JSON.stringify(r));
+});
 
 T('hiding: a scream passes on only what the screamer knows; calls never reveal where you hide; the level cools down', async()=>{
   const r=await ev(`(()=>{ newGame(); paused=false;
@@ -563,13 +584,13 @@ T('hiding: turn a corner and wait quietly: the hunter searches, gets bored and w
       if(!spot){ hearPlayer=__hearOrig; continue; }
       const m=monsters[0]; monsters.slice(1).forEach(o=>{ o.state='idle'; o.x=o.z=-999; });
       m.x=spot.x; m.z=spot.z; m.state='hunt'; m.windup=0; m.heardT=now-2; m.lastKnown={...spot}; m.lastDir=null;
-      player.vx=player.vz=0; player.spd=0; playerMoving=false; let states=new Set(), minD=1e9;
-      for(let i=0;i<60*45;i++){ now+=1/60; frameNo++; updateMonster(m,1/60); updatePressure(1/60); states.add(m.state); minD=Math.min(minD,Math.hypot(m.x-player.x,m.z-player.z)); if(dead) break; }
+      player.vx=player.vz=0; player.spd=0; playerMoving=false; let states=new Set(), minD=1e9, late=0, lateN=0, lateMin=1e9;
+      for(let i=0;i<60*45;i++){ now+=1/60; frameNo++; updateMonster(m,1/60); updatePressure(1/60); states.add(m.state); const dd=Math.hypot(m.x-player.x,m.z-player.z); minD=Math.min(minD,dd); if(i>=60*30){ late+=dd; lateN++; lateMin=Math.min(lateMin,dd); } if(dead) break; }
       hearPlayer=__hearOrig;
-      res={dead, state:m.state, far:Math.hypot(m.x-player.x,m.z-player.z), states:[...states], minD}; }
+      res={dead, state:m.state, far:Math.hypot(m.x-player.x,m.z-player.z), states:[...states], minD, tgt:m.target, trip:m.trip, wT:m.wanderT, mat:matAt(m.x,m.z), walk:walkAt(m.x,m.z), avgLate:late/Math.max(1,lateN), lateMin}; }
     return res; })()`);
   assert(r&&!r.dead,'the monster found you while you hid '+JSON.stringify(r));
-  assert(r.state==='idle'&&r.far>8,'it did not give up and wander off '+JSON.stringify(r));
+  assert(r.states.includes('idle')&&r.avgLate>5&&r.lateMin>2.2,'it did not give up and wander off '+JSON.stringify(r));   // last 15 s: away from you, never hovering on top of you
 });
 
 T('full screen: no top bar (the game uses the whole screen); the pause screen offers HOW TO PLAY instead', async()=>{

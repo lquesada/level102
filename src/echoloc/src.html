@@ -754,8 +754,11 @@ const navCache=new Map();
 function getNav(ti){ let d=navCache.get(ti); if(!d){ d=bfs(ti,walk); navCache.set(ti,d); if(navCache.size>80) navCache.delete(navCache.keys().next().value); } return d; }
 function clearPath(ax,az,bx,bz,avoid){ const dx=bx-ax,dz=bz-az,L=Math.hypot(dx,dz); if(L<0.01) return true; const n=Math.ceil(L/0.25), px=-dz/L*0.3, pz=dx/L*0.3;
   for(let i=0;i<=n;i++){ const x=ax+dx*i/n,z=az+dz*i/n; if(!walkAt(x,z)||!walkAt(x+px,z+pz)||!walkAt(x-px,z-pz)) return false; if(avoid&&matAt(x,z)===1) return false; } return true; }
-function navDir(m,tx,tz){
-  // calm monsters won't walk into reverb rooms (too loud in there) unless they are already inside
+// calm monsters won't walk into reverb rooms (too loud in there) unless they are already inside -- whatever path is chosen
+function navDir(m,tx,tz){ const r=navDir0(m,tx,tz);
+  if(r&&m.state!=='hunt'&&matAt(m.x,m.z)!==1&&(matAt(m.x+r[0]*0.6,m.z+r[1]*0.6)===1||matAt(m.x+r[0]*0.3,m.z+r[1]*0.3)===1)) return null;
+  return r; }
+function navDir0(m,tx,tz){
   const avoid=m.state!=='hunt'&&matAt(m.x,m.z)!==1;
   let dx=tx-m.x,dz=tz-m.z; const dl=Math.hypot(dx,dz)||1;
   if(dl<1.0&&!(avoid&&matAt(tx,tz)===1)) return [dx/dl,dz/dl];
@@ -812,11 +815,12 @@ function shriek(m){
   const hx=m.x, hz=m.z, hy=1.8;
   const dur=clamp(2.2+(m.chaseT||0)*0.12,2.2,6);
   m.shriekNode=sfxShriek([hx,hy,hz],2.6+heat*1.5,dur); m.shriekLeft=dur; m.shriekPulseT=0.45; heat=Math.min(1,heat+0.05);
-  emitEcho({x:hx,y:hy,z:hz,n:13000,maxD:45,speed:30,life:1.9,flags:0,col:[1,0.12,0.08],I:1.45,skip:m});
-  emitEcho({x:player.x,y:EYE,z:player.z,n:3500,maxD:30,speed:30,life:1.5,flags:F_NOISY,col:[0.7,0.05,0.08],I:0.8,ax:hx,ay:hy,az:hz});
-  const d=Math.hypot(player.x-hx,player.z-hz);
+  // how red the screen gets depends on how close it is: right next to you it floods everything, far away it is a faint glow
+  const d=Math.hypot(player.x-hx,player.z-hz), k=nearK(d);
+  emitEcho({x:hx,y:hy,z:hz,n:Math.round(7000+6000*k),maxD:45,speed:30,life:1.9,flags:0,col:[1,0.12,0.08],I:0.55+0.9*k,skip:m});
+  if(k>0.05) emitEcho({x:player.x,y:EYE,z:player.z,n:Math.round(3500*k),maxD:30,speed:30,life:1.5,flags:F_NOISY,col:[0.7,0.05,0.08],I:0.8*k,ax:hx,ay:hy,az:hz});
   if(seesMonster(m)) sampleMonster(m,520,now+d/30,1.8,[1,0.3,0.25],F_NOISY|F_BIG);
-  staticBoost=Math.max(staticBoost,clamp(1.2-d/35,0.35,1));
+  staticBoost=Math.max(staticBoost,k);
   // the scream calls the others to where THIS one thinks you are (not where you really are)
   // fresh news (it heard you in the last few seconds) -> the others join the chase; stale news -> they only come and look
   const lk=m.lastKnown||{x:hx,z:hz}, lt=m.heardT||now, fresh=now-lt<3;
@@ -824,11 +828,12 @@ function shriek(m){
     if(dd<callR&&fresh) enterHunt(o,lk,lt); else if(dd<callR*1.5) enterAlert(o,lk.x+MR(-4,4),lk.z+MR(-4,4)); }
 }
 // while it keeps screaming, the scream keeps flooding the area with echo
+const nearK=d=>Math.pow(clamp(1-d/28,0,1),1.6);   // 1 right next to you .. 0 from ~28 m
 function shriekPulse(m){
-  emitEcho({x:m.x,y:1.8,z:m.z,n:6500,maxD:42,speed:30,life:1.1,flags:0,col:[1,0.12,0.08],I:1.25,skip:m});
-  const d=Math.hypot(player.x-m.x,player.z-m.z);
+  const d=Math.hypot(player.x-m.x,player.z-m.z), k=nearK(d);
+  emitEcho({x:m.x,y:1.8,z:m.z,n:Math.round(3000+3500*k),maxD:42,speed:30,life:1.1,flags:0,col:[1,0.12,0.08],I:0.5+0.75*k,skip:m});
   if(seesMonster(m)) sampleMonster(m,260,now+d/30,0.8,[1,0.3,0.25],F_NOISY|F_BIG);
-  staticBoost=Math.max(staticBoost,clamp(1-d/40,0.15,0.6));
+  staticBoost=Math.max(staticBoost,k*0.6);
 }
 function monsterStep(m){
   const fx=Math.sin(m.yaw),fz=Math.cos(m.yaw);
@@ -839,8 +844,19 @@ function monsterStep(m){
   sfxThump([x,0.1,z],0.9);
 }
 
+// head off somewhere 6-20 m away on the far side from the (still, unnoticed) player
+function turnAway(m){ const ax=m.x-player.x, az=m.z-player.z, al=Math.hypot(ax,az)||1; m.trip=false; m.target=null; m.awayT=6;
+  for(let t=0;t<60;t++){ const x=Math.floor(m.x)+RI(-20,20), z=Math.floor(m.z)+RI(-20,20), dx=x+.5-m.x, dz=z+.5-m.z, dl=Math.hypot(dx,dz);
+    if(dl>6&&inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&(dx*ax+dz*az)/(dl*al)>0.3){ m.target={x:x+.5,z:z+.5}; break; } }
+  m.wanderT=R(10,16); }
+// a walk to another room 15-50 m away (never a reverb room): free floor near its middle
+function roomTrip(m){ const here=roomOf[idx(Math.floor(m.x),Math.floor(m.z))];
+  const opts=rooms.filter(r=>r.id!==here&&r.mat!==1&&Math.hypot(r.cx-m.x,r.cz-m.z)>15&&Math.hypot(r.cx-m.x,r.cz-m.z)<50); if(!opts.length) return false;
+  const r=opts[(Math.random()*opts.length)|0];
+  for(let t=0;t<20;t++){ const x=RI(r.x+1,r.x+r.w-2), z=RI(r.z+1,r.z+r.h-2); if(walk[idx(x,z)]){ m.target={x:x+.5,z:z+.5}; m.trip=true; return true; } }
+  return false; }
 // lost you: go idle and head for somewhere at least 15 m away from where it searched
-function giveUp(m,sx,sz){ m.state='idle'; m.target=null; m.spotN=0; m.susp=0;
+function giveUp(m,sx,sz){ m.state='idle'; m.target=null; m.trip=false; m.spotN=0; m.susp=0;
   for(let t=0;t<60;t++){ const x=Math.floor(m.x)+RI(-26,26), z=Math.floor(m.z)+RI(-26,26);
     if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1&&Math.hypot(x+.5-sx,z+.5-sz)>15&&Math.hypot(x+.5-player.x,z+.5-player.z)>10){ m.target={x:x+.5,z:z+.5}; break; } }
   m.wanderT=R(14,22); }
@@ -869,9 +885,15 @@ function updateMonster(m,dt){
   let tx=null,tz=null,spd=0;
   if(m.state==='idle'){
     m.wanderT-=dt;
-    if(m.wanderT<=0){ if(Math.random()<.2){ m.target=null; } else { for(let t=0;t<30;t++){ const x=Math.floor(m.x)+RI(-14,14),z=Math.floor(m.z)+RI(-14,14); if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1){m.target={x:x+.5,z:z+.5};break;} } } m.wanderT=R(5,12); }
-    if(m.target){ tx=m.target.x;tz=m.target.z;spd=0.6; if(Math.hypot(tx-m.x,tz-m.z)<0.5) m.target=null; }
-    if(!playerMoving&&Math.hypot(player.x-m.x,player.z-m.z)<2.2&&m.target){ m.target=null; m.wanderT=R(0.5,1.5); }   // brushes past nothing, turns away
+    // mostly potters about nearby; now and then walks over to another room (so rooms empty out and you can slip past)
+    if(m.wanderT<=0){ const p=Math.random(); m.wanderT=R(5,12);
+      m.trip=false;
+      if(p<.15) m.target=null;
+      else if(p<.5&&roomTrip(m)) m.wanderT=R(40,70);
+      else { for(let t=0;t<30;t++){ const x=Math.floor(m.x)+RI(-14,14),z=Math.floor(m.z)+RI(-14,14); if(inb(x,z)&&walk[idx(x,z)]&&mat[idx(x,z)]!==1){m.target={x:x+.5,z:z+.5};break;} } } }
+    if(m.target){ tx=m.target.x;tz=m.target.z;spd=m.trip?0.8:0.6; if(Math.hypot(tx-m.x,tz-m.z)<0.5){ m.target=null; if(m.trip){ m.trip=false; m.wanderT=Math.min(m.wanderT,R(3,8)); } } }
+    if(!playerMoving&&Math.hypot(player.x-m.x,player.z-m.z)<2.2&&m.target&&!m.awayT){ turnAway(m); }   // brushes past nothing, turns away (not back past you)
+    if(m.awayT) m.awayT=Math.max(0,m.awayT-dt);
     m.chitterT-=dt; if(m.chitterT<=0){ m.chitterT=R(5,12); if(Math.hypot(player.x-m.x,player.z-m.z)<13) sfxChitter([m.x,1.8,m.z],0.35); }
   } else if(m.state==='alert'){
     tx=m.target.x;tz=m.target.z;spd=0.88;
@@ -903,6 +925,7 @@ function updateMonster(m,dt){
   if(m.state!=='hunt'){ if(m.freezeT>0){ m.freezeT-=dt; spd=0; } else if(Math.random()<dt*0.2) m.freezeT=MR(0.2,0.9); }
   const ox=m.x,oz=m.z;
   const nd=tx!==null&&spd>0?navDir(m,tx,tz):null;
+  if(!nd&&m.state==='idle'&&m.target&&spd>0){ m.target=null; m.trip=false; m.wanderT=Math.min(m.wanderT,R(1,3)); }   // the way there is blocked (a reverb room): pick somewhere else
   let wvx=0,wvz=0;
   if(nd){
     const [dx,dz]=nd;
@@ -1349,9 +1372,10 @@ function render(){
 // static noise overlay + vignette
 const nc=document.getElementById('noise'), nctx=nc.getContext('2d'), nimg=nctx.createImageData(nc.width,nc.height);
 function drawNoise(){
-  const amt=Math.max(staticBoost, fear*0.35, dead?0.5:0);
-  nc.style.opacity=amt*0.55;
-  document.getElementById('vign').style.opacity=clamp(fear*0.7+(dead?0.8:0)+staticBoost*0.3,0,1)*(0.85+0.15*Math.sin(now*8));
+  // red static + red vignette: only strong when something is right on you (fear and staticBoost both fall off with distance)
+  const amt=Math.max(staticBoost, fear*fear*0.35, dead?0.5:0);
+  nc.style.opacity=amt*0.4;
+  document.getElementById('vign').style.opacity=clamp(fear*fear*0.7+(dead?0.8:0)+staticBoost*0.25,0,1)*(0.85+0.15*Math.sin(now*8));
   if(amt<0.01) return;
   const d=nimg.data; for(let i=0;i<d.length;i+=4){ const v=Math.random()<0.5?0:Math.random()*255; d[i]=v; d[i+1]=v*0.4; d[i+2]=v*0.4; d[i+3]=255; }
   nctx.putImageData(nimg,0,0);
