@@ -732,7 +732,7 @@ function emitChunk(o,count){
       if(col){ r=col[0];g=col[1];bl=col[2]; }
       else { const k=Math.min(1,trav/24); r=0.9+(0.12-0.9)*k; g=0.97+(0.42-0.97)*k; bl=1;
         if(hk===K_FURN||hk===K_LOCK){r+=0.12;g+=0.05;} }
-      if(mt===1){ r*=0.7; bl*=1.05; } else if(carpetFloor){ r=0.85; g=0.5; bl=0.35; }
+      if(mt===1&&!col){ r*=0.7; bl*=1.05; }   // tiled rooms: your own dots a touch bluer. Carpet keeps the colour, only dimmer (above); monster red stays red
       if(b===0&&hasA){ const qx=hx-ax,qy=hy-ay,qz=hz-az; dAcc+=Math.sqrt(qx*qx+qy*qy+qz*qz); } else dAcc+=t;
       if(I>0.015){
         let px=hx,py=hy,pz=hz; if(jit){ px+=(frand()-.5)*jit; py+=(frand()-.5)*jit; pz+=(frand()-.5)*jit; }

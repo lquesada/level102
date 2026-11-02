@@ -216,6 +216,22 @@ T('materials: reverb bounces many times, carpet absorbs, plain reflects a little
   assert(r.carpet<r.plain,'carpet does not absorb more than plain: '+JSON.stringify(r));
 });
 
+T('colours: carpet floors show your usual colour, just dimmer (no brown); monster echoes stay red on any floor', async()=>{
+  const r=await ev(`(()=>{ newGame(); paused=false; monsters.length=0;
+    const floorDots=(roomMat,fn)=>{ const rr=rooms.find(o=>(o.mat||0)===roomMat&&o.id!==0); let c=idx(Math.floor(rr.cx),Math.floor(rr.cz));
+      for(let t=0;t<80&&!walk[c];t++) c=idx(RI(rr.x+1,rr.x+rr.w-2),RI(rr.z+1,rr.z+rr.h-2));
+      player.x=c%W+.5; player.z=((c/W)|0)+.5; const h0=phead; fn(); for(let k=0;k<60&&echoJobs.length;k++) processEchoJobs();
+      let n=0,R=0,G=0,B=0; for(let p=h0;p!==phead;p=(p+1)%MAXP){ const o=p*STRIDE; if(pdata[o+1]>0.03||matAt(pdata[o],pdata[o+2])!==roomMat) continue; n++; R+=pdata[o+3]; G+=pdata[o+4]; B+=pdata[o+5]; }
+      return {n, r:R/n, g:G/n, b:B/n}; };
+    const mine=()=>{ lastEcho=-9; playerEcho(true); };
+    const red=()=>emitEcho({x:player.x,y:1.8,z:player.z,n:6000,maxD:20,speed:30,life:1,flags:0,col:[1,0.12,0.08],I:1.2});
+    return {carpet:floorDots(2,mine), plain:floorDots(0,mine), carpetRed:floorDots(2,red)}; })()`);
+  const c=r.carpet, p=r.plain, m=r.carpetRed;
+  assert(c.n>50&&c.b>=c.r&&c.b>=c.g,'carpet floor dots are not your colour '+JSON.stringify(c));
+  assert(c.b<p.b,'carpet floor dots are not dimmer than a plain floor '+JSON.stringify([c,p]));
+  assert(m.n>50&&m.r>m.g*3&&m.r>m.b*3,'a monster echo is not red on carpet '+JSON.stringify(m));
+});
+
 T('perf: raycast throughput', async()=>{
   const r=await ev(`(()=>{ newGame(); const N=150000, sp=[]; for(let i=0;i<W*H&&sp.length<40;i+=97) if(walk[i]) sp.push(i);
     let t=performance.now(); for(let i=0;i<N;i++){ const c=sp[i%sp.length], d=((i*2654435761)>>>0)%DIRN*3; cast(c%W+.5,1.6,((c/W)|0)+.5,DIRS[d],DIRS[d+1],DIRS[d+2],36); }
