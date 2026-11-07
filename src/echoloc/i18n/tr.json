@@ -1,0 +1,195 @@
+{
+ "intro1": "Göremiyorsun. Görmek için dilini şaklat.",
+ "intro2": "Bu koridorlarda bir şey yaşıyor. O da göremiyor, ama her şeyi duyuyor. Çok yakından ya da çok sık yankı yaparsan gelir. Koşarken çığlık atar. Çığlık attığında diğerleri cevap verir.",
+ "ctlPC": "<kbd>WASD</kbd> hareket · <kbd>FARE</kbd> bakış · <kbd>SHIFT</kbd> koşu · <kbd>BOŞLUK</kbd> yankı · <kbd>F</kbd> tam ekran · kulaklık önerilir",
+ "ctlTouch": "<kbd>SOL BAŞPARMAK</kbd> hareket · <kbd>KOŞMAK</kbd> için kesikli halkanın dışına it · <kbd>SAĞ BAŞPARMAK</kbd> bakmak için sürükle, yankı için <kbd>YANKI</kbd>'ya dokun · kulaklık önerilir",
+ "fsNote": "Tam ekranda, telefon yan tutularak oynanır.",
+ "begin": [
+  "BAŞLAMAK İÇİN TIKLA",
+  "BAŞLAMAK İÇİN DOKUN"
+ ],
+ "prompt": [
+  "[ BOŞLUK ] TUŞUNA BAS",
+  "[ YANKI ]'YA DOKUN"
+ ],
+ "info1": "<b>ÇIKIŞI BUL</b>",
+ "infoPC": "<kbd>WASD</kbd> hareket &nbsp; <kbd>FARE</kbd> bakış &nbsp; <kbd>SHIFT</kbd> koşu (gürültülü) &nbsp; <kbd>F</kbd> tam ekran<br><kbd>BOŞLUK</kbd> yankı",
+ "infoTouch": "sol başparmak: hareket, koşmak için uzağa it · sağ başparmak: bakmak için sürükle, yankı için YANKI'ya dokun",
+ "paused": "DURAKLATILDI",
+ "pausedMsg": "Karanlık bekliyor.",
+ "resume": [
+  "DEVAM ETMEK İÇİN TIKLA",
+  "DEVAM ETMEK İÇİN DOKUN"
+ ],
+ "won": "KAÇTIN",
+ "wonMsg": "Çıkışı {s} sn'de buldun.",
+ "toMenu": [
+  "ANA MENÜ İÇİN TIKLA",
+  "ANA MENÜ İÇİN DOKUN"
+ ],
+ "startBtn": "OYUNA BAŞLA",
+ "again": [
+  "TEKRAR OYNAMAK İÇİN TIKLA",
+  "TEKRAR OYNAMAK İÇİN DOKUN"
+ ],
+ "dead": "YUTULDUN",
+ "deadMsg": "Seni duydu.",
+ "retry": [
+  "TEKRAR DENEMEK İÇİN TIKLA",
+  "TEKRAR DENEMEK İÇİN DOKUN"
+ ],
+ "error": "HATA",
+ "restart": [
+  "YENİDEN BAŞLATMAK İÇİN TIKLA",
+  "YENİDEN BAŞLATMAK İÇİN DOKUN"
+ ],
+ "noGL": "WEBGL YOK",
+ "noGLMsg": "Bu tarayıcıda WebGL kapalı. Donanım hızlandırması açık Chrome ya da Firefox dene.",
+ "rot": "TELEFONUNU YAN ÇEVİR",
+ "rotMsg": "Echoloc yatay oynanır.",
+ "rotTap": "Ya da tam ekranda oynamak için buraya dokun.",
+ "run": "KOŞ",
+ "look": "BAKMAK İÇİN<br>SÜRÜKLE",
+ "echo": "YANKI",
+ "level": "SEVİYE {n}",
+ "howTo": "NASIL OYNANIR",
+ "langName": "Türkçe",
+ "menuAch": "BAŞARIMLAR",
+ "menuSettings": "AYARLAR",
+ "menuAbout": "HAKKINDA",
+ "menuHelp": "NASIL OYNANIR",
+ "back": "GERİ",
+ "resumeBtn": "DEVAM",
+ "exitMenu": "ANA MENÜYE ÇIK",
+ "youCarry": "TAŞIDIKLARIN",
+ "wayHome": "EVE DÖNÜŞ YOLUNDA",
+ "shopTitle": "DÜKKÂN",
+ "shopText": "★ {n} yıldızın var (harcanabilir: {m}). Oyuna başlarken alacağın güçlendirmeleri seç, her biri bir yıldız; yıldızı geri almak için tekrar dokun. Bir güçlendirme, bir oyunda onu yerden alana kadar kilitli kalır; o oyunda ölsen bile açılır.",
+ "locked": "KİLİTLİ",
+ "achTitle": "BAŞARIMLAR",
+ "starsN": "★ YILDIZLAR: {n}",
+ "starsNote": "Yıldızla kaçtığın her oyun için bir tane.",
+ "pwUnlocked": "AÇILAN GÜÇLENDİRMELER {a}/{b}",
+ "artRecovered": "BULUNAN ESERLER {a}/{b}",
+ "setTitle": "AYARLAR",
+ "setLang": "DİL",
+ "setSystem": "Sistem varsayılanı",
+ "setSize": "YAZI BOYUTU",
+ "aboutTitle": "HAKKINDA",
+ "aboutBy": "yapan: {name}",
+ "aboutFree": "Bu video oyunu ücretsiz. Müziğimi dinleyerek bana destek ol:",
+ "version": "Sürüm {v}",
+ "toastHome": "ŞİMDİ ONU EVE GÖTÜR: TA EN BAŞA KADAR",
+ "toastLocked": "KİLİTLİ",
+ "toastStar": "+1 YILDIZ (HARCANABİLİR: {n})",
+ "toastAch": "YENİ BAŞARIM: {x} ({n}/{m})",
+ "help": "<p>Göremiyorsun. Dilini şaklat: bir nokta dalgası bir anlığına duvarları gösterir. Burada kör yaratıklar yaşıyor ve her şeyi duyuyorlar, o yüzden yankıyı dikkatli kullan.</p><p>Oyun, yedi seviye boyunca kuzeye giden tek bir uzun yol. Her seviyenin çıkış kapısı karşı tarafında. Hiçliğin üstündeki bir köprü olan 7. seviyede bir yıldız bekliyor, bazen yanında bir eser de. Onları al ve en baştaki giriş kapısından çıkana kadar tüm yolu geri yürü: yıldızı dükkânda harcarsın, eser başarımlarına eklenir. Kapılar, yıldızı alana kadar yalnızca ileri geçirir; sonra yalnızca geri. Eve dönüş yolunda daha çok yaratık var.</p><p>Güçlendirmeler seviyelerde yerde durur: almak için üstlerinden yürü. Ölene kadar sürerler. Ölmek oyunu en baştan başlatır.</p><h3>Bilgisayarda</h3><ul><li><b>W A S D</b> yürü, <b>fare</b> ile bak, koşmak için <b>Shift</b>'e basılı tut (gürültülü).</li><li><b>Boşluk</b> yankı yapar. <b>Esc</b> duraklatır. <b>F</b> tam ekrana geçer.</li></ul><h3>Telefon ya da tablette</h3><ul><li><b>Sol başparmak</b>: yürümek için sürükle; koşmak için kesikli halkanın dışına it.</li><li><b>Sağ başparmak</b>: bakmak için sürükle; yankı için yuvarlak <b>YANKI</b> düğmesine dokun.</li></ul><p>Kulaklık çok işe yarar: şeylerin nerede olduğunu duyabilirsin.</p>",
+ "pw_vest": [
+  "KURŞUN YELEK",
+  "Radyoaktivite sana %60 daha az zarar verir, ama ağırlaşırsın: %20 daha yavaş hareket eder, %30 daha çabuk yorulursun."
+ ],
+ "pw_adren": [
+  "ADRENALİN",
+  "Yakında bir şey seni avlarken %25 daha hızlı koşarsın."
+ ],
+ "pw_chalk": [
+  "TEBEŞİR",
+  "Yerde, yankı yaptığında görünen soluk bir iz bırakırsın."
+ ],
+ "pw_ventro": [
+  "YANSITMA",
+  "Yankın 6 m önünde (ya da yoldaki duvarda) başlar. Canavarlar sana değil, oraya gider."
+ ],
+ "pw_rico": [
+  "SEKME",
+  "Yankın üç köşeyi döner ve biraz daha uzun kalır."
+ ],
+ "pw_cloak": [
+  "SESSİZ PELERİN",
+  "2 saniye kıpırdamadan dur, ne kadar yakın olursa olsun hiçbir şey nefesini duyamaz."
+ ],
+ "pw_lens": [
+  "YANKI MERCEĞİ",
+  "Yankın yalnızca ileri gider, ama iki kat yoğun ve 1,5 kat uzağa."
+ ],
+ "pw_whisk": [
+  "BIYIKLAR",
+  "Hareket ederken önündeki yaklaşık 2 m içindeki duvarlar sessizce, hafifçe parlar."
+ ],
+ "pw_echo": [
+  "UZAK YANKI",
+  "Yankın daha uzağa ulaşır."
+ ],
+ "pw_stride": [
+  "UZUN ADIM",
+  "Daha hızlı koşarsın."
+ ],
+ "pw_lungs": [
+  "DERİN CİĞERLER",
+  "Daha uzun süre koşabilirsin."
+ ],
+ "pw_eye": [
+  "YEŞİL GÖZ",
+  "İşaretler ve çıkış yankına daha uzaktan cevap verir."
+ ],
+ "pw_glow": [
+  "ARDIL IŞIK",
+  "Yankı noktaların daha uzun kalır."
+ ],
+ "pw_dense": [
+  "YOĞUN YANKI",
+  "Yankın daha çok nokta gösterir."
+ ],
+ "pw_tremor": [
+  "SARSINTI HİSSİ",
+  "Ayak seslerini hissedersin: 22 m içinde yürüyen her şey, duvarların ardından bile yerde kırmızı halkalar bırakır."
+ ],
+ "pw_pill": [
+  "KIRMIZI HAP",
+  "Her şeyi gerçekte olduğu gibi görürsün."
+ ],
+ "pw_star": [
+  "YILDIZ",
+  "Onu girdiğin kapıdan dışarı çıkar, sonsuza dek senin olur: dükkânda harca."
+ ],
+ "pw_memory": [
+  "HAFIZA",
+  "Yankının dokunduğu her duvar sonsuza dek aydınlık kalır. Yalnızca senin yankın."
+ ],
+ "pw_guide": [
+  "YOL ÇİZGİSİ",
+  "Yerdeki yeşil bir çizgi her zaman çıkışın yolunu gösterir."
+ ],
+ "pw_negative": [
+  "NEGATİF",
+  "Duvarlar ve köşeler etrafında durmadan birbirine yankı yapar: tek bir ses çıkarmadan yerin şeklini görürsün."
+ ],
+ "pw_crown": [
+  "TAÇ",
+  "Echoloc'u bitirdin. Her şeyi görüyorsun. Dükkânda: sahip olduğun tüm güçlendirmeleri ve tüm eserleri al."
+ ],
+ "pw_soles": [
+  "YUMUŞAK TABAN",
+  "Koşarken adımların yalnızca yarı mesafeden duyulur."
+ ],
+ "pw_steady": [
+  "SAKİN NEFES",
+  "Nefes nefese kalmak artık yankını bulanıklaştırmaz ya da dağıtmaz."
+ ],
+ "pw_bright": [
+  "PARLAK YANKI",
+  "Yankı noktaların %35 daha parlak."
+ ],
+ "pw_wide": [
+  "GENİŞ GÖZLER",
+  "Çevrende daha fazlasını görürsün: 75 yerine 95 derece."
+ ],
+ "pw_lucky": [
+  "UĞURLU MUSKA",
+  "Bundan sonraki her seviyede bir güçlendirme daha bulunur."
+ ],
+ "pw_thread": [
+  "İPLİK",
+  "Her yankı, çıkış yolunun bir sonraki parçasını da yerde yeşil olarak gösterir."
+ ]
+}

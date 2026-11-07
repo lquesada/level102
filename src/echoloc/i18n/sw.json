@@ -1,0 +1,195 @@
+{
+ "intro1": "Huwezi kuona. Alisha ulimi wako ili uone.",
+ "intro2": "Kuna kitu kinaishi katika korido hizi. Nacho hakioni, lakini kinasikia kila kitu. Ukitoa mwangwi karibu mno, au mara nyingi mno, kitakuja. Kikikimbia, kinapiga kelele. Kikipiga kelele, wengine wanaitikia.",
+ "ctlPC": "<kbd>WASD</kbd> sogea · <kbd>KIPANYA</kbd> tazama · <kbd>SHIFT</kbd> kimbia · <kbd>SPACE</kbd> mwangwi · <kbd>F</kbd> skrini nzima · vipokea sauti vinapendekezwa",
+ "ctlTouch": "<kbd>GUMBA LA KUSHOTO</kbd> sogea · kisukume nje ya duara la vistari ili <kbd>KUKIMBIA</kbd> · <kbd>GUMBA LA KULIA</kbd> buruta kutazama, gusa <kbd>MWANGWI</kbd> kutoa mwangwi · vipokea sauti vinapendekezwa",
+ "fsNote": "Inachezwa kwenye skrini nzima, simu ikiwa imelazwa.",
+ "begin": [
+  "BOFYA KUANZA",
+  "GUSA KUANZA"
+ ],
+ "prompt": [
+  "BONYEZA [ SPACE ]",
+  "GUSA [ MWANGWI ]"
+ ],
+ "info1": "<b>TAFUTA NJIA YA KUTOKEA</b>",
+ "infoPC": "<kbd>WASD</kbd> sogea &nbsp; <kbd>KIPANYA</kbd> tazama &nbsp; <kbd>SHIFT</kbd> kimbia (kwa kelele) &nbsp; <kbd>F</kbd> skrini nzima<br><kbd>SPACE</kbd> mwangwi",
+ "infoTouch": "gumba la kushoto: sogea, sukuma mbali kukimbia · gumba la kulia: buruta kutazama, gusa MWANGWI kutoa mwangwi",
+ "paused": "IMESIMAMISHWA",
+ "pausedMsg": "Giza linasubiri.",
+ "resume": [
+  "BOFYA KUENDELEA",
+  "GUSA KUENDELEA"
+ ],
+ "won": "UMETOROKA",
+ "wonMsg": "Umepata njia ya kutokea kwa sekunde {s}.",
+ "toMenu": [
+  "BOFYA KWENDA MENYU KUU",
+  "GUSA KWENDA MENYU KUU"
+ ],
+ "startBtn": "ANZA MCHEZO",
+ "again": [
+  "BOFYA KUCHEZA TENA",
+  "GUSA KUCHEZA TENA"
+ ],
+ "dead": "UMEMEZWA",
+ "deadMsg": "Kimekusikia.",
+ "retry": [
+  "BOFYA KUJARIBU TENA",
+  "GUSA KUJARIBU TENA"
+ ],
+ "error": "HITILAFU",
+ "restart": [
+  "BOFYA KUANZA UPYA",
+  "GUSA KUANZA UPYA"
+ ],
+ "noGL": "HAKUNA WEBGL",
+ "noGLMsg": "Kivinjari hiki kimezima WebGL. Jaribu Chrome au Firefox ukiwa umewasha uharakishaji wa maunzi.",
+ "rot": "LAZA SIMU YAKO",
+ "rotMsg": "Echoloc inachezwa kwa mlalo.",
+ "rotTap": "Au gusa hapa kucheza kwenye skrini nzima.",
+ "run": "KIMBIA",
+ "look": "BURUTA<br>KUTAZAMA",
+ "echo": "MWANGWI",
+ "level": "NGAZI {n}",
+ "howTo": "JINSI YA KUCHEZA",
+ "langName": "Kiswahili",
+ "menuAch": "MAFANIKIO",
+ "menuSettings": "MIPANGILIO",
+ "menuAbout": "KUHUSU",
+ "menuHelp": "JINSI YA KUCHEZA",
+ "back": "RUDI",
+ "resumeBtn": "ENDELEA",
+ "exitMenu": "TOKA HADI MENYU KUU",
+ "youCarry": "UMEBEBA",
+ "wayHome": "NJIANI KURUDI NYUMBANI",
+ "shopTitle": "DUKA",
+ "shopText": "Una ★ {n} ({m} za kutumia). Chagua nguvu za ziada za kuanzia mchezo, nyota moja kwa kila moja; gusa tena kurudishiwa nyota. Nguvu ya ziada hubaki imefungwa hadi uiokote katika mchezo, hata kama utakufa humo baadaye.",
+ "locked": "IMEFUNGWA",
+ "achTitle": "MAFANIKIO",
+ "starsN": "★ NYOTA: {n}",
+ "starsNote": "Moja kwa kila mchezo uliotoroka ukiwa umebeba nyota.",
+ "pwUnlocked": "NGUVU ZA ZIADA ZILIZOFUNGULIWA {a}/{b}",
+ "artRecovered": "VITU VYA KALE VILIVYOPATIKANA {a}/{b}",
+ "setTitle": "MIPANGILIO",
+ "setLang": "LUGHA",
+ "setSystem": "Chaguo-msingi la mfumo",
+ "setSize": "UKUBWA WA MAANDISHI",
+ "aboutTitle": "KUHUSU",
+ "aboutBy": "na {name}",
+ "aboutFree": "Mchezo huu wa video ni bure. Niunge mkono kwa kusikiliza muziki wangu:",
+ "version": "Toleo {v}",
+ "toastHome": "SASA IPELEKE NYUMBANI: NJIA YOTE HADI MWANZO",
+ "toastLocked": "IMEFUNGWA",
+ "toastStar": "+1 NYOTA ({n} ZA KUTUMIA)",
+ "toastAch": "FANIKIO JIPYA: {x} ({n}/{m})",
+ "help": "<p>Huwezi kuona. Alisha ulimi wako: wimbi la vitone linakuonyesha kuta kwa muda mfupi. Viumbe vipofu vinaishi hapa na vinasikia kila kitu, kwa hiyo toa mwangwi kwa uangalifu.</p><p>Mchezo ni safari moja ndefu kuelekea kaskazini kupitia ngazi saba. Mlango wa kutokea wa kila ngazi uko upande wa mbali. Katika ngazi ya 7, daraja juu ya utupu, nyota inasubiri, na wakati mwingine kitu cha kale kando yake. Vichukue na urudi njia yote, hadi utoke kwa mlango ulioingilia mara ya kwanza: nyota itakuwa yako kutumia dukani, na kitu cha kale kitaingia kwenye mafanikio yako. Milango inakuruhusu kwenda mbele tu hadi ushike nyota; baada ya hapo, kurudi nyuma tu. Njiani kurudi kuna viumbe zaidi.</p><p>Nguvu za ziada ziko ndani ya ngazi: pita juu yake kuzichukua. Zinadumu hadi ufe. Ukifa, mchezo unaanza upya tangu mwanzo.</p><h3>Kwenye kompyuta</h3><ul><li><b>W A S D</b> tembea, <b>kipanya</b> tazama, shikilia <b>Shift</b> kukimbia (kwa kelele).</li><li><b>Space</b> inatoa mwangwi. <b>Esc</b> inasimamisha. <b>F</b> inabadilisha kuwa skrini nzima.</li></ul><h3>Kwenye simu au kishikwambi</h3><ul><li><b>Gumba la kushoto</b>: buruta kutembea; sukuma nje ya duara la vistari kukimbia.</li><li><b>Gumba la kulia</b>: buruta kutazama; gusa kitufe cha duara <b>MWANGWI</b> kutoa mwangwi.</li></ul><p>Vipokea sauti vinasaidia sana: unaweza kusikia vitu viko wapi.</p>",
+ "pw_vest": [
+  "FULANA YA RISASI",
+  "Mionzi inakudhuru kwa 60% kidogo, lakini una uzito zaidi: unasogea polepole kwa 20% na kuchoka haraka kwa 30%."
+ ],
+ "pw_adren": [
+  "ADRENALINI",
+  "Kitu kikikuwinda karibu, unakimbia haraka zaidi kwa 25%."
+ ],
+ "pw_chalk": [
+  "CHAKI",
+  "Unaacha alama hafifu sakafuni inayoonekana unapotoa mwangwi."
+ ],
+ "pw_ventro": [
+  "KURUSHA SAUTI",
+  "Mwangwi wako unaanzia m 6 mbele yako (au kwenye ukuta ulio njiani). Majini yanakwenda huko, si kwako."
+ ],
+ "pw_rico": [
+  "MRUDIO",
+  "Mwangwi wako unadunda kupita kona tatu na kudumu kidogo zaidi."
+ ],
+ "pw_cloak": [
+  "JOHO LA UTULIVU",
+  "Simama tuli kwa sekunde 2 na hakuna kitakachokusikia ukipumua, hata kikiwa karibu kiasi gani."
+ ],
+ "pw_lens": [
+  "LENZI YA MWANGWI",
+  "Mwangwi wako unakwenda mbele tu, lakini mara mbili zaidi kwa wingi na mbali mara 1.5."
+ ],
+ "pw_whisk": [
+  "SHARUBU",
+  "Kuta zilizo karibu m 2 mbele yako zinang'aa hafifu unaposogea, bila sauti."
+ ],
+ "pw_echo": [
+  "MWANGWI WA MBALI",
+  "Mwangwi wako unafika mbali zaidi."
+ ],
+ "pw_stride": [
+  "HATUA NDEFU",
+  "Unakimbia haraka zaidi."
+ ],
+ "pw_lungs": [
+  "MAPAFU MAKUBWA",
+  "Unaweza kukimbia kwa muda mrefu zaidi."
+ ],
+ "pw_eye": [
+  "JICHO LA KIJANI",
+  "Alama na mlango wa kutokea vinajibu mwangwi wako kutoka mbali zaidi."
+ ],
+ "pw_glow": [
+  "MWANGA WA BAADAYE",
+  "Vitone vya mwangwi wako vinadumu muda mrefu zaidi."
+ ],
+ "pw_dense": [
+  "MWANGWI MZITO",
+  "Mwangwi wako unaonyesha vitone zaidi."
+ ],
+ "pw_tremor": [
+  "HISIA YA MITETEMO",
+  "Unahisi nyayo: chochote kinachotembea ndani ya m 22 kinaacha duara nyekundu sakafuni, hata kupitia kuta."
+ ],
+ "pw_pill": [
+  "KIDONGE CHEKUNDU",
+  "Unaona kila kitu, jinsi kilivyo kweli."
+ ],
+ "pw_star": [
+  "NYOTA",
+  "Itoe nje kupitia mlango ulioingilia na itakuwa yako milele: itumie dukani."
+ ],
+ "pw_memory": [
+  "KUMBUKUMBU",
+  "Kila ukuta unaoguswa na mwangwi wako unabaki na mwanga milele. Mwangwi wako tu."
+ ],
+ "pw_guide": [
+  "MSTARI ELEKEZI",
+  "Mstari wa kijani sakafuni unaonyesha njia ya kutokea kila wakati."
+ ],
+ "pw_negative": [
+  "HASI",
+  "Kuta na pembe zinarudishiana mwangwi kila mahali kukuzunguka, wakati wote: unaona umbo la mahali bila sauti yoyote."
+ ],
+ "pw_crown": [
+  "TAJI",
+  "Umeshinda Echoloc. Unaona kila kitu. Dukani: chukua nguvu zote za ziada na vitu vyote vya kale ulivyo navyo."
+ ],
+ "pw_soles": [
+  "NYAYO LAINI",
+  "Hatua zako ukikimbia zinasikika nusu ya umbali tu."
+ ],
+ "pw_steady": [
+  "PUMZI TULIVU",
+  "Kukosa pumzi hakufifishi wala kutawanya mwangwi wako tena."
+ ],
+ "pw_bright": [
+  "MWANGWI MKALI",
+  "Nukta za mwangwi wako zinang'aa 35% zaidi."
+ ],
+ "pw_wide": [
+  "MACHO MAPANA",
+  "Unaona zaidi kukuzunguka: nyuzi 95 badala ya 75."
+ ],
+ "pw_lucky": [
+  "HIRIZI",
+  "Kuna nguvu ya ziada moja zaidi katika kila ngazi baada ya hii."
+ ],
+ "pw_thread": [
+  "UZI",
+  "Kila mwangwi pia unaonyesha sehemu inayofuata ya njia ya kutokea, kwa kijani, sakafuni."
+ ]
+}

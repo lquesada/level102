@@ -1,0 +1,195 @@
+{
+ "intro1": "Vi ne povas vidi. Klaku per la lango por vidi.",
+ "intro2": "Io loĝas en ĉi tiuj koridoroj. Ankaŭ ĝi ne vidas, sed ĝi aŭdas ĉion. Eĥu tro proksime aŭ tro ofte, kaj ĝi venos. Kiam ĝi kuras, ĝi krias. Kiam ĝi krias, aliaj respondas.",
+ "ctlPC": "<kbd>WASD</kbd> movi · <kbd>MUSO</kbd> rigardi · <kbd>SHIFT</kbd> kuri · <kbd>SPACETO</kbd> eĥolokigi · <kbd>F</kbd> plena ekrano · aŭdiloj rekomendataj",
+ "ctlTouch": "<kbd>MALDEKSTRA DIKFINGRO</kbd> movi · puŝu ĝin preter la strekitan ringon por <kbd>KURI</kbd> · <kbd>DEKSTRA DIKFINGRO</kbd> trenu por rigardi, tuŝetu <kbd>EĤO</kbd> por eĥolokigi · aŭdiloj rekomendataj",
+ "fsNote": "Ludiĝas en plena ekrano, kun la telefono kuŝanta flanke.",
+ "begin": [
+  "KLAKU POR EKI",
+  "TUŜETU POR EKI"
+ ],
+ "prompt": [
+  "PREMU [ SPACETO ]",
+  "TUŜETU [ EĤO ]"
+ ],
+ "info1": "<b>TROVU LA ELIRON</b>",
+ "infoPC": "<kbd>WASD</kbd> movi &nbsp; <kbd>MUSO</kbd> rigardi &nbsp; <kbd>SHIFT</kbd> kuri (laŭte) &nbsp; <kbd>F</kbd> plena ekrano<br><kbd>SPACETO</kbd> eĥolokigi",
+ "infoTouch": "maldekstra dikfingro: movi, puŝu malproksimen por kuri · dekstra dikfingro: trenu por rigardi, tuŝetu EĤO por eĥolokigi",
+ "paused": "PAŬZITA",
+ "pausedMsg": "La mallumo atendas.",
+ "resume": [
+  "KLAKU POR DAŬRIGI",
+  "TUŜETU POR DAŬRIGI"
+ ],
+ "won": "ESKAPINTA",
+ "wonMsg": "Vi trovis la eliron en {s} s.",
+ "toMenu": [
+  "KLAKU POR LA ĈEFA MENUO",
+  "TUŜETU POR LA ĈEFA MENUO"
+ ],
+ "startBtn": "EKLUDI",
+ "again": [
+  "KLAKU POR LUDI DENOVE",
+  "TUŜETU POR LUDI DENOVE"
+ ],
+ "dead": "FORMANĜITA",
+ "deadMsg": "Ĝi aŭdis vin.",
+ "retry": [
+  "KLAKU POR REPROVI",
+  "TUŜETU POR REPROVI"
+ ],
+ "error": "ERARO",
+ "restart": [
+  "KLAKU POR REKOMENCI",
+  "TUŜETU POR REKOMENCI"
+ ],
+ "noGL": "SEN WEBGL",
+ "noGLMsg": "Ĉi tiu retumilo havas WebGL malŝaltita. Provu Chrome aŭ Firefox kun ŝaltita aparatara akcelo.",
+ "rot": "TURNU VIAN TELEFONON FLANKEN",
+ "rotMsg": "Echoloc ludiĝas horizontale.",
+ "rotTap": "Aŭ tuŝetu ĉi tie por ludi en plena ekrano.",
+ "run": "KURI",
+ "look": "TRENU<br>POR RIGARDI",
+ "echo": "EĤO",
+ "level": "NIVELO {n}",
+ "howTo": "KIEL LUDI",
+ "langName": "Esperanto",
+ "menuAch": "ATINGOJ",
+ "menuSettings": "AGORDOJ",
+ "menuAbout": "PRI",
+ "menuHelp": "KIEL LUDI",
+ "back": "REEN",
+ "resumeBtn": "DAŬRIGI",
+ "exitMenu": "AL LA ĈEFA MENUO",
+ "youCarry": "VI PORTAS",
+ "wayHome": "SUR LA VOJO HEJMEN",
+ "shopTitle": "BUTIKO",
+ "shopText": "Vi havas ★ {n} ({m} elspezeblajn). Elektu la plifortigojn kun kiuj komenci la ludon, po unu stelo; tuŝetu denove por rehavi la stelon. Plifortigo restas ŝlosita ĝis vi prenas ĝin en ludo, eĉ en ludo, en kiu vi poste mortas.",
+ "locked": "ŜLOSITA",
+ "achTitle": "ATINGOJ",
+ "starsN": "★ STELOJ: {n}",
+ "starsNote": "Unu por ĉiu ludo, el kiu vi eskapis portante la stelon.",
+ "pwUnlocked": "MALŜLOSITAJ PLIFORTIGOJ {a}/{b}",
+ "artRecovered": "RETROVITAJ ARTEFAKTOJ {a}/{b}",
+ "setTitle": "AGORDOJ",
+ "setLang": "LINGVO",
+ "setSystem": "Laŭ la sistemo",
+ "setSize": "TEKSTOGRANDO",
+ "aboutTitle": "PRI",
+ "aboutBy": "de {name}",
+ "aboutFree": "Ĉi tiu videoludo estas senpaga. Subtenu min aŭskultante mian muzikon:",
+ "version": "Versio {v}",
+ "toastHome": "NUN PORTU ĜIN HEJMEN: LA TUTAN VOJON RETRE",
+ "toastLocked": "ŜLOSITA",
+ "toastStar": "+1 STELO ({n} ELSPEZEBLAJ)",
+ "toastAch": "NOVA ATINGO: {x} ({n}/{m})",
+ "help": "<p>Vi ne povas vidi. Klaku per la lango: ondo de punktoj montras la murojn dum momento. Blindaj estaĵoj loĝas ĉi tie kaj aŭdas ĉion, do eĥu singarde.</p><p>La ludo estas unu longa vojo norden tra sep niveloj. La elira pordo de ĉiu nivelo estas ĉe ĝia malproksima flanko. En nivelo 7, ponto super nenio, atendas stelo, kaj foje artefakto apud ĝi. Prenu ilin kaj iru la tutan vojon reen, el la pordo tra kiu vi unue eniris: la stelon vi elspezas en la butiko, la artefakto iras al viaj atingoj. La pordoj lasas vin iri nur antaŭen ĝis vi tenas la stelon; poste nur reen. Sur la vojo hejmen estas pli da estaĵoj.</p><p>Plifortigoj kuŝas en la niveloj: iru sur ilin por preni ilin. Ili daŭras ĝis vi mortas. Morto rekomencigas la ludon de la komenco.</p><h3>Ĉe komputilo</h3><ul><li><b>W A S D</b> iri, <b>muso</b> rigardi, tenu <b>Shift</b> por kuri (laŭte).</li><li><b>Spaceto</b> eĥolokigas. <b>Esc</b> paŭzigas. <b>F</b> ŝaltas plenan ekranon.</li></ul><h3>Ĉe telefono aŭ tabulkomputilo</h3><ul><li><b>Maldekstra dikfingro</b>: trenu por iri; puŝu preter la strekitan ringon por kuri.</li><li><b>Dekstra dikfingro</b>: trenu por rigardi; tuŝetu la rondan butonon <b>EĤO</b> por eĥolokigi.</li></ul><p>Aŭdiloj multe helpas: vi aŭdas, kie aferoj estas.</p>",
+ "pw_vest": [
+  "PLUMBA VESTO",
+  "Radioaktiveco damaĝas vin 60% malpli, sed vi estas pli peza: vi moviĝas 20% pli malrapide kaj laciĝas 30% pli rapide."
+ ],
+ "pw_adren": [
+  "ADRENALINO",
+  "Dum io ĉasas vin proksime, vi kuras 25% pli rapide."
+ ],
+ "pw_chalk": [
+  "KRETO",
+  "Vi lasas malfortan spuron sur la planko, kiu aperas kiam vi eĥas."
+ ],
+ "pw_ventro": [
+  "PROJEKCIO",
+  "Via eĥo komenciĝas 6 m antaŭ vi (aŭ ĉe la muro survoje). Monstroj iras tien, ne al vi."
+ ],
+ "pw_rico": [
+  "RIKOĈETO",
+  "Via eĥo resaltas ĉirkaŭ tri anguloj kaj restas iom pli longe."
+ ],
+ "pw_cloak": [
+  "MANTELO DE SILENTO",
+  "Staru senmove dum 2 sekundoj, kaj nenio povas aŭdi vin spiri, kiom ajn proksime ĝi estas."
+ ],
+ "pw_lens": [
+  "EĤOLENSO",
+  "Via eĥo iras nur antaŭen, sed duoble pli densa kaj 1,5-oble pli malproksimen."
+ ],
+ "pw_whisk": [
+  "VIBRISOJ",
+  "Muroj ene de ĉirkaŭ 2 m antaŭ vi malforte lumas dum vi moviĝas, sen sono."
+ ],
+ "pw_echo": [
+  "MALPROKSIMA EĤO",
+  "Via eĥo atingas pli malproksimen."
+ ],
+ "pw_stride": [
+  "LONGA PAŜO",
+  "Vi kuras pli rapide."
+ ],
+ "pw_lungs": [
+  "PROFUNDAJ PULMOJ",
+  "Vi povas kuri pli longe."
+ ],
+ "pw_eye": [
+  "VERDA OKULO",
+  "Ŝildoj kaj la eliro respondas al via eĥo de pli malproksime."
+ ],
+ "pw_glow": [
+  "POSTBRILO",
+  "Viaj eĥopunktoj restas pli longe."
+ ],
+ "pw_dense": [
+  "DENSA EĤO",
+  "Via eĥo montras pli da punktoj."
+ ],
+ "pw_tremor": [
+  "TREMSENTO",
+  "Vi sentas paŝojn: ĉio, kio iras ene de 22 m, lasas ruĝajn ringojn sur la planko, eĉ tra muroj."
+ ],
+ "pw_pill": [
+  "RUĜA PILOLO",
+  "Vi vidas ĉion, kia ĝi vere estas."
+ ],
+ "pw_star": [
+  "STELO",
+  "Portu ĝin el la pordo tra kiu vi eniris, kaj ĝi estas via por ĉiam: elspezu ĝin en la butiko."
+ ],
+ "pw_memory": [
+  "MEMORO",
+  "Ĉiu muro, kiun via eĥo tuŝas, restas lumigita por ĉiam. Nur via eĥo."
+ ],
+ "pw_guide": [
+  "GVIDLINIO",
+  "Verda linio sur la planko ĉiam montras la elirvojon."
+ ],
+ "pw_negative": [
+  "NEGATIVO",
+  "Muroj kaj anguloj ĉiam eĥas unu sur la alian ĉie ĉirkaŭ vi: vi vidas la formon de la loko sen ia sono."
+ ],
+ "pw_crown": [
+  "KRONO",
+  "Vi venkis Echoloc. Vi vidas ĉion. En la butiko: prenu ĉiujn plifortigojn kaj ĉiujn artefaktojn, kiujn vi havas."
+ ],
+ "pw_soles": [
+  "MOLAJ PLANDUMOJ",
+  "Viajn kurpaŝojn oni aŭdas nur duone tiel malproksime."
+ ],
+ "pw_steady": [
+  "TRANKVILA SPIRO",
+  "Spirmanko ne plu malklarigas aŭ disĵetas vian eĥon."
+ ],
+ "pw_bright": [
+  "HELA EĤO",
+  "La punktoj de via eĥo estas 35% pli helaj."
+ ],
+ "pw_wide": [
+  "LARĜAJ OKULOJ",
+  "Vi vidas pli ĉirkaŭ vi: 95 gradojn anstataŭ 75."
+ ],
+ "pw_lucky": [
+  "AMULETO",
+  "En ĉiu nivelo post ĉi tiu kuŝas unu plia plifortigo."
+ ],
+ "pw_thread": [
+  "FADENO",
+  "Ĉiu eĥo ankaŭ montras la sekvan pecon de la vojo eksteren, verde, sur la planko."
+ ]
+}

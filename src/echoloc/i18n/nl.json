@@ -1,0 +1,195 @@
+{
+ "intro1": "Je kunt niet zien. Klak met je tong om te zien.",
+ "intro2": "Er leeft iets in deze gangen. Het kan ook niet zien, maar het hoort alles. Echo te dichtbij of te vaak, en het komt. Als het rent, schreeuwt het. Als het schreeuwt, antwoorden anderen.",
+ "ctlPC": "<kbd>WASD</kbd> lopen · <kbd>MUIS</kbd> kijken · <kbd>SHIFT</kbd> rennen · <kbd>SPATIE</kbd> echolocatie · <kbd>F</kbd> volledig scherm · koptelefoon aanbevolen",
+ "ctlTouch": "<kbd>LINKERDUIM</kbd> lopen · duw voorbij de stippelring om te <kbd>RENNEN</kbd> · <kbd>RECHTERDUIM</kbd> sleep om te kijken, tik op <kbd>ECHO</kbd> voor echolocatie · koptelefoon aanbevolen",
+ "fsNote": "Speel op volledig scherm, met de telefoon dwars.",
+ "begin": [
+  "KLIK OM TE BEGINNEN",
+  "TIK OM TE BEGINNEN"
+ ],
+ "prompt": [
+  "DRUK OP [ SPATIE ]",
+  "TIK OP [ ECHO ]"
+ ],
+ "info1": "<b>VIND DE UITGANG</b>",
+ "infoPC": "<kbd>WASD</kbd> lopen &nbsp; <kbd>MUIS</kbd> kijken &nbsp; <kbd>SHIFT</kbd> rennen (luid) &nbsp; <kbd>F</kbd> volledig scherm<br><kbd>SPATIE</kbd> echolocatie",
+ "infoTouch": "linkerduim: lopen, ver duwen om te rennen · rechterduim: sleep om te kijken, tik op ECHO voor echolocatie",
+ "paused": "GEPAUZEERD",
+ "pausedMsg": "Het donker wacht.",
+ "resume": [
+  "KLIK OM VERDER TE GAAN",
+  "TIK OM VERDER TE GAAN"
+ ],
+ "won": "ONTSNAPT",
+ "wonMsg": "Je vond de uitgang in {s} s.",
+ "toMenu": [
+  "KLIK VOOR HET HOOFDMENU",
+  "TIK VOOR HET HOOFDMENU"
+ ],
+ "startBtn": "START SPEL",
+ "again": [
+  "KLIK OM OPNIEUW TE SPELEN",
+  "TIK OM OPNIEUW TE SPELEN"
+ ],
+ "dead": "VERSLONDEN",
+ "deadMsg": "Het hoorde je.",
+ "retry": [
+  "KLIK OM HET OPNIEUW TE PROBEREN",
+  "TIK OM HET OPNIEUW TE PROBEREN"
+ ],
+ "error": "FOUT",
+ "restart": [
+  "KLIK OM OPNIEUW TE STARTEN",
+  "TIK OM OPNIEUW TE STARTEN"
+ ],
+ "noGL": "GEEN WEBGL",
+ "noGLMsg": "In deze browser staat WebGL uit. Probeer Chrome of Firefox met hardwareversnelling aan.",
+ "rot": "DRAAI JE TELEFOON DWARS",
+ "rotMsg": "Echoloc speel je liggend.",
+ "rotTap": "Of tik hier om op volledig scherm te spelen.",
+ "run": "REN",
+ "look": "SLEEP<br>OM TE KIJKEN",
+ "echo": "ECHO",
+ "level": "NIVEAU {n}",
+ "howTo": "ZO SPEEL JE",
+ "langName": "Nederlands",
+ "menuAch": "PRESTATIES",
+ "menuSettings": "INSTELLINGEN",
+ "menuAbout": "OVER",
+ "menuHelp": "ZO SPEEL JE",
+ "back": "TERUG",
+ "resumeBtn": "VERDER",
+ "exitMenu": "NAAR HOOFDMENU",
+ "youCarry": "JE DRAAGT",
+ "wayHome": "OP WEG NAAR HUIS",
+ "shopTitle": "WINKEL",
+ "shopText": "Je hebt ★ {n} ({m} te besteden). Kies de power-ups waarmee je het spel begint, één ster per stuk; tik nog eens om de ster terug te krijgen. Een power-up blijft vergrendeld tot je hem in een spel oppakt, ook als je daarna sterft.",
+ "locked": "VERGRENDELD",
+ "achTitle": "PRESTATIES",
+ "starsN": "★ STERREN: {n}",
+ "starsNote": "Eén voor elk spel waarin je ontsnapte met de ster.",
+ "pwUnlocked": "POWER-UPS ONTGRENDELD {a}/{b}",
+ "artRecovered": "ARTEFACTEN TERUGGEVONDEN {a}/{b}",
+ "setTitle": "INSTELLINGEN",
+ "setLang": "TAAL",
+ "setSystem": "Systeemstandaard",
+ "setSize": "TEKSTGROOTTE",
+ "aboutTitle": "OVER",
+ "aboutBy": "door {name}",
+ "aboutFree": "Deze videogame is gratis. Steun me door naar mijn muziek te luisteren:",
+ "version": "Versie {v}",
+ "toastHome": "BRENG HET NU THUIS: HELEMAAL TERUG",
+ "toastLocked": "VERGRENDELD",
+ "toastStar": "+1 STER ({n} TE BESTEDEN)",
+ "toastAch": "NIEUWE PRESTATIE: {x} ({n}/{m})",
+ "help": "<p>Je kunt niet zien. Klak met je tong: een golf van stippen toont even de muren. Hier leven blinde wezens en ze horen alles, dus echo voorzichtig.</p><p>Het spel is één lange weg naar het noorden door zeven niveaus. De uitgang van elk niveau ligt aan de overkant. Op niveau 7, een brug over het niets, wacht een ster, en soms een artefact ernaast. Pak ze en loop helemaal terug, naar buiten door de deur waar je binnenkwam: de ster mag je uitgeven in de winkel, het artefact komt bij je prestaties. De deuren laten je alleen vooruit tot je de ster hebt; daarna alleen terug. Op de weg naar huis zijn er meer wezens.</p><p>Power-ups liggen in de niveaus: loop eroverheen om ze te pakken. Ze blijven tot je sterft. Sterven begint het spel opnieuw vanaf het begin.</p><h3>Op een computer</h3><ul><li><b>W A S D</b> lopen, <b>muis</b> kijken, houd <b>Shift</b> ingedrukt om te rennen (luid).</li><li><b>Spatie</b> voor echolocatie. <b>Esc</b> pauzeert. <b>F</b> schakelt naar volledig scherm.</li></ul><h3>Op een telefoon of tablet</h3><ul><li><b>Linkerduim</b>: sleep om te lopen; duw voorbij de stippelring om te rennen.</li><li><b>Rechterduim</b>: sleep om te kijken; tik op de ronde <b>ECHO</b>-knop voor echolocatie.</li></ul><p>Een koptelefoon helpt veel: je hoort waar dingen zijn.</p>",
+ "pw_vest": [
+  "LODEN VEST",
+  "Radioactiviteit doet je 60% minder pijn, maar je bent zwaarder: je beweegt 20% trager en raakt 30% sneller moe."
+ ],
+ "pw_adren": [
+  "ADRENALINE",
+  "Terwijl iets je in de buurt opjaagt, ren je 25% sneller."
+ ],
+ "pw_chalk": [
+  "KRIJT",
+  "Je laat een vaag spoor op de vloer achter dat oplicht als je echoot."
+ ],
+ "pw_ventro": [
+  "PROJECTIE",
+  "Je echo begint 6 m voor je (of bij de muur die in de weg staat). Monsters gaan daarheen, niet naar jou."
+ ],
+ "pw_rico": [
+  "RICOCHET",
+  "Je echo kaatst om drie hoeken en blijft iets langer."
+ ],
+ "pw_cloak": [
+  "STILLE MANTEL",
+  "Sta 2 seconden stil en niets hoort je ademen, hoe dichtbij het ook is."
+ ],
+ "pw_lens": [
+  "ECHOLENS",
+  "Je echo gaat alleen vooruit, maar twee keer zo dicht en 1,5x zo ver."
+ ],
+ "pw_whisk": [
+  "SNORHAREN",
+  "Muren tot zo'n 2 m voor je gloeien zwak op terwijl je beweegt, zonder geluid."
+ ],
+ "pw_echo": [
+  "VERRE ECHO",
+  "Je echo reikt verder."
+ ],
+ "pw_stride": [
+  "LANGE PAS",
+  "Je rent sneller."
+ ],
+ "pw_lungs": [
+  "DIEPE LONGEN",
+  "Je kunt langer rennen."
+ ],
+ "pw_eye": [
+  "GROEN OOG",
+  "Borden en de uitgang antwoorden je echo van verder weg."
+ ],
+ "pw_glow": [
+  "NAGLOED",
+  "Je echostippen blijven langer."
+ ],
+ "pw_dense": [
+  "DICHTE ECHO",
+  "Je echo toont meer stippen."
+ ],
+ "pw_tremor": [
+  "TRILLINGSZIN",
+  "Je voelt voetstappen: alles wat binnen 22 m loopt laat rode ringen op de vloer achter, zelfs door muren heen."
+ ],
+ "pw_pill": [
+  "RODE PIL",
+  "Je ziet alles, zoals het echt is."
+ ],
+ "pw_star": [
+  "STER",
+  "Draag hem naar buiten door de deur waar je binnenkwam en hij is voorgoed van jou: geef hem uit in de winkel."
+ ],
+ "pw_memory": [
+  "GEHEUGEN",
+  "Elke muur die je echo raakt, blijft voorgoed verlicht. Alleen je echo."
+ ],
+ "pw_guide": [
+  "GIDSLIJN",
+  "Een groene lijn op de vloer wijst altijd de weg naar buiten."
+ ],
+ "pw_negative": [
+  "NEGATIEF",
+  "Muren en hoeken echoën voortdurend op elkaar, overal om je heen: je ziet de vorm van de plek zonder een geluid te maken."
+ ],
+ "pw_crown": [
+  "KROON",
+  "Je hebt Echoloc verslagen. Je ziet alles. In de winkel: neem alle power-ups en alle artefacten die je hebt."
+ ],
+ "pw_soles": [
+  "ZACHTE ZOLEN",
+  "Je rennende stappen zijn maar half zo ver te horen."
+ ],
+ "pw_steady": [
+  "RUSTIGE ADEM",
+  "Buiten adem zijn maakt je echo niet langer wazig of verstrooid."
+ ],
+ "pw_bright": [
+  "HELDERE ECHO",
+  "Je echostippen zijn 35% helderder."
+ ],
+ "pw_wide": [
+  "WIJDE OGEN",
+  "Je ziet meer om je heen: 95 graden in plaats van 75."
+ ],
+ "pw_lucky": [
+  "GELUKSBRENGER",
+  "In elk niveau na dit niveau ligt één power-up extra."
+ ],
+ "pw_thread": [
+  "DRAAD",
+  "Elke echo toont ook het volgende stuk van de weg naar buiten, in het groen, op de vloer."
+ ]
+}

@@ -1,0 +1,195 @@
+{
+ "intro1": "Tu nematai. Spragtelk liežuviu, kad pamatytum.",
+ "intro2": "Šiuose koridoriuose kažkas gyvena. Jis irgi nemato, bet girdi viską. Aidėk per arti ar per dažnai, ir jis ateis. Kai bėga, jis klykia. Kai klykia, atsiliepia kiti.",
+ "ctlPC": "<kbd>WASD</kbd> judėti · <kbd>PELĖ</kbd> žvalgytis · <kbd>SHIFT</kbd> bėgti · <kbd>TARPAS</kbd> echolokacija · <kbd>F</kbd> visas ekranas · rekomenduojamos ausinės",
+ "ctlTouch": "<kbd>KAIRYSIS NYKŠTYS</kbd> judėti · stumk už punktyrinio rato, kad <kbd>BĖGTUM</kbd> · <kbd>DEŠINYSIS NYKŠTYS</kbd> vilk, kad žvalgytumeis, bakstelk <kbd>AIDAS</kbd> echolokacijai · rekomenduojamos ausinės",
+ "fsNote": "Žaidžiama visame ekrane, telefoną laikant gulsčiai.",
+ "begin": [
+  "SPUSTELĖK, KAD PRADĖTUM",
+  "BAKSTELĖK, KAD PRADĖTUM"
+ ],
+ "prompt": [
+  "SPAUSK [ TARPAS ]",
+  "BAKSTELK [ AIDAS ]"
+ ],
+ "info1": "<b>RASK IŠĖJIMĄ</b>",
+ "infoPC": "<kbd>WASD</kbd> judėti &nbsp; <kbd>PELĖ</kbd> žvalgytis &nbsp; <kbd>SHIFT</kbd> bėgti (garsiai) &nbsp; <kbd>F</kbd> visas ekranas<br><kbd>TARPAS</kbd> echolokacija",
+ "infoTouch": "kairysis nykštys: judėti, stumk toli, kad bėgtum · dešinysis nykštys: vilk, kad žvalgytumeis, bakstelk AIDAS echolokacijai",
+ "paused": "PAUZĖ",
+ "pausedMsg": "Tamsa laukia.",
+ "resume": [
+  "SPUSTELĖK, KAD TĘSTUM",
+  "BAKSTELĖK, KAD TĘSTUM"
+ ],
+ "won": "PABĖGAI",
+ "wonMsg": "Išėjimą radai per {s} s.",
+ "toMenu": [
+  "SPUSTELĖK – Į PAGRINDINĮ MENIU",
+  "BAKSTELĖK – Į PAGRINDINĮ MENIU"
+ ],
+ "startBtn": "PRADĖTI ŽAIDIMĄ",
+ "again": [
+  "SPUSTELĖK, KAD ŽAISTUM DAR KARTĄ",
+  "BAKSTELĖK, KAD ŽAISTUM DAR KARTĄ"
+ ],
+ "dead": "PRARYTAS",
+ "deadMsg": "Jis tave išgirdo.",
+ "retry": [
+  "SPUSTELĖK, KAD BANDYTUM DAR",
+  "BAKSTELĖK, KAD BANDYTUM DAR"
+ ],
+ "error": "KLAIDA",
+ "restart": [
+  "SPUSTELĖK, KAD PALEISTUM IŠ NAUJO",
+  "BAKSTELĖK, KAD PALEISTUM IŠ NAUJO"
+ ],
+ "noGL": "NĖRA WEBGL",
+ "noGLMsg": "Šioje naršyklėje WebGL išjungtas. Pabandyk Chrome arba Firefox su įjungtu aparatiniu spartinimu.",
+ "rot": "PASUK TELEFONĄ GULSČIAI",
+ "rotMsg": "Echoloc žaidžiamas gulsčiai.",
+ "rotTap": "Arba bakstelk čia, kad žaistum visame ekrane.",
+ "run": "BĖK",
+ "look": "VILK<br>ŽVALGYTIS",
+ "echo": "AIDAS",
+ "level": "LYGIS {n}",
+ "howTo": "KAIP ŽAISTI",
+ "langName": "Lietuvių",
+ "menuAch": "PASIEKIMAI",
+ "menuSettings": "NUSTATYMAI",
+ "menuAbout": "APIE",
+ "menuHelp": "KAIP ŽAISTI",
+ "back": "ATGAL",
+ "resumeBtn": "TĘSTI",
+ "exitMenu": "Į PAGRINDINĮ MENIU",
+ "youCarry": "TU NEŠI",
+ "wayHome": "KELYJE NAMO",
+ "shopTitle": "PARDUOTUVĖ",
+ "shopText": "Turi ★ {n} (išleisti galima {m}). Pasirink galias, su kuriomis pradėsi žaidimą, po vieną žvaigždę kiekvienai; bakstelk dar kartą, kad atgautum žvaigždę. Galia lieka užrakinta, kol jos nepaimi žaidime, net jei po to jame žūsti.",
+ "locked": "UŽRAKINTA",
+ "achTitle": "PASIEKIMAI",
+ "starsN": "★ ŽVAIGŽDĖS: {n}",
+ "starsNote": "Po vieną už kiekvieną žaidimą, iš kurio pabėgai su žvaigžde.",
+ "pwUnlocked": "ATRAKINTOS GALIOS {a}/{b}",
+ "artRecovered": "RASTI ARTEFAKTAI {a}/{b}",
+ "setTitle": "NUSTATYMAI",
+ "setLang": "KALBA",
+ "setSystem": "Pagal sistemą",
+ "setSize": "TEKSTO DYDIS",
+ "aboutTitle": "APIE",
+ "aboutBy": "sukūrė {name}",
+ "aboutFree": "Šis vaizdo žaidimas nemokamas. Paremk mane klausydamasis mano muzikos:",
+ "version": "Versija {v}",
+ "toastHome": "DABAR NEŠK JĄ NAMO: VISĄ KELIĄ ATGAL",
+ "toastLocked": "UŽRAKINTA",
+ "toastStar": "+1 ŽVAIGŽDĖ (IŠLEISTI GALIMA {n})",
+ "toastAch": "NAUJAS PASIEKIMAS: {x} ({n}/{m})",
+ "help": "<p>Tu nematai. Spragtelk liežuviu: taškelių banga akimirkai parodo sienas. Čia gyvena aklos būtybės ir girdi viską, tad aidėk atsargiai.</p><p>Žaidimas – vienas ilgas kelias į šiaurę per septynis lygius. Kiekvieno lygio išėjimo durys yra tolimajame jo gale. 7 lygyje, ant tilto virš nieko, laukia žvaigždė, o kartais šalia jos ir artefaktas. Pasiimk juos ir eik visą kelią atgal, pro duris, pro kurias įėjai pirmą kartą: žvaigždę galėsi išleisti parduotuvėje, artefaktas atsidurs tavo pasiekimuose. Durys leidžia eiti tik pirmyn, kol neturi žvaigždės; po to – tik atgal. Kelyje namo būtybių daugiau.</p><p>Galios guli lygiuose: užeik ant jų, kad paimtum. Jos veikia, kol žūsti. Žuvus žaidimas prasideda iš naujo nuo pradžios.</p><h3>Kompiuteryje</h3><ul><li><b>W A S D</b> eiti, <b>pelė</b> žvalgytis, laikyk <b>Shift</b>, kad bėgtum (garsiai).</li><li><b>Tarpas</b> – echolokacija. <b>Esc</b> – pauzė. <b>F</b> – visas ekranas.</li></ul><h3>Telefone ar planšetėje</h3><ul><li><b>Kairysis nykštys</b>: vilk, kad eitum; stumk už punktyrinio rato, kad bėgtum.</li><li><b>Dešinysis nykštys</b>: vilk, kad žvalgytumeis; bakstelk apvalų mygtuką <b>AIDAS</b> echolokacijai.</li></ul><p>Ausinės labai padeda: girdi, kur kas yra.</p>",
+ "pw_vest": [
+  "ŠVINO LIEMENĖ",
+  "Radioaktyvumas tau kenkia 60 % mažiau, bet esi sunkesnis: judi 20 % lėčiau ir pavargsti 30 % greičiau."
+ ],
+ "pw_adren": [
+  "ADRENALINAS",
+  "Kol kažkas netoliese tave medžioja, bėgi 25 % greičiau."
+ ],
+ "pw_chalk": [
+  "KREIDA",
+  "Ant grindų paliki blankų pėdsaką, kuris pasirodo aidint."
+ ],
+ "pw_ventro": [
+  "PROJEKCIJA",
+  "Tavo aidas prasideda 6 m priešais tave (arba prie kelyje esančios sienos). Pabaisos eina ten, o ne pas tave."
+ ],
+ "pw_rico": [
+  "RIKOŠETAS",
+  "Tavo aidas atsimuša už trijų kampų ir išlieka šiek tiek ilgiau."
+ ],
+ "pw_cloak": [
+  "RAMYBĖS APSIAUSTAS",
+  "Stovėk nejudėdamas 2 sekundes, ir niekas negirdės tavo kvėpavimo, kad ir kaip arti būtų."
+ ],
+ "pw_lens": [
+  "AIDO LĘŠIS",
+  "Tavo aidas sklinda tik į priekį, bet dvigubai tankesnis ir 1,5 karto toliau."
+ ],
+ "pw_whisk": [
+  "ŪSAI",
+  "Sienos maždaug 2 m priešais tave blankiai švyti, kol judi, be jokio garso."
+ ],
+ "pw_echo": [
+  "TOLIMAS AIDAS",
+  "Tavo aidas siekia toliau."
+ ],
+ "pw_stride": [
+  "PLATUS ŽINGSNIS",
+  "Bėgi greičiau."
+ ],
+ "pw_lungs": [
+  "GILŪS PLAUČIAI",
+  "Gali bėgti ilgiau."
+ ],
+ "pw_eye": [
+  "ŽALIA AKIS",
+  "Ženklai ir išėjimas atsiliepia į tavo aidą iš toliau."
+ ],
+ "pw_glow": [
+  "PAŠVAISTĖ",
+  "Tavo aido taškeliai išlieka ilgiau."
+ ],
+ "pw_dense": [
+  "TANKUS AIDAS",
+  "Tavo aidas parodo daugiau taškelių."
+ ],
+ "pw_tremor": [
+  "VIRPESIŲ JUSLĖ",
+  "Jauti žingsnius: viskas, kas vaikšto 22 m spinduliu, palieka raudonus ratus ant grindų, net pro sienas."
+ ],
+ "pw_pill": [
+  "RAUDONA PILIULĖ",
+  "Matai viską taip, kaip yra iš tikrųjų."
+ ],
+ "pw_star": [
+  "ŽVAIGŽDĖ",
+  "Išnešk ją pro duris, pro kurias įėjai, ir ji tavo visam laikui: išleisk ją parduotuvėje."
+ ],
+ "pw_memory": [
+  "ATMINTIS",
+  "Kiekviena siena, kurią paliečia tavo aidas, lieka apšviesta visam laikui. Tik tavo aidas."
+ ],
+ "pw_guide": [
+  "KELRODĖ LINIJA",
+  "Žalia linija ant grindų visada rodo kelią lauk."
+ ],
+ "pw_negative": [
+  "NEGATYVAS",
+  "Sienos ir kampai nuolat atmuša aidą vieni į kitus visur aplink tave: matai vietos formą neišleisdamas nė garso."
+ ],
+ "pw_crown": [
+  "KARŪNA",
+  "Tu įveikei Echoloc. Matai viską. Parduotuvėje: pasiimk visas galias ir visus turimus artefaktus."
+ ],
+ "pw_soles": [
+  "MINKŠTI PADAI",
+  "Tavo bėgimo žingsniai girdimi tik perpus mažesniu atstumu."
+ ],
+ "pw_steady": [
+  "RAMUS KVĖPAVIMAS",
+  "Uždusimas nebeišlieja ir nebeišsklaido tavo aido."
+ ],
+ "pw_bright": [
+  "RYŠKUS AIDAS",
+  "Tavo aido taškeliai 35 % ryškesni."
+ ],
+ "pw_wide": [
+  "PLAČIOS AKYS",
+  "Aplink save matai daugiau: 95 laipsnius vietoj 75."
+ ],
+ "pw_lucky": [
+  "TALISMANAS",
+  "Kiekviename lygyje po šio guli dar viena galia."
+ ],
+ "pw_thread": [
+  "SIŪLAS",
+  "Kiekvienas aidas taip pat parodo kitą kelio lauk atkarpą, žaliai, ant grindų."
+ ]
+}

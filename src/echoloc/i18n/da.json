@@ -1,0 +1,195 @@
+{
+ "intro1": "Du kan ikke se. Klik med tungen for at se.",
+ "intro2": "Noget lever i disse gange. Det kan heller ikke se, men det hører alt. Ekko for tæt på eller for tit, og det kommer. Når det løber, skriger det. Når det skriger, svarer andre.",
+ "ctlPC": "<kbd>WASD</kbd> gå · <kbd>MUS</kbd> se · <kbd>SHIFT</kbd> løb · <kbd>MELLEMRUM</kbd> ekkolokalisér · <kbd>F</kbd> fuld skærm · høretelefoner anbefales",
+ "ctlTouch": "<kbd>VENSTRE TOMMEL</kbd> gå · skub forbi den stiplede ring for at <kbd>LØBE</kbd> · <kbd>HØJRE TOMMEL</kbd> træk for at se, tryk på <kbd>EKKO</kbd> for at ekkolokalisere · høretelefoner anbefales",
+ "fsNote": "Spilles i fuld skærm, med telefonen på tværs.",
+ "begin": [
+  "KLIK FOR AT BEGYNDE",
+  "TRYK FOR AT BEGYNDE"
+ ],
+ "prompt": [
+  "TRYK [ MELLEMRUM ]",
+  "TRYK [ EKKO ]"
+ ],
+ "info1": "<b>FIND UDGANGEN</b>",
+ "infoPC": "<kbd>WASD</kbd> gå &nbsp; <kbd>MUS</kbd> se &nbsp; <kbd>SHIFT</kbd> løb (larmer) &nbsp; <kbd>F</kbd> fuld skærm<br><kbd>MELLEMRUM</kbd> ekkolokalisér",
+ "infoTouch": "venstre tommel: gå, skub langt for at løbe · højre tommel: træk for at se, tryk på EKKO for at ekkolokalisere",
+ "paused": "PAUSE",
+ "pausedMsg": "Mørket venter.",
+ "resume": [
+  "KLIK FOR AT FORTSÆTTE",
+  "TRYK FOR AT FORTSÆTTE"
+ ],
+ "won": "UNDSLUPPET",
+ "wonMsg": "Du fandt udgangen på {s} s.",
+ "toMenu": [
+  "KLIK FOR HOVEDMENUEN",
+  "TRYK FOR HOVEDMENUEN"
+ ],
+ "startBtn": "START SPILLET",
+ "again": [
+  "KLIK FOR AT SPILLE IGEN",
+  "TRYK FOR AT SPILLE IGEN"
+ ],
+ "dead": "SLUGT",
+ "deadMsg": "Det hørte dig.",
+ "retry": [
+  "KLIK FOR AT PRØVE IGEN",
+  "TRYK FOR AT PRØVE IGEN"
+ ],
+ "error": "FEJL",
+ "restart": [
+  "KLIK FOR AT GENSTARTE",
+  "TRYK FOR AT GENSTARTE"
+ ],
+ "noGL": "INGEN WEBGL",
+ "noGLMsg": "Denne browser har WebGL slået fra. Prøv Chrome eller Firefox med hardwareacceleration slået til.",
+ "rot": "VEND TELEFONEN PÅ TVÆRS",
+ "rotMsg": "Echoloc spilles i liggende format.",
+ "rotTap": "Eller tryk her for at spille i fuld skærm.",
+ "run": "LØB",
+ "look": "TRÆK FOR<br>AT SE",
+ "echo": "EKKO",
+ "level": "NIVEAU {n}",
+ "howTo": "SÅDAN SPILLER DU",
+ "langName": "Dansk",
+ "menuAch": "PRÆSTATIONER",
+ "menuSettings": "INDSTILLINGER",
+ "menuAbout": "OM",
+ "menuHelp": "SÅDAN SPILLER DU",
+ "back": "TILBAGE",
+ "resumeBtn": "FORTSÆT",
+ "exitMenu": "TIL HOVEDMENUEN",
+ "youCarry": "DU BÆRER",
+ "wayHome": "PÅ VEJ HJEM",
+ "shopTitle": "BUTIK",
+ "shopText": "Du har ★ {n} ({m} at bruge). Vælg de power-ups, du vil starte spillet med, én stjerne hver; tryk igen for at få stjernen tilbage. En power-up forbliver låst, indtil du har samlet den op i et spil, også et hvor du derefter dør.",
+ "locked": "LÅST",
+ "achTitle": "PRÆSTATIONER",
+ "starsN": "★ STJERNER: {n}",
+ "starsNote": "Én for hvert spil, du slap ud af med stjernen.",
+ "pwUnlocked": "POWER-UPS LÅST OP {a}/{b}",
+ "artRecovered": "ARTEFAKTER BJÆRGET {a}/{b}",
+ "setTitle": "INDSTILLINGER",
+ "setLang": "SPROG",
+ "setSystem": "Systemstandard",
+ "setSize": "TEKSTSTØRRELSE",
+ "aboutTitle": "OM",
+ "aboutBy": "af {name}",
+ "aboutFree": "Dette videospil er gratis. Støt mig ved at lytte til min musik:",
+ "version": "Version {v}",
+ "toastHome": "TAG DEN NU MED HJEM: HELE VEJEN TILBAGE",
+ "toastLocked": "LÅST",
+ "toastStar": "+1 STJERNE ({n} AT BRUGE)",
+ "toastAch": "NY PRÆSTATION: {x} ({n}/{m})",
+ "help": "<p>Du kan ikke se. Klik med tungen: en bølge af prikker viser væggene et øjeblik. Her lever blinde væsner, og de hører alt, så ekko med omtanke.</p><p>Spillet er én lang vej mod nord gennem syv niveauer. Hvert niveaus udgangsdør er i den fjerne ende. På niveau 7, en bro over ingenting, venter en stjerne, og nogle gange en artefakt ved siden af. Tag dem og gå hele vejen tilbage, ud gennem den dør, du først kom ind ad: stjernen kan du bruge i butikken, artefakten kommer med i dine præstationer. Dørene lader dig kun gå fremad, indtil du har stjernen; derefter kun tilbage. På vej hjem er der flere væsner.</p><p>Power-ups ligger på niveauerne: gå hen over dem for at tage dem. De varer, indtil du dør. Når du dør, starter spillet forfra.</p><h3>På en computer</h3><ul><li><b>W A S D</b> gå, <b>mus</b> se, hold <b>Shift</b> for at løbe (larmer).</li><li><b>Mellemrum</b> ekkolokaliserer. <b>Esc</b> pauser. <b>F</b> skifter til fuld skærm.</li></ul><h3>På telefon eller tablet</h3><ul><li><b>Venstre tommel</b>: træk for at gå; skub forbi den stiplede ring for at løbe.</li><li><b>Højre tommel</b>: træk for at se; tryk på den runde <b>EKKO</b>-knap for at ekkolokalisere.</li></ul><p>Høretelefoner hjælper meget: du kan høre, hvor tingene er.</p>",
+ "pw_vest": [
+  "BLYVEST",
+  "Radioaktivitet skader dig 60 % mindre, men du er tungere: du bevæger dig 20 % langsommere og bliver træt 30 % hurtigere."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Mens noget jager dig i nærheden, løber du 25 % hurtigere."
+ ],
+ "pw_chalk": [
+  "KRIDT",
+  "Du efterlader et svagt spor på gulvet, som ses, når du ekkoer."
+ ],
+ "pw_ventro": [
+  "PROJEKTION",
+  "Dit ekko starter 6 m foran dig (eller ved væggen i vejen). Monstrene går derhen, ikke hen til dig."
+ ],
+ "pw_rico": [
+  "RIKOCHET",
+  "Dit ekko springer rundt om tre hjørner og bliver lidt længere."
+ ],
+ "pw_cloak": [
+  "STILLE KAPPE",
+  "Stå stille i 2 sekunder, så kan intet høre dig ånde, uanset hvor tæt det er."
+ ],
+ "pw_lens": [
+  "EKKOLINSE",
+  "Dit ekko går kun fremad, men dobbelt så tæt og 1,5 gange så langt."
+ ],
+ "pw_whisk": [
+  "KNURHÅR",
+  "Vægge cirka 2 m foran dig gløder svagt, mens du bevæger dig, uden en lyd."
+ ],
+ "pw_echo": [
+  "FJERNT EKKO",
+  "Dit ekko når længere."
+ ],
+ "pw_stride": [
+  "LANGE SKRIDT",
+  "Du løber hurtigere."
+ ],
+ "pw_lungs": [
+  "DYBE LUNGER",
+  "Du kan løbe længere."
+ ],
+ "pw_eye": [
+  "GRØNT ØJE",
+  "Skilte og udgangen svarer på dit ekko længere væk fra."
+ ],
+ "pw_glow": [
+  "EFTERGLØD",
+  "Dine ekkoprikker bliver længere."
+ ],
+ "pw_dense": [
+  "TÆT EKKO",
+  "Dit ekko viser flere prikker."
+ ],
+ "pw_tremor": [
+  "RYSTESANS",
+  "Du mærker fodtrin: alt, der går inden for 22 m, efterlader røde ringe på gulvet, selv gennem vægge."
+ ],
+ "pw_pill": [
+  "RØD PILLE",
+  "Du ser alt, som det virkelig er."
+ ],
+ "pw_star": [
+  "STJERNE",
+  "Bær den ud ad den dør, du kom ind ad, så er den din for altid: brug den i butikken."
+ ],
+ "pw_memory": [
+  "HUKOMMELSE",
+  "Hver væg, dit ekko rører, forbliver oplyst for altid. Kun dit ekko."
+ ],
+ "pw_guide": [
+  "LEDELINJE",
+  "En grøn linje på gulvet viser altid vejen ud."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Vægge og hjørner kaster hele tiden ekko på hinanden overalt omkring dig: du ser stedets form uden en lyd."
+ ],
+ "pw_crown": [
+  "KRONE",
+  "Du har klaret Echoloc. Du ser alt. I butikken: tag alle de power-ups og artefakter, du har."
+ ],
+ "pw_soles": [
+  "BLØDE SÅLER",
+  "Dine løbeskridt kan kun høres halvt så langt væk."
+ ],
+ "pw_steady": [
+  "ROLIGT ÅNDEDRÆT",
+  "At være forpustet slører eller spreder ikke længere dit ekko."
+ ],
+ "pw_bright": [
+  "KLART EKKO",
+  "Dine ekkoprikker er 35 % klarere."
+ ],
+ "pw_wide": [
+  "VIDE ØJNE",
+  "Du ser mere omkring dig: 95 grader i stedet for 75."
+ ],
+ "pw_lucky": [
+  "LYKKEAMULET",
+  "Der ligger én power-up mere i hvert niveau efter dette."
+ ],
+ "pw_thread": [
+  "TRÅD",
+  "Hvert ekko viser også det næste stykke af vejen ud, i grønt, på gulvet."
+ ]
+}

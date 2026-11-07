@@ -1,0 +1,195 @@
+{
+ "intro1": "Nie widzisz. Kliknij językiem, by zobaczyć.",
+ "intro2": "Coś żyje w tych korytarzach. Też nie widzi, ale słyszy wszystko. Echo za blisko albo za często, a przyjdzie. Gdy biegnie, krzyczy. Gdy krzyczy, inne odpowiadają.",
+ "ctlPC": "<kbd>WASD</kbd> ruch · <kbd>MYSZ</kbd> rozglądanie · <kbd>SHIFT</kbd> bieg · <kbd>SPACJA</kbd> echolokacja · <kbd>F</kbd> pełny ekran · zalecane słuchawki",
+ "ctlTouch": "<kbd>LEWY KCIUK</kbd> ruch · pchnij za przerywany okrąg, by <kbd>BIEC</kbd> · <kbd>PRAWY KCIUK</kbd> przeciągnij, by się rozglądać, stuknij <kbd>ECHO</kbd>, by użyć echolokacji · zalecane słuchawki",
+ "fsNote": "Gra na pełnym ekranie, z telefonem obróconym poziomo.",
+ "begin": [
+  "KLIKNIJ, BY ZACZĄĆ",
+  "STUKNIJ, BY ZACZĄĆ"
+ ],
+ "prompt": [
+  "NACIŚNIJ [ SPACJA ]",
+  "STUKNIJ [ ECHO ]"
+ ],
+ "info1": "<b>ZNAJDŹ WYJŚCIE</b>",
+ "infoPC": "<kbd>WASD</kbd> ruch &nbsp; <kbd>MYSZ</kbd> rozglądanie &nbsp; <kbd>SHIFT</kbd> bieg (głośny) &nbsp; <kbd>F</kbd> pełny ekran<br><kbd>SPACJA</kbd> echolokacja",
+ "infoTouch": "lewy kciuk: ruch, pchnij daleko, by biec · prawy kciuk: przeciągnij, by się rozglądać, stuknij ECHO, by użyć echolokacji",
+ "paused": "PAUZA",
+ "pausedMsg": "Ciemność czeka.",
+ "resume": [
+  "KLIKNIJ, BY WZNOWIĆ",
+  "STUKNIJ, BY WZNOWIĆ"
+ ],
+ "won": "UCIECZKA",
+ "wonMsg": "Wyjście znalezione w {s} s.",
+ "toMenu": [
+  "KLIKNIJ, BY WRÓCIĆ DO MENU",
+  "STUKNIJ, BY WRÓCIĆ DO MENU"
+ ],
+ "startBtn": "ZACZNIJ GRĘ",
+ "again": [
+  "KLIKNIJ, BY ZAGRAĆ ZNOWU",
+  "STUKNIJ, BY ZAGRAĆ ZNOWU"
+ ],
+ "dead": "POŻARTY",
+ "deadMsg": "Usłyszało cię.",
+ "retry": [
+  "KLIKNIJ, BY SPRÓBOWAĆ ZNOWU",
+  "STUKNIJ, BY SPRÓBOWAĆ ZNOWU"
+ ],
+ "error": "BŁĄD",
+ "restart": [
+  "KLIKNIJ, BY ZACZĄĆ OD NOWA",
+  "STUKNIJ, BY ZACZĄĆ OD NOWA"
+ ],
+ "noGL": "BRAK WEBGL",
+ "noGLMsg": "Ta przeglądarka ma wyłączony WebGL. Spróbuj Chrome lub Firefoksa z włączonym przyspieszeniem sprzętowym.",
+ "rot": "OBRÓĆ TELEFON POZIOMO",
+ "rotMsg": "W Echoloc gra się poziomo.",
+ "rotTap": "Albo stuknij tutaj, by grać na pełnym ekranie.",
+ "run": "BIEG",
+ "look": "PRZECIĄGNIJ<br>BY PATRZEĆ",
+ "echo": "ECHO",
+ "level": "POZIOM {n}",
+ "howTo": "JAK GRAĆ",
+ "langName": "Polski",
+ "menuAch": "OSIĄGNIĘCIA",
+ "menuSettings": "USTAWIENIA",
+ "menuAbout": "O GRZE",
+ "menuHelp": "JAK GRAĆ",
+ "back": "WSTECZ",
+ "resumeBtn": "WZNÓW",
+ "exitMenu": "WYJDŹ DO MENU",
+ "youCarry": "NIESIESZ",
+ "wayHome": "W DRODZE DO DOMU",
+ "shopTitle": "SKLEP",
+ "shopText": "Masz ★ {n} ({m} do wydania). Wybierz wzmocnienia na start gry, po jednej gwieździe każde; stuknij ponownie, by odzyskać gwiazdę. Wzmocnienie jest zablokowane, dopóki nie podniesiesz go w grze, nawet takiej, w której potem zginiesz.",
+ "locked": "ZABLOKOWANE",
+ "achTitle": "OSIĄGNIĘCIA",
+ "starsN": "★ GWIAZDY: {n}",
+ "starsNote": "Jedna za każdą grę, z której uciekłeś z gwiazdą.",
+ "pwUnlocked": "ODBLOKOWANE WZMOCNIENIA {a}/{b}",
+ "artRecovered": "ODZYSKANE ARTEFAKTY {a}/{b}",
+ "setTitle": "USTAWIENIA",
+ "setLang": "JĘZYK",
+ "setSystem": "Domyślny systemu",
+ "setSize": "ROZMIAR TEKSTU",
+ "aboutTitle": "O GRZE",
+ "aboutBy": "autor: {name}",
+ "aboutFree": "Ta gra jest darmowa. Wesprzyj mnie, słuchając mojej muzyki:",
+ "version": "Wersja {v}",
+ "toastHome": "TERAZ ZANIEŚ TO DO DOMU: CAŁĄ DROGĘ Z POWROTEM",
+ "toastLocked": "ZABLOKOWANE",
+ "toastStar": "+1 GWIAZDA ({n} DO WYDANIA)",
+ "toastAch": "NOWE OSIĄGNIĘCIE: {x} ({n}/{m})",
+ "help": "<p>Nie widzisz. Kliknij językiem: fala kropek na chwilę pokazuje ściany. Żyją tu ślepe stwory i słyszą wszystko, więc używaj echa ostrożnie.</p><p>Gra to jedna długa droga na północ przez siedem poziomów. Drzwi wyjściowe każdego poziomu są po jego drugiej stronie. Na poziomie 7, moście nad nicością, czeka gwiazda, a czasem obok niej artefakt. Weź je i wróć całą drogę, przez drzwi, którymi wszedłeś na początku: gwiazdę wydasz w sklepie, artefakt trafi do osiągnięć. Drzwi puszczają cię tylko naprzód, dopóki nie masz gwiazdy; potem tylko z powrotem. W drodze do domu jest więcej stworów.</p><p>Wzmocnienia leżą na poziomach: przejdź po nich, by je wziąć. Działają, dopóki nie zginiesz. Śmierć zaczyna grę od początku.</p><h3>Na komputerze</h3><ul><li><b>W A S D</b> chodzenie, <b>mysz</b> rozglądanie, przytrzymaj <b>Shift</b>, by biec (głośno).</li><li><b>Spacja</b> to echolokacja. <b>Esc</b> pauzuje. <b>F</b> przełącza na pełny ekran.</li></ul><h3>Na telefonie lub tablecie</h3><ul><li><b>Lewy kciuk</b>: przeciągnij, by iść; pchnij za przerywany okrąg, by biec.</li><li><b>Prawy kciuk</b>: przeciągnij, by się rozglądać; stuknij okrągły przycisk <b>ECHO</b>, by użyć echolokacji.</li></ul><p>Słuchawki bardzo pomagają: słychać, gdzie co jest.</p>",
+ "pw_vest": [
+  "OŁOWIANA KAMIZELKA",
+  "Radioaktywność rani cię o 60% mniej, ale jesteś cięższy: poruszasz się o 20% wolniej i męczysz o 30% szybciej."
+ ],
+ "pw_adren": [
+  "ADRENALINA",
+  "Gdy coś poluje na ciebie w pobliżu, biegniesz o 25% szybciej."
+ ],
+ "pw_chalk": [
+  "KREDA",
+  "Zostawiasz na podłodze słaby ślad, widoczny, gdy używasz echa."
+ ],
+ "pw_ventro": [
+  "PROJEKCJA",
+  "Twoje echo zaczyna się 6 m przed tobą (albo na ścianie po drodze). Potwory idą tam, nie do ciebie."
+ ],
+ "pw_rico": [
+  "RYKOSZET",
+  "Twoje echo odbija się za trzy rogi i zostaje trochę dłużej."
+ ],
+ "pw_cloak": [
+  "PŁASZCZ CISZY",
+  "Stój nieruchomo 2 sekundy, a nic nie usłyszy twojego oddechu, choćby było tuż obok."
+ ],
+ "pw_lens": [
+  "SOCZEWKA ECHA",
+  "Echo idzie tylko do przodu, ale dwa razy gęstsze i 1,5x dalej."
+ ],
+ "pw_whisk": [
+  "WĄSY",
+  "Ściany do około 2 m przed tobą lekko świecą, gdy się ruszasz, bez dźwięku."
+ ],
+ "pw_echo": [
+  "DALEKIE ECHO",
+  "Twoje echo sięga dalej."
+ ],
+ "pw_stride": [
+  "DŁUGI KROK",
+  "Biegasz szybciej."
+ ],
+ "pw_lungs": [
+  "GŁĘBOKIE PŁUCA",
+  "Możesz biec dłużej."
+ ],
+ "pw_eye": [
+  "ZIELONE OKO",
+  "Znaki i wyjście odpowiadają na echo z większej odległości."
+ ],
+ "pw_glow": [
+  "POŚWIATA",
+  "Kropki echa zostają dłużej."
+ ],
+ "pw_dense": [
+  "GĘSTE ECHO",
+  "Twoje echo pokazuje więcej kropek."
+ ],
+ "pw_tremor": [
+  "ZMYSŁ DRGAŃ",
+  "Czujesz kroki: wszystko, co chodzi w promieniu 22 m, zostawia czerwone kręgi na podłodze, nawet przez ściany."
+ ],
+ "pw_pill": [
+  "CZERWONA PIGUŁKA",
+  "Widzisz wszystko takim, jakie jest naprawdę."
+ ],
+ "pw_star": [
+  "GWIAZDA",
+  "Wynieś ją przez drzwi, którymi wszedłeś, a będzie twoja na zawsze: wydaj ją w sklepie."
+ ],
+ "pw_memory": [
+  "PAMIĘĆ",
+  "Każda ściana, której dotknie echo, zostaje oświetlona na zawsze. Tylko twoje echo."
+ ],
+ "pw_guide": [
+  "NIĆ PRZEWODNIA",
+  "Zielona linia na podłodze zawsze wskazuje drogę do wyjścia."
+ ],
+ "pw_negative": [
+  "NEGATYW",
+  "Ściany i narożniki bez przerwy odbijają echo jedne na drugie wokół ciebie: widzisz kształt miejsca bez żadnego dźwięku."
+ ],
+ "pw_crown": [
+  "KORONA",
+  "Pokonałeś Echoloc. Widzisz wszystko. W sklepie: weź wszystkie wzmocnienia i wszystkie artefakty, które masz."
+ ],
+ "pw_soles": [
+  "MIĘKKIE PODESZWY",
+  "Twoje kroki w biegu słychać tylko z połowy odległości."
+ ],
+ "pw_steady": [
+  "SPOKOJNY ODDECH",
+  "Zadyszka nie rozmywa już ani nie rozprasza twojego echa."
+ ],
+ "pw_bright": [
+  "JASNE ECHO",
+  "Kropki echa są o 35% jaśniejsze."
+ ],
+ "pw_wide": [
+  "SZEROKIE OCZY",
+  "Widzisz więcej wokół siebie: 95 stopni zamiast 75."
+ ],
+ "pw_lucky": [
+  "TALIZMAN",
+  "Na każdym kolejnym poziomie leży jedno wzmocnienie więcej."
+ ],
+ "pw_thread": [
+  "NIĆ",
+  "Każde echo pokazuje też na podłodze, na zielono, kolejny odcinek drogi do wyjścia."
+ ]
+}

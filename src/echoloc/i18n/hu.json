@@ -1,0 +1,195 @@
+{
+ "intro1": "Nem látsz. Csettints a nyelveddel, hogy láss.",
+ "intro2": "Valami él ezekben a folyosókban. Ő sem lát, de mindent hall. Ha túl közel vagy túl gyakran csettintesz, eljön érted. Amikor fut, sikolt. Amikor sikolt, mások felelnek.",
+ "ctlPC": "<kbd>WASD</kbd> mozgás · <kbd>EGÉR</kbd> nézelődés · <kbd>SHIFT</kbd> futás · <kbd>SZÓKÖZ</kbd> visszhang · <kbd>F</kbd> teljes képernyő · fejhallgató ajánlott",
+ "ctlTouch": "<kbd>BAL HÜVELYK</kbd> mozgás · told túl a szaggatott körön a <kbd>FUTÁS</kbd>hoz · <kbd>JOBB HÜVELYK</kbd> húzd a nézelődéshez, koppints a <kbd>VISSZHANG</kbd> gombra · fejhallgató ajánlott",
+ "fsNote": "Teljes képernyőn, fektetett telefonnal játszható.",
+ "begin": [
+  "KATTINTS A KEZDÉSHEZ",
+  "KOPPINTS A KEZDÉSHEZ"
+ ],
+ "prompt": [
+  "NYOMD MEG: [ SZÓKÖZ ]",
+  "KOPPINTS: [ VISSZHANG ]"
+ ],
+ "info1": "<b>TALÁLD MEG A KIJÁRATOT</b>",
+ "infoPC": "<kbd>WASD</kbd> mozgás &nbsp; <kbd>EGÉR</kbd> nézelődés &nbsp; <kbd>SHIFT</kbd> futás (hangos) &nbsp; <kbd>F</kbd> teljes képernyő<br><kbd>SZÓKÖZ</kbd> visszhang",
+ "infoTouch": "bal hüvelyk: mozgás, told messzire a futáshoz · jobb hüvelyk: húzd a nézelődéshez, koppints a VISSZHANG gombra",
+ "paused": "SZÜNET",
+ "pausedMsg": "A sötét vár.",
+ "resume": [
+  "KATTINTS A FOLYTATÁSHOZ",
+  "KOPPINTS A FOLYTATÁSHOZ"
+ ],
+ "won": "MEGMENEKÜLTÉL",
+ "wonMsg": "{s} mp alatt megtaláltad a kijáratot.",
+ "toMenu": [
+  "KATTINTS A FŐMENÜHÖZ",
+  "KOPPINTS A FŐMENÜHÖZ"
+ ],
+ "startBtn": "JÁTÉK INDÍTÁSA",
+ "again": [
+  "KATTINTS AZ ÚJ JÁTÉKHOZ",
+  "KOPPINTS AZ ÚJ JÁTÉKHOZ"
+ ],
+ "dead": "ELNYELT",
+ "deadMsg": "Meghallott.",
+ "retry": [
+  "KATTINTS AZ ÚJRAPRÓBÁLÁSHOZ",
+  "KOPPINTS AZ ÚJRAPRÓBÁLÁSHOZ"
+ ],
+ "error": "HIBA",
+ "restart": [
+  "KATTINTS AZ ÚJRAINDÍTÁSHOZ",
+  "KOPPINTS AZ ÚJRAINDÍTÁSHOZ"
+ ],
+ "noGL": "NINCS WEBGL",
+ "noGLMsg": "Ebben a böngészőben ki van kapcsolva a WebGL. Próbáld Chrome-mal vagy Firefoxszal, bekapcsolt hardveres gyorsítással.",
+ "rot": "FORDÍTSD EL A TELEFONT",
+ "rotMsg": "Az Echoloc fekvő módban játszható.",
+ "rotTap": "Vagy koppints ide a teljes képernyőhöz.",
+ "run": "FUTÁS",
+ "look": "HÚZD<br>A NÉZÉSHEZ",
+ "echo": "VISSZHANG",
+ "level": "{n}. SZINT",
+ "howTo": "HOGYAN JÁTSSZ",
+ "langName": "Magyar",
+ "menuAch": "EREDMÉNYEK",
+ "menuSettings": "BEÁLLÍTÁSOK",
+ "menuAbout": "NÉVJEGY",
+ "menuHelp": "HOGYAN JÁTSSZ",
+ "back": "VISSZA",
+ "resumeBtn": "FOLYTATÁS",
+ "exitMenu": "KILÉPÉS A FŐMENÜBE",
+ "youCarry": "NÁLAD VAN",
+ "wayHome": "HAZAFELÉ",
+ "shopTitle": "BOLT",
+ "shopText": "Van ★ {n} csillagod ({m} elkölthető). Válaszd ki, milyen képességekkel kezdd a játékot, darabja egy csillag; koppints újra, és visszakapod a csillagot. Egy képesség zárolva marad, amíg fel nem veszed egy játékban, akkor is, ha utána meghalsz.",
+ "locked": "ZÁROLVA",
+ "achTitle": "EREDMÉNYEK",
+ "starsN": "★ CSILLAGOK: {n}",
+ "starsNote": "Egy minden játékért, ahonnan a csillaggal együtt menekültél ki.",
+ "pwUnlocked": "FELOLDOTT KÉPESSÉGEK {a}/{b}",
+ "artRecovered": "MEGSZERZETT TÁRGYAK {a}/{b}",
+ "setTitle": "BEÁLLÍTÁSOK",
+ "setLang": "NYELV",
+ "setSystem": "Rendszer alapértelmezése",
+ "setSize": "SZÖVEGMÉRET",
+ "aboutTitle": "NÉVJEGY",
+ "aboutBy": "készítette: {name}",
+ "aboutFree": "Ez a videojáték ingyenes. Támogass azzal, hogy meghallgatod a zenémet:",
+ "version": "Verzió: {v}",
+ "toastHome": "MOST VIDD HAZA: EGÉSZEN VISSZA",
+ "toastLocked": "ZÁROLVA",
+ "toastStar": "+1 CSILLAG ({n} ELKÖLTHETŐ)",
+ "toastAch": "ÚJ EREDMÉNY: {x} ({n}/{m})",
+ "help": "<p>Nem látsz. Csettints a nyelveddel: pontok hulláma egy pillanatra megmutatja a falakat. Vak lények élnek itt, és mindent hallanak, ezért óvatosan csettints.</p><p>A játék egyetlen hosszú út északra, hét szinten át. Minden szint kijárata a túlsó oldalon van. A 7. szinten, egy semmi fölötti hídon, egy csillag vár, néha mellette egy tárgy is. Vedd fel őket, és sétálj vissza egészen addig az ajtóig, amelyen először beléptél: a csillagot a boltban költheted el, a tárgy az eredményeid közé kerül. Az ajtók csak előre engednek, amíg nincs nálad a csillag; utána csak vissza. Hazafelé több lény vár rád.</p><p>A képességek a szinteken hevernek: sétálj rájuk, hogy felvedd őket. Halálodig tartanak. Ha meghalsz, a játék elölről kezdődik.</p><h3>Számítógépen</h3><ul><li><b>W A S D</b> séta, <b>egér</b> nézelődés, tartsd lenyomva a <b>Shift</b>et a futáshoz (hangos).</li><li><b>Szóköz</b>: visszhang. <b>Esc</b>: szünet. <b>F</b>: teljes képernyő.</li></ul><h3>Telefonon vagy táblagépen</h3><ul><li><b>Bal hüvelyk</b>: húzd a sétához; told túl a szaggatott körön a futáshoz.</li><li><b>Jobb hüvelyk</b>: húzd a nézelődéshez; koppints a kerek <b>VISSZHANG</b> gombra.</li></ul><p>A fejhallgató sokat segít: hallod, hol vannak a dolgok.</p>",
+ "pw_vest": [
+  "ÓLOMMELLÉNY",
+  "A radioaktivitás 60%-kal kevésbé árt, de nehezebb vagy: 20%-kal lassabban mozogsz és 30%-kal gyorsabban fáradsz."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Amíg valami a közeledben vadászik rád, 25%-kal gyorsabban futsz."
+ ],
+ "pw_chalk": [
+  "KRÉTA",
+  "Halvány nyomot hagysz a padlón, ami visszhangra előtűnik."
+ ],
+ "pw_ventro": [
+  "KIVETÍTÉS",
+  "A visszhangod 6 m-rel előtted indul (vagy az útban lévő falnál). A szörnyek oda mennek, nem hozzád."
+ ],
+ "pw_rico": [
+  "PATTANÁS",
+  "A visszhangod három sarkon is befordul, és kicsit tovább marad."
+ ],
+ "pw_cloak": [
+  "CSEND KÖPENY",
+  "Állj mozdulatlanul 2 másodpercig, és semmi sem hallja a lélegzeted, bármilyen közel is van."
+ ],
+ "pw_lens": [
+  "VISSZHANGLENCSE",
+  "A visszhangod csak előre megy, de kétszer sűrűbb és 1,5-szer messzebbre ér."
+ ],
+ "pw_whisk": [
+  "BAJUSZSZŐR",
+  "A kb. 2 m-en belüli falak előtted halványan derengenek, amíg mozogsz, hang nélkül."
+ ],
+ "pw_echo": [
+  "MESSZI VISSZHANG",
+  "A visszhangod messzebbre ér."
+ ],
+ "pw_stride": [
+  "HOSSZÚ LÉPÉS",
+  "Gyorsabban futsz."
+ ],
+ "pw_lungs": [
+  "MÉLY TÜDŐ",
+  "Tovább bírod a futást."
+ ],
+ "pw_eye": [
+  "ZÖLD SZEM",
+  "A jelek és a kijárat messzebbről felelnek a visszhangodra."
+ ],
+ "pw_glow": [
+  "UTÓFÉNY",
+  "A visszhang pontjai tovább maradnak."
+ ],
+ "pw_dense": [
+  "SŰRŰ VISSZHANG",
+  "A visszhangod több pontot mutat."
+ ],
+ "pw_tremor": [
+  "REZGÉSÉRZÉK",
+  "Érzed a lépteket: bármi, ami 22 m-en belül jár, vörös gyűrűket hagy a padlón, még a falakon át is."
+ ],
+ "pw_pill": [
+  "PIROS PIRULA",
+  "Mindent látsz, úgy, ahogy valójában van."
+ ],
+ "pw_star": [
+  "CSILLAG",
+  "Vidd ki azon az ajtón, amelyen bejöttél, és örökre a tiéd: a boltban költheted el."
+ ],
+ "pw_memory": [
+  "EMLÉKEZET",
+  "Minden fal, amit a visszhangod érint, örökre megvilágítva marad. Csak a visszhangod."
+ ],
+ "pw_guide": [
+  "VEZETŐVONAL",
+  "Egy zöld vonal a padlón mindig a kijárat felé mutat."
+ ],
+ "pw_negative": [
+  "NEGATÍV",
+  "A falak és a sarkok folyamatosan visszhangot vetnek egymásra körülötted: hang nélkül is látod a hely alakját."
+ ],
+ "pw_crown": [
+  "KORONA",
+  "Legyőzted az Echolocot. Mindent látsz. A boltban: vidd az összes képességet és az összes tárgyat, ami nálad van."
+ ],
+ "pw_soles": [
+  "PUHA TALP",
+  "Futólépteid csak feleakkora távolságra hallatszanak."
+ ],
+ "pw_steady": [
+  "NYUGODT LÉGZÉS",
+  "A kifulladás már nem homályosítja el és nem szórja szét a visszhangodat."
+ ],
+ "pw_bright": [
+  "FÉNYES VISSZHANG",
+  "A visszhangod pontjai 35%-kal fényesebbek."
+ ],
+ "pw_wide": [
+  "TÁGRA NYÍLT SZEM",
+  "Többet látsz magad körül: 75 helyett 95 fokot."
+ ],
+ "pw_lucky": [
+  "SZERENCSEAMULETT",
+  "Ezután minden szinten eggyel több képesség található."
+ ],
+ "pw_thread": [
+  "FONAL",
+  "Minden visszhang a kijárathoz vezető út következő szakaszát is megmutatja, zölden, a padlón."
+ ]
+}

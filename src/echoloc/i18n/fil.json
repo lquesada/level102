@@ -1,0 +1,195 @@
+{
+ "intro1": "Hindi ka nakakakita. Pumitik ng dila para makakita.",
+ "intro2": "May nakatira sa mga pasilyong ito. Hindi rin ito nakakakita, pero naririnig nito ang lahat. Mag-echo nang masyadong malapit o masyadong madalas, at darating ito. Kapag tumatakbo ito, sumisigaw ito. Kapag sumisigaw ito, sumasagot ang iba.",
+ "ctlPC": "<kbd>WASD</kbd> gumalaw · <kbd>MOUSE</kbd> tumingin · <kbd>SHIFT</kbd> tumakbo · <kbd>SPACE</kbd> mag-echo · <kbd>F</kbd> full screen · mainam ang headphones",
+ "ctlTouch": "<kbd>KALIWANG HINLALAKI</kbd> gumalaw · itulak lampas sa putol-putol na bilog para <kbd>TUMAKBO</kbd> · <kbd>KANANG HINLALAKI</kbd> i-drag para tumingin, i-tap ang <kbd>ECHO</kbd> para mag-echo · mainam ang headphones",
+ "fsNote": "Nilalaro nang full screen, nakapatagilid ang phone.",
+ "begin": [
+  "I-CLICK PARA MAGSIMULA",
+  "I-TAP PARA MAGSIMULA"
+ ],
+ "prompt": [
+  "PINDUTIN ANG [ SPACE ]",
+  "I-TAP ANG [ ECHO ]"
+ ],
+ "info1": "<b>HANAPIN ANG LABASAN</b>",
+ "infoPC": "<kbd>WASD</kbd> gumalaw &nbsp; <kbd>MOUSE</kbd> tumingin &nbsp; <kbd>SHIFT</kbd> tumakbo (maingay) &nbsp; <kbd>F</kbd> full screen<br><kbd>SPACE</kbd> mag-echo",
+ "infoTouch": "kaliwang hinlalaki: gumalaw, itulak nang malayo para tumakbo · kanang hinlalaki: i-drag para tumingin, i-tap ang ECHO",
+ "paused": "NAKAHINTO",
+ "pausedMsg": "Naghihintay ang dilim.",
+ "resume": [
+  "I-CLICK PARA ITULOY",
+  "I-TAP PARA ITULOY"
+ ],
+ "won": "NAKATAKAS",
+ "wonMsg": "Nahanap mo ang labasan sa loob ng {s} s.",
+ "toMenu": [
+  "I-CLICK PARA SA MAIN MENU",
+  "I-TAP PARA SA MAIN MENU"
+ ],
+ "startBtn": "SIMULAN",
+ "again": [
+  "I-CLICK PARA MAGLARO ULIT",
+  "I-TAP PARA MAGLARO ULIT"
+ ],
+ "dead": "NILAMON",
+ "deadMsg": "Narinig ka nito.",
+ "retry": [
+  "I-CLICK PARA SUMUBOK ULIT",
+  "I-TAP PARA SUMUBOK ULIT"
+ ],
+ "error": "ERROR",
+ "restart": [
+  "I-CLICK PARA MAG-RESTART",
+  "I-TAP PARA MAG-RESTART"
+ ],
+ "noGL": "WALANG WEBGL",
+ "noGLMsg": "Naka-off ang WebGL sa browser na ito. Subukan ang Chrome o Firefox na naka-on ang hardware acceleration.",
+ "rot": "IPATAGILID ANG PHONE MO",
+ "rotMsg": "Nilalaro ang Echoloc nang pahiga (landscape).",
+ "rotTap": "O i-tap dito para maglaro nang full screen.",
+ "run": "TAKBO",
+ "look": "I-DRAG<br>PARA TUMINGIN",
+ "echo": "ECHO",
+ "level": "LEVEL {n}",
+ "howTo": "PAANO MAGLARO",
+ "langName": "Filipino",
+ "menuAch": "MGA ACHIEVEMENT",
+ "menuSettings": "SETTINGS",
+ "menuAbout": "TUNGKOL",
+ "menuHelp": "PAANO MAGLARO",
+ "back": "BUMALIK",
+ "resumeBtn": "ITULOY",
+ "exitMenu": "LUMABAS SA MAIN MENU",
+ "youCarry": "DALA MO",
+ "wayHome": "PAUWI NA",
+ "shopTitle": "TINDAHAN",
+ "shopText": "Mayroon kang ★ {n} ({m} na magagastos). Piliin ang mga power-up na dadalhin mo sa simula ng laro, isang bituin bawat isa; i-tap ulit para maibalik ang bituin. Nakakandado ang power-up hangga't hindi mo ito napupulot sa isang laro, kahit mamatay ka pagkatapos.",
+ "locked": "NAKAKANDADO",
+ "achTitle": "MGA ACHIEVEMENT",
+ "starsN": "★ BITUIN: {n}",
+ "starsNote": "Isa para sa bawat larong natakasan mo nang dala ang bituin.",
+ "pwUnlocked": "NA-UNLOCK NA POWER-UP {a}/{b}",
+ "artRecovered": "NABAWING ARTIFACT {a}/{b}",
+ "setTitle": "SETTINGS",
+ "setLang": "WIKA",
+ "setSystem": "Default ng system",
+ "setSize": "LAKI NG TEKSTO",
+ "aboutTitle": "TUNGKOL",
+ "aboutBy": "gawa ni {name}",
+ "aboutFree": "Libre ang video game na ito. Suportahan mo ako sa pakikinig sa musika ko:",
+ "version": "Bersyon {v}",
+ "toastHome": "IUWI MO NA ITO: HANGGANG SA SIMULA",
+ "toastLocked": "NAKAKANDADO",
+ "toastStar": "+1 BITUIN ({n} NA MAGAGASTOS)",
+ "toastAch": "BAGONG ACHIEVEMENT: {x} ({n}/{m})",
+ "help": "<p>Hindi ka nakakakita. Pumitik ng dila: isang alon ng mga tuldok ang saglit na nagpapakita ng mga pader. May mga bulag na nilalang dito at naririnig nila ang lahat, kaya mag-ingat sa pag-echo.</p><p>Ang laro ay isang mahabang daan pahilaga sa pitong level. Nasa dulong bahagi ng bawat level ang pinto palabas. Sa level 7, isang tulay sa ibabaw ng kawalan, may naghihintay na bituin, at kung minsan may artifact sa tabi nito. Kunin mo ang mga ito at maglakad pabalik hanggang sa simula, palabas sa pintong una mong pinasukan: sa iyo na ang bituin para gastusin sa tindahan, at mapupunta ang artifact sa iyong mga achievement. Pasulong lang ang daan sa mga pinto hangga't wala sa iyo ang bituin; pagkatapos, pabalik na lang. Mas marami ang nilalang sa pag-uwi.</p><p>May mga power-up sa mga level: lakaran mo ang mga ito para makuha. Tumatagal ang mga ito hanggang mamatay ka. Kapag namatay ka, magsisimula ulit ang laro mula sa umpisa.</p><h3>Sa computer</h3><ul><li><b>W A S D</b> maglakad, <b>mouse</b> tumingin, pindutin nang matagal ang <b>Shift</b> para tumakbo (maingay).</li><li><b>Space</b> para mag-echo. <b>Esc</b> para huminto. <b>F</b> para sa full screen.</li></ul><h3>Sa phone o tablet</h3><ul><li><b>Kaliwang hinlalaki</b>: i-drag para maglakad; itulak lampas sa putol-putol na bilog para tumakbo.</li><li><b>Kanang hinlalaki</b>: i-drag para tumingin; i-tap ang bilog na button na <b>ECHO</b> para mag-echo.</li></ul><p>Malaking tulong ang headphones: maririnig mo kung nasaan ang mga bagay.</p>",
+ "pw_vest": [
+  "TINGGANG VEST",
+  "60% mas kaunti ang pinsala ng radyasyon sa iyo, pero mas mabigat ka: 20% mas mabagal kang gumalaw at 30% mas mabilis kang mapagod."
+ ],
+ "pw_adren": [
+  "ADRENALINE",
+  "Habang may humahabol sa iyo sa malapit, 25% mas mabilis kang tumakbo."
+ ],
+ "pw_chalk": [
+  "TISA",
+  "Nag-iiwan ka ng malabong bakas sa sahig na lumilitaw kapag nag-echo ka."
+ ],
+ "pw_ventro": [
+  "PROYEKSIYON",
+  "Nagsisimula ang echo mo 6 m sa harap mo (o sa pader na nakaharang). Doon pupunta ang mga halimaw, hindi sa iyo."
+ ],
+ "pw_rico": [
+  "RICOCHET",
+  "Tumatalbog ang echo mo sa tatlong kanto at nagtatagal nang kaunti."
+ ],
+ "pw_cloak": [
+  "BALABAL NG KATAHIMIKAN",
+  "Tumayo nang hindi gumagalaw nang 2 segundo at walang makakarinig sa paghinga mo, gaano man kalapit."
+ ],
+ "pw_lens": [
+  "LENTE NG ECHO",
+  "Pasulong lang ang echo mo, pero doble ang siksik at 1.5x ang layo."
+ ],
+ "pw_whisk": [
+  "BIGOTE",
+  "Bahagyang kumikinang ang mga pader na mga 2 m sa harap mo habang gumagalaw ka, nang walang tunog."
+ ],
+ "pw_echo": [
+  "MALAYONG ECHO",
+  "Mas malayo ang naaabot ng echo mo."
+ ],
+ "pw_stride": [
+  "MAHABANG HAKBANG",
+  "Mas mabilis kang tumakbo."
+ ],
+ "pw_lungs": [
+  "MALALIM NA BAGA",
+  "Mas matagal kang makakatakbo."
+ ],
+ "pw_eye": [
+  "BERDENG MATA",
+  "Sumasagot sa echo mo ang mga karatula at ang labasan mula sa mas malayo."
+ ],
+ "pw_glow": [
+  "LIWANAG NA NAIIWAN",
+  "Mas matagal nananatili ang mga tuldok ng echo mo."
+ ],
+ "pw_dense": [
+  "SIKSIK NA ECHO",
+  "Mas maraming tuldok ang ipinapakita ng echo mo."
+ ],
+ "pw_tremor": [
+  "DAMA NG YANIG",
+  "Nararamdaman mo ang mga yabag: anumang naglalakad sa loob ng 22 m ay nag-iiwan ng pulang bilog sa sahig, kahit sa likod ng pader."
+ ],
+ "pw_pill": [
+  "PULANG PILDORAS",
+  "Nakikita mo ang lahat, kung ano talaga ito."
+ ],
+ "pw_star": [
+  "BITUIN",
+  "Ilabas ito sa pintong pinasukan mo at sa iyo na ito habambuhay: gastusin ito sa tindahan."
+ ],
+ "pw_memory": [
+  "ALAALA",
+  "Bawat pader na mahawakan ng echo mo ay mananatiling may ilaw habambuhay. Ang echo mo lang."
+ ],
+ "pw_guide": [
+  "GABAY NA LINYA",
+  "Laging ipinapakita ng berdeng linya sa sahig ang daan palabas."
+ ],
+ "pw_negative": [
+  "NEGATIBO",
+  "Nagpapasahan ng echo ang mga pader at sulok sa paligid mo, sa lahat ng oras: nakikita mo ang hugis ng lugar nang walang tunog."
+ ],
+ "pw_crown": [
+  "KORONA",
+  "Tinalo mo ang Echoloc. Nakikita mo ang lahat. Sa tindahan: kunin ang lahat ng power-up at lahat ng artifact na mayroon ka."
+ ],
+ "pw_soles": [
+  "MALAMBOT NA SWELAS",
+  "Kalahati na lang ang layong naririnig ang mga yabag mo kapag tumatakbo."
+ ],
+ "pw_steady": [
+  "PANATAG NA HININGA",
+  "Hindi na pinalalabo o ikinakalat ng hingal ang echo mo."
+ ],
+ "pw_bright": [
+  "MALIWANAG NA ECHO",
+  "35% na mas maliwanag ang mga tuldok ng echo mo."
+ ],
+ "pw_wide": [
+  "MALAPAD NA TINGIN",
+  "Mas marami kang nakikita sa paligid: 95 digri sa halip na 75."
+ ],
+ "pw_lucky": [
+  "AGIMAT",
+  "May isa pang power-up sa bawat level pagkatapos nito."
+ ],
+ "pw_thread": [
+  "SINULID",
+  "Ipinapakita rin ng bawat echo ang susunod na bahagi ng daan palabas, kulay berde, sa sahig."
+ ]
+}

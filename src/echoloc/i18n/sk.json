@@ -1,0 +1,195 @@
+{
+ "intro1": "Nevidíš. Mľaskni jazykom, aby si videl.",
+ "intro2": "V týchto chodbách niečo žije. Tiež nevidí, ale počuje všetko. Ozvi sa príliš blízko alebo príliš často a príde. Keď beží, kričí. Keď kričí, ozvú sa ďalšie.",
+ "ctlPC": "<kbd>WASD</kbd> pohyb · <kbd>MYŠ</kbd> rozhliadanie · <kbd>SHIFT</kbd> beh · <kbd>MEDZERNÍK</kbd> echolokácia · <kbd>F</kbd> celá obrazovka · odporúčame slúchadlá",
+ "ctlTouch": "<kbd>ĽAVÝ PALEC</kbd> pohyb · potiahni za prerušovaný kruh pre <kbd>BEH</kbd> · <kbd>PRAVÝ PALEC</kbd> ťahaj na rozhliadanie, ťukni na <kbd>ECHO</kbd> pre echolokáciu · odporúčame slúchadlá",
+ "fsNote": "Hrá sa na celej obrazovke, s telefónom na šírku.",
+ "begin": [
+  "KLIKNI A ZAČNI",
+  "ŤUKNI A ZAČNI"
+ ],
+ "prompt": [
+  "STLAČ [ MEDZERNÍK ]",
+  "ŤUKNI NA [ ECHO ]"
+ ],
+ "info1": "<b>NÁJDI VÝCHOD</b>",
+ "infoPC": "<kbd>WASD</kbd> pohyb &nbsp; <kbd>MYŠ</kbd> rozhliadanie &nbsp; <kbd>SHIFT</kbd> beh (hlučný) &nbsp; <kbd>F</kbd> celá obrazovka<br><kbd>MEDZERNÍK</kbd> echolokácia",
+ "infoTouch": "ľavý palec: pohyb, potiahni ďaleko na beh · pravý palec: ťahaj na rozhliadanie, ťukni na ECHO pre echolokáciu",
+ "paused": "PAUZA",
+ "pausedMsg": "Tma čaká.",
+ "resume": [
+  "KLIKNI A POKRAČUJ",
+  "ŤUKNI A POKRAČUJ"
+ ],
+ "won": "UNIKOL SI",
+ "wonMsg": "Východ si našiel za {s} s.",
+ "toMenu": [
+  "KLIKNI PRE HLAVNÉ MENU",
+  "ŤUKNI PRE HLAVNÉ MENU"
+ ],
+ "startBtn": "SPUSTIŤ HRU",
+ "again": [
+  "KLIKNI A HRAJ ZNOVA",
+  "ŤUKNI A HRAJ ZNOVA"
+ ],
+ "dead": "POHLTENÝ",
+ "deadMsg": "Počulo ťa to.",
+ "retry": [
+  "KLIKNI A SKÚS ZNOVA",
+  "ŤUKNI A SKÚS ZNOVA"
+ ],
+ "error": "CHYBA",
+ "restart": [
+  "KLIKNI PRE REŠTART",
+  "ŤUKNI PRE REŠTART"
+ ],
+ "noGL": "ŽIADNE WEBGL",
+ "noGLMsg": "Tento prehliadač má vypnuté WebGL. Skús Chrome alebo Firefox so zapnutou hardvérovou akceleráciou.",
+ "rot": "OTOČ TELEFÓN NA ŠÍRKU",
+ "rotMsg": "Echoloc sa hrá na šírku.",
+ "rotTap": "Alebo ťukni sem a hraj na celej obrazovke.",
+ "run": "BEH",
+ "look": "ŤAHAJ<br>A POZERAJ",
+ "echo": "ECHO",
+ "level": "ÚROVEŇ {n}",
+ "howTo": "AKO HRAŤ",
+ "langName": "Slovenčina",
+ "menuAch": "ÚSPECHY",
+ "menuSettings": "NASTAVENIA",
+ "menuAbout": "O HRE",
+ "menuHelp": "AKO HRAŤ",
+ "back": "SPÄŤ",
+ "resumeBtn": "POKRAČOVAŤ",
+ "exitMenu": "DO HLAVNÉHO MENU",
+ "youCarry": "NESIEŠ",
+ "wayHome": "NA CESTE DOMOV",
+ "shopTitle": "OBCHOD",
+ "shopText": "Máš ★ {n} ({m} na minutie). Vyber vylepšenia, s ktorými začneš hru, každé za jednu hviezdu; ťukni znova a hviezdu dostaneš späť. Vylepšenie zostane zamknuté, kým ho nezdvihneš v hre, aj v takej, v ktorej potom zomrieš.",
+ "locked": "ZAMKNUTÉ",
+ "achTitle": "ÚSPECHY",
+ "starsN": "★ HVIEZDY: {n}",
+ "starsNote": "Jedna za každú hru, z ktorej si unikol s hviezdou.",
+ "pwUnlocked": "ODOMKNUTÉ VYLEPŠENIA {a}/{b}",
+ "artRecovered": "ZÍSKANÉ ARTEFAKTY {a}/{b}",
+ "setTitle": "NASTAVENIA",
+ "setLang": "JAZYK",
+ "setSystem": "Podľa systému",
+ "setSize": "VEĽKOSŤ TEXTU",
+ "aboutTitle": "O HRE",
+ "aboutBy": "autor: {name}",
+ "aboutFree": "Táto videohra je zadarmo. Podpor ma tým, že si vypočuješ moju hudbu:",
+ "version": "Verzia {v}",
+ "toastHome": "TERAZ JU DONES DOMOV: CELOU CESTOU SPÄŤ",
+ "toastLocked": "ZAMKNUTÉ",
+ "toastStar": "+1 HVIEZDA ({n} NA MINUTIE)",
+ "toastAch": "NOVÝ ÚSPECH: {x} ({n}/{m})",
+ "help": "<p>Nevidíš. Mľaskni jazykom: vlna bodiek na chvíľu ukáže steny. Žijú tu slepé tvory a počujú všetko, preto s ozvenou opatrne.</p><p>Hra je jedna dlhá cesta na sever cez sedem úrovní. Východ z každej úrovne je na jej druhej strane. Na úrovni 7, na moste nad ničím, čaká hviezda a niekedy vedľa nej aj artefakt. Vezmi ich a choď celou cestou späť, von dverami, ktorými si prvýkrát vošiel: hviezdu minieš v obchode, artefakt pribudne medzi úspechy. Dvere ťa púšťajú len dopredu, kým nemáš hviezdu; potom už len späť. Na ceste domov je viac tvorov.</p><p>Vylepšenia ležia v úrovniach: prejdi cez ne a vezmeš si ich. Platia, kým nezomrieš. Smrť začne hru odznova.</p><h3>Na počítači</h3><ul><li><b>W A S D</b> chôdza, <b>myš</b> rozhliadanie, drž <b>Shift</b> na beh (hlučný).</li><li><b>Medzerník</b> echolokácia. <b>Esc</b> pauza. <b>F</b> celá obrazovka.</li></ul><h3>Na telefóne alebo tablete</h3><ul><li><b>Ľavý palec</b>: ťahaj na chôdzu; za prerušovaný kruh na beh.</li><li><b>Pravý palec</b>: ťahaj na rozhliadanie; ťukni na okrúhle tlačidlo <b>ECHO</b> pre echolokáciu.</li></ul><p>Slúchadlá veľmi pomáhajú: počuješ, kde čo je.</p>",
+ "pw_vest": [
+  "OLOVENÁ VESTA",
+  "Rádioaktivita ti škodí o 60 % menej, ale si ťažší: hýbeš sa o 20 % pomalšie a unavíš sa o 30 % rýchlejšie."
+ ],
+ "pw_adren": [
+  "ADRENALÍN",
+  "Kým ťa niečo nablízku loví, bežíš o 25 % rýchlejšie."
+ ],
+ "pw_chalk": [
+  "KRIEDA",
+  "Na podlahe za sebou necháš slabú stopu, ktorú ukáže ozvena."
+ ],
+ "pw_ventro": [
+  "PROJEKCIA",
+  "Tvoja ozvena začína 6 m pred tebou (alebo pri stene v ceste). Príšery idú tam, nie k tebe."
+ ],
+ "pw_rico": [
+  "ODRAZ",
+  "Tvoja ozvena sa odrazí za tri rohy a vydrží o niečo dlhšie."
+ ],
+ "pw_cloak": [
+  "PLÁŠŤ TICHA",
+  "Stoj 2 sekundy bez pohnutia a nič ťa nebude počuť dýchať, nech je akokoľvek blízko."
+ ],
+ "pw_lens": [
+  "ŠOŠOVKA OZVENY",
+  "Tvoja ozvena ide len dopredu, ale je dvakrát hustejšia a 1,5-krát ďalej."
+ ],
+ "pw_whisk": [
+  "FÚZY",
+  "Steny asi do 2 m pred tebou slabo žiaria, keď sa hýbeš, bez zvuku."
+ ],
+ "pw_echo": [
+  "ĎALEKÁ OZVENA",
+  "Tvoja ozvena dosiahne ďalej."
+ ],
+ "pw_stride": [
+  "DLHÝ KROK",
+  "Bežíš rýchlejšie."
+ ],
+ "pw_lungs": [
+  "HLBOKÉ PĽÚCA",
+  "Vydržíš bežať dlhšie."
+ ],
+ "pw_eye": [
+  "ZELENÉ OKO",
+  "Značky a východ odpovedajú na tvoju ozvenu z väčšej diaľky."
+ ],
+ "pw_glow": [
+  "DOSVIT",
+  "Bodky tvojej ozveny vydržia dlhšie."
+ ],
+ "pw_dense": [
+  "HUSTÁ OZVENA",
+  "Tvoja ozvena ukáže viac bodiek."
+ ],
+ "pw_tremor": [
+  "ZMYSEL PRE OTRASY",
+  "Cítiš kroky: všetko, čo chodí do 22 m, zanecháva na podlahe červené kruhy, aj cez steny."
+ ],
+ "pw_pill": [
+  "ČERVENÁ PILULKA",
+  "Vidíš všetko tak, ako to naozaj je."
+ ],
+ "pw_star": [
+  "HVIEZDA",
+  "Vynes ju dverami, ktorými si vošiel, a je navždy tvoja: miň ju v obchode."
+ ],
+ "pw_memory": [
+  "PAMÄŤ",
+  "Každá stena, ktorej sa dotkne tvoja ozvena, zostane navždy osvetlená. Len tvoja ozvena."
+ ],
+ "pw_guide": [
+  "VODIACA ČIARA",
+  "Zelená čiara na podlahe vždy ukazuje cestu von."
+ ],
+ "pw_negative": [
+  "NEGATÍV",
+  "Steny a rohy si neustále vracajú ozvenu všade okolo teba: vidíš tvar miesta bez jediného zvuku."
+ ],
+ "pw_crown": [
+  "KORUNA",
+  "Porazil si Echoloc. Vidíš všetko. V obchode: vezmi si všetky vylepšenia a všetky artefakty, ktoré máš."
+ ],
+ "pw_soles": [
+  "MÄKKÉ PODRÁŽKY",
+  "Tvoje kroky v behu počuť len na polovičnú vzdialenosť."
+ ],
+ "pw_steady": [
+  "POKOJNÝ DYCH",
+  "Zadýchanie už tvoju ozvenu nerozmazáva ani nerozptyľuje."
+ ],
+ "pw_bright": [
+  "JASNÁ OZVENA",
+  "Bodky tvojej ozveny sú o 35 % jasnejšie."
+ ],
+ "pw_wide": [
+  "ŠIROKÉ OČI",
+  "Vidíš viac okolo seba: 95 stupňov namiesto 75."
+ ],
+ "pw_lucky": [
+  "TALIZMAN",
+  "V každej ďalšej úrovni leží o jedno vylepšenie viac."
+ ],
+ "pw_thread": [
+  "NIŤ",
+  "Každá ozvena navyše ukáže nazeleno na podlahe ďalší úsek cesty von."
+ ]
+}

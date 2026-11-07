@@ -1,0 +1,195 @@
+{
+ "intro1": "Et näe mitään. Naksauta kieltäsi nähdäksesi.",
+ "intro2": "Näissä käytävissä elää jokin. Sekään ei näe, mutta se kuulee kaiken. Kaiuta liian läheltä tai liian usein, niin se tulee. Kun se juoksee, se kirkuu. Kun se kirkuu, muut vastaavat.",
+ "ctlPC": "<kbd>WASD</kbd> liiku · <kbd>HIIRI</kbd> katso · <kbd>SHIFT</kbd> juokse · <kbd>VÄLILYÖNTI</kbd> kaikuluotaa · <kbd>F</kbd> koko näyttö · kuulokkeita suositellaan",
+ "ctlTouch": "<kbd>VASEN PEUKALO</kbd> liiku · työnnä katkoviivarenkaan yli <kbd>JUOSTAKSESI</kbd> · <kbd>OIKEA PEUKALO</kbd> vedä katsoaksesi, napauta <kbd>KAIKU</kbd> kaikuluotaaksesi · kuulokkeita suositellaan",
+ "fsNote": "Pelataan koko näytöllä, puhelin vaakatasossa.",
+ "begin": [
+  "KLIKKAA ALOITTAAKSESI",
+  "NAPAUTA ALOITTAAKSESI"
+ ],
+ "prompt": [
+  "PAINA [ VÄLILYÖNTI ]",
+  "NAPAUTA [ KAIKU ]"
+ ],
+ "info1": "<b>LÖYDÄ ULOSPÄÄSY</b>",
+ "infoPC": "<kbd>WASD</kbd> liiku &nbsp; <kbd>HIIRI</kbd> katso &nbsp; <kbd>SHIFT</kbd> juokse (äänekäs) &nbsp; <kbd>F</kbd> koko näyttö<br><kbd>VÄLILYÖNTI</kbd> kaikuluotaa",
+ "infoTouch": "vasen peukalo: liiku, työnnä kauas juostaksesi · oikea peukalo: vedä katsoaksesi, napauta KAIKU kaikuluotaaksesi",
+ "paused": "TAUKO",
+ "pausedMsg": "Pimeys odottaa.",
+ "resume": [
+  "KLIKKAA JATKAAKSESI",
+  "NAPAUTA JATKAAKSESI"
+ ],
+ "won": "PAKENIT",
+ "wonMsg": "Löysit ulospääsyn ajassa {s} s.",
+ "toMenu": [
+  "KLIKKAA PÄÄVALIKKOON",
+  "NAPAUTA PÄÄVALIKKOON"
+ ],
+ "startBtn": "ALOITA PELI",
+ "again": [
+  "KLIKKAA PELATAKSESI UUDELLEEN",
+  "NAPAUTA PELATAKSESI UUDELLEEN"
+ ],
+ "dead": "NIELTY",
+ "deadMsg": "Se kuuli sinut.",
+ "retry": [
+  "KLIKKAA YRITTÄÄKSESI UUDELLEEN",
+  "NAPAUTA YRITTÄÄKSESI UUDELLEEN"
+ ],
+ "error": "VIRHE",
+ "restart": [
+  "KLIKKAA KÄYNNISTÄÄKSESI UUDELLEEN",
+  "NAPAUTA KÄYNNISTÄÄKSESI UUDELLEEN"
+ ],
+ "noGL": "EI WEBGL:ÄÄ",
+ "noGLMsg": "Tässä selaimessa WebGL on pois päältä. Kokeile Chromea tai Firefoxia laitteistokiihdytys päällä.",
+ "rot": "KÄÄNNÄ PUHELIN VAAKAAN",
+ "rotMsg": "Echolocia pelataan vaakatasossa.",
+ "rotTap": "Tai napauta tästä pelataksesi koko näytöllä.",
+ "run": "JUOKSE",
+ "look": "VEDÄ<br>KATSOAKSESI",
+ "echo": "KAIKU",
+ "level": "TASO {n}",
+ "howTo": "PELIOHJEET",
+ "langName": "Suomi",
+ "menuAch": "SAAVUTUKSET",
+ "menuSettings": "ASETUKSET",
+ "menuAbout": "TIETOJA",
+ "menuHelp": "PELIOHJEET",
+ "back": "TAKAISIN",
+ "resumeBtn": "JATKA",
+ "exitMenu": "POISTU PÄÄVALIKKOON",
+ "youCarry": "KANNAT MUKANASI",
+ "wayHome": "MATKALLA KOTIIN",
+ "shopTitle": "KAUPPA",
+ "shopText": "Sinulla on ★ {n} ({m} käytettävissä). Valitse tehostimet, joilla aloitat pelin, yksi tähti kustakin; napauta uudelleen saadaksesi tähden takaisin. Tehostin pysyy lukittuna, kunnes poimit sen jossain pelissä, vaikka kuolisit siinä myöhemmin.",
+ "locked": "LUKITTU",
+ "achTitle": "SAAVUTUKSET",
+ "starsN": "★ TÄHDET: {n}",
+ "starsNote": "Yksi jokaisesta pelistä, josta pakenit tähti mukanasi.",
+ "pwUnlocked": "TEHOSTIMIA AVATTU {a}/{b}",
+ "artRecovered": "ESINEITÄ LÖYDETTY {a}/{b}",
+ "setTitle": "ASETUKSET",
+ "setLang": "KIELI",
+ "setSystem": "Järjestelmän oletus",
+ "setSize": "TEKSTIN KOKO",
+ "aboutTitle": "TIETOJA",
+ "aboutBy": "tekijä: {name}",
+ "aboutFree": "Tämä videopeli on ilmainen. Tue minua kuuntelemalla musiikkiani:",
+ "version": "Versio {v}",
+ "toastHome": "VIE SE NYT KOTIIN: KOKO MATKA TAKAISIN",
+ "toastLocked": "LUKITTU",
+ "toastStar": "+1 TÄHTI ({n} KÄYTETTÄVISSÄ)",
+ "toastAch": "UUSI SAAVUTUS: {x} ({n}/{m})",
+ "help": "<p>Et näe mitään. Naksauta kieltäsi: pisteaalto näyttää seinät hetken ajan. Täällä elää sokeita olentoja, jotka kuulevat kaiken, joten kaiuta varoen.</p><p>Peli on yksi pitkä matka pohjoiseen seitsemän tason läpi. Jokaisen tason ulko-ovi on sen toisella puolella. Tasolla 7, sillalla tyhjyyden yllä, odottaa tähti ja joskus sen vieressä muinaisesine. Ota ne ja kävele koko matka takaisin, ulos siitä ovesta, josta alun perin tulit: tähden voit käyttää kaupassa, esine menee saavutuksiisi. Ovet päästävät vain eteenpäin, kunnes sinulla on tähti; sitten vain takaisin. Kotimatkalla olentoja on enemmän.</p><p>Tehostimia on tasoilla: kävele niiden yli ottaaksesi ne. Ne kestävät kuolemaasi asti. Kuolema aloittaa pelin alusta.</p><h3>Tietokoneella</h3><ul><li><b>W A S D</b> kävele, <b>hiiri</b> katso, pidä <b>Shift</b> pohjassa juostaksesi (äänekäs).</li><li><b>Välilyönti</b> kaikuluotaa. <b>Esc</b> keskeyttää. <b>F</b> vaihtaa koko näyttöön.</li></ul><h3>Puhelimella tai tabletilla</h3><ul><li><b>Vasen peukalo</b>: vedä kävelläksesi; työnnä katkoviivarenkaan yli juostaksesi.</li><li><b>Oikea peukalo</b>: vedä katsoaksesi; napauta pyöreää <b>KAIKU</b>-painiketta kaikuluotaaksesi.</li></ul><p>Kuulokkeet auttavat paljon: kuulet, missä asiat ovat.</p>",
+ "pw_vest": [
+  "LYIJYLIIVI",
+  "Radioaktiivisuus vahingoittaa 60 % vähemmän, mutta olet raskaampi: liikut 20 % hitaammin ja väsyt 30 % nopeammin."
+ ],
+ "pw_adren": [
+  "ADRENALIINI",
+  "Kun jokin jahtaa sinua lähellä, juokset 25 % nopeammin."
+ ],
+ "pw_chalk": [
+  "LIITU",
+  "Jätät lattiaan heikon jäljen, joka näkyy kaiuttaessasi."
+ ],
+ "pw_ventro": [
+  "PROJEKTIO",
+  "Kaikusi alkaa 6 m edestäsi (tai tiellä olevasta seinästä). Hirviöt menevät sinne, eivät luoksesi."
+ ],
+ "pw_rico": [
+  "KIMMOKE",
+  "Kaikusi kimpoaa kolmen kulman ympäri ja viipyy hieman pidempään."
+ ],
+ "pw_cloak": [
+  "HILJAINEN VAIPPA",
+  "Seiso paikallasi 2 sekuntia, niin mikään ei kuule hengitystäsi, oli se kuinka lähellä tahansa."
+ ],
+ "pw_lens": [
+  "KAIKULINSSI",
+  "Kaikusi kulkee vain eteenpäin, mutta kaksi kertaa tiheämpänä ja 1,5 kertaa kauemmas."
+ ],
+ "pw_whisk": [
+  "VIIKSET",
+  "Noin 2 m päässä edessäsi olevat seinät hehkuvat heikosti liikkuessasi, äänettä."
+ ],
+ "pw_echo": [
+  "KAUKAINEN KAIKU",
+  "Kaikusi kantaa kauemmas."
+ ],
+ "pw_stride": [
+  "PITKÄ ASKEL",
+  "Juokset nopeammin."
+ ],
+ "pw_lungs": [
+  "SYVÄT KEUHKOT",
+  "Jaksat juosta pidempään."
+ ],
+ "pw_eye": [
+  "VIHREÄ SILMÄ",
+  "Kyltit ja ulospääsy vastaavat kaikuusi kauempaa."
+ ],
+ "pw_glow": [
+  "JÄLKIHEHKU",
+  "Kaikupisteesi viipyvät pidempään."
+ ],
+ "pw_dense": [
+  "TIHEÄ KAIKU",
+  "Kaikusi näyttää enemmän pisteitä."
+ ],
+ "pw_tremor": [
+  "TÄRINÄAISTI",
+  "Tunnet askeleet: kaikki, mikä kävelee 22 m:n sisällä, jättää lattiaan punaisia renkaita, jopa seinien läpi."
+ ],
+ "pw_pill": [
+  "PUNAINEN PILLERI",
+  "Näet kaiken sellaisena kuin se todella on."
+ ],
+ "pw_star": [
+  "TÄHTI",
+  "Kanna se ulos ovesta, josta tulit sisään, niin se on ikuisesti sinun: käytä se kaupassa."
+ ],
+ "pw_memory": [
+  "MUISTI",
+  "Jokainen seinä, johon kaikusi osuu, pysyy valaistuna ikuisesti. Vain kaikusi."
+ ],
+ "pw_guide": [
+  "OPASLINJA",
+  "Vihreä viiva lattiassa näyttää aina tien ulos."
+ ],
+ "pw_negative": [
+  "NEGATIIVI",
+  "Seinät ja kulmat kaiuttavat toisiaan kaikkialla ympärilläsi koko ajan: näet paikan muodon ilman ääntäkään."
+ ],
+ "pw_crown": [
+  "KRUUNU",
+  "Voitit Echolocin. Näet kaiken. Kaupassa: ota kaikki tehostimet ja kaikki esineet, jotka sinulla on."
+ ],
+ "pw_soles": [
+  "PEHMEÄT POHJAT",
+  "Juoksuaskeleesi kuuluvat vain puolet niin kauas."
+ ],
+ "pw_steady": [
+  "TASAINEN HENGITYS",
+  "Hengästyminen ei enää sumenna eikä hajota kaikuasi."
+ ],
+ "pw_bright": [
+  "KIRKAS KAIKU",
+  "Kaikupisteesi ovat 35 % kirkkaampia."
+ ],
+ "pw_wide": [
+  "AVARAT SILMÄT",
+  "Näet ympärilläsi enemmän: 95 astetta 75:n sijaan."
+ ],
+ "pw_lucky": [
+  "ONNENAMULETTI",
+  "Jokaisella tämän jälkeisellä tasolla on yksi tehostin lisää."
+ ],
+ "pw_thread": [
+  "LANKA",
+  "Jokainen kaiku näyttää myös seuraavan pätkän tiestä ulos, vihreänä, lattiassa."
+ ]
+}

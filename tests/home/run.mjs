@@ -82,7 +82,10 @@ for (const page of ["", ...games]) for (const [W, H, touch] of [[320, 568, true]
     if (touch) await b.tap(s0.x, s0.y); else await b.click(s0.x, s0.y);
     let s1; for (let i = 0; i < 20; i++) { await sleep(100); s1 = await st(); if (s1.full) break; }
     ok(`${tag}: pressing it goes full screen, label and icon switch`, s1.full && s1.label === "Salir de pantalla completa" && s1.icon !== s0.icon, JSON.stringify(s1));
-    if (touch) await b.tap(s1.x, s1.y); else await b.click(s1.x, s1.y);
+    if (page === "echoloc") {   // Echoloc hides the bar in full screen (the game uses the whole screen): the browser's Esc / back button leaves it
+      ok(`${tag}: top bar hidden in full screen`, await b.ev("getComputedStyle(document.getElementById('l102bar')).display") === "none");
+      await b.ev("document.exitFullscreen().then(() => 1)");
+    } else if (touch) await b.tap(s1.x, s1.y); else await b.click(s1.x, s1.y);
     let s2; for (let i = 0; i < 20; i++) { await sleep(100); s2 = await st(); if (!s2.full) break; }
     ok(`${tag}: pressing it again leaves full screen`, !s2.full && s2.label === "Pantalla completa" && s2.icon === s0.icon, JSON.stringify(s2));
   }

@@ -1,0 +1,195 @@
+{
+ "intro1": "Ez duzu ikusten. Egin klik mihiarekin ikusteko.",
+ "intro2": "Zerbait bizi da korridore hauetan. Hark ere ez du ikusten, baina dena entzuten du. Oihartzuna gertuegi edo maizegi eginez gero, etorriko da. Korrika doanean, garrasi egiten du. Garrasi egiten duenean, beste batzuek erantzuten dute.",
+ "ctlPC": "<kbd>WASD</kbd> mugitu · <kbd>SAGUA</kbd> begiratu · <kbd>SHIFT</kbd> korrika · <kbd>ZURIUNEA</kbd> ekokokatu · <kbd>F</kbd> pantaila osoa · entzungailuak gomendatzen dira",
+ "ctlTouch": "<kbd>EZKERREKO ERPURUA</kbd> mugitu · eraman eraztun etenaz haratago <kbd>KORRIKA</kbd> egiteko · <kbd>ESKUINEKO ERPURUA</kbd> arrastatu begiratzeko, sakatu <kbd>OIHARTZUNA</kbd> ekokokatzeko · entzungailuak gomendatzen dira",
+ "fsNote": "Pantaila osoan jokatzen da, telefonoa etzanda.",
+ "begin": [
+  "EGIN KLIK HASTEKO",
+  "SAKATU HASTEKO"
+ ],
+ "prompt": [
+  "SAKATU [ ZURIUNEA ]",
+  "SAKATU [ OIHARTZUNA ]"
+ ],
+ "info1": "<b>AURKITU IRTEERA</b>",
+ "infoPC": "<kbd>WASD</kbd> mugitu &nbsp; <kbd>SAGUA</kbd> begiratu &nbsp; <kbd>SHIFT</kbd> korrika (zaratatsua) &nbsp; <kbd>F</kbd> pantaila osoa<br><kbd>ZURIUNEA</kbd> ekokokatu",
+ "infoTouch": "ezkerreko erpurua: mugitu, eraman urrun korrika egiteko · eskuineko erpurua: arrastatu begiratzeko, sakatu OIHARTZUNA ekokokatzeko",
+ "paused": "PAUSAN",
+ "pausedMsg": "Iluntasuna zain dago.",
+ "resume": [
+  "EGIN KLIK JARRAITZEKO",
+  "SAKATU JARRAITZEKO"
+ ],
+ "won": "IHES EGIN DUZU",
+ "wonMsg": "Irteera {s} s-tan aurkitu duzu.",
+ "toMenu": [
+  "EGIN KLIK MENU NAGUSIRA JOATEKO",
+  "SAKATU MENU NAGUSIRA JOATEKO"
+ ],
+ "startBtn": "HASI JOKOA",
+ "again": [
+  "EGIN KLIK BERRIRO JOKATZEKO",
+  "SAKATU BERRIRO JOKATZEKO"
+ ],
+ "dead": "IRENTSIA",
+ "deadMsg": "Entzun egin zaitu.",
+ "retry": [
+  "EGIN KLIK BERRIRO SAIATZEKO",
+  "SAKATU BERRIRO SAIATZEKO"
+ ],
+ "error": "ERROREA",
+ "restart": [
+  "EGIN KLIK BERRABIARAZTEKO",
+  "SAKATU BERRABIARAZTEKO"
+ ],
+ "noGL": "WEBGL GABE",
+ "noGLMsg": "Nabigatzaile honek WebGL desaktibatuta du. Probatu Chrome edo Firefox hardware-azelerazioa aktibatuta.",
+ "rot": "JARRI TELEFONOA ETZANDA",
+ "rotMsg": "Echoloc horizontalean jokatzen da.",
+ "rotTap": "Edo sakatu hemen pantaila osoan jokatzeko.",
+ "run": "KORRIKA",
+ "look": "ARRASTATU<br>BEGIRATZEKO",
+ "echo": "OIHARTZUNA",
+ "level": "{n}. MAILA",
+ "howTo": "NOLA JOKATU",
+ "langName": "Euskara",
+ "menuAch": "LORPENAK",
+ "menuSettings": "EZARPENAK",
+ "menuAbout": "HONI BURUZ",
+ "menuHelp": "NOLA JOKATU",
+ "back": "ATZERA",
+ "resumeBtn": "JARRAITU",
+ "exitMenu": "IRTEN MENU NAGUSIRA",
+ "youCarry": "ERAMATEN DUZU",
+ "wayHome": "ETXERAKO BIDEAN",
+ "shopTitle": "DENDA",
+ "shopText": "★ {n} dituzu ({m} gastatzeko). Aukeratu jokoa zein botererekin hasi, izar bat bakoitzeko; sakatu berriro izarra berreskuratzeko. Botere bat blokeatuta dago joko batean hartu arte, nahiz eta gero bertan hil.",
+ "locked": "BLOKEATUTA",
+ "achTitle": "LORPENAK",
+ "starsN": "★ IZARRAK: {n}",
+ "starsNote": "Bat izarra eramanda ihes egin duzun joko bakoitzeko.",
+ "pwUnlocked": "BOTEREAK DESBLOKEATUTA {a}/{b}",
+ "artRecovered": "ARTEFAKTUAK BERRESKURATUTA {a}/{b}",
+ "setTitle": "EZARPENAK",
+ "setLang": "HIZKUNTZA",
+ "setSystem": "Sistemaren lehenetsia",
+ "setSize": "TESTUAREN TAMAINA",
+ "aboutTitle": "HONI BURUZ",
+ "aboutBy": "egilea: {name}",
+ "aboutFree": "Bideojoko hau doakoa da. Lagundu nire musika entzunez:",
+ "version": "{v} bertsioa",
+ "toastHome": "ORAIN ERAMAN ETXERA: BIDE OSOA ATZERA",
+ "toastLocked": "BLOKEATUTA",
+ "toastStar": "+1 IZAR ({n} GASTATZEKO)",
+ "toastAch": "LORPEN BERRIA: {x} ({n}/{m})",
+ "help": "<p>Ez duzu ikusten. Egin klik mihiarekin: puntu-olatu batek hormak erakusten dizkizu une batez. Izaki itsuak bizi dira hemen eta dena entzuten dute, beraz, egin oihartzuna kontuz.</p><p>Jokoa iparralderako bide luze bat da, zazpi mailatan zehar. Maila bakoitzeko irteera-atea beste muturrean dago. 7. mailan, ezerezaren gaineko zubi batean, izar bat dago zain, eta batzuetan artefaktu bat ondoan. Hartu eta itzuli bide osoa atzera, sartu zinen atetik irten arte: izarra zurea izango da dendan gastatzeko, eta artefaktua zure lorpenetara joango da. Ateek aurrera bakarrik uzten dizute joaten izarra eduki arte; gero, atzera bakarrik. Etxerako bidean izaki gehiago daude.</p><p>Botereak mailetan daude: igaro gainetik hartzeko. Hil arte irauten dute. Hiltzean, jokoa hasieratik hasten da berriro.</p><h3>Ordenagailuan</h3><ul><li><b>W A S D</b> ibili, <b>sagua</b> begiratu, eutsi <b>Shift</b> korrika egiteko (zaratatsua).</li><li><b>Zuriunea</b> ekokokatzen du. <b>Esc</b> pausatzen du. <b>F</b> pantaila osora aldatzen du.</li></ul><h3>Telefonoan edo tabletan</h3><ul><li><b>Ezkerreko erpurua</b>: arrastatu ibiltzeko; eraman eraztun etenaz haratago korrika egiteko.</li><li><b>Eskuineko erpurua</b>: arrastatu begiratzeko; sakatu <b>OIHARTZUNA</b> botoi biribila ekokokatzeko.</li></ul><p>Entzungailuek asko laguntzen dute: gauzak non dauden entzun dezakezu.</p>",
+ "pw_vest": [
+  "BERUNEZKO TXALEKOA",
+  "Erradioaktibitateak % 60 kalte gutxiago egiten dizu, baina astunagoa zara: % 20 motelago mugitzen zara eta % 30 azkarrago nekatzen."
+ ],
+ "pw_adren": [
+  "ADRENALINA",
+  "Zerbaitek gertu ehizatzen zaituen bitartean, % 25 azkarrago korrika egiten duzu."
+ ],
+ "pw_chalk": [
+  "KLARIONA",
+  "Arrasto ahul bat uzten duzu lurrean, oihartzuna egitean agertzen dena."
+ ],
+ "pw_ventro": [
+  "PROIEKZIOA",
+  "Zure oihartzuna 6 m aurrerago hasten da (edo bidean dagoen horman). Munstroak hara doaz, ez zugana."
+ ],
+ "pw_rico": [
+  "ERREBOTEA",
+  "Zure oihartzunak hiru izkinatan errebotatzen du eta pixka bat gehiago irauten du."
+ ],
+ "pw_cloak": [
+  "KAPA GELDIA",
+  "Egon geldi 2 segundoz eta ezerk ez zaitu arnasa hartzen entzungo, oso gertu egon arren."
+ ],
+ "pw_lens": [
+  "OIHARTZUN-LENTEA",
+  "Zure oihartzuna aurrera bakarrik doa, baina bi aldiz trinkoago eta 1,5 aldiz urrunago."
+ ],
+ "pw_whisk": [
+  "BIBOTEAK",
+  "Zure aurrean 2 m ingurura dauden hormek distira ahula dute mugitzen zaren bitartean, soinurik gabe."
+ ],
+ "pw_echo": [
+  "OIHARTZUN LUZEA",
+  "Zure oihartzuna urrunago iristen da."
+ ],
+ "pw_stride": [
+  "PAUSO LUZEA",
+  "Azkarrago korrika egiten duzu."
+ ],
+ "pw_lungs": [
+  "BIRIKA SAKONAK",
+  "Denbora gehiagoz egin dezakezu korrika."
+ ],
+ "pw_eye": [
+  "BEGI BERDEA",
+  "Seinaleek eta irteerak urrunagotik erantzuten diote zure oihartzunari."
+ ],
+ "pw_glow": [
+  "DISTIRA",
+  "Zure oihartzunaren puntuek gehiago irauten dute."
+ ],
+ "pw_dense": [
+  "OIHARTZUN TRINKOA",
+  "Zure oihartzunak puntu gehiago erakusten ditu."
+ ],
+ "pw_tremor": [
+  "DARDARA-ZENTZUA",
+  "Pausoak sumatzen dituzu: 22 m-ren barruan dabilen orok eraztun gorriak uzten ditu lurrean, baita hormen artetik ere."
+ ],
+ "pw_pill": [
+  "PILULA GORRIA",
+  "Dena ikusten duzu, benetan den bezala."
+ ],
+ "pw_star": [
+  "IZARRA",
+  "Atera ezazu sartu zinen atetik eta betiko zurea izango da: gastatu dendan."
+ ],
+ "pw_memory": [
+  "OROIMENA",
+  "Zure oihartzunak ukitzen duen horma oro betiko geratzen da argiztatuta. Zure oihartzuna bakarrik."
+ ],
+ "pw_guide": [
+  "GIDA-LERROA",
+  "Lurreko lerro berde batek irteerako bidea erakusten du beti."
+ ],
+ "pw_negative": [
+  "NEGATIBOA",
+  "Hormek eta izkinek elkarri oihartzuna itzultzen diote zure inguruan, uneoro: tokiaren forma ikusten duzu inolako soinurik egin gabe."
+ ],
+ "pw_crown": [
+  "KOROA",
+  "Echoloc gainditu duzu. Dena ikusten duzu. Dendan: hartu dituzun botere eta artefaktu guztiak."
+ ],
+ "pw_soles": [
+  "ZOLA BIGUNAK",
+  "Korrika egiterakoan zure urratsak distantzia erdira arte baino ez dira entzuten."
+ ],
+ "pw_steady": [
+  "ARNASA LASAIA",
+  "Arnasestuka egoteak ez du gehiago zure oihartzuna lausotzen edo sakabanatzen."
+ ],
+ "pw_bright": [
+  "OIHARTZUN DISTIRATSUA",
+  "Zure oihartzunaren puntuak % 35 distiratsuagoak dira."
+ ],
+ "pw_wide": [
+  "BEGI ZABALAK",
+  "Gehiago ikusten duzu inguruan: 95 gradu 75en ordez."
+ ],
+ "pw_lucky": [
+  "ZORTE-AMULETOA",
+  "Honen ondorengo maila bakoitzean botere bat gehiago dago."
+ ],
+ "pw_thread": [
+  "HARIA",
+  "Oihartzun bakoitzak irteerako bidearen hurrengo zatia ere erakusten du, berdez, lurrean."
+ ]
+}

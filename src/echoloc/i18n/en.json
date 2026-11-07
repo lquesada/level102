@@ -1,0 +1,195 @@
+{
+ "intro1": "You cannot see. Click your tongue to see.",
+ "intro2": "Something lives in these halls. It cannot see either, but it hears everything. Echo too close, or too often, and it will come. When it runs, it screams. When it screams, others answer.",
+ "ctlPC": "<kbd>WASD</kbd> move · <kbd>MOUSE</kbd> look · <kbd>SHIFT</kbd> run · <kbd>SPACE</kbd> echolocate · <kbd>F</kbd> full screen · headphones recommended",
+ "ctlTouch": "<kbd>LEFT THUMB</kbd> move · push it past the dashed ring to <kbd>RUN</kbd> · <kbd>RIGHT THUMB</kbd> drag to look, tap <kbd>ECHO</kbd> to echolocate · headphones recommended",
+ "fsNote": "Plays in full screen, with the phone sideways.",
+ "begin": [
+  "CLICK TO BEGIN",
+  "TAP TO BEGIN"
+ ],
+ "prompt": [
+  "PRESS [ SPACE ]",
+  "TAP [ ECHO ]"
+ ],
+ "info1": "<b>FIND THE EXIT</b>",
+ "infoPC": "<kbd>WASD</kbd> move &nbsp; <kbd>MOUSE</kbd> look &nbsp; <kbd>SHIFT</kbd> run (loud) &nbsp; <kbd>F</kbd> full screen<br><kbd>SPACE</kbd> echolocate",
+ "infoTouch": "left thumb: move, push far to run · right thumb: drag to look, tap ECHO to echolocate",
+ "paused": "PAUSED",
+ "pausedMsg": "The dark waits.",
+ "resume": [
+  "CLICK TO RESUME",
+  "TAP TO RESUME"
+ ],
+ "won": "ESCAPED",
+ "wonMsg": "You found the exit in {s} s.",
+ "toMenu": [
+  "CLICK FOR THE MAIN MENU",
+  "TAP FOR THE MAIN MENU"
+ ],
+ "startBtn": "START GAME",
+ "again": [
+  "CLICK TO PLAY AGAIN",
+  "TAP TO PLAY AGAIN"
+ ],
+ "dead": "CONSUMED",
+ "deadMsg": "It heard you.",
+ "retry": [
+  "CLICK TO TRY AGAIN",
+  "TAP TO TRY AGAIN"
+ ],
+ "error": "ERROR",
+ "restart": [
+  "CLICK TO RESTART",
+  "TAP TO RESTART"
+ ],
+ "noGL": "NO WEBGL",
+ "noGLMsg": "This browser has WebGL turned off. Try Chrome or Firefox with hardware acceleration on.",
+ "rot": "TURN YOUR PHONE SIDEWAYS",
+ "rotMsg": "Echoloc is played in landscape.",
+ "rotTap": "Or tap here to play in full screen.",
+ "run": "RUN",
+ "look": "DRAG<br>TO LOOK",
+ "echo": "ECHO",
+ "level": "LEVEL {n}",
+ "howTo": "HOW TO PLAY",
+ "langName": "English",
+ "menuAch": "ACHIEVEMENTS",
+ "menuSettings": "SETTINGS",
+ "menuAbout": "ABOUT",
+ "menuHelp": "HOW TO PLAY",
+ "back": "BACK",
+ "resumeBtn": "RESUME",
+ "exitMenu": "EXIT TO MAIN MENU",
+ "youCarry": "YOU CARRY",
+ "wayHome": "ON THE WAY HOME",
+ "shopTitle": "SHOP",
+ "shopText": "You have ★ {n} ({m} to spend). Pick the power-ups to start the game with, one star each; tap again to get the star back. A power-up stays locked until you pick it up in a game, even one you then die in.",
+ "locked": "LOCKED",
+ "achTitle": "ACHIEVEMENTS",
+ "starsN": "★ STARS: {n}",
+ "starsNote": "One for every game you escaped carrying the star.",
+ "pwUnlocked": "POWER-UPS UNLOCKED {a}/{b}",
+ "artRecovered": "ARTIFACTS RECOVERED {a}/{b}",
+ "setTitle": "SETTINGS",
+ "setLang": "LANGUAGE",
+ "setSystem": "System default",
+ "setSize": "TEXT SIZE",
+ "aboutTitle": "ABOUT",
+ "aboutBy": "by {name}",
+ "aboutFree": "This video game is free. Support me by listening to my music:",
+ "version": "Version {v}",
+ "toastHome": "NOW TAKE IT HOME: ALL THE WAY BACK",
+ "toastLocked": "LOCKED",
+ "toastStar": "+1 STAR ({n} TO SPEND)",
+ "toastAch": "NEW ACHIEVEMENT: {x} ({n}/{m})",
+ "help": "<p>You cannot see. Click your tongue: a wave of dots shows the walls for a moment. Blind creatures live here and they hear everything, so echo with care.</p><p>The game is one long way north through seven levels. Each level's exit door is on its far side. On level 7, a bridge over nothing, a star is waiting, and sometimes an artifact beside it. Take them and walk all the way back, out of the door you first came in by: the star is yours to spend in the shop, the artifact goes into your achievements. The doors only let you go forward until you hold the star; then only back. On the way home there are more creatures.</p><p>Power-ups lie in the levels: walk over them to take them. They last until you die. Dying starts the game again from the beginning.</p><h3>On a computer</h3><ul><li><b>W A S D</b> walk, <b>mouse</b> look, hold <b>Shift</b> to run (loud).</li><li><b>Space</b> echolocates. <b>Esc</b> pauses. <b>F</b> switches to full screen.</li></ul><h3>On a phone or tablet</h3><ul><li><b>Left thumb</b>: drag to walk; push past the dashed ring to run.</li><li><b>Right thumb</b>: drag to look; tap the round <b>ECHO</b> button to echolocate.</li></ul><p>Headphones help a lot: you can hear where things are.</p>",
+ "pw_vest": [
+  "LEAD VEST",
+  "Radioactivity hurts you 60% less, but you are heavier: you move 20% slower and tire 30% faster."
+ ],
+ "pw_adren": [
+  "ADRENALINE",
+  "While something hunts you nearby, you run 25% faster."
+ ],
+ "pw_chalk": [
+  "CHALK",
+  "You leave a faint trail on the floor that shows up when you echo."
+ ],
+ "pw_ventro": [
+  "PROJECTION",
+  "Your echo starts 6 m in front of you (or at the wall in the way). Monsters go there, not to you."
+ ],
+ "pw_rico": [
+  "RICOCHET",
+  "Your echo bounces round three corners and stays a little longer."
+ ],
+ "pw_cloak": [
+  "STILL CLOAK",
+  "Stand still for 2 seconds and nothing can hear you breathe, however close it is."
+ ],
+ "pw_lens": [
+  "ECHO LENS",
+  "Your echo only goes forwards, but twice as dense and 1.5x as far."
+ ],
+ "pw_whisk": [
+  "WHISKERS",
+  "Walls within about 2 m ahead of you glow faintly while you move, without a sound."
+ ],
+ "pw_echo": [
+  "FAR ECHO",
+  "Your echo reaches farther."
+ ],
+ "pw_stride": [
+  "LONG STRIDE",
+  "You run faster."
+ ],
+ "pw_lungs": [
+  "DEEP LUNGS",
+  "You can run for longer."
+ ],
+ "pw_eye": [
+  "GREEN EYE",
+  "Signs and the exit answer your echo from farther away."
+ ],
+ "pw_glow": [
+  "AFTERGLOW",
+  "Your echo dots stay longer."
+ ],
+ "pw_dense": [
+  "DENSE ECHO",
+  "Your echo shows more dots."
+ ],
+ "pw_tremor": [
+  "TREMOR SENSE",
+  "You feel footsteps: anything walking within 22 m leaves red rings on the floor, even through walls."
+ ],
+ "pw_pill": [
+  "RED PILL",
+  "You see everything, as it really is."
+ ],
+ "pw_star": [
+  "STAR",
+  "Carry it out of the door you came in by and it is yours for good: spend it in the shop."
+ ],
+ "pw_memory": [
+  "MEMORY",
+  "Every wall your echo touches stays lit for good. Only your echo."
+ ],
+ "pw_guide": [
+  "GUIDING LINE",
+  "A green line on the floor always shows the way out."
+ ],
+ "pw_negative": [
+  "NEGATIVE",
+  "Walls and corners echo onto each other all around you, all the time: you see the shape of the place without a sound."
+ ],
+ "pw_crown": [
+  "CROWN",
+  "You beat Echoloc. You see everything. In the shop: take every power-up and every artifact you have."
+ ],
+ "pw_soles": [
+  "SOFT SOLES",
+  "Your running steps are heard only half as far."
+ ],
+ "pw_steady": [
+  "STEADY BREATH",
+  "Being out of breath no longer blurs or scatters your echo."
+ ],
+ "pw_bright": [
+  "BRIGHT ECHO",
+  "Your echo dots are 35% brighter."
+ ],
+ "pw_wide": [
+  "WIDE EYES",
+  "You see more around you: 95 degrees instead of 75."
+ ],
+ "pw_lucky": [
+  "LUCKY CHARM",
+  "One more power-up lies in every level after this one."
+ ],
+ "pw_thread": [
+  "THREAD",
+  "Each echo also shows the next stretch of the way out, in green, on the floor."
+ ]
+}

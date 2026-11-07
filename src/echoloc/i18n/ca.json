@@ -1,0 +1,195 @@
+{
+ "intro1": "No hi veus. Fes petar la llengua per veure-hi.",
+ "intro2": "Alguna cosa viu en aquests passadissos. Tampoc no hi veu, però ho sent tot. Si fas l'eco massa a prop o massa sovint, vindrà. Quan corre, crida. Quan crida, d'altres responen.",
+ "ctlPC": "<kbd>WASD</kbd> moure't · <kbd>RATOLÍ</kbd> mirar · <kbd>SHIFT</kbd> córrer · <kbd>ESPAI</kbd> ecolocalitzar · <kbd>F</kbd> pantalla completa · es recomanen auriculars",
+ "ctlTouch": "<kbd>POLZE ESQUERRE</kbd> moure't · empeny-lo més enllà de l'anell discontinu per <kbd>CÓRRER</kbd> · <kbd>POLZE DRET</kbd> arrossega per mirar, toca <kbd>ECO</kbd> per ecolocalitzar · es recomanen auriculars",
+ "fsNote": "Es juga a pantalla completa, amb el mòbil de costat.",
+ "begin": [
+  "FES CLIC PER COMENÇAR",
+  "TOCA PER COMENÇAR"
+ ],
+ "prompt": [
+  "PREM [ ESPAI ]",
+  "TOCA [ ECO ]"
+ ],
+ "info1": "<b>TROBA LA SORTIDA</b>",
+ "infoPC": "<kbd>WASD</kbd> moure't &nbsp; <kbd>RATOLÍ</kbd> mirar &nbsp; <kbd>SHIFT</kbd> córrer (fa soroll) &nbsp; <kbd>F</kbd> pantalla completa<br><kbd>ESPAI</kbd> ecolocalitzar",
+ "infoTouch": "polze esquerre: moure't, empeny lluny per córrer · polze dret: arrossega per mirar, toca ECO per ecolocalitzar",
+ "paused": "EN PAUSA",
+ "pausedMsg": "La foscor espera.",
+ "resume": [
+  "FES CLIC PER CONTINUAR",
+  "TOCA PER CONTINUAR"
+ ],
+ "won": "HAS ESCAPAT",
+ "wonMsg": "Has trobat la sortida en {s} s.",
+ "toMenu": [
+  "FES CLIC PER AL MENÚ PRINCIPAL",
+  "TOCA PER AL MENÚ PRINCIPAL"
+ ],
+ "startBtn": "COMENÇAR",
+ "again": [
+  "FES CLIC PER TORNAR A JUGAR",
+  "TOCA PER TORNAR A JUGAR"
+ ],
+ "dead": "DEVORAT",
+ "deadMsg": "T'ha sentit.",
+ "retry": [
+  "FES CLIC PER TORNAR-HO A PROVAR",
+  "TOCA PER TORNAR-HO A PROVAR"
+ ],
+ "error": "ERROR",
+ "restart": [
+  "FES CLIC PER REINICIAR",
+  "TOCA PER REINICIAR"
+ ],
+ "noGL": "SENSE WEBGL",
+ "noGLMsg": "Aquest navegador té el WebGL desactivat. Prova Chrome o Firefox amb l'acceleració per maquinari activada.",
+ "rot": "POSA EL MÒBIL DE COSTAT",
+ "rotMsg": "Echoloc es juga en horitzontal.",
+ "rotTap": "O toca aquí per jugar a pantalla completa.",
+ "run": "CÓRRER",
+ "look": "ARROSSEGA<br>PER MIRAR",
+ "echo": "ECO",
+ "level": "NIVELL {n}",
+ "howTo": "COM ES JUGA",
+ "langName": "Català",
+ "menuAch": "ASSOLIMENTS",
+ "menuSettings": "CONFIGURACIÓ",
+ "menuAbout": "QUANT A",
+ "menuHelp": "COM ES JUGA",
+ "back": "ENRERE",
+ "resumeBtn": "CONTINUAR",
+ "exitMenu": "SORTIR AL MENÚ PRINCIPAL",
+ "youCarry": "PORTES",
+ "wayHome": "DE TORNADA A CASA",
+ "shopTitle": "BOTIGA",
+ "shopText": "Tens ★ {n} ({m} per gastar). Tria els poders amb què començaràs la partida, una estrella cadascun; toca'l de nou per recuperar l'estrella. Un poder està bloquejat fins que l'agafes en una partida, encara que després hi moris.",
+ "locked": "BLOQUEJAT",
+ "achTitle": "ASSOLIMENTS",
+ "starsN": "★ ESTRELLES: {n}",
+ "starsNote": "Una per cada partida de la qual has escapat amb l'estrella.",
+ "pwUnlocked": "PODERS DESBLOQUEJATS {a}/{b}",
+ "artRecovered": "ARTEFACTES RECUPERATS {a}/{b}",
+ "setTitle": "CONFIGURACIÓ",
+ "setLang": "IDIOMA",
+ "setSystem": "Per defecte del sistema",
+ "setSize": "MIDA DEL TEXT",
+ "aboutTitle": "QUANT A",
+ "aboutBy": "per {name}",
+ "aboutFree": "Aquest videojoc és gratuït. Dona'm suport escoltant la meva música:",
+ "version": "Versió {v}",
+ "toastHome": "ARA PORTA-LA A CASA: FINS AL PRINCIPI",
+ "toastLocked": "BLOQUEJAT",
+ "toastStar": "+1 ESTRELLA ({n} PER GASTAR)",
+ "toastAch": "NOU ASSOLIMENT: {x} ({n}/{m})",
+ "help": "<p>No hi veus. Fes petar la llengua: una onada de punts et mostra les parets un instant. Aquí hi viuen criatures cegues que ho senten tot, així que fes l'eco amb compte.</p><p>El joc és un llarg camí cap al nord a través de set nivells. La porta de sortida de cada nivell és a l'altre extrem. Al nivell 7, un pont sobre el no-res, t'espera una estrella, i de vegades un artefacte al costat. Agafa'ls i torna tot el camí enrere, fins a sortir per la porta per on vas entrar: l'estrella serà teva per gastar-la a la botiga i l'artefacte anirà als teus assoliments. Les portes només et deixen avançar fins que tens l'estrella; després, només tornar. De tornada hi ha més criatures.</p><p>Els poders són pels nivells: passa-hi per sobre per agafar-los. Duren fins que mors. Si mors, la partida torna a començar des del principi.</p><h3>A l'ordinador</h3><ul><li><b>W A S D</b> caminar, <b>ratolí</b> mirar, mantén <b>Shift</b> per córrer (fa soroll).</li><li><b>Espai</b> ecolocalitza. <b>Esc</b> posa en pausa. <b>F</b> canvia a pantalla completa.</li></ul><h3>Al mòbil o la tauleta</h3><ul><li><b>Polze esquerre</b>: arrossega per caminar; empeny més enllà de l'anell discontinu per córrer.</li><li><b>Polze dret</b>: arrossega per mirar; toca el botó rodó <b>ECO</b> per ecolocalitzar.</li></ul><p>Els auriculars ajuden molt: pots sentir on són les coses.</p>",
+ "pw_vest": [
+  "ARMILLA DE PLOM",
+  "La radioactivitat et fa un 60% menys de mal, però peses més: et mous un 20% més lent i et canses un 30% més de pressa."
+ ],
+ "pw_adren": [
+  "ADRENALINA",
+  "Mentre alguna cosa et caça a prop, corres un 25% més de pressa."
+ ],
+ "pw_chalk": [
+  "GUIX",
+  "Deixes un rastre feble a terra que apareix quan fas l'eco."
+ ],
+ "pw_ventro": [
+  "PROJECCIÓ",
+  "El teu eco neix 6 m davant teu (o a la paret que hi hagi). Els monstres van allà, no cap a tu."
+ ],
+ "pw_rico": [
+  "REBOT",
+  "El teu eco rebota per tres cantonades i dura una mica més."
+ ],
+ "pw_cloak": [
+  "MANTELL QUIET",
+  "Queda't quiet 2 segons i res no et sentirà respirar, per a prop que sigui."
+ ],
+ "pw_lens": [
+  "LENT D'ECO",
+  "El teu eco només va endavant, però el doble de dens i 1,5 vegades més lluny."
+ ],
+ "pw_whisk": [
+  "BIGOTIS",
+  "Les parets a uns 2 m davant teu brillen dèbilment mentre et mous, sense fer soroll."
+ ],
+ "pw_echo": [
+  "ECO LLUNYÀ",
+  "El teu eco arriba més lluny."
+ ],
+ "pw_stride": [
+  "PAS LLARG",
+  "Corres més de pressa."
+ ],
+ "pw_lungs": [
+  "PULMONS PROFUNDS",
+  "Pots córrer durant més temps."
+ ],
+ "pw_eye": [
+  "ULL VERD",
+  "Els senyals i la sortida responen al teu eco des de més lluny."
+ ],
+ "pw_glow": [
+  "RESPLENDOR",
+  "Els punts del teu eco duren més."
+ ],
+ "pw_dense": [
+  "ECO DENS",
+  "El teu eco mostra més punts."
+ ],
+ "pw_tremor": [
+  "SENTIT SÍSMIC",
+  "Notes les passes: tot el que camini a menys de 22 m deixa anells vermells a terra, fins i tot a través de les parets."
+ ],
+ "pw_pill": [
+  "PASTILLA VERMELLA",
+  "Ho veus tot, tal com és de debò."
+ ],
+ "pw_star": [
+  "ESTRELLA",
+  "Treu-la per la porta per on vas entrar i serà teva per sempre: gasta-la a la botiga."
+ ],
+ "pw_memory": [
+  "MEMÒRIA",
+  "Cada paret que toca el teu eco queda il·luminada per sempre. Només el teu eco."
+ ],
+ "pw_guide": [
+  "LÍNIA GUIA",
+  "Una línia verda a terra sempre mostra la sortida."
+ ],
+ "pw_negative": [
+  "NEGATIU",
+  "Parets i cantonades es tornen l'eco entre elles al teu voltant, tot el temps: veus la forma del lloc sense fer cap soroll."
+ ],
+ "pw_crown": [
+  "CORONA",
+  "Has vençut Echoloc. Ho veus tot. A la botiga: emporta't tots els poders i tots els artefactes que tinguis."
+ ],
+ "pw_soles": [
+  "SOLES TOVES",
+  "Les teves passes corrent se senten només a la meitat de distància."
+ ],
+ "pw_steady": [
+  "ALÈ FERM",
+  "Quedar-te sense alè ja no difumina ni escampa el teu eco."
+ ],
+ "pw_bright": [
+  "ECO BRILLANT",
+  "Els punts del teu eco brillen un 35% més."
+ ],
+ "pw_wide": [
+  "ULLS OBERTS",
+  "Hi veus més al teu voltant: 95 graus en lloc de 75."
+ ],
+ "pw_lucky": [
+  "AMULET",
+  "A cada nivell després d'aquest hi ha un poder més."
+ ],
+ "pw_thread": [
+  "FIL",
+  "Cada eco també mostra el tram següent del camí de sortida, en verd, a terra."
+ ]
+}

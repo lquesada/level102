@@ -1,0 +1,195 @@
+{
+ "intro1": "Bạn không thể nhìn. Tặc lưỡi để thấy.",
+ "intro2": "Có thứ gì đó sống trong những hành lang này. Nó cũng không nhìn được, nhưng nó nghe thấy mọi thứ. Vang âm quá gần hoặc quá thường, nó sẽ đến. Khi nó chạy, nó gào thét. Khi nó gào thét, những kẻ khác đáp lại.",
+ "ctlPC": "<kbd>WASD</kbd> di chuyển · <kbd>CHUỘT</kbd> nhìn · <kbd>SHIFT</kbd> chạy · <kbd>SPACE</kbd> định vị bằng tiếng vang · <kbd>F</kbd> toàn màn hình · nên dùng tai nghe",
+ "ctlTouch": "<kbd>NGÓN CÁI TRÁI</kbd> di chuyển · đẩy qua vòng nét đứt để <kbd>CHẠY</kbd> · <kbd>NGÓN CÁI PHẢI</kbd> kéo để nhìn, chạm <kbd>VANG</kbd> để định vị bằng tiếng vang · nên dùng tai nghe",
+ "fsNote": "Chơi toàn màn hình, xoay ngang điện thoại.",
+ "begin": [
+  "NHẤP ĐỂ BẮT ĐẦU",
+  "CHẠM ĐỂ BẮT ĐẦU"
+ ],
+ "prompt": [
+  "NHẤN [ SPACE ]",
+  "CHẠM [ VANG ]"
+ ],
+ "info1": "<b>TÌM LỐI RA</b>",
+ "infoPC": "<kbd>WASD</kbd> di chuyển &nbsp; <kbd>CHUỘT</kbd> nhìn &nbsp; <kbd>SHIFT</kbd> chạy (ồn) &nbsp; <kbd>F</kbd> toàn màn hình<br><kbd>SPACE</kbd> định vị bằng tiếng vang",
+ "infoTouch": "ngón cái trái: di chuyển, đẩy xa để chạy · ngón cái phải: kéo để nhìn, chạm VANG để định vị",
+ "paused": "TẠM DỪNG",
+ "pausedMsg": "Bóng tối đang chờ.",
+ "resume": [
+  "NHẤP ĐỂ TIẾP TỤC",
+  "CHẠM ĐỂ TIẾP TỤC"
+ ],
+ "won": "ĐÃ THOÁT",
+ "wonMsg": "Bạn tìm thấy lối ra sau {s} giây.",
+ "toMenu": [
+  "NHẤP ĐỂ VỀ MENU CHÍNH",
+  "CHẠM ĐỂ VỀ MENU CHÍNH"
+ ],
+ "startBtn": "BẮT ĐẦU",
+ "again": [
+  "NHẤP ĐỂ CHƠI LẠI",
+  "CHẠM ĐỂ CHƠI LẠI"
+ ],
+ "dead": "BỊ NUỐT CHỬNG",
+ "deadMsg": "Nó đã nghe thấy bạn.",
+ "retry": [
+  "NHẤP ĐỂ THỬ LẠI",
+  "CHẠM ĐỂ THỬ LẠI"
+ ],
+ "error": "LỖI",
+ "restart": [
+  "NHẤP ĐỂ KHỞI ĐỘNG LẠI",
+  "CHẠM ĐỂ KHỞI ĐỘNG LẠI"
+ ],
+ "noGL": "KHÔNG CÓ WEBGL",
+ "noGLMsg": "Trình duyệt này đã tắt WebGL. Hãy thử Chrome hoặc Firefox với tăng tốc phần cứng được bật.",
+ "rot": "XOAY NGANG ĐIỆN THOẠI",
+ "rotMsg": "Echoloc chơi ở chế độ ngang.",
+ "rotTap": "Hoặc chạm vào đây để chơi toàn màn hình.",
+ "run": "CHẠY",
+ "look": "KÉO<br>ĐỂ NHÌN",
+ "echo": "VANG",
+ "level": "MÀN {n}",
+ "howTo": "CÁCH CHƠI",
+ "langName": "Tiếng Việt",
+ "menuAch": "THÀNH TÍCH",
+ "menuSettings": "CÀI ĐẶT",
+ "menuAbout": "GIỚI THIỆU",
+ "menuHelp": "CÁCH CHƠI",
+ "back": "QUAY LẠI",
+ "resumeBtn": "TIẾP TỤC",
+ "exitMenu": "VỀ MENU CHÍNH",
+ "youCarry": "BẠN ĐANG MANG",
+ "wayHome": "TRÊN ĐƯỜNG VỀ",
+ "shopTitle": "CỬA HÀNG",
+ "shopText": "Bạn có ★ {n} ({m} có thể tiêu). Chọn vật phẩm hỗ trợ để bắt đầu trò chơi, mỗi món một ngôi sao; chạm lần nữa để lấy lại sao. Vật phẩm bị khóa cho đến khi bạn nhặt được nó trong một ván, kể cả ván bạn chết sau đó.",
+ "locked": "ĐÃ KHÓA",
+ "achTitle": "THÀNH TÍCH",
+ "starsN": "★ NGÔI SAO: {n}",
+ "starsNote": "Một sao cho mỗi ván bạn thoát ra cùng ngôi sao.",
+ "pwUnlocked": "VẬT PHẨM ĐÃ MỞ {a}/{b}",
+ "artRecovered": "CỔ VẬT ĐÃ TÌM {a}/{b}",
+ "setTitle": "CÀI ĐẶT",
+ "setLang": "NGÔN NGỮ",
+ "setSystem": "Theo hệ thống",
+ "setSize": "CỠ CHỮ",
+ "aboutTitle": "GIỚI THIỆU",
+ "aboutBy": "của {name}",
+ "aboutFree": "Trò chơi này miễn phí. Hãy ủng hộ tôi bằng cách nghe nhạc của tôi:",
+ "version": "Phiên bản {v}",
+ "toastHome": "GIỜ HÃY MANG NÓ VỀ: ĐI HẾT ĐƯỜNG QUAY LẠI",
+ "toastLocked": "ĐÃ KHÓA",
+ "toastStar": "+1 SAO ({n} CÓ THỂ TIÊU)",
+ "toastAch": "THÀNH TÍCH MỚI: {x} ({n}/{m})",
+ "help": "<p>Bạn không thể nhìn. Hãy tặc lưỡi: một làn sóng chấm sáng hiện ra các bức tường trong chốc lát. Ở đây có những sinh vật mù và chúng nghe thấy mọi thứ, nên hãy vang âm cẩn thận.</p><p>Trò chơi là một con đường dài về phía bắc qua bảy màn. Cửa ra của mỗi màn nằm ở phía bên kia. Ở màn 7, một cây cầu bắc qua hư không, một ngôi sao đang chờ, đôi khi có một cổ vật bên cạnh. Hãy lấy chúng và đi hết đường quay về, ra khỏi cánh cửa bạn đã vào lúc đầu: ngôi sao để tiêu trong cửa hàng, cổ vật được thêm vào thành tích. Các cánh cửa chỉ cho bạn đi tiếp cho đến khi bạn cầm ngôi sao; sau đó chỉ cho đi lùi. Trên đường về có nhiều sinh vật hơn.</p><p>Vật phẩm hỗ trợ nằm trong các màn: đi qua để nhặt. Chúng kéo dài cho đến khi bạn chết. Chết sẽ bắt đầu lại trò chơi từ đầu.</p><h3>Trên máy tính</h3><ul><li><b>W A S D</b> đi, <b>chuột</b> nhìn, giữ <b>Shift</b> để chạy (ồn).</li><li><b>Space</b> để định vị bằng tiếng vang. <b>Esc</b> tạm dừng. <b>F</b> chuyển sang toàn màn hình.</li></ul><h3>Trên điện thoại hoặc máy tính bảng</h3><ul><li><b>Ngón cái trái</b>: kéo để đi; đẩy qua vòng nét đứt để chạy.</li><li><b>Ngón cái phải</b>: kéo để nhìn; chạm nút tròn <b>VANG</b> để định vị bằng tiếng vang.</li></ul><p>Tai nghe giúp ích rất nhiều: bạn nghe được mọi thứ ở đâu.</p>",
+ "pw_vest": [
+  "ÁO CHÌ",
+  "Phóng xạ gây hại ít hơn 60%, nhưng bạn nặng hơn: di chuyển chậm hơn 20% và mệt nhanh hơn 30%."
+ ],
+ "pw_adren": [
+  "ADRENALINE",
+  "Khi có thứ gì săn bạn ở gần, bạn chạy nhanh hơn 25%."
+ ],
+ "pw_chalk": [
+  "PHẤN",
+  "Bạn để lại một vệt mờ trên sàn, hiện lên khi bạn vang âm."
+ ],
+ "pw_ventro": [
+  "PHÓNG CHIẾU",
+  "Tiếng vang của bạn bắt đầu cách 6 m phía trước (hoặc ở bức tường chắn đường). Quái vật tìm đến đó, không phải đến bạn."
+ ],
+ "pw_rico": [
+  "DỘI LẠI",
+  "Tiếng vang của bạn dội qua ba góc và lưu lại lâu hơn một chút."
+ ],
+ "pw_cloak": [
+  "ÁO CHOÀNG TĨNH",
+  "Đứng yên 2 giây thì không gì nghe được hơi thở của bạn, dù nó ở gần đến đâu."
+ ],
+ "pw_lens": [
+  "THẤU KÍNH VANG",
+  "Tiếng vang chỉ đi về phía trước, nhưng dày gấp đôi và xa gấp 1,5 lần."
+ ],
+ "pw_whisk": [
+  "RIA MÈO",
+  "Tường trong khoảng 2 m phía trước phát sáng mờ khi bạn di chuyển, không một tiếng động."
+ ],
+ "pw_echo": [
+  "VANG XA",
+  "Tiếng vang của bạn đi xa hơn."
+ ],
+ "pw_stride": [
+  "SẢI DÀI",
+  "Bạn chạy nhanh hơn."
+ ],
+ "pw_lungs": [
+  "PHỔI SÂU",
+  "Bạn chạy được lâu hơn."
+ ],
+ "pw_eye": [
+  "MẮT XANH",
+  "Biển hiệu và lối ra đáp lại tiếng vang từ xa hơn."
+ ],
+ "pw_glow": [
+  "DƯ QUANG",
+  "Các chấm vang lưu lại lâu hơn."
+ ],
+ "pw_dense": [
+  "VANG DÀY",
+  "Tiếng vang hiện nhiều chấm hơn."
+ ],
+ "pw_tremor": [
+  "CẢM RUNG",
+  "Bạn cảm nhận được bước chân: mọi thứ đi lại trong vòng 22 m để lại vòng đỏ trên sàn, kể cả xuyên tường."
+ ],
+ "pw_pill": [
+  "VIÊN THUỐC ĐỎ",
+  "Bạn thấy mọi thứ, đúng như bản chất thật của nó."
+ ],
+ "pw_star": [
+  "NGÔI SAO",
+  "Mang nó ra khỏi cánh cửa bạn đã vào, nó sẽ mãi là của bạn: hãy tiêu nó trong cửa hàng."
+ ],
+ "pw_memory": [
+  "KÝ ỨC",
+  "Mọi bức tường tiếng vang chạm vào sẽ sáng mãi. Chỉ tiếng vang của bạn."
+ ],
+ "pw_guide": [
+  "ĐƯỜNG DẪN",
+  "Một vạch xanh lá trên sàn luôn chỉ lối ra."
+ ],
+ "pw_negative": [
+  "ÂM BẢN",
+  "Tường và góc phòng luôn dội tiếng vang vào nhau khắp quanh bạn: bạn thấy hình dạng nơi này mà không cần phát ra tiếng nào."
+ ],
+ "pw_crown": [
+  "VƯƠNG MIỆN",
+  "Bạn đã phá đảo Echoloc. Bạn thấy mọi thứ. Trong cửa hàng: lấy mọi vật phẩm và mọi cổ vật bạn có."
+ ],
+ "pw_soles": [
+  "ĐẾ MỀM",
+  "Tiếng bước chân khi bạn chạy chỉ nghe được ở một nửa khoảng cách."
+ ],
+ "pw_steady": [
+  "HƠI THỞ ĐỀU",
+  "Hụt hơi không còn làm tiếng vang của bạn bị nhòe hay tản mát."
+ ],
+ "pw_bright": [
+  "VANG SÁNG",
+  "Các chấm tiếng vang của bạn sáng hơn 35%."
+ ],
+ "pw_wide": [
+  "MẮT MỞ TO",
+  "Bạn thấy nhiều hơn xung quanh: 95 độ thay vì 75."
+ ],
+ "pw_lucky": [
+  "BÙA MAY MẮN",
+  "Mỗi màn sau màn này có thêm một vật phẩm hỗ trợ."
+ ],
+ "pw_thread": [
+  "SỢI CHỈ",
+  "Mỗi tiếng vang còn cho thấy đoạn tiếp theo của lối ra, màu xanh lá, trên sàn."
+ ]
+}

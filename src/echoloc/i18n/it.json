@@ -1,0 +1,195 @@
+{
+ "intro1": "Non puoi vedere. Schiocca la lingua per vedere.",
+ "intro2": "Qualcosa vive in questi corridoi. Neanche lui vede, ma sente tutto. Fai eco troppo vicino, o troppo spesso, e arriverà. Quando corre, urla. Quando urla, altri rispondono.",
+ "ctlPC": "<kbd>WASD</kbd> muoviti · <kbd>MOUSE</kbd> guarda · <kbd>SHIFT</kbd> corri · <kbd>SPAZIO</kbd> ecolocalizza · <kbd>F</kbd> schermo intero · consigliate le cuffie",
+ "ctlTouch": "<kbd>POLLICE SINISTRO</kbd> muoviti · spingilo oltre l'anello tratteggiato per <kbd>CORRERE</kbd> · <kbd>POLLICE DESTRO</kbd> trascina per guardare, tocca <kbd>ECO</kbd> per ecolocalizzare · consigliate le cuffie",
+ "fsNote": "Si gioca a schermo intero, con il telefono in orizzontale.",
+ "begin": [
+  "CLICCA PER INIZIARE",
+  "TOCCA PER INIZIARE"
+ ],
+ "prompt": [
+  "PREMI [ SPAZIO ]",
+  "TOCCA [ ECO ]"
+ ],
+ "info1": "<b>TROVA L'USCITA</b>",
+ "infoPC": "<kbd>WASD</kbd> muoviti &nbsp; <kbd>MOUSE</kbd> guarda &nbsp; <kbd>SHIFT</kbd> corri (rumoroso) &nbsp; <kbd>F</kbd> schermo intero<br><kbd>SPAZIO</kbd> ecolocalizza",
+ "infoTouch": "pollice sinistro: muoviti, spingi lontano per correre · pollice destro: trascina per guardare, tocca ECO per ecolocalizzare",
+ "paused": "IN PAUSA",
+ "pausedMsg": "Il buio aspetta.",
+ "resume": [
+  "CLICCA PER RIPRENDERE",
+  "TOCCA PER RIPRENDERE"
+ ],
+ "won": "FUGGITO",
+ "wonMsg": "Hai trovato l'uscita in {s} s.",
+ "toMenu": [
+  "CLICCA PER IL MENU PRINCIPALE",
+  "TOCCA PER IL MENU PRINCIPALE"
+ ],
+ "startBtn": "INIZIA",
+ "again": [
+  "CLICCA PER GIOCARE ANCORA",
+  "TOCCA PER GIOCARE ANCORA"
+ ],
+ "dead": "DIVORATO",
+ "deadMsg": "Ti ha sentito.",
+ "retry": [
+  "CLICCA PER RIPROVARE",
+  "TOCCA PER RIPROVARE"
+ ],
+ "error": "ERRORE",
+ "restart": [
+  "CLICCA PER RICOMINCIARE",
+  "TOCCA PER RICOMINCIARE"
+ ],
+ "noGL": "NIENTE WEBGL",
+ "noGLMsg": "In questo browser WebGL è disattivato. Prova Chrome o Firefox con l'accelerazione hardware attiva.",
+ "rot": "GIRA IL TELEFONO",
+ "rotMsg": "Echoloc si gioca in orizzontale.",
+ "rotTap": "Oppure tocca qui per giocare a schermo intero.",
+ "run": "CORRI",
+ "look": "TRASCINA<br>PER GUARDARE",
+ "echo": "ECO",
+ "level": "LIVELLO {n}",
+ "howTo": "COME SI GIOCA",
+ "langName": "Italiano",
+ "menuAch": "OBIETTIVI",
+ "menuSettings": "IMPOSTAZIONI",
+ "menuAbout": "INFO",
+ "menuHelp": "COME SI GIOCA",
+ "back": "INDIETRO",
+ "resumeBtn": "RIPRENDI",
+ "exitMenu": "ESCI AL MENU",
+ "youCarry": "PORTI CON TE",
+ "wayHome": "SULLA VIA DI CASA",
+ "shopTitle": "NEGOZIO",
+ "shopText": "Hai ★ {n} ({m} da spendere). Scegli i potenziamenti con cui iniziare la partita, una stella ciascuno; tocca di nuovo per riavere la stella. Un potenziamento resta bloccato finché non lo raccogli in una partita, anche se poi muori.",
+ "locked": "BLOCCATO",
+ "achTitle": "OBIETTIVI",
+ "starsN": "★ STELLE: {n}",
+ "starsNote": "Una per ogni partita in cui sei fuggito con la stella.",
+ "pwUnlocked": "POTENZIAMENTI SBLOCCATI {a}/{b}",
+ "artRecovered": "MANUFATTI RECUPERATI {a}/{b}",
+ "setTitle": "IMPOSTAZIONI",
+ "setLang": "LINGUA",
+ "setSystem": "Predefinita di sistema",
+ "setSize": "DIMENSIONE TESTO",
+ "aboutTitle": "INFO",
+ "aboutBy": "di {name}",
+ "aboutFree": "Questo videogioco è gratuito. Sostienimi ascoltando la mia musica:",
+ "version": "Versione {v}",
+ "toastHome": "ORA PORTALA A CASA: TUTTA LA STRADA A RITROSO",
+ "toastLocked": "BLOCCATO",
+ "toastStar": "+1 STELLA ({n} DA SPENDERE)",
+ "toastAch": "NUOVO OBIETTIVO: {x} ({n}/{m})",
+ "help": "<p>Non puoi vedere. Schiocca la lingua: un'onda di punti mostra le pareti per un attimo. Qui vivono creature cieche che sentono tutto, quindi usa l'eco con cautela.</p><p>La partita è un lungo cammino verso nord attraverso sette livelli. La porta d'uscita di ogni livello è dalla parte opposta. Al livello 7, un ponte sul nulla, ti aspetta una stella, e a volte un manufatto accanto. Prendili e rifai tutta la strada, uscendo dalla porta da cui sei entrato: la stella è tua da spendere nel negozio, il manufatto finisce nei tuoi obiettivi. Le porte ti lasciano solo avanzare finché non hai la stella; poi solo tornare indietro. Sulla via di casa ci sono più creature.</p><p>Nei livelli ci sono potenziamenti: passaci sopra per prenderli. Durano finché non muori. Morire fa ricominciare la partita dall'inizio.</p><h3>Al computer</h3><ul><li><b>W A S D</b> cammina, <b>mouse</b> guarda, tieni premuto <b>Shift</b> per correre (rumoroso).</li><li><b>Spazio</b> ecolocalizza. <b>Esc</b> mette in pausa. <b>F</b> passa a schermo intero.</li></ul><h3>Su telefono o tablet</h3><ul><li><b>Pollice sinistro</b>: trascina per camminare; spingi oltre l'anello tratteggiato per correre.</li><li><b>Pollice destro</b>: trascina per guardare; tocca il pulsante rotondo <b>ECO</b> per ecolocalizzare.</li></ul><p>Le cuffie aiutano molto: senti dove sono le cose.</p>",
+ "pw_vest": [
+  "GIUBBOTTO DI PIOMBO",
+  "La radioattività ti fa il 60% di danni in meno, ma sei più pesante: ti muovi il 20% più lentamente e ti stanchi il 30% più in fretta."
+ ],
+ "pw_adren": [
+  "ADRENALINA",
+  "Mentre qualcosa ti dà la caccia nei paraggi, corri il 25% più veloce."
+ ],
+ "pw_chalk": [
+  "GESSO",
+  "Lasci sul pavimento una traccia tenue che appare quando fai eco."
+ ],
+ "pw_ventro": [
+  "PROIEZIONE",
+  "Il tuo eco parte 6 m davanti a te (o dalla parete in mezzo). I mostri vanno lì, non da te."
+ ],
+ "pw_rico": [
+  "RIMBALZO",
+  "Il tuo eco rimbalza dietro tre angoli e dura un po' di più."
+ ],
+ "pw_cloak": [
+  "MANTO IMMOBILE",
+  "Resta fermo 2 secondi e niente può sentirti respirare, per quanto vicino sia."
+ ],
+ "pw_lens": [
+  "LENTE D'ECO",
+  "Il tuo eco va solo in avanti, ma due volte più denso e 1,5 volte più lontano."
+ ],
+ "pw_whisk": [
+  "VIBRISSE",
+  "Le pareti entro circa 2 m davanti a te brillano debolmente mentre ti muovi, senza un suono."
+ ],
+ "pw_echo": [
+  "ECO LONTANO",
+  "Il tuo eco arriva più lontano."
+ ],
+ "pw_stride": [
+  "PASSO LUNGO",
+  "Corri più veloce."
+ ],
+ "pw_lungs": [
+  "POLMONI PROFONDI",
+  "Puoi correre più a lungo."
+ ],
+ "pw_eye": [
+  "OCCHIO VERDE",
+  "I cartelli e l'uscita rispondono al tuo eco da più lontano."
+ ],
+ "pw_glow": [
+  "BAGLIORE",
+  "I punti del tuo eco restano più a lungo."
+ ],
+ "pw_dense": [
+  "ECO DENSO",
+  "Il tuo eco mostra più punti."
+ ],
+ "pw_tremor": [
+  "SENSO SISMICO",
+  "Senti i passi: tutto ciò che cammina entro 22 m lascia anelli rossi sul pavimento, anche attraverso i muri."
+ ],
+ "pw_pill": [
+  "PILLOLA ROSSA",
+  "Vedi tutto, com'è davvero."
+ ],
+ "pw_star": [
+  "STELLA",
+  "Portala fuori dalla porta da cui sei entrato ed è tua per sempre: spendila nel negozio."
+ ],
+ "pw_memory": [
+  "MEMORIA",
+  "Ogni parete toccata dal tuo eco resta illuminata per sempre. Solo il tuo eco."
+ ],
+ "pw_guide": [
+  "FILO GUIDA",
+  "Una linea verde sul pavimento mostra sempre la via d'uscita."
+ ],
+ "pw_negative": [
+  "NEGATIVO",
+  "Pareti e angoli si rimandano l'eco tutto intorno a te, sempre: vedi la forma del luogo senza fare alcun suono."
+ ],
+ "pw_crown": [
+  "CORONA",
+  "Hai battuto Echoloc. Vedi tutto. Nel negozio: prendi tutti i potenziamenti e tutti i manufatti che hai."
+ ],
+ "pw_soles": [
+  "SUOLE MORBIDE",
+  "I tuoi passi di corsa si sentono solo a metà distanza."
+ ],
+ "pw_steady": [
+  "RESPIRO FERMO",
+  "Il fiato corto non sfoca né disperde più il tuo eco."
+ ],
+ "pw_bright": [
+  "ECO LUMINOSO",
+  "I punti del tuo eco sono più luminosi del 35%."
+ ],
+ "pw_wide": [
+  "OCCHI SPALANCATI",
+  "Vedi di più intorno a te: 95 gradi invece di 75."
+ ],
+ "pw_lucky": [
+  "PORTAFORTUNA",
+  "In ogni livello dopo questo c'è un potenziamento in più."
+ ],
+ "pw_thread": [
+  "FILO",
+  "Ogni eco mostra anche il prossimo tratto della via d'uscita, in verde, sul pavimento."
+ ]
+}

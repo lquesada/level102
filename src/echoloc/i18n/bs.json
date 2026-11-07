@@ -1,0 +1,195 @@
+{
+ "intro1": "Ne vidiš. Klikni jezikom da vidiš.",
+ "intro2": "Nešto živi u ovim hodnicima. Ni ono ne vidi, ali čuje sve. Odjekni preblizu ili prečesto i doći će. Kad trči, vrišti. Kad vrišti, drugi odgovaraju.",
+ "ctlPC": "<kbd>WASD</kbd> kretanje · <kbd>MIŠ</kbd> gledanje · <kbd>SHIFT</kbd> trčanje · <kbd>RAZMAK</kbd> eho · <kbd>F</kbd> cijeli ekran · preporučene slušalice",
+ "ctlTouch": "<kbd>LIJEVI PALAC</kbd> kretanje · gurni preko isprekidanog kruga za <kbd>TRČANJE</kbd> · <kbd>DESNI PALAC</kbd> vuci za gledanje, dodirni <kbd>EHO</kbd> za eholokaciju · preporučene slušalice",
+ "fsNote": "Igra se na cijelom ekranu, s telefonom položenim.",
+ "begin": [
+  "KLIKNI ZA POČETAK",
+  "DODIRNI ZA POČETAK"
+ ],
+ "prompt": [
+  "PRITISNI [ RAZMAK ]",
+  "DODIRNI [ EHO ]"
+ ],
+ "info1": "<b>PRONAĐI IZLAZ</b>",
+ "infoPC": "<kbd>WASD</kbd> kretanje &nbsp; <kbd>MIŠ</kbd> gledanje &nbsp; <kbd>SHIFT</kbd> trčanje (glasno) &nbsp; <kbd>F</kbd> cijeli ekran<br><kbd>RAZMAK</kbd> eho",
+ "infoTouch": "lijevi palac: kretanje, gurni daleko za trčanje · desni palac: vuci za gledanje, dodirni EHO",
+ "paused": "PAUZA",
+ "pausedMsg": "Tama čeka.",
+ "resume": [
+  "KLIKNI ZA NASTAVAK",
+  "DODIRNI ZA NASTAVAK"
+ ],
+ "won": "POBJEGAO SI",
+ "wonMsg": "Pronašao si izlaz za {s} s.",
+ "toMenu": [
+  "KLIKNI ZA GLAVNI MENI",
+  "DODIRNI ZA GLAVNI MENI"
+ ],
+ "startBtn": "ZAPOČNI IGRU",
+ "again": [
+  "KLIKNI ZA NOVU IGRU",
+  "DODIRNI ZA NOVU IGRU"
+ ],
+ "dead": "PROGUTAN",
+ "deadMsg": "Čulo te je.",
+ "retry": [
+  "KLIKNI ZA NOVI POKUŠAJ",
+  "DODIRNI ZA NOVI POKUŠAJ"
+ ],
+ "error": "GREŠKA",
+ "restart": [
+  "KLIKNI ZA PONOVNI POČETAK",
+  "DODIRNI ZA PONOVNI POČETAK"
+ ],
+ "noGL": "NEMA WEBGL-a",
+ "noGLMsg": "Ovaj preglednik ima isključen WebGL. Probaj Chrome ili Firefox s uključenim hardverskim ubrzanjem.",
+ "rot": "OKRENI TELEFON POLOŽENO",
+ "rotMsg": "Echoloc se igra vodoravno.",
+ "rotTap": "Ili dodirni ovdje za igru na cijelom ekranu.",
+ "run": "TRČI",
+ "look": "VUCI<br>ZA GLEDANJE",
+ "echo": "EHO",
+ "level": "NIVO {n}",
+ "howTo": "KAKO SE IGRA",
+ "langName": "Bosanski",
+ "menuAch": "DOSTIGNUĆA",
+ "menuSettings": "POSTAVKE",
+ "menuAbout": "O IGRI",
+ "menuHelp": "KAKO SE IGRA",
+ "back": "NAZAD",
+ "resumeBtn": "NASTAVI",
+ "exitMenu": "IZLAZ U GLAVNI MENI",
+ "youCarry": "NOSIŠ",
+ "wayHome": "NA PUTU KUĆI",
+ "shopTitle": "PRODAVNICA",
+ "shopText": "Imaš ★ {n} ({m} za potrošiti). Izaberi pojačanja s kojima počinješ igru, svako po jednu zvijezdu; dodirni ponovo da vratiš zvijezdu. Pojačanje ostaje zaključano dok ga ne pokupiš u igri, čak i ako u njoj poslije umreš.",
+ "locked": "ZAKLJUČANO",
+ "achTitle": "DOSTIGNUĆA",
+ "starsN": "★ ZVIJEZDE: {n}",
+ "starsNote": "Jedna za svaku igru iz koje si pobjegao noseći zvijezdu.",
+ "pwUnlocked": "OTKLJUČANA POJAČANJA {a}/{b}",
+ "artRecovered": "PRONAĐENI ARTEFAKTI {a}/{b}",
+ "setTitle": "POSTAVKE",
+ "setLang": "JEZIK",
+ "setSystem": "Sistemski",
+ "setSize": "VELIČINA TEKSTA",
+ "aboutTitle": "O IGRI",
+ "aboutBy": "autor: {name}",
+ "aboutFree": "Ova videoigra je besplatna. Podrži me slušajući moju muziku:",
+ "version": "Verzija {v}",
+ "toastHome": "SAD JE ODNESI KUĆI: CIJELI PUT NAZAD",
+ "toastLocked": "ZAKLJUČANO",
+ "toastStar": "+1 ZVIJEZDA ({n} ZA POTROŠITI)",
+ "toastAch": "NOVO DOSTIGNUĆE: {x} ({n}/{m})",
+ "help": "<p>Ne vidiš. Klikni jezikom: talas tačaka na trenutak pokaže zidove. Ovdje žive slijepa stvorenja i čuju sve, zato oprezno s ehom.</p><p>Igra je jedan dug put na sjever kroz sedam nivoa. Izlazna vrata svakog nivoa su na njegovoj suprotnoj strani. Na nivou 7, mostu nad ničim, čeka zvijezda, a ponekad i artefakt pored nje. Uzmi ih i vrati se cijelim putem nazad, kroz vrata kroz koja si prvo ušao: zvijezdu možeš potrošiti u prodavnici, artefakt ide u tvoja dostignuća. Vrata te puštaju samo naprijed dok ne držiš zvijezdu; onda samo nazad. Na putu kući ima više stvorenja.</p><p>Po nivoima leže pojačanja: pređi preko njih da ih uzmeš. Traju dok ne umreš. Smrt počinje igru ispočetka.</p><h3>Na računaru</h3><ul><li><b>W A S D</b> hodanje, <b>miš</b> gledanje, drži <b>Shift</b> za trčanje (glasno).</li><li><b>Razmak</b> šalje eho. <b>Esc</b> pauzira. <b>F</b> prebacuje na cijeli ekran.</li></ul><h3>Na telefonu ili tabletu</h3><ul><li><b>Lijevi palac</b>: vuci za hodanje; gurni preko isprekidanog kruga za trčanje.</li><li><b>Desni palac</b>: vuci za gledanje; dodirni okruglo dugme <b>EHO</b> za eholokaciju.</li></ul><p>Slušalice mnogo pomažu: čuješ gdje su stvari.</p>",
+ "pw_vest": [
+  "OLOVNI PRSLUK",
+  "Radioaktivnost ti šteti 60% manje, ali si teži: krećeš se 20% sporije i umaraš se 30% brže."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Dok te nešto u blizini lovi, trčiš 25% brže."
+ ],
+ "pw_chalk": [
+  "KREDA",
+  "Ostavljaš slab trag na podu koji se pojavi kad pošalješ eho."
+ ],
+ "pw_ventro": [
+  "PROJEKCIJA",
+  "Tvoj eho počinje 6 m ispred tebe (ili kod zida na putu). Čudovišta idu tamo, a ne prema tebi."
+ ],
+ "pw_rico": [
+  "RIKOŠET",
+  "Tvoj eho se odbija oko tri ugla i traje malo duže."
+ ],
+ "pw_cloak": [
+  "PLAŠT TIŠINE",
+  "Stoj mirno 2 sekunde i ništa ne čuje tvoje disanje, koliko god blizu bilo."
+ ],
+ "pw_lens": [
+  "SOČIVO ZA EHO",
+  "Tvoj eho ide samo naprijed, ali duplo gušće i 1,5x dalje."
+ ],
+ "pw_whisk": [
+  "BRKOVI",
+  "Zidovi oko 2 m ispred tebe slabo svijetle dok se krećeš, bez zvuka."
+ ],
+ "pw_echo": [
+  "DALEKI EHO",
+  "Tvoj eho doseže dalje."
+ ],
+ "pw_stride": [
+  "DUG KORAK",
+  "Trčiš brže."
+ ],
+ "pw_lungs": [
+  "DUBOKA PLUĆA",
+  "Možeš trčati duže."
+ ],
+ "pw_eye": [
+  "ZELENO OKO",
+  "Znakovi i izlaz odgovaraju na tvoj eho iz veće daljine."
+ ],
+ "pw_glow": [
+  "NAKNADNI SJAJ",
+  "Tačke tvog eha traju duže."
+ ],
+ "pw_dense": [
+  "GUST EHO",
+  "Tvoj eho pokazuje više tačaka."
+ ],
+ "pw_tremor": [
+  "OSJEĆAJ PODRHTAVANJA",
+  "Osjećaš korake: sve što hoda u krugu od 22 m ostavlja crvene krugove na podu, čak i kroz zidove."
+ ],
+ "pw_pill": [
+  "CRVENA PILULA",
+  "Vidiš sve, onako kako zaista jeste."
+ ],
+ "pw_star": [
+  "ZVIJEZDA",
+  "Iznesi je kroz vrata kroz koja si ušao i tvoja je zauvijek: potroši je u prodavnici."
+ ],
+ "pw_memory": [
+  "SJEĆANJE",
+  "Svaki zid koji tvoj eho dotakne ostaje osvijetljen zauvijek. Samo tvoj eho."
+ ],
+ "pw_guide": [
+  "VODILJA",
+  "Zelena linija na podu uvijek pokazuje put van."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Zidovi i uglovi stalno odbijaju eho jedni na druge svuda oko tebe: vidiš oblik mjesta bez ijednog zvuka."
+ ],
+ "pw_crown": [
+  "KRUNA",
+  "Pobijedio si Echoloc. Vidiš sve. U prodavnici: uzmi sva pojačanja i sve artefakte koje imaš."
+ ],
+ "pw_soles": [
+  "MEKI ĐONOVI",
+  "Tvoji koraci u trku čuju se samo upola tako daleko."
+ ],
+ "pw_steady": [
+  "MIRAN DAH",
+  "Zadihanost više ne zamućuje niti rasipa tvoj eho."
+ ],
+ "pw_bright": [
+  "SJAJAN EHO",
+  "Tačke tvog eha su 35% svjetlije."
+ ],
+ "pw_wide": [
+  "ŠIROKE OČI",
+  "Vidiš više oko sebe: 95 stepeni umjesto 75."
+ ],
+ "pw_lucky": [
+  "AMAJLIJA",
+  "U svakom nivou nakon ovog leži još jedno pojačanje."
+ ],
+ "pw_thread": [
+  "NIT",
+  "Svaki eho pokazuje i sljedeći dio puta van, zeleno, na podu."
+ ]
+}

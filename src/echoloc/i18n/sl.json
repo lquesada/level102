@@ -1,0 +1,195 @@
+{
+ "intro1": "Ne vidiš. Klikni z jezikom, da boš videl.",
+ "intro2": "Nekaj živi v teh hodnikih. Tudi to ne vidi, a sliši vse. Odmevaj preblizu ali prepogosto in pride. Ko teče, kriči. Ko kriči, se drugi oglasijo.",
+ "ctlPC": "<kbd>WASD</kbd> premikanje · <kbd>MIŠKA</kbd> pogled · <kbd>SHIFT</kbd> tek · <kbd>PRESLEDNICA</kbd> eholokacija · <kbd>F</kbd> celozaslonski način · priporočamo slušalke",
+ "ctlTouch": "<kbd>LEVI PALEC</kbd> premikanje · potisni čez črtkani krog za <kbd>TEK</kbd> · <kbd>DESNI PALEC</kbd> povleci za pogled, tapni <kbd>ODMEV</kbd> za eholokacijo · priporočamo slušalke",
+ "fsNote": "Igra se na celem zaslonu, s telefonom postrani.",
+ "begin": [
+  "KLIKNI ZA ZAČETEK",
+  "TAPNI ZA ZAČETEK"
+ ],
+ "prompt": [
+  "PRITISNI [ PRESLEDNICA ]",
+  "TAPNI [ ODMEV ]"
+ ],
+ "info1": "<b>NAJDI IZHOD</b>",
+ "infoPC": "<kbd>WASD</kbd> premikanje &nbsp; <kbd>MIŠKA</kbd> pogled &nbsp; <kbd>SHIFT</kbd> tek (glasno) &nbsp; <kbd>F</kbd> celozaslonski način<br><kbd>PRESLEDNICA</kbd> eholokacija",
+ "infoTouch": "levi palec: premikanje, potisni daleč za tek · desni palec: povleci za pogled, tapni ODMEV za eholokacijo",
+ "paused": "PREMOR",
+ "pausedMsg": "Tema čaka.",
+ "resume": [
+  "KLIKNI ZA NADALJEVANJE",
+  "TAPNI ZA NADALJEVANJE"
+ ],
+ "won": "UŠEL SI",
+ "wonMsg": "Izhod si našel v {s} s.",
+ "toMenu": [
+  "KLIKNI ZA GLAVNI MENI",
+  "TAPNI ZA GLAVNI MENI"
+ ],
+ "startBtn": "ZAČNI IGRO",
+ "again": [
+  "KLIKNI ZA NOVO IGRO",
+  "TAPNI ZA NOVO IGRO"
+ ],
+ "dead": "POŽRT",
+ "deadMsg": "Slišalo te je.",
+ "retry": [
+  "KLIKNI ZA NOV POSKUS",
+  "TAPNI ZA NOV POSKUS"
+ ],
+ "error": "NAPAKA",
+ "restart": [
+  "KLIKNI ZA PONOVNI ZAGON",
+  "TAPNI ZA PONOVNI ZAGON"
+ ],
+ "noGL": "NI WEBGL",
+ "noGLMsg": "Ta brskalnik ima WebGL izklopljen. Poskusi Chrome ali Firefox z vklopljenim strojnim pospeševanjem.",
+ "rot": "OBRNI TELEFON POSTRANI",
+ "rotMsg": "Echoloc se igra ležeče.",
+ "rotTap": "Ali tapni tukaj za igro na celem zaslonu.",
+ "run": "TECI",
+ "look": "POVLECI<br>ZA POGLED",
+ "echo": "ODMEV",
+ "level": "STOPNJA {n}",
+ "howTo": "KAKO IGRATI",
+ "langName": "Slovenščina",
+ "menuAch": "DOSEŽKI",
+ "menuSettings": "NASTAVITVE",
+ "menuAbout": "O IGRI",
+ "menuHelp": "KAKO IGRATI",
+ "back": "NAZAJ",
+ "resumeBtn": "NADALJUJ",
+ "exitMenu": "IZHOD V GLAVNI MENI",
+ "youCarry": "NOSIŠ",
+ "wayHome": "NA POTI DOMOV",
+ "shopTitle": "TRGOVINA",
+ "shopText": "Imaš ★ {n} ({m} za porabo). Izberi okrepitve, s katerimi boš začel igro, vsaka stane eno zvezdo; tapni znova, da dobiš zvezdo nazaj. Okrepitev ostane zaklenjena, dokler je ne pobereš v igri, tudi v taki, v kateri potem umreš.",
+ "locked": "ZAKLENJENO",
+ "achTitle": "DOSEŽKI",
+ "starsN": "★ ZVEZDE: {n}",
+ "starsNote": "Ena za vsako igro, iz katere si ušel z zvezdo.",
+ "pwUnlocked": "ODKLENJENE OKREPITVE {a}/{b}",
+ "artRecovered": "NAJDENI ARTEFAKTI {a}/{b}",
+ "setTitle": "NASTAVITVE",
+ "setLang": "JEZIK",
+ "setSystem": "Sistemska privzeta",
+ "setSize": "VELIKOST BESEDILA",
+ "aboutTitle": "O IGRI",
+ "aboutBy": "avtor: {name}",
+ "aboutFree": "Ta videoigra je brezplačna. Podpri me tako, da poslušaš mojo glasbo:",
+ "version": "Različica {v}",
+ "toastHome": "ZDAJ JO ODNESI DOMOV: VSO POT NAZAJ",
+ "toastLocked": "ZAKLENJENO",
+ "toastStar": "+1 ZVEZDA ({n} ZA PORABO)",
+ "toastAch": "NOV DOSEŽEK: {x} ({n}/{m})",
+ "help": "<p>Ne vidiš. Klikni z jezikom: val pikic za trenutek pokaže stene. Tu živijo slepa bitja in slišijo vse, zato odmevaj previdno.</p><p>Igra je ena sama dolga pot proti severu skozi sedem stopenj. Izhodna vrata vsake stopnje so na njeni drugi strani. Na stopnji 7, mostu nad ničem, čaka zvezda, včasih pa ob njej tudi artefakt. Vzemi ju in pojdi vso pot nazaj, skozi vrata, skozi katera si prvič vstopil: zvezdo lahko porabiš v trgovini, artefakt gre med tvoje dosežke. Vrata te spuščajo le naprej, dokler nimaš zvezde; potem le nazaj. Na poti domov je več bitij.</p><p>Okrepitve ležijo po stopnjah: stopi nanje, da jih pobereš. Trajajo, dokler ne umreš. Smrt začne igro znova od začetka.</p><h3>Na računalniku</h3><ul><li><b>W A S D</b> hoja, <b>miška</b> pogled, drži <b>Shift</b> za tek (glasno).</li><li><b>Preslednica</b> eholokacija. <b>Esc</b> premor. <b>F</b> celozaslonski način.</li></ul><h3>Na telefonu ali tablici</h3><ul><li><b>Levi palec</b>: povleci za hojo; potisni čez črtkani krog za tek.</li><li><b>Desni palec</b>: povleci za pogled; tapni okrogli gumb <b>ODMEV</b> za eholokacijo.</li></ul><p>Slušalke zelo pomagajo: slišiš, kje so stvari.</p>",
+ "pw_vest": [
+  "SVINČENI JOPIČ",
+  "Radioaktivnost ti škodi 60 % manj, a si težji: premikaš se 20 % počasneje in se utrudiš 30 % hitreje."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Ko te nekaj v bližini lovi, tečeš 25 % hitreje."
+ ],
+ "pw_chalk": [
+  "KREDA",
+  "Na tleh puščaš bledo sled, ki se pokaže ob odmevu."
+ ],
+ "pw_ventro": [
+  "PROJEKCIJA",
+  "Tvoj odmev se začne 6 m pred tabo (ali pri steni na poti). Pošasti gredo tja, ne k tebi."
+ ],
+ "pw_rico": [
+  "ODBOJ",
+  "Tvoj odmev zavije okoli treh vogalov in ostane malo dlje."
+ ],
+ "pw_cloak": [
+  "PLAŠČ MIRU",
+  "Stoj pri miru 2 sekundi in nič ne sliši tvojega dihanja, pa naj bo še tako blizu."
+ ],
+ "pw_lens": [
+  "LEČA ODMEVA",
+  "Tvoj odmev gre le naprej, a je dvakrat gostejši in seže 1,5-krat dlje."
+ ],
+ "pw_whisk": [
+  "BRKI",
+  "Stene do približno 2 m pred tabo rahlo žarijo, ko se premikaš, brez zvoka."
+ ],
+ "pw_echo": [
+  "DALJNI ODMEV",
+  "Tvoj odmev seže dlje."
+ ],
+ "pw_stride": [
+  "DOLG KORAK",
+  "Tečeš hitreje."
+ ],
+ "pw_lungs": [
+  "GLOBOKA PLJUČA",
+  "Dlje zdržiš v teku."
+ ],
+ "pw_eye": [
+  "ZELENO OKO",
+  "Znaki in izhod se odzovejo na tvoj odmev od dlje."
+ ],
+ "pw_glow": [
+  "POSIJ",
+  "Pikice tvojega odmeva ostanejo dlje."
+ ],
+ "pw_dense": [
+  "GOST ODMEV",
+  "Tvoj odmev pokaže več pikic."
+ ],
+ "pw_tremor": [
+  "ČUT ZA TRESLJAJE",
+  "Čutiš korake: vse, kar hodi v razdalji 22 m, pušča rdeče kroge na tleh, celo skozi stene."
+ ],
+ "pw_pill": [
+  "RDEČA TABLETA",
+  "Vidiš vse, tako kot v resnici je."
+ ],
+ "pw_star": [
+  "ZVEZDA",
+  "Odnesi jo skozi vrata, skozi katera si prišel, in za vedno je tvoja: porabi jo v trgovini."
+ ],
+ "pw_memory": [
+  "SPOMIN",
+  "Vsaka stena, ki se je dotakne tvoj odmev, ostane za vedno osvetljena. Le tvoj odmev."
+ ],
+ "pw_guide": [
+  "VODILNA ČRTA",
+  "Zelena črta na tleh vedno kaže pot ven."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Stene in koti si ves čas vračajo odmev vse okoli tebe: vidiš obliko prostora brez enega samega zvoka."
+ ],
+ "pw_crown": [
+  "KRONA",
+  "Premagal si Echoloc. Vidiš vse. V trgovini: vzemi vse okrepitve in vse artefakte, ki jih imaš."
+ ],
+ "pw_soles": [
+  "MEHKI PODPLATI",
+  "Tvoje korake v teku je slišati le pol tako daleč."
+ ],
+ "pw_steady": [
+  "MIREN DIH",
+  "Zasoplost tvojega odmeva ne zamegli ali razprši več."
+ ],
+ "pw_bright": [
+  "SVETEL ODMEV",
+  "Pikice tvojega odmeva so 35 % svetlejše."
+ ],
+ "pw_wide": [
+  "ŠIROKE OČI",
+  "Okoli sebe vidiš več: 95 stopinj namesto 75."
+ ],
+ "pw_lucky": [
+  "TALISMAN",
+  "V vsaki stopnji po tej leži ena okrepitev več."
+ ],
+ "pw_thread": [
+  "NIT",
+  "Vsak odmev pokaže tudi naslednji del poti ven, v zeleni, na tleh."
+ ]
+}

@@ -1,0 +1,195 @@
+{
+ "intro1": "Þú sérð ekki. Smelltu með tungunni til að sjá.",
+ "intro2": "Eitthvað býr í þessum göngum. Það sér ekki heldur, en það heyrir allt. Bergmálaðu of nálægt eða of oft og það kemur. Þegar það hleypur, öskrar það. Þegar það öskrar, svara hin.",
+ "ctlPC": "<kbd>WASD</kbd> hreyfa · <kbd>MÚS</kbd> líta · <kbd>SHIFT</kbd> hlaupa · <kbd>BIL</kbd> bergmál · <kbd>F</kbd> allur skjárinn · mælt með heyrnartólum",
+ "ctlTouch": "<kbd>VINSTRI ÞUMALL</kbd> hreyfa · ýttu út fyrir strikaða hringinn til að <kbd>HLAUPA</kbd> · <kbd>HÆGRI ÞUMALL</kbd> dragðu til að líta, ýttu á <kbd>BERGMÁL</kbd> til að smella · mælt með heyrnartólum",
+ "fsNote": "Spilað á öllum skjánum, með símann á hlið.",
+ "begin": [
+  "SMELLTU TIL AÐ BYRJA",
+  "ÝTTU TIL AÐ BYRJA"
+ ],
+ "prompt": [
+  "ÝTTU Á [ BIL ]",
+  "ÝTTU Á [ BERGMÁL ]"
+ ],
+ "info1": "<b>FINNDU ÚTGANGINN</b>",
+ "infoPC": "<kbd>WASD</kbd> hreyfa &nbsp; <kbd>MÚS</kbd> líta &nbsp; <kbd>SHIFT</kbd> hlaupa (hávært) &nbsp; <kbd>F</kbd> allur skjárinn<br><kbd>BIL</kbd> bergmál",
+ "infoTouch": "vinstri þumall: hreyfa, ýttu langt til að hlaupa · hægri þumall: dragðu til að líta, ýttu á BERGMÁL",
+ "paused": "Í BIÐ",
+ "pausedMsg": "Myrkrið bíður.",
+ "resume": [
+  "SMELLTU TIL AÐ HALDA ÁFRAM",
+  "ÝTTU TIL AÐ HALDA ÁFRAM"
+ ],
+ "won": "SLAPPST",
+ "wonMsg": "Þú fannst útganginn á {s} s.",
+ "toMenu": [
+  "SMELLTU FYRIR AÐALVALMYND",
+  "ÝTTU FYRIR AÐALVALMYND"
+ ],
+ "startBtn": "HEFJA LEIK",
+ "again": [
+  "SMELLTU TIL AÐ SPILA AFTUR",
+  "ÝTTU TIL AÐ SPILA AFTUR"
+ ],
+ "dead": "GLEYPTUR",
+ "deadMsg": "Það heyrði í þér.",
+ "retry": [
+  "SMELLTU TIL AÐ REYNA AFTUR",
+  "ÝTTU TIL AÐ REYNA AFTUR"
+ ],
+ "error": "VILLA",
+ "restart": [
+  "SMELLTU TIL AÐ ENDURRÆSA",
+  "ÝTTU TIL AÐ ENDURRÆSA"
+ ],
+ "noGL": "EKKERT WEBGL",
+ "noGLMsg": "Slökkt er á WebGL í þessum vafra. Prófaðu Chrome eða Firefox með kveikt á vélbúnaðarhröðun.",
+ "rot": "SNÚÐU SÍMANUM Á HLIÐ",
+ "rotMsg": "Echoloc er spilað lárétt.",
+ "rotTap": "Eða ýttu hér til að spila á öllum skjánum.",
+ "run": "HLAUPA",
+ "look": "DRAGÐU<br>TIL AÐ LÍTA",
+ "echo": "BERGMÁL",
+ "level": "BORÐ {n}",
+ "howTo": "LEIÐBEININGAR",
+ "langName": "Íslenska",
+ "menuAch": "AFREK",
+ "menuSettings": "STILLINGAR",
+ "menuAbout": "UM LEIKINN",
+ "menuHelp": "LEIÐBEININGAR",
+ "back": "TIL BAKA",
+ "resumeBtn": "HALDA ÁFRAM",
+ "exitMenu": "Í AÐALVALMYND",
+ "youCarry": "ÞÚ BERÐ",
+ "wayHome": "Á LEIÐINNI HEIM",
+ "shopTitle": "BÚÐ",
+ "shopText": "Þú átt ★ {n} ({m} til að eyða). Veldu kraftana sem þú byrjar leikinn með, eina stjörnu hvern; ýttu aftur til að fá stjörnuna til baka. Kraftur er læstur þar til þú tekur hann upp í leik, jafnvel leik sem þú deyrð svo í.",
+ "locked": "LÆST",
+ "achTitle": "AFREK",
+ "starsN": "★ STJÖRNUR: {n}",
+ "starsNote": "Ein fyrir hvern leik sem þú slappst úr með stjörnuna.",
+ "pwUnlocked": "OPNAÐIR KRAFTAR {a}/{b}",
+ "artRecovered": "FUNDNIR GRIPIR {a}/{b}",
+ "setTitle": "STILLINGAR",
+ "setLang": "TUNGUMÁL",
+ "setSystem": "Sjálfgefið kerfis",
+ "setSize": "LETURSTÆRÐ",
+ "aboutTitle": "UM LEIKINN",
+ "aboutBy": "eftir {name}",
+ "aboutFree": "Þessi tölvuleikur er ókeypis. Styddu mig með því að hlusta á tónlistina mína:",
+ "version": "Útgáfa {v}",
+ "toastHome": "BERÐU HANA NÚ HEIM: ALLA LEIÐ TIL BAKA",
+ "toastLocked": "LÆST",
+ "toastStar": "+1 STJARNA ({n} TIL AÐ EYÐA)",
+ "toastAch": "NÝTT AFREK: {x} ({n}/{m})",
+ "help": "<p>Þú sérð ekki. Smelltu með tungunni: bylgja af punktum sýnir veggina í smástund. Hér búa blindar verur og þær heyra allt, svo bergmálaðu varlega.</p><p>Leikurinn er ein löng leið í norður í gegnum sjö borð. Útgöngudyr hvers borðs eru hinum megin á því. Á borði 7, brú yfir engu, bíður stjarna, og stundum gripur við hlið hennar. Taktu þau og gakktu alla leið til baka, út um dyrnar sem þú komst fyrst inn um: stjörnunni máttu eyða í búðinni, gripurinn fer í afrekin þín. Dyrnar hleypa þér aðeins áfram þar til þú heldur á stjörnunni; síðan aðeins til baka. Á leiðinni heim eru fleiri verur.</p><p>Kraftar liggja á borðunum: gakktu yfir þá til að taka þá. Þeir endast þar til þú deyrð. Dauði byrjar leikinn upp á nýtt frá byrjun.</p><h3>Í tölvu</h3><ul><li><b>W A S D</b> ganga, <b>mús</b> líta, haltu <b>Shift</b> til að hlaupa (hávært).</li><li><b>Bil</b> sendir bergmál. <b>Esc</b> setur í bið. <b>F</b> skiptir yfir á allan skjáinn.</li></ul><h3>Í síma eða spjaldtölvu</h3><ul><li><b>Vinstri þumall</b>: dragðu til að ganga; ýttu út fyrir strikaða hringinn til að hlaupa.</li><li><b>Hægri þumall</b>: dragðu til að líta; ýttu á hringlaga hnappinn <b>BERGMÁL</b> til að senda bergmál.</li></ul><p>Heyrnartól hjálpa mikið: þú heyrir hvar hlutirnir eru.</p>",
+ "pw_vest": [
+  "BLÝVESTI",
+  "Geislavirkni skaðar þig 60% minna, en þú ert þyngri: þú hreyfir þig 20% hægar og þreytist 30% hraðar."
+ ],
+ "pw_adren": [
+  "ADRENALÍN",
+  "Á meðan eitthvað nálægt veiðir þig hleypur þú 25% hraðar."
+ ],
+ "pw_chalk": [
+  "KRÍT",
+  "Þú skilur eftir dauft spor á gólfinu sem birtist þegar þú bergmálar."
+ ],
+ "pw_ventro": [
+  "VÖRPUN",
+  "Bergmálið þitt byrjar 6 m fyrir framan þig (eða við vegginn sem er fyrir). Skrímslin fara þangað, ekki til þín."
+ ],
+ "pw_rico": [
+  "ENDURKAST",
+  "Bergmálið þitt skoppar fyrir þrjú horn og varir aðeins lengur."
+ ],
+ "pw_cloak": [
+  "KYRRÐARKÁPA",
+  "Stattu kyrr í 2 sekúndur og ekkert heyrir þig anda, sama hversu nálægt það er."
+ ],
+ "pw_lens": [
+  "BERGMÁLSLINSA",
+  "Bergmálið þitt fer aðeins fram á við, en tvöfalt þéttara og 1,5x lengra."
+ ],
+ "pw_whisk": [
+  "VEIÐIHÁR",
+  "Veggir um 2 m fyrir framan þig lýsast dauft á meðan þú hreyfir þig, án hljóðs."
+ ],
+ "pw_echo": [
+  "LANGT BERGMÁL",
+  "Bergmálið þitt nær lengra."
+ ],
+ "pw_stride": [
+  "LANGT SKREF",
+  "Þú hleypur hraðar."
+ ],
+ "pw_lungs": [
+  "DJÚP LUNGU",
+  "Þú getur hlaupið lengur."
+ ],
+ "pw_eye": [
+  "GRÆNT AUGA",
+  "Skilti og útgangurinn svara bergmálinu þínu úr meiri fjarlægð."
+ ],
+ "pw_glow": [
+  "EFTIRGLÓÐ",
+  "Bergmálspunktarnir þínir endast lengur."
+ ],
+ "pw_dense": [
+  "ÞÉTT BERGMÁL",
+  "Bergmálið þitt sýnir fleiri punkta."
+ ],
+ "pw_tremor": [
+  "SKJÁLFTASKYN",
+  "Þú finnur fótatak: allt sem gengur innan 22 m skilur eftir rauða hringi á gólfinu, jafnvel í gegnum veggi."
+ ],
+ "pw_pill": [
+  "RAUÐA PILLAN",
+  "Þú sérð allt, eins og það raunverulega er."
+ ],
+ "pw_star": [
+  "STJARNA",
+  "Berðu hana út um dyrnar sem þú komst inn um og hún er þín fyrir fullt og allt: eyddu henni í búðinni."
+ ],
+ "pw_memory": [
+  "MINNI",
+  "Hver veggur sem bergmálið þitt snertir helst upplýstur fyrir fullt og allt. Aðeins bergmálið þitt."
+ ],
+ "pw_guide": [
+  "LEIÐARLÍNA",
+  "Græn lína á gólfinu sýnir alltaf leiðina út."
+ ],
+ "pw_negative": [
+  "NEGATÍFA",
+  "Veggir og horn varpa bergmáli hvert á annað allt í kringum þig, alltaf: þú sérð lögun staðarins án þess að gefa frá þér hljóð."
+ ],
+ "pw_crown": [
+  "KÓRÓNA",
+  "Þú sigraðir Echoloc. Þú sérð allt. Í búðinni: taktu alla krafta og alla gripi sem þú átt."
+ ],
+ "pw_soles": [
+  "MJÚKIR SÓLAR",
+  "Hlaupaskrefin þín heyrast aðeins helmingi skemur."
+ ],
+ "pw_steady": [
+  "RÓLEGUR ANDARDRÁTTUR",
+  "Mæði gerir bergmálið þitt ekki lengur óskýrt eða dreift."
+ ],
+ "pw_bright": [
+  "BJART BERGMÁL",
+  "Bergmálspunktarnir þínir eru 35% bjartari."
+ ],
+ "pw_wide": [
+  "GALOPIN AUGU",
+  "Þú sérð meira í kringum þig: 95 gráður í stað 75."
+ ],
+ "pw_lucky": [
+  "HEILLAGRIPUR",
+  "Einn kraftur í viðbót liggur í hverju borði eftir þetta."
+ ],
+ "pw_thread": [
+  "ÞRÁÐUR",
+  "Hvert bergmál sýnir líka næsta spöl leiðarinnar út, í grænu, á gólfinu."
+ ]
+}

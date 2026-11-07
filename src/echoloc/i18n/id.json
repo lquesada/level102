@@ -1,0 +1,195 @@
+{
+ "intro1": "Kamu tidak bisa melihat. Decakkan lidahmu untuk melihat.",
+ "intro2": "Sesuatu hidup di lorong-lorong ini. Ia juga buta, tapi ia mendengar segalanya. Bergema terlalu dekat atau terlalu sering, dan ia akan datang. Saat berlari, ia menjerit. Saat ia menjerit, yang lain menjawab.",
+ "ctlPC": "<kbd>WASD</kbd> bergerak · <kbd>MOUSE</kbd> melihat · <kbd>SHIFT</kbd> berlari · <kbd>SPASI</kbd> ekolokasi · <kbd>F</kbd> layar penuh · disarankan memakai headphone",
+ "ctlTouch": "<kbd>JEMPOL KIRI</kbd> bergerak · dorong melewati cincin putus-putus untuk <kbd>LARI</kbd> · <kbd>JEMPOL KANAN</kbd> geser untuk melihat, ketuk <kbd>GEMA</kbd> untuk ekolokasi · disarankan memakai headphone",
+ "fsNote": "Dimainkan dalam layar penuh, dengan ponsel dimiringkan.",
+ "begin": [
+  "KLIK UNTUK MULAI",
+  "KETUK UNTUK MULAI"
+ ],
+ "prompt": [
+  "TEKAN [ SPASI ]",
+  "KETUK [ GEMA ]"
+ ],
+ "info1": "<b>TEMUKAN JALAN KELUAR</b>",
+ "infoPC": "<kbd>WASD</kbd> bergerak &nbsp; <kbd>MOUSE</kbd> melihat &nbsp; <kbd>SHIFT</kbd> berlari (berisik) &nbsp; <kbd>F</kbd> layar penuh<br><kbd>SPASI</kbd> ekolokasi",
+ "infoTouch": "jempol kiri: bergerak, dorong jauh untuk berlari · jempol kanan: geser untuk melihat, ketuk GEMA untuk ekolokasi",
+ "paused": "JEDA",
+ "pausedMsg": "Kegelapan menunggu.",
+ "resume": [
+  "KLIK UNTUK LANJUT",
+  "KETUK UNTUK LANJUT"
+ ],
+ "won": "LOLOS",
+ "wonMsg": "Kamu menemukan jalan keluar dalam {s} detik.",
+ "toMenu": [
+  "KLIK KE MENU UTAMA",
+  "KETUK KE MENU UTAMA"
+ ],
+ "startBtn": "MULAI MAIN",
+ "again": [
+  "KLIK UNTUK MAIN LAGI",
+  "KETUK UNTUK MAIN LAGI"
+ ],
+ "dead": "DILAHAP",
+ "deadMsg": "Ia mendengarmu.",
+ "retry": [
+  "KLIK UNTUK COBA LAGI",
+  "KETUK UNTUK COBA LAGI"
+ ],
+ "error": "GALAT",
+ "restart": [
+  "KLIK UNTUK MULAI ULANG",
+  "KETUK UNTUK MULAI ULANG"
+ ],
+ "noGL": "TANPA WEBGL",
+ "noGLMsg": "WebGL dimatikan di browser ini. Coba Chrome atau Firefox dengan akselerasi perangkat keras aktif.",
+ "rot": "MIRINGKAN PONSELMU",
+ "rotMsg": "Echoloc dimainkan dalam mode lanskap.",
+ "rotTap": "Atau ketuk di sini untuk main dalam layar penuh.",
+ "run": "LARI",
+ "look": "GESER<br>UNTUK MELIHAT",
+ "echo": "GEMA",
+ "level": "LEVEL {n}",
+ "howTo": "CARA BERMAIN",
+ "langName": "Bahasa Indonesia",
+ "menuAch": "PENCAPAIAN",
+ "menuSettings": "PENGATURAN",
+ "menuAbout": "TENTANG",
+ "menuHelp": "CARA BERMAIN",
+ "back": "KEMBALI",
+ "resumeBtn": "LANJUTKAN",
+ "exitMenu": "KELUAR KE MENU UTAMA",
+ "youCarry": "KAMU MEMBAWA",
+ "wayHome": "DALAM PERJALANAN PULANG",
+ "shopTitle": "TOKO",
+ "shopText": "Kamu punya ★ {n} ({m} bisa dibelanjakan). Pilih power-up untuk memulai permainan, satu bintang masing-masing; ketuk lagi untuk mengambil kembali bintangnya. Power-up tetap terkunci sampai kamu memungutnya dalam permainan, meski kamu lalu mati di sana.",
+ "locked": "TERKUNCI",
+ "achTitle": "PENCAPAIAN",
+ "starsN": "★ BINTANG: {n}",
+ "starsNote": "Satu untuk setiap permainan yang kamu lolosi sambil membawa bintang.",
+ "pwUnlocked": "POWER-UP TERBUKA {a}/{b}",
+ "artRecovered": "ARTEFAK DITEMUKAN {a}/{b}",
+ "setTitle": "PENGATURAN",
+ "setLang": "BAHASA",
+ "setSystem": "Bawaan sistem",
+ "setSize": "UKURAN TEKS",
+ "aboutTitle": "TENTANG",
+ "aboutBy": "oleh {name}",
+ "aboutFree": "Gim video ini gratis. Dukung aku dengan mendengarkan musikku:",
+ "version": "Versi {v}",
+ "toastHome": "SEKARANG BAWA PULANG: SAMPAI KE AWAL",
+ "toastLocked": "TERKUNCI",
+ "toastStar": "+1 BINTANG ({n} BISA DIBELANJAKAN)",
+ "toastAch": "PENCAPAIAN BARU: {x} ({n}/{m})",
+ "help": "<p>Kamu tidak bisa melihat. Decakkan lidahmu: gelombang titik memperlihatkan dinding sesaat. Makhluk-makhluk buta hidup di sini dan mereka mendengar segalanya, jadi bergemalah dengan hati-hati.</p><p>Permainan ini adalah satu perjalanan panjang ke utara melewati tujuh level. Pintu keluar tiap level ada di ujung seberang. Di level 7, sebuah jembatan di atas kehampaan, sebuah bintang menunggu, dan kadang ada artefak di sebelahnya. Ambil keduanya dan berjalanlah kembali sampai ke awal, keluar lewat pintu tempat kamu pertama masuk: bintang itu jadi milikmu untuk dibelanjakan di toko, dan artefaknya masuk ke pencapaianmu. Pintu-pintu hanya membiarkanmu maju sampai kamu memegang bintang; setelah itu hanya mundur. Di jalan pulang ada lebih banyak makhluk.</p><p>Power-up tersebar di level-level: lewati untuk mengambilnya. Power-up bertahan sampai kamu mati. Jika mati, permainan dimulai lagi dari awal.</p><h3>Di komputer</h3><ul><li><b>W A S D</b> berjalan, <b>mouse</b> melihat, tahan <b>Shift</b> untuk berlari (berisik).</li><li><b>Spasi</b> untuk ekolokasi. <b>Esc</b> untuk jeda. <b>F</b> beralih ke layar penuh.</li></ul><h3>Di ponsel atau tablet</h3><ul><li><b>Jempol kiri</b>: geser untuk berjalan; dorong melewati cincin putus-putus untuk berlari.</li><li><b>Jempol kanan</b>: geser untuk melihat; ketuk tombol bulat <b>GEMA</b> untuk ekolokasi.</li></ul><p>Headphone sangat membantu: kamu bisa mendengar di mana segala sesuatu berada.</p>",
+ "pw_vest": [
+  "ROMPI TIMBAL",
+  "Radioaktivitas melukaimu 60% lebih sedikit, tapi kamu lebih berat: bergerak 20% lebih lambat dan lelah 30% lebih cepat."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Saat sesuatu memburumu di dekat sini, kamu berlari 25% lebih cepat."
+ ],
+ "pw_chalk": [
+  "KAPUR",
+  "Kamu meninggalkan jejak samar di lantai yang muncul saat kamu bergema."
+ ],
+ "pw_ventro": [
+  "PROYEKSI",
+  "Gemamu bermula 6 m di depanmu (atau di dinding yang menghalang). Monster pergi ke sana, bukan kepadamu."
+ ],
+ "pw_rico": [
+  "PANTULAN",
+  "Gemamu memantul melewati tiga tikungan dan bertahan sedikit lebih lama."
+ ],
+ "pw_cloak": [
+  "JUBAH HENING",
+  "Diamlah selama 2 detik dan tak ada yang bisa mendengar napasmu, sedekat apa pun ia."
+ ],
+ "pw_lens": [
+  "LENSA GEMA",
+  "Gemamu hanya menuju ke depan, tapi dua kali lebih rapat dan 1,5x lebih jauh."
+ ],
+ "pw_whisk": [
+  "KUMIS",
+  "Dinding dalam jarak sekitar 2 m di depanmu berpendar samar saat kamu bergerak, tanpa suara."
+ ],
+ "pw_echo": [
+  "GEMA JAUH",
+  "Gemamu menjangkau lebih jauh."
+ ],
+ "pw_stride": [
+  "LANGKAH PANJANG",
+  "Kamu berlari lebih cepat."
+ ],
+ "pw_lungs": [
+  "PARU-PARU DALAM",
+  "Kamu bisa berlari lebih lama."
+ ],
+ "pw_eye": [
+  "MATA HIJAU",
+  "Tanda-tanda dan pintu keluar menjawab gemamu dari jarak lebih jauh."
+ ],
+ "pw_glow": [
+  "CAHAYA SISA",
+  "Titik-titik gemamu bertahan lebih lama."
+ ],
+ "pw_dense": [
+  "GEMA RAPAT",
+  "Gemamu menampilkan lebih banyak titik."
+ ],
+ "pw_tremor": [
+  "INDRA GETARAN",
+  "Kamu merasakan langkah kaki: apa pun yang berjalan dalam 22 m meninggalkan cincin merah di lantai, bahkan menembus dinding."
+ ],
+ "pw_pill": [
+  "PIL MERAH",
+  "Kamu melihat segalanya, sebagaimana adanya."
+ ],
+ "pw_star": [
+  "BINTANG",
+  "Bawa keluar lewat pintu tempat kamu masuk dan ia jadi milikmu selamanya: belanjakan di toko."
+ ],
+ "pw_memory": [
+  "INGATAN",
+  "Setiap dinding yang tersentuh gemamu tetap menyala selamanya. Hanya gemamu."
+ ],
+ "pw_guide": [
+  "GARIS PEMANDU",
+  "Garis hijau di lantai selalu menunjukkan jalan keluar."
+ ],
+ "pw_negative": [
+  "NEGATIF",
+  "Dinding dan sudut saling memantulkan gema di sekelilingmu sepanjang waktu: kamu melihat bentuk tempat itu tanpa suara."
+ ],
+ "pw_crown": [
+  "MAHKOTA",
+  "Kamu menamatkan Echoloc. Kamu melihat segalanya. Di toko: ambil semua power-up dan semua artefak yang kamu punya."
+ ],
+ "pw_soles": [
+  "SOL LEMBUT",
+  "Langkah larimu hanya terdengar setengah jauhnya."
+ ],
+ "pw_steady": [
+  "NAPAS TENANG",
+  "Kehabisan napas tidak lagi mengaburkan atau menyebarkan gemamu."
+ ],
+ "pw_bright": [
+  "GEMA TERANG",
+  "Titik-titik gemamu 35% lebih terang."
+ ],
+ "pw_wide": [
+  "MATA LEBAR",
+  "Kamu melihat lebih banyak di sekitarmu: 95 derajat, bukan 75."
+ ],
+ "pw_lucky": [
+  "JIMAT",
+  "Ada satu power-up tambahan di setiap level setelah ini."
+ ],
+ "pw_thread": [
+  "BENANG",
+  "Setiap gema juga menunjukkan potongan jalan keluar berikutnya, berwarna hijau, di lantai."
+ ]
+}

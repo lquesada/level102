@@ -1,0 +1,195 @@
+{
+ "intro1": "Du kan inte se. Klicka med tungan för att se.",
+ "intro2": "Något bor i de här korridorerna. Det kan inte heller se, men det hör allt. Eka för nära eller för ofta, och det kommer. När det springer skriker det. När det skriker svarar andra.",
+ "ctlPC": "<kbd>WASD</kbd> gå · <kbd>MUS</kbd> titta · <kbd>SHIFT</kbd> spring · <kbd>MELLANSLAG</kbd> ekolokalisera · <kbd>F</kbd> helskärm · hörlurar rekommenderas",
+ "ctlTouch": "<kbd>VÄNSTER TUMME</kbd> gå · tryck förbi den streckade ringen för att <kbd>SPRINGA</kbd> · <kbd>HÖGER TUMME</kbd> dra för att titta, tryck på <kbd>EKO</kbd> för att ekolokalisera · hörlurar rekommenderas",
+ "fsNote": "Spelas i helskärm, med telefonen på tvären.",
+ "begin": [
+  "KLICKA FÖR ATT BÖRJA",
+  "TRYCK FÖR ATT BÖRJA"
+ ],
+ "prompt": [
+  "TRYCK [ MELLANSLAG ]",
+  "TRYCK [ EKO ]"
+ ],
+ "info1": "<b>HITTA UTGÅNGEN</b>",
+ "infoPC": "<kbd>WASD</kbd> gå &nbsp; <kbd>MUS</kbd> titta &nbsp; <kbd>SHIFT</kbd> spring (högljutt) &nbsp; <kbd>F</kbd> helskärm<br><kbd>MELLANSLAG</kbd> ekolokalisera",
+ "infoTouch": "vänster tumme: gå, tryck långt för att springa · höger tumme: dra för att titta, tryck på EKO för att ekolokalisera",
+ "paused": "PAUSAT",
+ "pausedMsg": "Mörkret väntar.",
+ "resume": [
+  "KLICKA FÖR ATT FORTSÄTTA",
+  "TRYCK FÖR ATT FORTSÄTTA"
+ ],
+ "won": "UTE",
+ "wonMsg": "Du hittade utgången på {s} s.",
+ "toMenu": [
+  "KLICKA FÖR HUVUDMENYN",
+  "TRYCK FÖR HUVUDMENYN"
+ ],
+ "startBtn": "STARTA SPELET",
+ "again": [
+  "KLICKA FÖR ATT SPELA IGEN",
+  "TRYCK FÖR ATT SPELA IGEN"
+ ],
+ "dead": "UPPSLUKAD",
+ "deadMsg": "Det hörde dig.",
+ "retry": [
+  "KLICKA FÖR ATT FÖRSÖKA IGEN",
+  "TRYCK FÖR ATT FÖRSÖKA IGEN"
+ ],
+ "error": "FEL",
+ "restart": [
+  "KLICKA FÖR ATT STARTA OM",
+  "TRYCK FÖR ATT STARTA OM"
+ ],
+ "noGL": "INGEN WEBGL",
+ "noGLMsg": "Den här webbläsaren har WebGL avstängt. Prova Chrome eller Firefox med hårdvaruacceleration påslagen.",
+ "rot": "VÄND TELEFONEN PÅ TVÄREN",
+ "rotMsg": "Echoloc spelas i liggande läge.",
+ "rotTap": "Eller tryck här för att spela i helskärm.",
+ "run": "SPRING",
+ "look": "DRA FÖR<br>ATT TITTA",
+ "echo": "EKO",
+ "level": "NIVÅ {n}",
+ "howTo": "SÅ SPELAR DU",
+ "langName": "Svenska",
+ "menuAch": "PRESTATIONER",
+ "menuSettings": "INSTÄLLNINGAR",
+ "menuAbout": "OM",
+ "menuHelp": "SÅ SPELAR DU",
+ "back": "TILLBAKA",
+ "resumeBtn": "FORTSÄTT",
+ "exitMenu": "TILL HUVUDMENYN",
+ "youCarry": "DU BÄR PÅ",
+ "wayHome": "PÅ VÄG HEM",
+ "shopTitle": "BUTIK",
+ "shopText": "Du har ★ {n} ({m} att spendera). Välj förstärkningar att börja spelet med, en stjärna styck; tryck igen för att få tillbaka stjärnan. En förstärkning är låst tills du plockat upp den i ett spel, även ett där du sedan dör.",
+ "locked": "LÅST",
+ "achTitle": "PRESTATIONER",
+ "starsN": "★ STJÄRNOR: {n}",
+ "starsNote": "En för varje spel du tog dig ut ur med stjärnan.",
+ "pwUnlocked": "FÖRSTÄRKNINGAR UPPLÅSTA {a}/{b}",
+ "artRecovered": "ARTEFAKTER BÄRGADE {a}/{b}",
+ "setTitle": "INSTÄLLNINGAR",
+ "setLang": "SPRÅK",
+ "setSystem": "Systemets standard",
+ "setSize": "TEXTSTORLEK",
+ "aboutTitle": "OM",
+ "aboutBy": "av {name}",
+ "aboutFree": "Det här spelet är gratis. Stöd mig genom att lyssna på min musik:",
+ "version": "Version {v}",
+ "toastHome": "TA DEN NU HEM: HELA VÄGEN TILLBAKA",
+ "toastLocked": "LÅST",
+ "toastStar": "+1 STJÄRNA ({n} ATT SPENDERA)",
+ "toastAch": "NY PRESTATION: {x} ({n}/{m})",
+ "help": "<p>Du kan inte se. Klicka med tungan: en våg av prickar visar väggarna en kort stund. Blinda varelser bor här och de hör allt, så eka försiktigt.</p><p>Spelet är en lång väg norrut genom sju nivåer. Varje nivås utgångsdörr finns på bortre sidan. På nivå 7, en bro över ingenting, väntar en stjärna, och ibland en artefakt bredvid. Ta dem och gå hela vägen tillbaka, ut genom dörren du först kom in genom: stjärnan kan du spendera i butiken, artefakten hamnar bland dina prestationer. Dörrarna släpper dig bara framåt tills du har stjärnan; sedan bara bakåt. På vägen hem finns fler varelser.</p><p>Förstärkningar ligger i nivåerna: gå över dem för att ta dem. De varar tills du dör. Dör du börjar spelet om från början.</p><h3>På en dator</h3><ul><li><b>W A S D</b> gå, <b>mus</b> titta, håll <b>Shift</b> för att springa (högljutt).</li><li><b>Mellanslag</b> ekolokaliserar. <b>Esc</b> pausar. <b>F</b> växlar till helskärm.</li></ul><h3>På telefon eller surfplatta</h3><ul><li><b>Vänster tumme</b>: dra för att gå; tryck förbi den streckade ringen för att springa.</li><li><b>Höger tumme</b>: dra för att titta; tryck på den runda <b>EKO</b>-knappen för att ekolokalisera.</li></ul><p>Hörlurar hjälper mycket: du hör var saker finns.</p>",
+ "pw_vest": [
+  "BLYVÄST",
+  "Radioaktivitet skadar dig 60 % mindre, men du är tyngre: du rör dig 20 % långsammare och tröttnar 30 % snabbare."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "När något jagar dig i närheten springer du 25 % snabbare."
+ ],
+ "pw_chalk": [
+  "KRITA",
+  "Du lämnar ett svagt spår på golvet som syns när du ekar."
+ ],
+ "pw_ventro": [
+  "PROJEKTION",
+  "Ditt eko börjar 6 m framför dig (eller vid väggen i vägen). Monstren går dit, inte till dig."
+ ],
+ "pw_rico": [
+  "REKYL",
+  "Ditt eko studsar runt tre hörn och dröjer sig kvar lite längre."
+ ],
+ "pw_cloak": [
+  "STILLA KAPPA",
+  "Stå still i 2 sekunder så kan inget höra dig andas, hur nära det än är."
+ ],
+ "pw_lens": [
+  "EKOLINS",
+  "Ditt eko går bara framåt, men dubbelt så tätt och 1,5 gånger så långt."
+ ],
+ "pw_whisk": [
+  "MORRHÅR",
+  "Väggar inom ungefär 2 m framför dig lyser svagt när du rör dig, utan ett ljud."
+ ],
+ "pw_echo": [
+  "LÅNGT EKO",
+  "Ditt eko når längre."
+ ],
+ "pw_stride": [
+  "LÅNGA KLIV",
+  "Du springer snabbare."
+ ],
+ "pw_lungs": [
+  "DJUPA LUNGOR",
+  "Du kan springa längre."
+ ],
+ "pw_eye": [
+  "GRÖNT ÖGA",
+  "Skyltar och utgången svarar på ditt eko från längre håll."
+ ],
+ "pw_glow": [
+  "EFTERGLÖD",
+  "Dina ekoprickar dröjer kvar längre."
+ ],
+ "pw_dense": [
+  "TÄTT EKO",
+  "Ditt eko visar fler prickar."
+ ],
+ "pw_tremor": [
+  "VIBRATIONSSINNE",
+  "Du känner steg: allt som går inom 22 m lämnar röda ringar på golvet, även genom väggar."
+ ],
+ "pw_pill": [
+  "RÖDA PILLRET",
+  "Du ser allt, som det verkligen är."
+ ],
+ "pw_star": [
+  "STJÄRNA",
+  "Bär ut den genom dörren du kom in genom så är den din för alltid: spendera den i butiken."
+ ],
+ "pw_memory": [
+  "MINNE",
+  "Varje vägg ditt eko rör vid förblir upplyst för alltid. Bara ditt eko."
+ ],
+ "pw_guide": [
+  "LEDLINJE",
+  "En grön linje på golvet visar alltid vägen ut."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Väggar och hörn kastar eko på varandra runt omkring dig hela tiden: du ser platsens form utan ett ljud."
+ ],
+ "pw_crown": [
+  "KRONA",
+  "Du har klarat Echoloc. Du ser allt. I butiken: ta alla förstärkningar och alla artefakter du har."
+ ],
+ "pw_soles": [
+  "MJUKA SULOR",
+  "Dina springande steg hörs bara hälften så långt."
+ ],
+ "pw_steady": [
+  "LUGN ANDNING",
+  "Att vara andfådd gör inte längre ditt eko suddigt eller spritt."
+ ],
+ "pw_bright": [
+  "KLART EKO",
+  "Dina ekoprickar är 35 % ljusare."
+ ],
+ "pw_wide": [
+  "VIDA ÖGON",
+  "Du ser mer omkring dig: 95 grader i stället för 75."
+ ],
+ "pw_lucky": [
+  "LYCKOAMULETT",
+  "En förstärkning till ligger i varje nivå efter den här."
+ ],
+ "pw_thread": [
+  "TRÅD",
+  "Varje eko visar också nästa bit av vägen ut, i grönt, på golvet."
+ ]
+}

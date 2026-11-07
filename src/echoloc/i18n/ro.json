@@ -1,0 +1,195 @@
+{
+ "intro1": "Nu poți vedea. Plescăie din limbă ca să vezi.",
+ "intro2": "Ceva trăiește pe aceste coridoare. Nici el nu vede, dar aude totul. Fă ecou prea aproape sau prea des și va veni. Când aleargă, țipă. Când țipă, alții răspund.",
+ "ctlPC": "<kbd>WASD</kbd> mișcare · <kbd>MOUSE</kbd> privire · <kbd>SHIFT</kbd> fugă · <kbd>SPAȚIU</kbd> ecolocație · <kbd>F</kbd> ecran complet · se recomandă căști",
+ "ctlTouch": "<kbd>DEGETUL MARE STÂNG</kbd> mișcare · împinge-l dincolo de cercul punctat ca să <kbd>FUGI</kbd> · <kbd>DEGETUL MARE DREPT</kbd> trage ca să privești, atinge <kbd>ECOU</kbd> pentru ecolocație · se recomandă căști",
+ "fsNote": "Se joacă pe ecran complet, cu telefonul pe orizontală.",
+ "begin": [
+  "CLIC CA SĂ ÎNCEPI",
+  "ATINGE CA SĂ ÎNCEPI"
+ ],
+ "prompt": [
+  "APASĂ [ SPAȚIU ]",
+  "ATINGE [ ECOU ]"
+ ],
+ "info1": "<b>GĂSEȘTE IEȘIREA</b>",
+ "infoPC": "<kbd>WASD</kbd> mișcare &nbsp; <kbd>MOUSE</kbd> privire &nbsp; <kbd>SHIFT</kbd> fugă (zgomotos) &nbsp; <kbd>F</kbd> ecran complet<br><kbd>SPAȚIU</kbd> ecolocație",
+ "infoTouch": "degetul stâng: mișcare, împinge departe ca să fugi · degetul drept: trage ca să privești, atinge ECOU pentru ecolocație",
+ "paused": "PAUZĂ",
+ "pausedMsg": "Întunericul așteaptă.",
+ "resume": [
+  "CLIC CA SĂ CONTINUI",
+  "ATINGE CA SĂ CONTINUI"
+ ],
+ "won": "AI SCĂPAT",
+ "wonMsg": "Ai găsit ieșirea în {s} s.",
+ "toMenu": [
+  "CLIC PENTRU MENIUL PRINCIPAL",
+  "ATINGE PENTRU MENIUL PRINCIPAL"
+ ],
+ "startBtn": "ÎNCEPE JOCUL",
+ "again": [
+  "CLIC CA SĂ JOCI DIN NOU",
+  "ATINGE CA SĂ JOCI DIN NOU"
+ ],
+ "dead": "DEVORAT",
+ "deadMsg": "Te-a auzit.",
+ "retry": [
+  "CLIC CA SĂ ÎNCERCI DIN NOU",
+  "ATINGE CA SĂ ÎNCERCI DIN NOU"
+ ],
+ "error": "EROARE",
+ "restart": [
+  "CLIC CA SĂ REPORNEȘTI",
+  "ATINGE CA SĂ REPORNEȘTI"
+ ],
+ "noGL": "FĂRĂ WEBGL",
+ "noGLMsg": "Acest browser are WebGL dezactivat. Încearcă Chrome sau Firefox cu accelerarea hardware activată.",
+ "rot": "ÎNTOARCE TELEFONUL PE ORIZONTALĂ",
+ "rotMsg": "Echoloc se joacă pe orizontală.",
+ "rotTap": "Sau atinge aici ca să joci pe ecran complet.",
+ "run": "FUGI",
+ "look": "TRAGE<br>CA SĂ PRIVEȘTI",
+ "echo": "ECOU",
+ "level": "NIVELUL {n}",
+ "howTo": "CUM SE JOACĂ",
+ "langName": "Română",
+ "menuAch": "REALIZĂRI",
+ "menuSettings": "SETĂRI",
+ "menuAbout": "DESPRE",
+ "menuHelp": "CUM SE JOACĂ",
+ "back": "ÎNAPOI",
+ "resumeBtn": "CONTINUĂ",
+ "exitMenu": "IEȘI ÎN MENIU",
+ "youCarry": "AI LA TINE",
+ "wayHome": "PE DRUMUL SPRE CASĂ",
+ "shopTitle": "MAGAZIN",
+ "shopText": "Ai ★ {n} ({m} de cheltuit). Alege bonusurile cu care începi jocul, câte o stea fiecare; atinge din nou ca să primești steaua înapoi. Un bonus rămâne blocat până îl ridici într-un joc, chiar dacă apoi mori în el.",
+ "locked": "BLOCAT",
+ "achTitle": "REALIZĂRI",
+ "starsN": "★ STELE: {n}",
+ "starsNote": "Câte una pentru fiecare joc din care ai scăpat cu steaua.",
+ "pwUnlocked": "BONUSURI DEBLOCATE {a}/{b}",
+ "artRecovered": "ARTEFACTE RECUPERATE {a}/{b}",
+ "setTitle": "SETĂRI",
+ "setLang": "LIMBA",
+ "setSystem": "Implicit din sistem",
+ "setSize": "MĂRIMEA TEXTULUI",
+ "aboutTitle": "DESPRE",
+ "aboutBy": "de {name}",
+ "aboutFree": "Acest joc video este gratuit. Susține-mă ascultându-mi muzica:",
+ "version": "Versiunea {v}",
+ "toastHome": "ACUM DU-O ACASĂ: TOT DRUMUL ÎNAPOI",
+ "toastLocked": "BLOCAT",
+ "toastStar": "+1 STEA ({n} DE CHELTUIT)",
+ "toastAch": "REALIZARE NOUĂ: {x} ({n}/{m})",
+ "help": "<p>Nu poți vedea. Plescăie din limbă: un val de puncte îți arată pereții pentru o clipă. Aici trăiesc creaturi oarbe care aud totul, așa că folosește ecoul cu grijă.</p><p>Jocul este un drum lung spre nord prin șapte niveluri. Ușa de ieșire a fiecărui nivel e în partea opusă. La nivelul 7, un pod peste neant, te așteaptă o stea, iar uneori un artefact lângă ea. Ia-le și fă tot drumul înapoi, ieșind pe ușa prin care ai intrat: steaua e a ta, s-o cheltui în magazin, iar artefactul intră la realizările tale. Ușile te lasă doar să înaintezi până ai steaua; apoi doar să te întorci. Pe drumul spre casă sunt mai multe creaturi.</p><p>Prin niveluri se află bonusuri: calcă peste ele ca să le iei. Țin până mori. Când mori, jocul începe din nou de la început.</p><h3>Pe calculator</h3><ul><li><b>W A S D</b> mers, <b>mouse</b> privire, ține apăsat <b>Shift</b> ca să fugi (zgomotos).</li><li><b>Spațiu</b> face ecolocație. <b>Esc</b> pune pauză. <b>F</b> trece pe ecran complet.</li></ul><h3>Pe telefon sau tabletă</h3><ul><li><b>Degetul mare stâng</b>: trage ca să mergi; împinge dincolo de cercul punctat ca să fugi.</li><li><b>Degetul mare drept</b>: trage ca să privești; atinge butonul rotund <b>ECOU</b> pentru ecolocație.</li></ul><p>Căștile ajută mult: auzi unde se află lucrurile.</p>",
+ "pw_vest": [
+  "VESTĂ DE PLUMB",
+  "Radioactivitatea te rănește cu 60% mai puțin, dar ești mai greu: te miști cu 20% mai încet și obosești cu 30% mai repede."
+ ],
+ "pw_adren": [
+  "ADRENALINĂ",
+  "Cât timp ceva te vânează în apropiere, fugi cu 25% mai repede."
+ ],
+ "pw_chalk": [
+  "CRETĂ",
+  "Lași pe podea o urmă slabă care apare când faci ecou."
+ ],
+ "pw_ventro": [
+  "PROIECȚIE",
+  "Ecoul tău pornește la 6 m în fața ta (sau de la peretele din cale). Monștrii merg acolo, nu la tine."
+ ],
+ "pw_rico": [
+  "RICOȘEU",
+  "Ecoul tău ocolește trei colțuri și rămâne puțin mai mult."
+ ],
+ "pw_cloak": [
+  "MANTIA NEMIȘCĂRII",
+  "Stai nemișcat 2 secunde și nimic nu te poate auzi respirând, oricât de aproape ar fi."
+ ],
+ "pw_lens": [
+  "LENTILA ECOULUI",
+  "Ecoul tău merge doar înainte, dar de două ori mai dens și de 1,5 ori mai departe."
+ ],
+ "pw_whisk": [
+  "MUSTĂȚI",
+  "Pereții aflați la vreo 2 m în fața ta strălucesc slab cât te miști, fără niciun sunet."
+ ],
+ "pw_echo": [
+  "ECOU DEPĂRTAT",
+  "Ecoul tău ajunge mai departe."
+ ],
+ "pw_stride": [
+  "PAS LUNG",
+  "Fugi mai repede."
+ ],
+ "pw_lungs": [
+  "PLĂMÂNI ADÂNCI",
+  "Poți fugi mai mult timp."
+ ],
+ "pw_eye": [
+  "OCHIUL VERDE",
+  "Semnele și ieșirea răspund ecoului tău de mai departe."
+ ],
+ "pw_glow": [
+  "STRĂLUCIRE REMANENTĂ",
+  "Punctele ecoului tău rămân mai mult."
+ ],
+ "pw_dense": [
+  "ECOU DENS",
+  "Ecoul tău arată mai multe puncte."
+ ],
+ "pw_tremor": [
+  "SIMȚUL VIBRAȚIILOR",
+  "Simți pașii: orice merge pe o rază de 22 m lasă cercuri roșii pe podea, chiar și prin pereți."
+ ],
+ "pw_pill": [
+  "PASTILA ROȘIE",
+  "Vezi totul, așa cum este cu adevărat."
+ ],
+ "pw_star": [
+  "STEA",
+  "Scoate-o pe ușa prin care ai intrat și e a ta pentru totdeauna: cheltuiește-o în magazin."
+ ],
+ "pw_memory": [
+  "MEMORIE",
+  "Fiecare perete atins de ecoul tău rămâne luminat pentru totdeauna. Doar ecoul tău."
+ ],
+ "pw_guide": [
+  "FIR CĂLĂUZĂ",
+  "O linie verde pe podea arată mereu drumul spre ieșire."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Pereții și colțurile își trimit ecoul unii altora în jurul tău, tot timpul: vezi forma locului fără niciun sunet."
+ ],
+ "pw_crown": [
+  "COROANĂ",
+  "Ai învins Echoloc. Vezi totul. În magazin: ia toate bonusurile și toate artefactele pe care le ai."
+ ],
+ "pw_soles": [
+  "TĂLPI MOI",
+  "Pașii tăi când fugi se aud doar la jumătate din distanță."
+ ],
+ "pw_steady": [
+  "RESPIRAȚIE CALMĂ",
+  "Când ești fără suflu, ecoul tău nu se mai încețoșează și nu se mai împrăștie."
+ ],
+ "pw_bright": [
+  "ECOU LUMINOS",
+  "Punctele ecoului tău sunt cu 35% mai luminoase."
+ ],
+ "pw_wide": [
+  "OCHI LARGI",
+  "Vezi mai mult în jurul tău: 95 de grade în loc de 75."
+ ],
+ "pw_lucky": [
+  "TALISMAN",
+  "În fiecare nivel de după acesta se află încă un bonus."
+ ],
+ "pw_thread": [
+  "FIR",
+  "Fiecare ecou arată și următoarea bucată din drumul spre ieșire, cu verde, pe podea."
+ ]
+}

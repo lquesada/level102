@@ -1,0 +1,195 @@
+{
+ "intro1": "Sa ei näe. Klõpsa keelega, et näha.",
+ "intro2": "Neis saalides elab miski. Ka see ei näe, aga kuuleb kõike. Kaja liiga lähedal või liiga tihti ja see tuleb. Kui see jookseb, see karjub. Kui see karjub, vastavad teised.",
+ "ctlPC": "<kbd>WASD</kbd> liigu · <kbd>HIIR</kbd> vaata · <kbd>SHIFT</kbd> jookse · <kbd>TÜHIK</kbd> kaja · <kbd>F</kbd> täisekraan · soovitame kõrvaklappe",
+ "ctlTouch": "<kbd>VASAK PÖIAL</kbd> liigu · lükka üle katkendliku ringi, et <kbd>JOOSTA</kbd> · <kbd>PAREM PÖIAL</kbd> lohista, et vaadata, puuduta <kbd>KAJA</kbd>, et klõpsata · soovitame kõrvaklappe",
+ "fsNote": "Mängitakse täisekraanil, telefon külili.",
+ "begin": [
+  "KLÕPSA, ET ALUSTADA",
+  "PUUDUTA, ET ALUSTADA"
+ ],
+ "prompt": [
+  "VAJUTA [ TÜHIK ]",
+  "PUUDUTA [ KAJA ]"
+ ],
+ "info1": "<b>LEIA VÄLJAPÄÄS</b>",
+ "infoPC": "<kbd>WASD</kbd> liigu &nbsp; <kbd>HIIR</kbd> vaata &nbsp; <kbd>SHIFT</kbd> jookse (vali) &nbsp; <kbd>F</kbd> täisekraan<br><kbd>TÜHIK</kbd> kaja",
+ "infoTouch": "vasak pöial: liigu, lükka kaugele, et joosta · parem pöial: lohista, et vaadata, puuduta KAJA",
+ "paused": "PAUS",
+ "pausedMsg": "Pimedus ootab.",
+ "resume": [
+  "KLÕPSA, ET JÄTKATA",
+  "PUUDUTA, ET JÄTKATA"
+ ],
+ "won": "PÄÄSESID",
+ "wonMsg": "Leidsid väljapääsu {s} s-ga.",
+ "toMenu": [
+  "KLÕPSA PEAMENÜÜSSE",
+  "PUUDUTA PEAMENÜÜSSE"
+ ],
+ "startBtn": "ALUSTA MÄNGU",
+ "again": [
+  "KLÕPSA, ET UUESTI MÄNGIDA",
+  "PUUDUTA, ET UUESTI MÄNGIDA"
+ ],
+ "dead": "NEELATUD",
+ "deadMsg": "See kuulis sind.",
+ "retry": [
+  "KLÕPSA, ET UUESTI PROOVIDA",
+  "PUUDUTA, ET UUESTI PROOVIDA"
+ ],
+ "error": "VIGA",
+ "restart": [
+  "KLÕPSA, ET ALUSTADA UUESTI",
+  "PUUDUTA, ET ALUSTADA UUESTI"
+ ],
+ "noGL": "WEBGL PUUDUB",
+ "noGLMsg": "Selles brauseris on WebGL välja lülitatud. Proovi Chrome'i või Firefoxi, kus riistvaraline kiirendus on sees.",
+ "rot": "KEERA TELEFON KÜLILI",
+ "rotMsg": "Echoloci mängitakse rõhtpaigutuses.",
+ "rotTap": "Või puuduta siin, et mängida täisekraanil.",
+ "run": "JOOKSE",
+ "look": "LOHISTA,<br>ET VAADATA",
+ "echo": "KAJA",
+ "level": "TASE {n}",
+ "howTo": "KUIDAS MÄNGIDA",
+ "langName": "Eesti",
+ "menuAch": "SAAVUTUSED",
+ "menuSettings": "SEADED",
+ "menuAbout": "TEAVE",
+ "menuHelp": "KUIDAS MÄNGIDA",
+ "back": "TAGASI",
+ "resumeBtn": "JÄTKA",
+ "exitMenu": "PEAMENÜÜSSE",
+ "youCarry": "SUL ON KAASAS",
+ "wayHome": "TEEL KOJU",
+ "shopTitle": "POOD",
+ "shopText": "Sul on ★ {n} ({m} kulutada). Vali võimendused, millega mängu alustada, igaüks üks täht; puuduta uuesti, et täht tagasi saada. Võimendus jääb lukku, kuni korjad selle mängus üles, isegi kui sa siis sured.",
+ "locked": "LUKUS",
+ "achTitle": "SAAVUTUSED",
+ "starsN": "★ TÄHTI: {n}",
+ "starsNote": "Üks iga mängu eest, kust pääsesid tähega.",
+ "pwUnlocked": "AVATUD VÕIMENDUSED {a}/{b}",
+ "artRecovered": "LEITUD ESEMED {a}/{b}",
+ "setTitle": "SEADED",
+ "setLang": "KEEL",
+ "setSystem": "Süsteemi vaikimisi",
+ "setSize": "TEKSTI SUURUS",
+ "aboutTitle": "TEAVE",
+ "aboutBy": "autor: {name}",
+ "aboutFree": "See videomäng on tasuta. Toeta mind, kuulates minu muusikat:",
+ "version": "Versioon {v}",
+ "toastHome": "NÜÜD VII SEE KOJU: KOGU TEE TAGASI",
+ "toastLocked": "LUKUS",
+ "toastStar": "+1 TÄHT ({n} KULUTADA)",
+ "toastAch": "UUS SAAVUTUS: {x} ({n}/{m})",
+ "help": "<p>Sa ei näe. Klõpsa keelega: täppide laine näitab hetkeks seinu. Siin elavad pimedad olendid ja nad kuulevad kõike, nii et kaja ettevaatlikult.</p><p>Mäng on üks pikk tee põhja poole läbi seitsme taseme. Iga taseme väljapääsuuks on selle kaugemal küljel. 7. tasemel, sillal üle tühjuse, ootab täht ja mõnikord selle kõrval ese. Võta need ja kõnni kogu tee tagasi, välja uksest, mille kaudu esimest korda sisse tulid: tähe saad poes kulutada, ese läheb sinu saavutuste hulka. Uksed lasevad sind ainult edasi, kuni sul on täht; siis ainult tagasi. Teel koju on olendeid rohkem.</p><p>Tasemetel lebavad võimendused: kõnni nende peale, et need võtta. Need kestavad surmani. Surm alustab mängu algusest.</p><h3>Arvutis</h3><ul><li><b>W A S D</b> kõnni, <b>hiir</b> vaata, hoia <b>Shift</b>, et joosta (vali).</li><li><b>Tühik</b> saadab kaja. <b>Esc</b> peatab. <b>F</b> lülitab täisekraanile.</li></ul><h3>Telefonis või tahvlis</h3><ul><li><b>Vasak pöial</b>: lohista, et kõndida; lükka üle katkendliku ringi, et joosta.</li><li><b>Parem pöial</b>: lohista, et vaadata; puuduta ümmargust nuppu <b>KAJA</b>, et kaja saata.</li></ul><p>Kõrvaklapid aitavad palju: sa kuuled, kus asjad on.</p>",
+ "pw_vest": [
+  "PLIIVEST",
+  "Radioaktiivsus kahjustab sind 60% vähem, aga sa oled raskem: liigud 20% aeglasemalt ja väsid 30% kiiremini."
+ ],
+ "pw_adren": [
+  "ADRENALIIN",
+  "Kui miski sind lähedal jahib, jooksed 25% kiiremini."
+ ],
+ "pw_chalk": [
+  "KRIIT",
+  "Jätad põrandale nõrga jälje, mis ilmub, kui kajad."
+ ],
+ "pw_ventro": [
+  "PROJEKTSIOON",
+  "Sinu kaja algab 6 m sinu ees (või ees oleva seina juures). Koletised lähevad sinna, mitte sinu juurde."
+ ],
+ "pw_rico": [
+  "RIKOŠETT",
+  "Sinu kaja põrkub ümber kolme nurga ja püsib veidi kauem."
+ ],
+ "pw_cloak": [
+  "VAIKUSE KEEP",
+  "Seisa 2 sekundit paigal ja miski ei kuule su hingamist, ükskõik kui lähedal see on."
+ ],
+ "pw_lens": [
+  "KAJALÄÄTS",
+  "Sinu kaja läheb ainult ette, aga kaks korda tihedamalt ja 1,5x kaugemale."
+ ],
+ "pw_whisk": [
+  "VURRUD",
+  "Seinad umbes 2 m sinu ees helendavad liikudes nõrgalt, ilma helita."
+ ],
+ "pw_echo": [
+  "KAUGE KAJA",
+  "Sinu kaja ulatub kaugemale."
+ ],
+ "pw_stride": [
+  "PIKK SAMM",
+  "Jooksed kiiremini."
+ ],
+ "pw_lungs": [
+  "SÜGAVAD KOPSUD",
+  "Saad kauem joosta."
+ ],
+ "pw_eye": [
+  "ROHELINE SILM",
+  "Sildid ja väljapääs vastavad su kajale kaugemalt."
+ ],
+ "pw_glow": [
+  "JÄRELHELK",
+  "Sinu kaja täpid püsivad kauem."
+ ],
+ "pw_dense": [
+  "TIHE KAJA",
+  "Sinu kaja näitab rohkem täppe."
+ ],
+ "pw_tremor": [
+  "VÄRINATAJU",
+  "Sa tunned samme: kõik, mis kõnnib 22 m raadiuses, jätab põrandale punased rõngad, isegi läbi seinte."
+ ],
+ "pw_pill": [
+  "PUNANE PILL",
+  "Sa näed kõike, nii nagu see tegelikult on."
+ ],
+ "pw_star": [
+  "TÄHT",
+  "Kanna see välja uksest, mille kaudu sisse tulid, ja see on igaveseks sinu: kuluta seda poes."
+ ],
+ "pw_memory": [
+  "MÄLU",
+  "Iga sein, mida su kaja puudutab, jääb igaveseks valgeks. Ainult sinu kaja."
+ ],
+ "pw_guide": [
+  "JUHTJOON",
+  "Roheline joon põrandal näitab alati teed välja."
+ ],
+ "pw_negative": [
+  "NEGATIIV",
+  "Seinad ja nurgad kajavad kogu aeg üksteisele vastu kõikjal su ümber: sa näed paiga kuju ilma ühegi helita."
+ ],
+ "pw_crown": [
+  "KROON",
+  "Sa võitsid Echoloci. Sa näed kõike. Poes: võta kõik võimendused ja kõik esemed, mis sul on."
+ ],
+ "pw_soles": [
+  "PEHMED TALDAD",
+  "Su jooksusammud kostavad ainult poole kaugemale."
+ ],
+ "pw_steady": [
+  "RAHULIK HINGAMINE",
+  "Hingeldamine ei muuda su kaja enam uduseks ega hajusaks."
+ ],
+ "pw_bright": [
+  "ERE KAJA",
+  "Su kaja täpid on 35% eredamad."
+ ],
+ "pw_wide": [
+  "LAIAD SILMAD",
+  "Näed enda ümber rohkem: 95 kraadi 75 asemel."
+ ],
+ "pw_lucky": [
+  "ÕNNEAMULETT",
+  "Igal järgmisel tasemel on üks võimendus rohkem."
+ ],
+ "pw_thread": [
+  "LÕNG",
+  "Iga kaja näitab ka järgmist lõiku teest välja, rohelisena, põrandal."
+ ]
+}

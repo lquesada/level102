@@ -1,0 +1,195 @@
+{
+ "intro1": "Nevidíš. Mlaskni jazykem a uvidíš.",
+ "intro2": "V těchto chodbách něco žije. Taky nevidí, ale slyší všechno. Echo moc blízko nebo moc často, a přijde. Když běží, křičí. Když křičí, ostatní odpovídají.",
+ "ctlPC": "<kbd>WASD</kbd> pohyb · <kbd>MYŠ</kbd> rozhlížení · <kbd>SHIFT</kbd> běh · <kbd>MEZERNÍK</kbd> echolokace · <kbd>F</kbd> celá obrazovka · doporučena sluchátka",
+ "ctlTouch": "<kbd>LEVÝ PALEC</kbd> pohyb · zatlač za přerušovaný kruh a <kbd>BĚŽ</kbd> · <kbd>PRAVÝ PALEC</kbd> táhni pro rozhlížení, ťukni na <kbd>ECHO</kbd> pro echolokaci · doporučena sluchátka",
+ "fsNote": "Hraje se na celé obrazovce, s telefonem na šířku.",
+ "begin": [
+  "KLIKNI PRO START",
+  "ŤUKNI PRO START"
+ ],
+ "prompt": [
+  "STISKNI [ MEZERNÍK ]",
+  "ŤUKNI [ ECHO ]"
+ ],
+ "info1": "<b>NAJDI VÝCHOD</b>",
+ "infoPC": "<kbd>WASD</kbd> pohyb &nbsp; <kbd>MYŠ</kbd> rozhlížení &nbsp; <kbd>SHIFT</kbd> běh (hlasitý) &nbsp; <kbd>F</kbd> celá obrazovka<br><kbd>MEZERNÍK</kbd> echolokace",
+ "infoTouch": "levý palec: pohyb, zatlač daleko pro běh · pravý palec: táhni pro rozhlížení, ťukni na ECHO pro echolokaci",
+ "paused": "POZASTAVENO",
+ "pausedMsg": "Tma čeká.",
+ "resume": [
+  "KLIKNI PRO POKRAČOVÁNÍ",
+  "ŤUKNI PRO POKRAČOVÁNÍ"
+ ],
+ "won": "UNIKL JSI",
+ "wonMsg": "Východ jsi našel za {s} s.",
+ "toMenu": [
+  "KLIKNI PRO HLAVNÍ MENU",
+  "ŤUKNI PRO HLAVNÍ MENU"
+ ],
+ "startBtn": "ZAČÍT HRU",
+ "again": [
+  "KLIKNI A HRAJ ZNOVU",
+  "ŤUKNI A HRAJ ZNOVU"
+ ],
+ "dead": "POHLCEN",
+ "deadMsg": "Slyšelo tě.",
+ "retry": [
+  "KLIKNI A ZKUS TO ZNOVU",
+  "ŤUKNI A ZKUS TO ZNOVU"
+ ],
+ "error": "CHYBA",
+ "restart": [
+  "KLIKNI PRO RESTART",
+  "ŤUKNI PRO RESTART"
+ ],
+ "noGL": "ŽÁDNÝ WEBGL",
+ "noGLMsg": "Tento prohlížeč má WebGL vypnutý. Zkus Chrome nebo Firefox se zapnutou hardwarovou akcelerací.",
+ "rot": "OTOČ TELEFON NA ŠÍŘKU",
+ "rotMsg": "Echoloc se hraje na šířku.",
+ "rotTap": "Nebo sem ťukni a hraj na celé obrazovce.",
+ "run": "BĚH",
+ "look": "TÁHNI<br>A DÍVEJ SE",
+ "echo": "ECHO",
+ "level": "ÚROVEŇ {n}",
+ "howTo": "JAK HRÁT",
+ "langName": "Čeština",
+ "menuAch": "ÚSPĚCHY",
+ "menuSettings": "NASTAVENÍ",
+ "menuAbout": "O HŘE",
+ "menuHelp": "JAK HRÁT",
+ "back": "ZPĚT",
+ "resumeBtn": "POKRAČOVAT",
+ "exitMenu": "DO HLAVNÍHO MENU",
+ "youCarry": "NESEŠ",
+ "wayHome": "NA CESTĚ DOMŮ",
+ "shopTitle": "OBCHOD",
+ "shopText": "Máš ★ {n} ({m} k utracení). Vyber si vylepšení, se kterými začneš hru, každé za jednu hvězdu; ťukni znovu a hvězdu dostaneš zpět. Vylepšení zůstane zamčené, dokud ho ve hře nesebereš, i když pak v té hře zemřeš.",
+ "locked": "ZAMČENO",
+ "achTitle": "ÚSPĚCHY",
+ "starsN": "★ HVĚZDY: {n}",
+ "starsNote": "Jedna za každou hru, ze které jsi unikl s hvězdou.",
+ "pwUnlocked": "ODEMČENÁ VYLEPŠENÍ {a}/{b}",
+ "artRecovered": "ZÍSKANÉ ARTEFAKTY {a}/{b}",
+ "setTitle": "NASTAVENÍ",
+ "setLang": "JAZYK",
+ "setSystem": "Podle systému",
+ "setSize": "VELIKOST TEXTU",
+ "aboutTitle": "O HŘE",
+ "aboutBy": "autor: {name}",
+ "aboutFree": "Tato hra je zdarma. Podpoř mě poslechem mé hudby:",
+ "version": "Verze {v}",
+ "toastHome": "TEĎ TO DONES DOMŮ: CELOU CESTU ZPĚT",
+ "toastLocked": "ZAMČENO",
+ "toastStar": "+1 HVĚZDA ({n} K UTRACENÍ)",
+ "toastAch": "NOVÝ ÚSPĚCH: {x} ({n}/{m})",
+ "help": "<p>Nevidíš. Mlaskni jazykem: vlna teček na chvíli ukáže stěny. Žijí tu slepí tvorové a slyší všechno, tak s echem opatrně.</p><p>Hra je jedna dlouhá cesta na sever přes sedm úrovní. Východ z každé úrovně je na její druhé straně. Na úrovni 7, mostě nad ničím, čeká hvězda a někdy vedle ní artefakt. Vezmi je a vrať se celou cestu zpět, ven dveřmi, kterými jsi poprvé vešel: hvězdu utratíš v obchodě, artefakt se přidá k úspěchům. Dveře tě pouštějí jen dopředu, dokud nemáš hvězdu; pak už jen zpět. Na cestě domů je víc tvorů.</p><p>Vylepšení leží v úrovních: přejdi přes ně a vezmeš je. Vydrží, dokud nezemřeš. Smrt začne hru znovu od začátku.</p><h3>Na počítači</h3><ul><li><b>W A S D</b> chůze, <b>myš</b> rozhlížení, drž <b>Shift</b> pro běh (hlasitý).</li><li><b>Mezerník</b> spustí echolokaci. <b>Esc</b> pozastaví. <b>F</b> přepne na celou obrazovku.</li></ul><h3>Na telefonu nebo tabletu</h3><ul><li><b>Levý palec</b>: táhni pro chůzi; zatlač za přerušovaný kruh pro běh.</li><li><b>Pravý palec</b>: táhni pro rozhlížení; ťukni na kulaté tlačítko <b>ECHO</b> pro echolokaci.</li></ul><p>Sluchátka hodně pomáhají: slyšíš, kde co je.</p>",
+ "pw_vest": [
+  "OLOVĚNÁ VESTA",
+  "Radioaktivita ti ublíží o 60 % méně, ale jsi těžší: pohybuješ se o 20 % pomaleji a unavíš se o 30 % rychleji."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Když tě něco poblíž loví, běžíš o 25 % rychleji."
+ ],
+ "pw_chalk": [
+  "KŘÍDA",
+  "Necháváš na podlaze slabou stopu, která se ukáže při echu."
+ ],
+ "pw_ventro": [
+  "PROJEKCE",
+  "Tvé echo začíná 6 m před tebou (nebo u stěny v cestě). Netvoři jdou tam, ne k tobě."
+ ],
+ "pw_rico": [
+  "ODRAZ",
+  "Tvé echo se odrazí za tři rohy a vydrží o něco déle."
+ ],
+ "pw_cloak": [
+  "PLÁŠŤ TICHA",
+  "Stůj 2 sekundy bez hnutí a nic neuslyší tvůj dech, ať je jakkoli blízko."
+ ],
+ "pw_lens": [
+  "ČOČKA ECHA",
+  "Tvé echo jde jen dopředu, ale dvakrát hustší a 1,5x dál."
+ ],
+ "pw_whisk": [
+  "VOUSKY",
+  "Stěny asi do 2 m před tebou slabě září, když se hýbeš, bez zvuku."
+ ],
+ "pw_echo": [
+  "DALEKÉ ECHO",
+  "Tvé echo dosáhne dál."
+ ],
+ "pw_stride": [
+  "DLOUHÝ KROK",
+  "Běháš rychleji."
+ ],
+ "pw_lungs": [
+  "HLUBOKÉ PLÍCE",
+  "Vydržíš běžet déle."
+ ],
+ "pw_eye": [
+  "ZELENÉ OKO",
+  "Značky a východ odpovídají na echo z větší dálky."
+ ],
+ "pw_glow": [
+  "DOSVIT",
+  "Tečky echa vydrží déle."
+ ],
+ "pw_dense": [
+  "HUSTÉ ECHO",
+  "Tvé echo ukáže víc teček."
+ ],
+ "pw_tremor": [
+  "CIT PRO OTŘESY",
+  "Cítíš kroky: cokoli, co chodí do 22 m, nechává na podlaze červené kruhy, i skrz stěny."
+ ],
+ "pw_pill": [
+  "ČERVENÁ PILULKA",
+  "Vidíš všechno takové, jaké to doopravdy je."
+ ],
+ "pw_star": [
+  "HVĚZDA",
+  "Vynes ji ven dveřmi, kterými jsi vešel, a bude navždy tvoje: utrať ji v obchodě."
+ ],
+ "pw_memory": [
+  "PAMĚŤ",
+  "Každá stěna, které se tvé echo dotkne, zůstane navždy osvětlená. Jen tvé echo."
+ ],
+ "pw_guide": [
+  "VODICÍ ČÁRA",
+  "Zelená čára na podlaze vždy ukazuje cestu ven."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Stěny a rohy si neustále vracejí echo všude kolem tebe: vidíš tvar místa, aniž bys vydal zvuk."
+ ],
+ "pw_crown": [
+  "KORUNA",
+  "Porazil jsi Echoloc. Vidíš všechno. V obchodě: vezmi si všechna vylepšení a všechny artefakty, které máš."
+ ],
+ "pw_soles": [
+  "MĚKKÉ PODRÁŽKY",
+  "Tvé kroky v běhu jsou slyšet jen na poloviční vzdálenost."
+ ],
+ "pw_steady": [
+  "KLIDNÝ DECH",
+  "Zadýchání už tvé echo nerozmazává ani nerozptyluje."
+ ],
+ "pw_bright": [
+  "JASNÉ ECHO",
+  "Tečky echa jsou o 35 % jasnější."
+ ],
+ "pw_wide": [
+  "ŠIROKÉ OČI",
+  "Vidíš víc kolem sebe: 95 stupňů místo 75."
+ ],
+ "pw_lucky": [
+  "TALISMAN",
+  "V každé další úrovni leží o jedno vylepšení víc."
+ ],
+ "pw_thread": [
+  "NIT",
+  "Každé echo navíc ukáže zeleně na podlaze další úsek cesty ven."
+ ]
+}

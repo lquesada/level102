@@ -1,0 +1,195 @@
+{
+ "intro1": "Du kannst nicht sehen. Schnalze mit der Zunge, um zu sehen.",
+ "intro2": "Etwas lebt in diesen Gängen. Es kann auch nicht sehen, aber es hört alles. Schnalzt du zu nah oder zu oft, kommt es. Wenn es rennt, schreit es. Wenn es schreit, antworten andere.",
+ "ctlPC": "<kbd>WASD</kbd> bewegen · <kbd>MAUS</kbd> umsehen · <kbd>SHIFT</kbd> rennen · <kbd>LEERTASTE</kbd> echoorten · <kbd>F</kbd> Vollbild · Kopfhörer empfohlen",
+ "ctlTouch": "<kbd>LINKER DAUMEN</kbd> bewegen · über den gestrichelten Ring hinaus schieben zum <kbd>RENNEN</kbd> · <kbd>RECHTER DAUMEN</kbd> ziehen zum Umsehen, <kbd>ECHO</kbd> tippen zum Echoorten · Kopfhörer empfohlen",
+ "fsNote": "Läuft im Vollbild, mit dem Handy quer.",
+ "begin": [
+  "KLICKEN ZUM STARTEN",
+  "TIPPEN ZUM STARTEN"
+ ],
+ "prompt": [
+  "DRÜCKE [ LEERTASTE ]",
+  "TIPPE [ ECHO ]"
+ ],
+ "info1": "<b>FINDE DEN AUSGANG</b>",
+ "infoPC": "<kbd>WASD</kbd> bewegen &nbsp; <kbd>MAUS</kbd> umsehen &nbsp; <kbd>SHIFT</kbd> rennen (laut) &nbsp; <kbd>F</kbd> Vollbild<br><kbd>LEERTASTE</kbd> echoorten",
+ "infoTouch": "linker Daumen: bewegen, weit schieben zum Rennen · rechter Daumen: ziehen zum Umsehen, ECHO tippen zum Echoorten",
+ "paused": "PAUSE",
+ "pausedMsg": "Die Dunkelheit wartet.",
+ "resume": [
+  "KLICKEN ZUM FORTSETZEN",
+  "TIPPEN ZUM FORTSETZEN"
+ ],
+ "won": "ENTKOMMEN",
+ "wonMsg": "Du hast den Ausgang in {s} s gefunden.",
+ "toMenu": [
+  "KLICKEN FÜR DAS HAUPTMENÜ",
+  "TIPPEN FÜR DAS HAUPTMENÜ"
+ ],
+ "startBtn": "SPIEL STARTEN",
+ "again": [
+  "KLICKEN, UM NOCHMAL ZU SPIELEN",
+  "TIPPEN, UM NOCHMAL ZU SPIELEN"
+ ],
+ "dead": "VERSCHLUNGEN",
+ "deadMsg": "Es hat dich gehört.",
+ "retry": [
+  "KLICKEN FÜR NEUEN VERSUCH",
+  "TIPPEN FÜR NEUEN VERSUCH"
+ ],
+ "error": "FEHLER",
+ "restart": [
+  "KLICKEN ZUM NEUSTART",
+  "TIPPEN ZUM NEUSTART"
+ ],
+ "noGL": "KEIN WEBGL",
+ "noGLMsg": "In diesem Browser ist WebGL ausgeschaltet. Versuche Chrome oder Firefox mit eingeschalteter Hardwarebeschleunigung.",
+ "rot": "DREH DEIN HANDY QUER",
+ "rotMsg": "Echoloc wird im Querformat gespielt.",
+ "rotTap": "Oder tippe hier, um im Vollbild zu spielen.",
+ "run": "RENNEN",
+ "look": "ZIEHEN<br>ZUM SEHEN",
+ "echo": "ECHO",
+ "level": "LEVEL {n}",
+ "howTo": "ANLEITUNG",
+ "langName": "Deutsch",
+ "menuAch": "ERFOLGE",
+ "menuSettings": "EINSTELLUNGEN",
+ "menuAbout": "ÜBER",
+ "menuHelp": "ANLEITUNG",
+ "back": "ZURÜCK",
+ "resumeBtn": "WEITER",
+ "exitMenu": "ZUM HAUPTMENÜ",
+ "youCarry": "DU TRÄGST",
+ "wayHome": "AUF DEM HEIMWEG",
+ "shopTitle": "LADEN",
+ "shopText": "Du hast ★ {n} ({m} verfügbar). Wähle die Power-ups, mit denen du das Spiel beginnst, je einen Stern; tippe erneut, um den Stern zurückzubekommen. Ein Power-up bleibt gesperrt, bis du es in einem Spiel aufhebst, auch wenn du danach stirbst.",
+ "locked": "GESPERRT",
+ "achTitle": "ERFOLGE",
+ "starsN": "★ STERNE: {n}",
+ "starsNote": "Einer für jedes Spiel, in dem du mit dem Stern entkommen bist.",
+ "pwUnlocked": "POWER-UPS FREIGESCHALTET {a}/{b}",
+ "artRecovered": "ARTEFAKTE GEBORGEN {a}/{b}",
+ "setTitle": "EINSTELLUNGEN",
+ "setLang": "SPRACHE",
+ "setSystem": "Systemstandard",
+ "setSize": "TEXTGRÖSSE",
+ "aboutTitle": "ÜBER",
+ "aboutBy": "von {name}",
+ "aboutFree": "Dieses Videospiel ist kostenlos. Unterstütze mich, indem du meine Musik hörst:",
+ "version": "Version {v}",
+ "toastHome": "JETZT BRING IHN HEIM: DEN GANZEN WEG ZURÜCK",
+ "toastLocked": "GESPERRT",
+ "toastStar": "+1 STERN ({n} VERFÜGBAR)",
+ "toastAch": "NEUER ERFOLG: {x} ({n}/{m})",
+ "help": "<p>Du kannst nicht sehen. Schnalze mit der Zunge: Eine Welle aus Punkten zeigt kurz die Wände. Hier leben blinde Kreaturen, die alles hören, also nutze das Echo mit Bedacht.</p><p>Das Spiel ist ein langer Weg nach Norden durch sieben Level. Die Ausgangstür jedes Levels liegt auf der anderen Seite. In Level 7, einer Brücke über dem Nichts, wartet ein Stern, manchmal mit einem Artefakt daneben. Nimm sie und geh den ganzen Weg zurück, hinaus durch die Tür, durch die du hereingekommen bist: Den Stern kannst du im Laden ausgeben, das Artefakt kommt zu deinen Erfolgen. Die Türen lassen dich nur vorwärts, bis du den Stern hast; danach nur zurück. Auf dem Heimweg gibt es mehr Kreaturen.</p><p>In den Levels liegen Power-ups: Geh darüber, um sie aufzunehmen. Sie halten, bis du stirbst. Wenn du stirbst, beginnt das Spiel wieder von vorn.</p><h3>Am Computer</h3><ul><li><b>W A S D</b> gehen, <b>Maus</b> umsehen, <b>Shift</b> halten zum Rennen (laut).</li><li><b>Leertaste</b> echoortet. <b>Esc</b> pausiert. <b>F</b> schaltet auf Vollbild.</li></ul><h3>Am Handy oder Tablet</h3><ul><li><b>Linker Daumen</b>: ziehen zum Gehen; über den gestrichelten Ring hinaus schieben zum Rennen.</li><li><b>Rechter Daumen</b>: ziehen zum Umsehen; den runden <b>ECHO</b>-Knopf tippen zum Echoorten.</li></ul><p>Kopfhörer helfen sehr: Du hörst, wo die Dinge sind.</p>",
+ "pw_vest": [
+  "BLEIWESTE",
+  "Radioaktivität schadet dir 60% weniger, aber du bist schwerer: Du bewegst dich 20% langsamer und ermüdest 30% schneller."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Solange dich etwas in der Nähe jagt, rennst du 25% schneller."
+ ],
+ "pw_chalk": [
+  "KREIDE",
+  "Du hinterlässt eine schwache Spur auf dem Boden, die beim Echo sichtbar wird."
+ ],
+ "pw_ventro": [
+  "PROJEKTION",
+  "Dein Echo beginnt 6 m vor dir (oder an der Wand dazwischen). Die Monster gehen dorthin, nicht zu dir."
+ ],
+ "pw_rico": [
+  "ABPRALLER",
+  "Dein Echo prallt um drei Ecken und bleibt etwas länger."
+ ],
+ "pw_cloak": [
+  "STILLER MANTEL",
+  "Steh 2 Sekunden still, und nichts kann dich atmen hören, egal wie nah es ist."
+ ],
+ "pw_lens": [
+  "ECHOLINSE",
+  "Dein Echo geht nur nach vorn, aber doppelt so dicht und 1,5-mal so weit."
+ ],
+ "pw_whisk": [
+  "SCHNURRHAARE",
+  "Wände bis etwa 2 m vor dir leuchten schwach, während du dich bewegst, ganz ohne Geräusch."
+ ],
+ "pw_echo": [
+  "FERNES ECHO",
+  "Dein Echo reicht weiter."
+ ],
+ "pw_stride": [
+  "LANGER SCHRITT",
+  "Du rennst schneller."
+ ],
+ "pw_lungs": [
+  "TIEFE LUNGEN",
+  "Du kannst länger rennen."
+ ],
+ "pw_eye": [
+  "GRÜNES AUGE",
+  "Schilder und der Ausgang antworten deinem Echo aus größerer Entfernung."
+ ],
+ "pw_glow": [
+  "NACHGLÜHEN",
+  "Deine Echopunkte bleiben länger."
+ ],
+ "pw_dense": [
+  "DICHTES ECHO",
+  "Dein Echo zeigt mehr Punkte."
+ ],
+ "pw_tremor": [
+  "BEBENSINN",
+  "Du spürst Schritte: Alles, was innerhalb von 22 m geht, hinterlässt rote Ringe auf dem Boden, sogar durch Wände."
+ ],
+ "pw_pill": [
+  "ROTE PILLE",
+  "Du siehst alles, wie es wirklich ist."
+ ],
+ "pw_star": [
+  "STERN",
+  "Trag ihn durch die Tür hinaus, durch die du gekommen bist, und er gehört für immer dir: Gib ihn im Laden aus."
+ ],
+ "pw_memory": [
+  "GEDÄCHTNIS",
+  "Jede Wand, die dein Echo berührt, bleibt für immer beleuchtet. Nur dein Echo."
+ ],
+ "pw_guide": [
+  "LEITLINIE",
+  "Eine grüne Linie auf dem Boden zeigt immer den Weg hinaus."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Wände und Ecken werfen ständig ihr Echo aufeinander, überall um dich herum: Du siehst die Form des Ortes, ohne einen Laut."
+ ],
+ "pw_crown": [
+  "KRONE",
+  "Du hast Echoloc geschlagen. Du siehst alles. Im Laden: Nimm alle Power-ups und alle Artefakte, die du hast."
+ ],
+ "pw_soles": [
+  "WEICHE SOHLEN",
+  "Deine Laufschritte hört man nur noch halb so weit."
+ ],
+ "pw_steady": [
+  "RUHIGER ATEM",
+  "Wenn du außer Atem bist, verschwimmt oder streut dein Echo nicht mehr."
+ ],
+ "pw_bright": [
+  "HELLES ECHO",
+  "Deine Echopunkte sind 35% heller."
+ ],
+ "pw_wide": [
+  "WEITE AUGEN",
+  "Du siehst mehr um dich herum: 95 Grad statt 75."
+ ],
+ "pw_lucky": [
+  "GLÜCKSBRINGER",
+  "In jedem Level nach diesem liegt ein Power-up mehr."
+ ],
+ "pw_thread": [
+  "FADEN",
+  "Jedes Echo zeigt auch das nächste Stück des Weges hinaus, in Grün, auf dem Boden."
+ ]
+}

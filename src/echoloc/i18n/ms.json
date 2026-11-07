@@ -1,0 +1,195 @@
+{
+ "intro1": "Anda tidak dapat melihat. Decitkan lidah anda untuk melihat.",
+ "intro2": "Sesuatu tinggal di lorong-lorong ini. Ia juga buta, tetapi ia mendengar segala-galanya. Bergema terlalu dekat atau terlalu kerap, dan ia akan datang. Apabila ia berlari, ia menjerit. Apabila ia menjerit, yang lain menyahut.",
+ "ctlPC": "<kbd>WASD</kbd> bergerak · <kbd>TETIKUS</kbd> lihat · <kbd>SHIFT</kbd> lari · <kbd>SPACE</kbd> ekolokasi · <kbd>F</kbd> skrin penuh · fon kepala disyorkan",
+ "ctlTouch": "<kbd>IBU JARI KIRI</kbd> bergerak · tolak melepasi gelang putus-putus untuk <kbd>LARI</kbd> · <kbd>IBU JARI KANAN</kbd> seret untuk melihat, ketik <kbd>GEMA</kbd> untuk ekolokasi · fon kepala disyorkan",
+ "fsNote": "Dimainkan dalam skrin penuh, dengan telefon dicondongkan ke sisi.",
+ "begin": [
+  "KLIK UNTUK MULA",
+  "KETIK UNTUK MULA"
+ ],
+ "prompt": [
+  "TEKAN [ SPACE ]",
+  "KETIK [ GEMA ]"
+ ],
+ "info1": "<b>CARI JALAN KELUAR</b>",
+ "infoPC": "<kbd>WASD</kbd> bergerak &nbsp; <kbd>TETIKUS</kbd> lihat &nbsp; <kbd>SHIFT</kbd> lari (bising) &nbsp; <kbd>F</kbd> skrin penuh<br><kbd>SPACE</kbd> ekolokasi",
+ "infoTouch": "ibu jari kiri: bergerak, tolak jauh untuk lari · ibu jari kanan: seret untuk melihat, ketik GEMA untuk ekolokasi",
+ "paused": "DIJEDA",
+ "pausedMsg": "Kegelapan menunggu.",
+ "resume": [
+  "KLIK UNTUK SAMBUNG",
+  "KETIK UNTUK SAMBUNG"
+ ],
+ "won": "TERLEPAS",
+ "wonMsg": "Anda menemui jalan keluar dalam {s} saat.",
+ "toMenu": [
+  "KLIK KE MENU UTAMA",
+  "KETIK KE MENU UTAMA"
+ ],
+ "startBtn": "MULA PERMAINAN",
+ "again": [
+  "KLIK UNTUK MAIN SEMULA",
+  "KETIK UNTUK MAIN SEMULA"
+ ],
+ "dead": "DITELAN",
+ "deadMsg": "Ia terdengar anda.",
+ "retry": [
+  "KLIK UNTUK CUBA LAGI",
+  "KETIK UNTUK CUBA LAGI"
+ ],
+ "error": "RALAT",
+ "restart": [
+  "KLIK UNTUK MULA SEMULA",
+  "KETIK UNTUK MULA SEMULA"
+ ],
+ "noGL": "TIADA WEBGL",
+ "noGLMsg": "Pelayar ini mematikan WebGL. Cuba Chrome atau Firefox dengan pecutan perkakasan dihidupkan.",
+ "rot": "SENGETKAN TELEFON ANDA",
+ "rotMsg": "Echoloc dimainkan dalam mod landskap.",
+ "rotTap": "Atau ketik di sini untuk main dalam skrin penuh.",
+ "run": "LARI",
+ "look": "SERET<br>UNTUK LIHAT",
+ "echo": "GEMA",
+ "level": "TAHAP {n}",
+ "howTo": "CARA BERMAIN",
+ "langName": "Bahasa Melayu",
+ "menuAch": "PENCAPAIAN",
+ "menuSettings": "TETAPAN",
+ "menuAbout": "PERIHAL",
+ "menuHelp": "CARA BERMAIN",
+ "back": "KEMBALI",
+ "resumeBtn": "SAMBUNG",
+ "exitMenu": "KELUAR KE MENU UTAMA",
+ "youCarry": "ANDA MEMBAWA",
+ "wayHome": "DALAM PERJALANAN PULANG",
+ "shopTitle": "KEDAI",
+ "shopText": "Anda ada ★ {n} ({m} untuk dibelanjakan). Pilih kuasa tambahan untuk memulakan permainan, satu bintang setiap satu; ketik lagi untuk mendapatkan semula bintang. Kuasa tambahan kekal berkunci sehingga anda mengutipnya dalam permainan, walaupun anda kemudian mati di situ.",
+ "locked": "BERKUNCI",
+ "achTitle": "PENCAPAIAN",
+ "starsN": "★ BINTANG: {n}",
+ "starsNote": "Satu bagi setiap permainan yang anda lepasi sambil membawa bintang.",
+ "pwUnlocked": "KUASA TAMBAHAN DIBUKA {a}/{b}",
+ "artRecovered": "ARTIFAK DITEMUI SEMULA {a}/{b}",
+ "setTitle": "TETAPAN",
+ "setLang": "BAHASA",
+ "setSystem": "Lalai sistem",
+ "setSize": "SAIZ TEKS",
+ "aboutTitle": "PERIHAL",
+ "aboutBy": "oleh {name}",
+ "aboutFree": "Permainan video ini percuma. Sokong saya dengan mendengar muzik saya:",
+ "version": "Versi {v}",
+ "toastHome": "KINI BAWA PULANG: SEPANJANG JALAN KEMBALI",
+ "toastLocked": "BERKUNCI",
+ "toastStar": "+1 BINTANG ({n} UNTUK DIBELANJAKAN)",
+ "toastAch": "PENCAPAIAN BAHARU: {x} ({n}/{m})",
+ "help": "<p>Anda tidak dapat melihat. Decitkan lidah anda: gelombang titik menunjukkan dinding seketika. Makhluk buta tinggal di sini dan mereka mendengar segala-galanya, jadi bergemalah dengan berhati-hati.</p><p>Permainan ini satu perjalanan panjang ke utara melalui tujuh tahap. Pintu keluar setiap tahap berada di hujung seberang. Di tahap 7, sebuah jambatan di atas kekosongan, sebutir bintang menunggu, dan kadangkala sebuah artifak di sebelahnya. Ambil kedua-duanya dan berjalan kembali sepanjang jalan, keluar melalui pintu tempat anda mula-mula masuk: bintang itu milik anda untuk dibelanjakan di kedai, dan artifak masuk ke pencapaian anda. Pintu hanya membenarkan anda mara sehingga anda memegang bintang; selepas itu hanya berundur. Dalam perjalanan pulang ada lebih banyak makhluk.</p><p>Kuasa tambahan terdapat dalam tahap-tahap: lalu di atasnya untuk mengambilnya. Ia kekal sehingga anda mati. Mati bermakna permainan bermula semula dari awal.</p><h3>Di komputer</h3><ul><li><b>W A S D</b> berjalan, <b>tetikus</b> lihat, tahan <b>Shift</b> untuk lari (bising).</li><li><b>Space</b> untuk ekolokasi. <b>Esc</b> menjeda. <b>F</b> menukar ke skrin penuh.</li></ul><h3>Di telefon atau tablet</h3><ul><li><b>Ibu jari kiri</b>: seret untuk berjalan; tolak melepasi gelang putus-putus untuk lari.</li><li><b>Ibu jari kanan</b>: seret untuk melihat; ketik butang bulat <b>GEMA</b> untuk ekolokasi.</li></ul><p>Fon kepala sangat membantu: anda dapat mendengar di mana sesuatu berada.</p>",
+ "pw_vest": [
+  "JAKET PLUMBUM",
+  "Radioaktiviti mencederakan anda 60% kurang, tetapi anda lebih berat: bergerak 20% lebih perlahan dan letih 30% lebih cepat."
+ ],
+ "pw_adren": [
+  "ADRENALIN",
+  "Ketika sesuatu memburu anda berdekatan, anda berlari 25% lebih laju."
+ ],
+ "pw_chalk": [
+  "KAPUR",
+  "Anda meninggalkan jejak samar di lantai yang muncul apabila anda bergema."
+ ],
+ "pw_ventro": [
+  "UNJURAN",
+  "Gema anda bermula 6 m di hadapan anda (atau di dinding yang menghalang). Raksasa pergi ke sana, bukan kepada anda."
+ ],
+ "pw_rico": [
+  "LANTUNAN",
+  "Gema anda melantun melepasi tiga selekoh dan kekal sedikit lebih lama."
+ ],
+ "pw_cloak": [
+  "JUBAH SENYAP",
+  "Berdiri diam selama 2 saat dan tiada apa dapat mendengar anda bernafas, sedekat mana pun ia."
+ ],
+ "pw_lens": [
+  "KANTA GEMA",
+  "Gema anda hanya ke hadapan, tetapi dua kali lebih padat dan 1.5x lebih jauh."
+ ],
+ "pw_whisk": [
+  "MISAI",
+  "Dinding dalam lingkungan 2 m di hadapan anda bercahaya samar ketika anda bergerak, tanpa bunyi."
+ ],
+ "pw_echo": [
+  "GEMA JAUH",
+  "Gema anda sampai lebih jauh."
+ ],
+ "pw_stride": [
+  "LANGKAH PANJANG",
+  "Anda berlari lebih laju."
+ ],
+ "pw_lungs": [
+  "PARU-PARU DALAM",
+  "Anda boleh berlari lebih lama."
+ ],
+ "pw_eye": [
+  "MATA HIJAU",
+  "Papan tanda dan pintu keluar membalas gema anda dari lebih jauh."
+ ],
+ "pw_glow": [
+  "SINAR SISA",
+  "Titik gema anda kekal lebih lama."
+ ],
+ "pw_dense": [
+  "GEMA PADAT",
+  "Gema anda menunjukkan lebih banyak titik."
+ ],
+ "pw_tremor": [
+  "DERIA GEGARAN",
+  "Anda merasai tapak kaki: apa sahaja yang berjalan dalam 22 m meninggalkan gelang merah di lantai, walaupun menembusi dinding."
+ ],
+ "pw_pill": [
+  "PIL MERAH",
+  "Anda melihat segalanya, seperti yang sebenarnya."
+ ],
+ "pw_star": [
+  "BINTANG",
+  "Bawa ia keluar melalui pintu tempat anda masuk dan ia milik anda selamanya: belanjakan di kedai."
+ ],
+ "pw_memory": [
+  "INGATAN",
+  "Setiap dinding yang disentuh gema anda kekal bercahaya selamanya. Hanya gema anda."
+ ],
+ "pw_guide": [
+  "GARIS PANDUAN",
+  "Garis hijau di lantai sentiasa menunjukkan jalan keluar."
+ ],
+ "pw_negative": [
+  "NEGATIF",
+  "Dinding dan sudut saling memantulkan gema di sekeliling anda sepanjang masa: anda melihat bentuk tempat itu tanpa sebarang bunyi."
+ ],
+ "pw_crown": [
+  "MAHKOTA",
+  "Anda telah menamatkan Echoloc. Anda melihat segalanya. Di kedai: ambil semua kuasa tambahan dan semua artifak yang anda ada."
+ ],
+ "pw_soles": [
+  "TAPAK LEMBUT",
+  "Langkah larian anda hanya kedengaran separuh sejauh biasa."
+ ],
+ "pw_steady": [
+  "NAFAS TENANG",
+  "Kehabisan nafas tidak lagi mengaburkan atau menyerakkan gema anda."
+ ],
+ "pw_bright": [
+  "GEMA TERANG",
+  "Titik gema anda 35% lebih terang."
+ ],
+ "pw_wide": [
+  "MATA LUAS",
+  "Anda nampak lebih banyak di sekeliling: 95 darjah, bukan 75."
+ ],
+ "pw_lucky": [
+  "AZIMAT",
+  "Ada satu lagi kuasa tambahan dalam setiap tahap selepas ini."
+ ],
+ "pw_thread": [
+  "BENANG",
+  "Setiap gema turut menunjukkan bahagian seterusnya jalan keluar, berwarna hijau, di lantai."
+ ]
+}

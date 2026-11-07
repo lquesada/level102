@@ -1,0 +1,195 @@
+{
+ "intro1": "Nuk sheh dot. Kërcit gjuhën që të shohësh.",
+ "intro2": "Diçka jeton në këto korridore. As ajo nuk sheh, por dëgjon gjithçka. Bëj jehonë shumë afër ose shumë shpesh, dhe do të vijë. Kur vrapon, ulërin. Kur ulërin, të tjerët përgjigjen.",
+ "ctlPC": "<kbd>WASD</kbd> lëviz · <kbd>MAUSI</kbd> shiko · <kbd>SHIFT</kbd> vrap · <kbd>HAPËSIRË</kbd> ekolokacion · <kbd>F</kbd> ekran i plotë · rekomandohen kufjet",
+ "ctlTouch": "<kbd>GISHTI I MADH MAJTAS</kbd> lëviz · shtyje përtej rrethit me vija për të <kbd>VRAPUAR</kbd> · <kbd>GISHTI I MADH DJATHTAS</kbd> tërhiq për të parë, prek <kbd>JEHONË</kbd> për ekolokacion · rekomandohen kufjet",
+ "fsNote": "Luhet në ekran të plotë, me telefonin horizontalisht.",
+ "begin": [
+  "KLIKO PËR TË FILLUAR",
+  "PREK PËR TË FILLUAR"
+ ],
+ "prompt": [
+  "SHTYP [ HAPËSIRË ]",
+  "PREK [ JEHONË ]"
+ ],
+ "info1": "<b>GJEJ DALJEN</b>",
+ "infoPC": "<kbd>WASD</kbd> lëviz &nbsp; <kbd>MAUSI</kbd> shiko &nbsp; <kbd>SHIFT</kbd> vrap (me zhurmë) &nbsp; <kbd>F</kbd> ekran i plotë<br><kbd>HAPËSIRË</kbd> ekolokacion",
+ "infoTouch": "gishti majtas: lëviz, shtyje larg për vrap · gishti djathtas: tërhiq për të parë, prek JEHONË për ekolokacion",
+ "paused": "NË PAUZË",
+ "pausedMsg": "Errësira pret.",
+ "resume": [
+  "KLIKO PËR TË VAZHDUAR",
+  "PREK PËR TË VAZHDUAR"
+ ],
+ "won": "SHPËTOVE",
+ "wonMsg": "E gjete daljen në {s} s.",
+ "toMenu": [
+  "KLIKO PËR MENYNË KRYESORE",
+  "PREK PËR MENYNË KRYESORE"
+ ],
+ "startBtn": "FILLO LOJËN",
+ "again": [
+  "KLIKO PËR TË LUAJTUR PRAPË",
+  "PREK PËR TË LUAJTUR PRAPË"
+ ],
+ "dead": "I GLLABËRUAR",
+ "deadMsg": "Të dëgjoi.",
+ "retry": [
+  "KLIKO PËR TË PROVUAR PRAPË",
+  "PREK PËR TË PROVUAR PRAPË"
+ ],
+ "error": "GABIM",
+ "restart": [
+  "KLIKO PËR TË RINISUR",
+  "PREK PËR TË RINISUR"
+ ],
+ "noGL": "S'KA WEBGL",
+ "noGLMsg": "Ky shfletues e ka WebGL të çaktivizuar. Provo Chrome ose Firefox me përshpejtimin e harduerit aktiv.",
+ "rot": "KTHEJE TELEFONIN HORIZONTALISHT",
+ "rotMsg": "Echoloc luhet horizontalisht.",
+ "rotTap": "Ose prek këtu për të luajtur në ekran të plotë.",
+ "run": "VRAP",
+ "look": "TËRHIQ<br>PËR TË PARË",
+ "echo": "JEHONË",
+ "level": "NIVELI {n}",
+ "howTo": "SI LUHET",
+ "langName": "Shqip",
+ "menuAch": "ARRITJET",
+ "menuSettings": "CILËSIMET",
+ "menuAbout": "RRETH",
+ "menuHelp": "SI LUHET",
+ "back": "MBRAPA",
+ "resumeBtn": "VAZHDO",
+ "exitMenu": "DIL NË MENYNË KRYESORE",
+ "youCarry": "MBAN ME VETE",
+ "wayHome": "RRUGËS PËR NË SHTËPI",
+ "shopTitle": "DYQANI",
+ "shopText": "Ke ★ {n} ({m} për të shpenzuar). Zgjidh fuqizimet me të cilat do nisësh lojën, nga një yll secili; prek përsëri për ta marrë yllin mbrapsht. Një fuqizim mbetet i kyçur derisa ta marrësh në një lojë, edhe në një ku pastaj vdes.",
+ "locked": "I KYÇUR",
+ "achTitle": "ARRITJET",
+ "starsN": "★ YJE: {n}",
+ "starsNote": "Një për çdo lojë nga e cila shpëtove me yllin.",
+ "pwUnlocked": "FUQIZIME TË ÇKYÇURA {a}/{b}",
+ "artRecovered": "ARTEFAKTE TË GJETURA {a}/{b}",
+ "setTitle": "CILËSIMET",
+ "setLang": "GJUHA",
+ "setSystem": "Si në sistem",
+ "setSize": "MADHËSIA E TEKSTIT",
+ "aboutTitle": "RRETH",
+ "aboutBy": "nga {name}",
+ "aboutFree": "Kjo lojë video është falas. Më mbështet duke dëgjuar muzikën time:",
+ "version": "Versioni {v}",
+ "toastHome": "TANI ÇOJE NË SHTËPI: GJITHË RRUGËN MBRAPSHT",
+ "toastLocked": "I KYÇUR",
+ "toastStar": "+1 YLL ({n} PËR TË SHPENZUAR)",
+ "toastAch": "ARRITJE E RE: {x} ({n}/{m})",
+ "help": "<p>Nuk sheh dot. Kërcit gjuhën: një valë pikash të tregon muret për një çast. Këtu jetojnë krijesa të verbra që dëgjojnë gjithçka, ndaj bëj jehonë me kujdes.</p><p>Loja është një rrugë e gjatë drejt veriut nëpër shtatë nivele. Dera e daljes së çdo niveli është në anën tjetër. Në nivelin 7, një urë mbi asgjënë, të pret një yll, e ndonjëherë edhe një artefakt pranë tij. Merri dhe kthehu gjithë rrugën mbrapsht, deri te dera nga hyre në fillim: ylli është yti për ta shpenzuar në dyqan, artefakti shkon te arritjet. Dyert të lënë të ecësh vetëm përpara derisa të kesh yllin; pastaj vetëm mbrapa. Rrugës për në shtëpi ka më shumë krijesa.</p><p>Fuqizimet gjenden nëpër nivele: kalo mbi to për t'i marrë. Zgjasin derisa të vdesësh. Vdekja e nis lojën nga fillimi.</p><h3>Në kompjuter</h3><ul><li><b>W A S D</b> ec, <b>mausi</b> shiko, mbaj <b>Shift</b> për vrap (me zhurmë).</li><li><b>Hapësira</b> bën ekolokacion. <b>Esc</b> pauzë. <b>F</b> kalon në ekran të plotë.</li></ul><h3>Në telefon ose tablet</h3><ul><li><b>Gishti majtas</b>: tërhiq për të ecur; shtyje përtej rrethit me vija për vrap.</li><li><b>Gishti djathtas</b>: tërhiq për të parë; prek butonin e rrumbullakët <b>JEHONË</b> për ekolokacion.</li></ul><p>Kufjet ndihmojnë shumë: dëgjon ku ndodhen gjërat.</p>",
+ "pw_vest": [
+  "JELEK PLUMBI",
+  "Radioaktiviteti të dëmton 60% më pak, por je më i rëndë: lëviz 20% më ngadalë dhe lodhesh 30% më shpejt."
+ ],
+ "pw_adren": [
+  "ADRENALINË",
+  "Kur diçka të gjuan afër, vrapon 25% më shpejt."
+ ],
+ "pw_chalk": [
+  "SHKUMËS",
+  "Lë një gjurmë të zbehtë në dysheme që duket kur bën jehonë."
+ ],
+ "pw_ventro": [
+  "PROJEKSION",
+  "Jehona jote nis 6 m para teje (ose te muri përpara). Përbindëshat shkojnë atje, jo te ti."
+ ],
+ "pw_rico": [
+  "RIKOSHET",
+  "Jehona jote kërcen rreth tre qosheve dhe zgjat pak më shumë."
+ ],
+ "pw_cloak": [
+  "PELERINA E QETË",
+  "Rri pa lëvizur 2 sekonda dhe asgjë s'të dëgjon frymën, sado afër të jetë."
+ ],
+ "pw_lens": [
+  "THJERRËZA E JEHONËS",
+  "Jehona shkon vetëm përpara, por dy herë më e dendur dhe 1,5 herë më larg."
+ ],
+ "pw_whisk": [
+  "MUSTAQE",
+  "Muret rreth 2 m përpara teje ndriçojnë lehtë kur lëviz, pa asnjë zë."
+ ],
+ "pw_echo": [
+  "JEHONË E LARGËT",
+  "Jehona jote arrin më larg."
+ ],
+ "pw_stride": [
+  "HAP I GJATË",
+  "Vrapon më shpejt."
+ ],
+ "pw_lungs": [
+  "MUSHKËRI TË THELLA",
+  "Mund të vraposh më gjatë."
+ ],
+ "pw_eye": [
+  "SYRI I GJELBËR",
+  "Shenjat dhe dalja i përgjigjen jehonës nga më larg."
+ ],
+ "pw_glow": [
+  "SHKËLQIM I MBETUR",
+  "Pikat e jehonës zgjasin më shumë."
+ ],
+ "pw_dense": [
+  "JEHONË E DENDUR",
+  "Jehona jote tregon më shumë pika."
+ ],
+ "pw_tremor": [
+  "NDJESIA E DRIDHJES",
+  "Ndjen hapat: çdo gjë që ecën brenda 22 m lë rrathë të kuq në dysheme, edhe përmes mureve."
+ ],
+ "pw_pill": [
+  "PILULA E KUQE",
+  "Sheh gjithçka, ashtu siç është vërtet."
+ ],
+ "pw_star": [
+  "YLL",
+  "Nxirre nga dera ku hyre dhe është yti përgjithmonë: shpenzoje në dyqan."
+ ],
+ "pw_memory": [
+  "KUJTESË",
+  "Çdo mur që prek jehona jote mbetet i ndriçuar përgjithmonë. Vetëm jehona jote."
+ ],
+ "pw_guide": [
+  "VIJA UDHËRRËFYESE",
+  "Një vijë e gjelbër në dysheme të tregon gjithmonë rrugën për të dalë."
+ ],
+ "pw_negative": [
+  "NEGATIV",
+  "Muret dhe qoshet i kthejnë jehonë njëri-tjetrit rreth teje gjatë gjithë kohës: e sheh formën e vendit pa bërë asnjë zë."
+ ],
+ "pw_crown": [
+  "KURORË",
+  "E mposhte Echoloc. I sheh të gjitha. Në dyqan: merr të gjitha fuqizimet dhe të gjitha artefaktet që ke."
+ ],
+ "pw_soles": [
+  "SHOLLA TË BUTA",
+  "Hapat e tu kur vrapon dëgjohen vetëm në gjysmën e largësisë."
+ ],
+ "pw_steady": [
+  "FRYMË E QETË",
+  "Kur të merret fryma, jehona jote nuk turbullohet dhe nuk shpërndahet më."
+ ],
+ "pw_bright": [
+  "JEHONË E NDRITUR",
+  "Pikat e jehonës janë 35% më të ndritshme."
+ ],
+ "pw_wide": [
+  "SY TË ÇELUR",
+  "Sheh më shumë përreth: 95 gradë në vend të 75."
+ ],
+ "pw_lucky": [
+  "HAJMALI",
+  "Në çdo nivel pas këtij ka edhe një fuqizim më shumë."
+ ],
+ "pw_thread": [
+  "PE",
+  "Çdo jehonë tregon gjithashtu pjesën tjetër të rrugës për të dalë, me të gjelbër, në dysheme."
+ ]
+}

@@ -1,0 +1,195 @@
+{
+ "intro1": "Tu ne vois rien. Claque la langue pour voir.",
+ "intro2": "Quelque chose vit dans ces couloirs. Lui non plus ne voit rien, mais il entend tout. Fais un écho trop près, ou trop souvent, et il viendra. Quand il court, il hurle. Quand il hurle, d'autres répondent.",
+ "ctlPC": "<kbd>WASD</kbd> bouger · <kbd>SOURIS</kbd> regarder · <kbd>MAJ</kbd> courir · <kbd>ESPACE</kbd> écholocaliser · <kbd>F</kbd> plein écran · casque recommandé",
+ "ctlTouch": "<kbd>POUCE GAUCHE</kbd> bouger · pousse au-delà de l'anneau pointillé pour <kbd>COURIR</kbd> · <kbd>POUCE DROIT</kbd> glisse pour regarder, touche <kbd>ÉCHO</kbd> pour écholocaliser · casque recommandé",
+ "fsNote": "Se joue en plein écran, téléphone à l'horizontale.",
+ "begin": [
+  "CLIQUE POUR COMMENCER",
+  "TOUCHE POUR COMMENCER"
+ ],
+ "prompt": [
+  "APPUIE SUR [ ESPACE ]",
+  "TOUCHE [ ÉCHO ]"
+ ],
+ "info1": "<b>TROUVE LA SORTIE</b>",
+ "infoPC": "<kbd>WASD</kbd> bouger &nbsp; <kbd>SOURIS</kbd> regarder &nbsp; <kbd>MAJ</kbd> courir (bruyant) &nbsp; <kbd>F</kbd> plein écran<br><kbd>ESPACE</kbd> écholocaliser",
+ "infoTouch": "pouce gauche : bouger, pousse loin pour courir · pouce droit : glisse pour regarder, touche ÉCHO pour écholocaliser",
+ "paused": "PAUSE",
+ "pausedMsg": "Le noir attend.",
+ "resume": [
+  "CLIQUE POUR REPRENDRE",
+  "TOUCHE POUR REPRENDRE"
+ ],
+ "won": "ÉCHAPPÉ",
+ "wonMsg": "Tu as trouvé la sortie en {s} s.",
+ "toMenu": [
+  "CLIQUE POUR LE MENU PRINCIPAL",
+  "TOUCHE POUR LE MENU PRINCIPAL"
+ ],
+ "startBtn": "JOUER",
+ "again": [
+  "CLIQUE POUR REJOUER",
+  "TOUCHE POUR REJOUER"
+ ],
+ "dead": "DÉVORÉ",
+ "deadMsg": "Il t'a entendu.",
+ "retry": [
+  "CLIQUE POUR RÉESSAYER",
+  "TOUCHE POUR RÉESSAYER"
+ ],
+ "error": "ERREUR",
+ "restart": [
+  "CLIQUE POUR RECOMMENCER",
+  "TOUCHE POUR RECOMMENCER"
+ ],
+ "noGL": "PAS DE WEBGL",
+ "noGLMsg": "WebGL est désactivé dans ce navigateur. Essaie Chrome ou Firefox avec l'accélération matérielle activée.",
+ "rot": "TOURNE TON TÉLÉPHONE",
+ "rotMsg": "Echoloc se joue en paysage.",
+ "rotTap": "Ou touche ici pour jouer en plein écran.",
+ "run": "COURIR",
+ "look": "GLISSE<br>POUR VOIR",
+ "echo": "ÉCHO",
+ "level": "NIVEAU {n}",
+ "howTo": "COMMENT JOUER",
+ "langName": "Français",
+ "menuAch": "SUCCÈS",
+ "menuSettings": "RÉGLAGES",
+ "menuAbout": "À PROPOS",
+ "menuHelp": "COMMENT JOUER",
+ "back": "RETOUR",
+ "resumeBtn": "REPRENDRE",
+ "exitMenu": "QUITTER VERS LE MENU",
+ "youCarry": "TU PORTES",
+ "wayHome": "SUR LE CHEMIN DU RETOUR",
+ "shopTitle": "BOUTIQUE",
+ "shopText": "Tu as ★ {n} ({m} à dépenser). Choisis les bonus avec lesquels commencer la partie, une étoile chacun ; touche à nouveau pour récupérer l'étoile. Un bonus reste verrouillé tant que tu ne l'as pas ramassé en partie, même si tu meurs ensuite.",
+ "locked": "VERROUILLÉ",
+ "achTitle": "SUCCÈS",
+ "starsN": "★ ÉTOILES : {n}",
+ "starsNote": "Une pour chaque partie où tu t'es échappé avec l'étoile.",
+ "pwUnlocked": "BONUS DÉBLOQUÉS {a}/{b}",
+ "artRecovered": "ARTEFACTS RÉCUPÉRÉS {a}/{b}",
+ "setTitle": "RÉGLAGES",
+ "setLang": "LANGUE",
+ "setSystem": "Langue du système",
+ "setSize": "TAILLE DU TEXTE",
+ "aboutTitle": "À PROPOS",
+ "aboutBy": "par {name}",
+ "aboutFree": "Ce jeu vidéo est gratuit. Soutiens-moi en écoutant ma musique :",
+ "version": "Version {v}",
+ "toastHome": "RAMÈNE-LA MAINTENANT : TOUT LE CHEMIN DU RETOUR",
+ "toastLocked": "VERROUILLÉ",
+ "toastStar": "+1 ÉTOILE ({n} À DÉPENSER)",
+ "toastAch": "NOUVEAU SUCCÈS : {x} ({n}/{m})",
+ "help": "<p>Tu ne vois rien. Claque la langue : une vague de points montre les murs un instant. Des créatures aveugles vivent ici et elles entendent tout, alors utilise l'écho avec prudence.</p><p>La partie est un long chemin vers le nord à travers sept niveaux. La porte de sortie de chaque niveau est de l'autre côté. Au niveau 7, un pont au-dessus du vide, une étoile t'attend, parfois avec un artefact à côté. Prends-les et refais tout le chemin en sens inverse, jusqu'à la porte par laquelle tu es entré : l'étoile est à toi, à dépenser à la boutique, et l'artefact rejoint tes succès. Les portes ne te laissent qu'avancer tant que tu n'as pas l'étoile ; ensuite, seulement revenir. Sur le chemin du retour, il y a plus de créatures.</p><p>Des bonus traînent dans les niveaux : marche dessus pour les prendre. Ils durent jusqu'à ta mort. Mourir fait recommencer la partie depuis le début.</p><h3>Sur ordinateur</h3><ul><li><b>W A S D</b> marcher, <b>souris</b> regarder, maintiens <b>Maj</b> pour courir (bruyant).</li><li><b>Espace</b> écholocalise. <b>Échap</b> met en pause. <b>F</b> passe en plein écran.</li></ul><h3>Sur téléphone ou tablette</h3><ul><li><b>Pouce gauche</b> : glisse pour marcher ; pousse au-delà de l'anneau pointillé pour courir.</li><li><b>Pouce droit</b> : glisse pour regarder ; touche le bouton rond <b>ÉCHO</b> pour écholocaliser.</li></ul><p>Un casque aide beaucoup : tu entends où sont les choses.</p>",
+ "pw_vest": [
+  "GILET DE PLOMB",
+  "La radioactivité te fait 60 % de dégâts en moins, mais tu es plus lourd : tu bouges 20 % plus lentement et tu te fatigues 30 % plus vite."
+ ],
+ "pw_adren": [
+  "ADRÉNALINE",
+  "Quand quelque chose te traque tout près, tu cours 25 % plus vite."
+ ],
+ "pw_chalk": [
+  "CRAIE",
+  "Tu laisses au sol une trace légère qui apparaît quand tu fais un écho."
+ ],
+ "pw_ventro": [
+  "PROJECTION",
+  "Ton écho part 6 m devant toi (ou du mur sur le chemin). Les monstres vont là-bas, pas vers toi."
+ ],
+ "pw_rico": [
+  "RICOCHET",
+  "Ton écho rebondit dans trois coins et dure un peu plus longtemps."
+ ],
+ "pw_cloak": [
+  "CAPE IMMOBILE",
+  "Reste immobile 2 secondes et rien ne peut t'entendre respirer, aussi près soit-il."
+ ],
+ "pw_lens": [
+  "LENTILLE D'ÉCHO",
+  "Ton écho ne part que vers l'avant, mais deux fois plus dense et 1,5 fois plus loin."
+ ],
+ "pw_whisk": [
+  "MOUSTACHES",
+  "Les murs à environ 2 m devant toi luisent faiblement quand tu bouges, sans un bruit."
+ ],
+ "pw_echo": [
+  "ÉCHO LOINTAIN",
+  "Ton écho porte plus loin."
+ ],
+ "pw_stride": [
+  "GRANDES FOULÉES",
+  "Tu cours plus vite."
+ ],
+ "pw_lungs": [
+  "GRANDS POUMONS",
+  "Tu peux courir plus longtemps."
+ ],
+ "pw_eye": [
+  "ŒIL VERT",
+  "Les panneaux et la sortie répondent à ton écho de plus loin."
+ ],
+ "pw_glow": [
+  "RÉMANENCE",
+  "Les points de ton écho restent plus longtemps."
+ ],
+ "pw_dense": [
+  "ÉCHO DENSE",
+  "Ton écho montre plus de points."
+ ],
+ "pw_tremor": [
+  "SENS SISMIQUE",
+  "Tu sens les pas : tout ce qui marche à moins de 22 m laisse des anneaux rouges au sol, même à travers les murs."
+ ],
+ "pw_pill": [
+  "PILULE ROUGE",
+  "Tu vois tout, tel que c'est vraiment."
+ ],
+ "pw_star": [
+  "ÉTOILE",
+  "Sors-la par la porte par laquelle tu es entré et elle est à toi pour de bon : dépense-la à la boutique."
+ ],
+ "pw_memory": [
+  "MÉMOIRE",
+  "Chaque mur que touche ton écho reste éclairé pour de bon. Seulement ton écho."
+ ],
+ "pw_guide": [
+  "FIL D'ARIANE",
+  "Une ligne verte au sol montre toujours la sortie."
+ ],
+ "pw_negative": [
+  "NÉGATIF",
+  "Les murs et les angles se renvoient l'écho tout autour de toi, en permanence : tu vois la forme du lieu sans faire un bruit."
+ ],
+ "pw_crown": [
+  "COURONNE",
+  "Tu as vaincu Echoloc. Tu vois tout. Dans la boutique : prends tous les bonus et tous les artefacts que tu possèdes."
+ ],
+ "pw_soles": [
+  "SEMELLES DOUCES",
+  "Tes pas de course ne s'entendent plus qu'à moitié moins loin."
+ ],
+ "pw_steady": [
+  "SOUFFLE CALME",
+  "Être essoufflé ne brouille plus et ne disperse plus ton écho."
+ ],
+ "pw_bright": [
+  "ÉCHO VIF",
+  "Les points de ton écho sont 35 % plus lumineux."
+ ],
+ "pw_wide": [
+  "YEUX GRANDS OUVERTS",
+  "Tu vois davantage autour de toi : 95 degrés au lieu de 75."
+ ],
+ "pw_lucky": [
+  "PORTE-BONHEUR",
+  "Un bonus de plus t'attend dans chaque niveau après celui-ci."
+ ],
+ "pw_thread": [
+  "FIL",
+  "Chaque écho montre aussi le prochain bout du chemin vers la sortie, en vert, sur le sol."
+ ]
+}

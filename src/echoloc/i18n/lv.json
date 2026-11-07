@@ -1,0 +1,195 @@
+{
+ "intro1": "Tu neredzi. Klikšķini ar mēli, lai redzētu.",
+ "intro2": "Šajās zālēs kaut kas dzīvo. Arī tas neredz, bet dzird visu. Atbalso pārāk tuvu vai pārāk bieži, un tas nāks. Kad tas skrien, tas kliedz. Kad tas kliedz, citi atbild.",
+ "ctlPC": "<kbd>WASD</kbd> iet · <kbd>PELE</kbd> skatīties · <kbd>SHIFT</kbd> skriet · <kbd>ATSTARPE</kbd> atbalss · <kbd>F</kbd> pilnekrāns · ieteicamas austiņas",
+ "ctlTouch": "<kbd>KREISAIS ĪKSTIS</kbd> iet · pabīdi aiz raustītā apļa, lai <kbd>SKRIETU</kbd> · <kbd>LABAIS ĪKSTIS</kbd> velc, lai skatītos, pieskaries <kbd>ATBALSS</kbd>, lai klikšķinātu · ieteicamas austiņas",
+ "fsNote": "Spēle notiek pilnekrānā, ar tālruni guļus.",
+ "begin": [
+  "KLIKŠĶINI, LAI SĀKTU",
+  "PIESKARIES, LAI SĀKTU"
+ ],
+ "prompt": [
+  "NOSPIED [ ATSTARPE ]",
+  "PIESKARIES [ ATBALSS ]"
+ ],
+ "info1": "<b>ATRODI IZEJU</b>",
+ "infoPC": "<kbd>WASD</kbd> iet &nbsp; <kbd>PELE</kbd> skatīties &nbsp; <kbd>SHIFT</kbd> skriet (skaļi) &nbsp; <kbd>F</kbd> pilnekrāns<br><kbd>ATSTARPE</kbd> atbalss",
+ "infoTouch": "kreisais īkstis: iet, pabīdi tālu, lai skrietu · labais īkstis: velc, lai skatītos, pieskaries ATBALSS",
+ "paused": "PAUZE",
+ "pausedMsg": "Tumsa gaida.",
+ "resume": [
+  "KLIKŠĶINI, LAI TURPINĀTU",
+  "PIESKARIES, LAI TURPINĀTU"
+ ],
+ "won": "IZBĒGI",
+ "wonMsg": "Tu atradi izeju {s} s laikā.",
+ "toMenu": [
+  "KLIKŠĶINI, LAI ATVĒRTU IZVĒLNI",
+  "PIESKARIES, LAI ATVĒRTU IZVĒLNI"
+ ],
+ "startBtn": "SĀKT SPĒLI",
+ "again": [
+  "KLIKŠĶINI, LAI SPĒLĒTU VĒLREIZ",
+  "PIESKARIES, LAI SPĒLĒTU VĒLREIZ"
+ ],
+ "dead": "APRIJAS",
+ "deadMsg": "Tas tevi dzirdēja.",
+ "retry": [
+  "KLIKŠĶINI, LAI MĒĢINĀTU VĒLREIZ",
+  "PIESKARIES, LAI MĒĢINĀTU VĒLREIZ"
+ ],
+ "error": "KĻŪDA",
+ "restart": [
+  "KLIKŠĶINI, LAI SĀKTU NO JAUNA",
+  "PIESKARIES, LAI SĀKTU NO JAUNA"
+ ],
+ "noGL": "NAV WEBGL",
+ "noGLMsg": "Šajā pārlūkā WebGL ir izslēgts. Mēģini Chrome vai Firefox ar ieslēgtu aparatūras paātrināšanu.",
+ "rot": "PAGRIEZ TĀLRUNI GULUS",
+ "rotMsg": "Echoloc spēlē horizontāli.",
+ "rotTap": "Vai pieskaries šeit, lai spēlētu pilnekrānā.",
+ "run": "SKRIET",
+ "look": "VELC,<br>LAI SKATĪTOS",
+ "echo": "ATBALSS",
+ "level": "LĪMENIS {n}",
+ "howTo": "KĀ SPĒLĒT",
+ "langName": "Latviešu",
+ "menuAch": "SASNIEGUMI",
+ "menuSettings": "IESTATĪJUMI",
+ "menuAbout": "PAR SPĒLI",
+ "menuHelp": "KĀ SPĒLĒT",
+ "back": "ATPAKAĻ",
+ "resumeBtn": "TURPINĀT",
+ "exitMenu": "UZ GALVENO IZVĒLNI",
+ "youCarry": "TEV LĪDZI",
+ "wayHome": "CEĻĀ UZ MĀJĀM",
+ "shopTitle": "VEIKALS",
+ "shopText": "Tev ir ★ {n} ({m} tērējamas). Izvēlies uzlabojumus, ar kuriem sākt spēli, pa vienai zvaigznei katru; pieskaries vēlreiz, lai zvaigzni atgūtu. Uzlabojums paliek slēgts, līdz tu to paņem spēlē, pat ja tajā pēc tam nomirsti.",
+ "locked": "SLĒGTS",
+ "achTitle": "SASNIEGUMI",
+ "starsN": "★ ZVAIGZNES: {n}",
+ "starsNote": "Viena par katru spēli, kurā izbēgi ar zvaigzni.",
+ "pwUnlocked": "ATSLĒGTI UZLABOJUMI {a}/{b}",
+ "artRecovered": "ATGŪTI ARTEFAKTI {a}/{b}",
+ "setTitle": "IESTATĪJUMI",
+ "setLang": "VALODA",
+ "setSystem": "Sistēmas noklusējums",
+ "setSize": "TEKSTA IZMĒRS",
+ "aboutTitle": "PAR SPĒLI",
+ "aboutBy": "autors: {name}",
+ "aboutFree": "Šī videospēle ir bezmaksas. Atbalsti mani, klausoties manu mūziku:",
+ "version": "Versija {v}",
+ "toastHome": "TAGAD NES TO MĀJĀS: VISU CEĻU ATPAKAĻ",
+ "toastLocked": "SLĒGTS",
+ "toastStar": "+1 ZVAIGZNE ({n} TĒRĒJAMAS)",
+ "toastAch": "JAUNS SASNIEGUMS: {x} ({n}/{m})",
+ "help": "<p>Tu neredzi. Klikšķini ar mēli: punktu vilnis uz brīdi parāda sienas. Šeit dzīvo aklas radības, un tās dzird visu, tāpēc atbalso uzmanīgi.</p><p>Spēle ir viens garš ceļš uz ziemeļiem caur septiņiem līmeņiem. Katra līmeņa izejas durvis ir tā tālākajā pusē. 7. līmenī, uz tilta pāri tukšumam, gaida zvaigzne, un dažreiz blakus tai artefakts. Paņem tos un ej visu ceļu atpakaļ, ārā pa durvīm, pa kurām sākumā ienāci: zvaigzni vari tērēt veikalā, artefakts nonāk tavos sasniegumos. Durvis ļauj iet tikai uz priekšu, līdz tev ir zvaigzne; tad tikai atpakaļ. Ceļā uz mājām radību ir vairāk.</p><p>Līmeņos guļ uzlabojumi: uzej tiem virsū, lai tos paņemtu. Tie darbojas līdz nāvei. Nāve sāk spēli no paša sākuma.</p><h3>Datorā</h3><ul><li><b>W A S D</b> iet, <b>pele</b> skatīties, turi <b>Shift</b>, lai skrietu (skaļi).</li><li><b>Atstarpe</b> raida atbalsi. <b>Esc</b> pauzē. <b>F</b> pārslēdz pilnekrānu.</li></ul><h3>Tālrunī vai planšetē</h3><ul><li><b>Kreisais īkstis</b>: velc, lai ietu; pabīdi aiz raustītā apļa, lai skrietu.</li><li><b>Labais īkstis</b>: velc, lai skatītos; pieskaries apaļajai pogai <b>ATBALSS</b>, lai raidītu atbalsi.</li></ul><p>Austiņas ļoti palīdz: tu dzirdi, kur kas atrodas.</p>",
+ "pw_vest": [
+  "SVINA VESTE",
+  "Radioaktivitāte tev kaitē par 60% mazāk, bet tu esi smagāks: kusties par 20% lēnāk un nogursti par 30% ātrāk."
+ ],
+ "pw_adren": [
+  "ADRENALĪNS",
+  "Kamēr kaut kas tuvumā tevi medī, tu skrien par 25% ātrāk."
+ ],
+ "pw_chalk": [
+  "KRĪTS",
+  "Tu atstāj uz grīdas vāju pēdu, kas parādās, kad raidi atbalsi."
+ ],
+ "pw_ventro": [
+  "PROJEKCIJA",
+  "Tava atbalss sākas 6 m tev priekšā (vai pie sienas ceļā). Briesmoņi iet turp, nevis pie tevis."
+ ],
+ "pw_rico": [
+  "RIKOŠETS",
+  "Tava atbalss atlec ap trim stūriem un paliek nedaudz ilgāk."
+ ],
+ "pw_cloak": [
+  "KLUSUMA APMETNIS",
+  "Stāvi mierīgi 2 sekundes, un nekas nedzird tavu elpu, lai cik tuvu tas būtu."
+ ],
+ "pw_lens": [
+  "ATBALSS LĒCA",
+  "Tava atbalss iet tikai uz priekšu, bet divreiz blīvāka un 1,5x tālāk."
+ ],
+ "pw_whisk": [
+  "ŪSAS",
+  "Sienas apmēram 2 m tev priekšā vāji spīd, kamēr tu kusties, bez skaņas."
+ ],
+ "pw_echo": [
+  "TĀLA ATBALSS",
+  "Tava atbalss sniedzas tālāk."
+ ],
+ "pw_stride": [
+  "GARŠ SOLIS",
+  "Tu skrien ātrāk."
+ ],
+ "pw_lungs": [
+  "DZIĻAS PLAUŠAS",
+  "Tu vari skriet ilgāk."
+ ],
+ "pw_eye": [
+  "ZAĻĀ ACS",
+  "Zīmes un izeja atbild tavai atbalsij no lielāka attāluma."
+ ],
+ "pw_glow": [
+  "PĒCSPĪDUMS",
+  "Tavas atbalss punkti paliek ilgāk."
+ ],
+ "pw_dense": [
+  "BLĪVA ATBALSS",
+  "Tava atbalss rāda vairāk punktu."
+ ],
+ "pw_tremor": [
+  "TRĪCES SAJŪTA",
+  "Tu jūti soļus: viss, kas iet 22 m attālumā, atstāj uz grīdas sarkanus apļus, pat caur sienām."
+ ],
+ "pw_pill": [
+  "SARKANĀ TABLETE",
+  "Tu redzi visu, tādu, kāds tas patiesībā ir."
+ ],
+ "pw_star": [
+  "ZVAIGZNE",
+  "Iznes to pa durvīm, pa kurām ienāci, un tā ir tava uz visiem laikiem: tērē to veikalā."
+ ],
+ "pw_memory": [
+  "ATMIŅA",
+  "Katra siena, ko tava atbalss skar, paliek izgaismota uz visiem laikiem. Tikai tava atbalss."
+ ],
+ "pw_guide": [
+  "VADLĪNIJA",
+  "Zaļa līnija uz grīdas vienmēr rāda ceļu ārā."
+ ],
+ "pw_negative": [
+  "NEGATĪVS",
+  "Sienas un stūri visu laiku atstaro atbalsi cits uz citu visapkārt tev: tu redzi vietas formu bez nevienas skaņas."
+ ],
+ "pw_crown": [
+  "KRONIS",
+  "Tu uzveici Echoloc. Tu redzi visu. Veikalā: paņem visus uzlabojumus un visus artefaktus, kas tev ir."
+ ],
+ "pw_soles": [
+  "MĪKSTAS ZOLES",
+  "Tavi skriešanas soļi dzirdami tikai uz pusi tik tālu."
+ ],
+ "pw_steady": [
+  "MIERĪGA ELPA",
+  "Aizelšanās vairs neizpludina un neizkliedē tavu atbalsi."
+ ],
+ "pw_bright": [
+  "SPILGTA ATBALSS",
+  "Tavas atbalss punkti ir par 35% spilgtāki."
+ ],
+ "pw_wide": [
+  "PLATAS ACIS",
+  "Tu redzi vairāk sev apkārt: 95 grādus 75 vietā."
+ ],
+ "pw_lucky": [
+  "TALISMANS",
+  "Katrā līmenī pēc šī ir vēl viens uzlabojums."
+ ],
+ "pw_thread": [
+  "DIEGS",
+  "Katra atbalss parāda arī nākamo ceļa ārā posmu, zaļā krāsā, uz grīdas."
+ ]
+}

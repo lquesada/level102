@@ -1,0 +1,195 @@
+{
+ "intro1": "Ba ka iya gani. Ka danna harshenka don ka gani.",
+ "intro2": "Wani abu yana zaune a cikin waɗannan hanyoyi. Shi ma ba ya gani, amma yana jin komai. Idan ka yi amo kusa da shi ko sau da yawa, zai zo. Idan yana gudu, yana ihu. Idan yana ihu, wasu suna amsawa.",
+ "ctlPC": "<kbd>WASD</kbd> tafiya · <kbd>MAUS</kbd> duba · <kbd>SHIFT</kbd> gudu · <kbd>SPACE</kbd> amo · <kbd>F</kbd> cikakken allo · ana ba da shawarar belun kunne",
+ "ctlTouch": "<kbd>BABBAN YATSAN HAGU</kbd> tafiya · tura shi wuce da'irar ɗigo don <kbd>GUDU</kbd> · <kbd>BABBAN YATSAN DAMA</kbd> ja don duba, taɓa <kbd>AMO</kbd> don yin amo · ana ba da shawarar belun kunne",
+ "fsNote": "Ana wasa a cikakken allo, da wayar a kwance.",
+ "begin": [
+  "DANNA DON FARAWA",
+  "TAƁA DON FARAWA"
+ ],
+ "prompt": [
+  "DANNA [ SPACE ]",
+  "TAƁA [ AMO ]"
+ ],
+ "info1": "<b>NEMI HANYAR FITA</b>",
+ "infoPC": "<kbd>WASD</kbd> tafiya &nbsp; <kbd>MAUS</kbd> duba &nbsp; <kbd>SHIFT</kbd> gudu (da ƙara) &nbsp; <kbd>F</kbd> cikakken allo<br><kbd>SPACE</kbd> amo",
+ "infoTouch": "yatsan hagu: tafiya, tura nesa don gudu · yatsan dama: ja don duba, taɓa AMO don yin amo",
+ "paused": "AN DAKATA",
+ "pausedMsg": "Duhu yana jira.",
+ "resume": [
+  "DANNA DON CI GABA",
+  "TAƁA DON CI GABA"
+ ],
+ "won": "KA TSERE",
+ "wonMsg": "Ka sami hanyar fita a cikin daƙiƙa {s}.",
+ "toMenu": [
+  "DANNA DON BABBAN MENU",
+  "TAƁA DON BABBAN MENU"
+ ],
+ "startBtn": "FARA WASA",
+ "again": [
+  "DANNA DON SAKE WASA",
+  "TAƁA DON SAKE WASA"
+ ],
+ "dead": "AN CINYE KA",
+ "deadMsg": "Ya ji ka.",
+ "retry": [
+  "DANNA DON SAKE GWADAWA",
+  "TAƁA DON SAKE GWADAWA"
+ ],
+ "error": "KUSKURE",
+ "restart": [
+  "DANNA DON SAKE FARAWA",
+  "TAƁA DON SAKE FARAWA"
+ ],
+ "noGL": "BABU WEBGL",
+ "noGLMsg": "An kashe WebGL a wannan burauza. Gwada Chrome ko Firefox tare da kunna hanzarin hardware.",
+ "rot": "JUYA WAYARKA A KWANCE",
+ "rotMsg": "Ana wasa Echoloc a kwance.",
+ "rotTap": "Ko taɓa nan don yin wasa a cikakken allo.",
+ "run": "GUDU",
+ "look": "JA<br>DON DUBA",
+ "echo": "AMO",
+ "level": "MATAKI {n}",
+ "howTo": "YADDA AKE WASA",
+ "langName": "Hausa",
+ "menuAch": "NASARORI",
+ "menuSettings": "SAITUNA",
+ "menuAbout": "GAME DA WASAN",
+ "menuHelp": "YADDA AKE WASA",
+ "back": "KOMA",
+ "resumeBtn": "CI GABA",
+ "exitMenu": "FITA ZUWA BABBAN MENU",
+ "youCarry": "KANA ƊAUKE DA",
+ "wayHome": "A HANYAR GIDA",
+ "shopTitle": "SHAGO",
+ "shopText": "Kana da ★ {n} ({m} da za ka kashe). Zaɓi ƙarfafawar da za ka fara wasa da su, tauraro ɗaya kowanne; sake taɓawa don dawo da tauraron. Ƙarfafawa tana kulle har sai ka ɗauke ta a cikin wasa, ko da ka mutu a wannan wasan.",
+ "locked": "A KULLE",
+ "achTitle": "NASARORI",
+ "starsN": "★ TAURARI: {n}",
+ "starsNote": "Ɗaya ga kowane wasa da ka tsere da tauraron.",
+ "pwUnlocked": "ƘARFAFAWA DA AKA BUƊE {a}/{b}",
+ "artRecovered": "KAYAN TARIHI DA AKA DAWO DA SU {a}/{b}",
+ "setTitle": "SAITUNA",
+ "setLang": "HARSHE",
+ "setSystem": "Na tsarin na'ura",
+ "setSize": "GIRMAN RUBUTU",
+ "aboutTitle": "GAME DA WASAN",
+ "aboutBy": "daga {name}",
+ "aboutFree": "Wannan wasan bidiyo kyauta ne. Ka tallafa mini ta hanyar sauraron waƙoƙina:",
+ "version": "Siga {v}",
+ "toastHome": "YANZU KAI SHI GIDA: HAR ZUWA FARKO",
+ "toastLocked": "A KULLE",
+ "toastStar": "+1 TAURARO ({n} DA ZA KA KASHE)",
+ "toastAch": "SABUWAR NASARA: {x} ({n}/{m})",
+ "help": "<p>Ba ka iya gani. Ka danna harshenka: igiyar ɗigo-ɗigo tana nuna bango na ɗan lokaci. Halittu makafi suna zaune a nan kuma suna jin komai, don haka ka yi amo a hankali.</p><p>Wasan hanya ɗaya ce mai tsawo zuwa arewa ta cikin matakai bakwai. Ƙofar fita ta kowane mataki tana can ƙarshensa. A mataki na 7, gada a kan wofi, tauraro yana jira, wani lokaci da kayan tarihi kusa da shi. Ɗauke su ka koma har zuwa farko, ka fita ta ƙofar da ka fara shiga: tauraron naka ne don kashewa a shago, kayan tarihin kuma yana shiga nasarorinka. Ƙofofin suna barin ka ka ci gaba kawai har sai ka riƙe tauraron; daga nan sai komawa kawai. A hanyar gida akwai ƙarin halittu.</p><p>Ƙarfafawa suna kwance a cikin matakai: ka taka su don ɗauka. Suna dawwama har sai ka mutu. Mutuwa tana sake fara wasan daga farko.</p><h3>A kwamfuta</h3><ul><li><b>W A S D</b> tafiya, <b>maus</b> duba, riƙe <b>Shift</b> don gudu (da ƙara).</li><li><b>Space</b> yana yin amo. <b>Esc</b> yana dakatarwa. <b>F</b> yana sauyawa zuwa cikakken allo.</li></ul><h3>A waya ko tablet</h3><ul><li><b>Babban yatsan hagu</b>: ja don tafiya; tura wuce da'irar ɗigo don gudu.</li><li><b>Babban yatsan dama</b>: ja don duba; taɓa maɓallin <b>AMO</b> mai zagaye don yin amo.</li></ul><p>Belun kunne yana taimakawa sosai: kana iya jin inda abubuwa suke.</p>",
+ "pw_vest": [
+  "RIGAR DALMA",
+  "Guba ta nukiliya tana cutar da kai kaso 60% ƙasa, amma ka fi nauyi: kana tafiya a hankali da 20% kuma kana gajiya da sauri da 30%."
+ ],
+ "pw_adren": [
+  "ADRENALINE",
+  "Idan wani abu yana farautarka kusa, kana gudu da sauri da 25%."
+ ],
+ "pw_chalk": [
+  "ALLI",
+  "Kana barin sawu mara ƙarfi a ƙasa wanda yake bayyana idan ka yi amo."
+ ],
+ "pw_ventro": [
+  "JEFA AMO",
+  "Amonka yana farawa mita 6 a gabanka (ko a bangon da ke kan hanya). Dodanni suna zuwa can, ba wurinka ba."
+ ],
+ "pw_rico": [
+  "TSALLE",
+  "Amonka yana tsallake kusurwoyi uku kuma yana ɗan daɗewa."
+ ],
+ "pw_cloak": [
+  "MAYAFIN SHIRU",
+  "Ka tsaya cik na daƙiƙa 2 kuma babu abin da zai ji numfashinka, ko yaya kusancinsa."
+ ],
+ "pw_lens": [
+  "MADUBIN AMO",
+  "Amonka yana zuwa gaba kawai, amma ninki biyu a yawa kuma nisa ninki 1.5."
+ ],
+ "pw_whisk": [
+  "GASHIN BAKI",
+  "Bango cikin kusan mita 2 a gabanka suna ɗan haske yayin da kake tafiya, ba tare da sauti ba."
+ ],
+ "pw_echo": [
+  "AMO MAI NISA",
+  "Amonka yana kaiwa nesa."
+ ],
+ "pw_stride": [
+  "DOGON TAKO",
+  "Kana gudu da sauri."
+ ],
+ "pw_lungs": [
+  "ZURFIN HUHU",
+  "Kana iya gudu na tsawon lokaci."
+ ],
+ "pw_eye": [
+  "IDO KORE",
+  "Alamomi da hanyar fita suna amsa amonka daga nesa."
+ ],
+ "pw_glow": [
+  "SAURAN HASKE",
+  "Ɗigon amonka suna daɗewa."
+ ],
+ "pw_dense": [
+  "AMO MAI YAWA",
+  "Amonka yana nuna ɗigo da yawa."
+ ],
+ "pw_tremor": [
+  "JIN GIRGIZA",
+  "Kana jin takun ƙafa: duk abin da yake tafiya cikin mita 22 yana barin zobba ja a ƙasa, har ta bango."
+ ],
+ "pw_pill": [
+  "ƘWAYAR JA",
+  "Kana ganin komai, kamar yadda yake a zahiri."
+ ],
+ "pw_star": [
+  "TAURARO",
+  "Ka fitar da shi ta ƙofar da ka shigo kuma naka ne har abada: ka kashe shi a shago."
+ ],
+ "pw_memory": [
+  "TUNANI",
+  "Duk bangon da amonka ya taɓa yana ci gaba da haske har abada. Amonka kawai."
+ ],
+ "pw_guide": [
+  "LAYIN JAGORA",
+  "Layi kore a ƙasa koyaushe yana nuna hanyar fita."
+ ],
+ "pw_negative": [
+  "AKASIN HOTO",
+  "Bango da kusurwoyi suna mayar wa juna amo kewaye da kai koyaushe: kana ganin siffar wurin ba tare da wani sauti ba."
+ ],
+ "pw_crown": [
+  "KAMBI",
+  "Ka ci Echoloc. Kana ganin komai. A shago: ɗauki duk ƙarfafawa da duk kayan tarihin da kake da su."
+ ],
+ "pw_soles": [
+  "TAFIN ƘAFA MAI LAUSHI",
+  "Ana jin takunka na gudu a rabin nisan da aka saba kawai."
+ ],
+ "pw_steady": [
+  "NUNFASHI MAI NATSUWA",
+  "Haki ba ya ƙara ɓata ko watsa amonka."
+ ],
+ "pw_bright": [
+  "AMO MAI HASKE",
+  "Ɗigon amonka sun fi haske da kashi 35%."
+ ],
+ "pw_wide": [
+  "IDANU MASU FAƊI",
+  "Kana ganin abubuwa da yawa a kewayenka: digiri 95 maimakon 75."
+ ],
+ "pw_lucky": [
+  "LAYYA MAI SA'A",
+  "Ƙarin ƙarfafawa ɗaya na kwance a kowane mataki bayan wannan."
+ ],
+ "pw_thread": [
+  "ZARE",
+  "Kowane amo kuma yana nuna ɓangare na gaba na hanyar fita, da kore, a ƙasa."
+ ]
+}
