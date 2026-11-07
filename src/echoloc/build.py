@@ -24,7 +24,17 @@ except FileNotFoundError:pass
 # docs/ gets the obfuscated game script; the tests and the simulator use the readable copy, because they call the game's functions
 import subprocess,json
 os.makedirs('scratch/echoloc/plain',exist_ok=True); open('scratch/echoloc/plain/index.html','w').write(s)
+# the published game has no cheat or debug code (Luis, 2026-11-07): see src/echoloc/strip.mjs. The full game stays in plain/ for the tests;
+# ship/ is the stripped game, readable (the ship tests use it); docs/ and itch.io get the stripped game, obfuscated.
 OBF='scratch/echoloc/obf/node_modules/javascript-obfuscator/bin/javascript-obfuscator'
+if os.path.exists(OBF):
+  s=re.sub(r'/\*DEV\{\*/[\s\S]*?/\*\}DEV\*/','',s); s=re.sub(r'<!--DEV\{-->[\s\S]*?<!--\}DEV-->','',s)
+  a=s.index("<script>\n'use strict';")+8; b=s.index('</script>',a)
+  open('scratch/echoloc/obf/full.js','w').write(s[a:b])
+  subprocess.check_call(['node','src/echoloc/strip.mjs','scratch/echoloc/obf/full.js','scratch/echoloc/obf/ship.js'])
+  s=s[:a]+open('scratch/echoloc/obf/ship.js').read()+s[b:]
+  os.makedirs('scratch/echoloc/ship',exist_ok=True); open('scratch/echoloc/ship/index.html','w').write(s)
+else: print('WARNING: obfuscator (and the parser the strip needs) not installed: docs/ gets the full game')
 if os.path.exists(OBF):
   a=s.index("<script>\n'use strict';")+8; b=s.index('</script>',a)
   open('scratch/echoloc/obf/in.js','w').write(s[a:b])

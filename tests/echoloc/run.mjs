@@ -12,7 +12,8 @@ import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'
 
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 const SHIP='file://'+path.resolve(HERE,'..','..','docs','echoloc','index.html'), PLAIN=path.resolve(HERE,'..','..','scratch','echoloc','plain','index.html');
-const PAGE=fs.existsSync(PLAIN)?'file://'+PLAIN:SHIP;   // the published page is obfuscated: tests use the readable build
+const SHIPR=path.resolve(HERE,'..','..','scratch','echoloc','ship','index.html');
+const PAGE=process.env.SHIPTEST?'file://'+SHIPR:fs.existsSync(PLAIN)?'file://'+PLAIN:SHIP;   // SHIPTEST=1: the stripped game (no cheats), readable   // the published page is obfuscated: tests use the readable build
 const FILTER=process.argv[2]||'';
 const PORT=9400+Math.floor(Math.random()*400);
 const CHROME=findChrome();
@@ -1078,6 +1079,86 @@ T('rare screens: quality steps down and up, mouse lock lost and back, a crash in
   const u=window.update; window.update=()=>{ throw new Error('boom in frame'); }; frame.crashed=false; paused=false; try{ frame(performance.now()+32); }catch(e){} window.update=u; o.crash=/boom in frame/.test(document.getElementById('overlay').textContent);
   cv.dispatchEvent(new Event('webglcontextlost')); o.lost=!!sessionStorage.getItem('echoloc.resume'); sessionStorage.removeItem('echoloc.resume'); return JSON.stringify(o); })()`);
   await load(); await startGame(); assert(r==='{"down":true,"up":1,"lockLost":true,"go":true,"crash":true,"lost":true}',r); });
+T('1.0.1 fixes: graphics reset keeps the whole run; stray errors are not crashes; menu clean; inputs released; gamepad menus; looping sounds never muted', async()=>{ await load(); await startGame(); const r=await ev(`(async()=>{ const o={}; god=true;
+    // graphics reset on the way home, carrying an artifact
+    firstLevel=0; newRun(); goArea(3,'fwd',true); areaTaken[2].add(1); runArtifact='memory'; picks[PI.star]=1; const seeds=areaSeeds.slice(), lv=level, sig=walkCount+':'+exitInfo.pz;
+    cv.dispatchEvent(new Event('webglcontextlost')); o.blocked=(()=>{ paused=true; play(); return paused; })(); glLost=false; o.reloadPlanned=true;
+    runStart(); level=0; newRun(); o.resume=JSON.stringify({lv:level===lv, seeds:areaSeeds.join()===seeds.join(), taken:areaTaken[2].has(1), art:runArtifact, star:!!has('star'), same:walkCount+':'+exitInfo.pz===sig, home:homeward()});
+    // errors
+    const ov=document.getElementById('overlay'); started=true; paused=false; dead=false; ovState={k:'none'};
+    window.dispatchEvent(new ErrorEvent('error',{message:'boom',filename:'chrome-extension://abc/x.js'})); o.extIgnored=ovState.k!=='error';
+    window.dispatchEvent(new ErrorEvent('error',{message:'Script error.',filename:''})); o.xoriginIgnored=ovState.k!=='error';
+    const ev2=new Event('unhandledrejection'); ev2.reason=new DOMException('no','NotAllowedError'); window.dispatchEvent(ev2); o.permIgnored=ovState.k!=='error';
+    window.dispatchEvent(new ErrorEvent('error',{message:'real bug',filename:location.href})); o.realShown=ovState.k==='error';
+    // menu: no red static left
+    staticBoost=1; toMenu(); o.static=staticBoost;
+    // inputs released on blur / hide
+    stick.id=3; stick.x=.9; stick.y=-.9; keys.KeyW=true; dispatchEvent(new Event('blur')); o.blur=stick.x===0&&!keys.KeyW&&stick.id===null;
+    // F in the language list, Space on a focused button
+    let fs=0; const tf=window.toggleFS; toggleFS=()=>fs++; const sel=document.createElement('select'); document.body.appendChild(sel); sel.dispatchEvent(new KeyboardEvent('keydown',{code:'KeyF',key:'f',bubbles:true})); o.fInSelect=fs; sel.remove();
+    dispatchEvent(new KeyboardEvent('keydown',{code:'KeyF',key:'f'})); dispatchEvent(new KeyboardEvent('keyup',{code:'KeyF',key:'f'})); o.fElsewhere=fs; toggleFS=tf;
+    // gamepad in menus: the stick keeps moving (game clock stopped), left/right on the language list
+    showOverlay('start'); ovState.panel='settings'; paintTexts(); const pads=[{connected:true,axes:[0,0,0,0],buttons:Array.from({length:17},()=>({pressed:false}))}]; const gp0=navigator.getGamepads; navigator.getGamepads=()=>pads;
+    const els=()=>[...document.querySelectorAll('#overlay button:not([disabled]),#overlay select,#overlay a[href]')]; els()[0].focus(); const seen=new Set();
+    for(let k=0;k<4;k++){ pads[0].axes[1]=.9; padPoll(.016); seen.add(document.activeElement&&document.activeElement.outerHTML.slice(0,40)); pads[0].axes[1]=0; padPoll(.016); await new Promise(r=>setTimeout(r,240)); }
+    o.stickSteps=seen.size; const ls=document.getElementById('langSel'); if(ls){ ls.focus(); const i0=ls.selectedIndex; pads[0].buttons[15].pressed=true; padPoll(.016); pads[0].buttons[15].pressed=false; padPoll(.016); o.langStep=ls.selectedIndex!==i0; ls.selectedIndex=i0; setLangPref('system'); } else o.langStep='nosel';
+    // with a controller a refused mouse lock does not pause
+    ovState.panel=null; started=true; dead=false; won=false; paused=false; ov.style.display='none'; padPoll(.016); lockRefused.softUntil=0; lockRefused(); o.padLock=!paused; pads.length=0; padPoll(.016); o.padGone=paused; navigator.getGamepads=gp0; pad.on=false;
+    // looping sounds: the exit buzz and gadgets are never routed to the silent sink, even far away at start
+    initAudio(); firstLevel=0; newRun(); goArea(1,'fwd',true); startExitBuzz(); o.buzz=!!exitBuzzNode&&!exitBuzzNode._sink; o.gadgets=gadgets.length>0&&gadgets.every(g=>g.snd&&!g.snd._sink);
+    return JSON.stringify(o); })()`);
+  const o=JSON.parse(r); assert(o.blocked,'played on after a graphics reset '+r);
+  const q=JSON.parse(o.resume); assert(q.lv&&q.seeds&&q.taken&&q.art==='memory'&&q.star&&q.same&&q.home,'graphics reset lost the run '+o.resume);
+  assert(o.extIgnored&&o.xoriginIgnored&&o.permIgnored&&o.realShown,'error handling '+r); assert(o.static===0,'red static over the menu '+r); assert(o.blur,'inputs not released on blur '+r);
+  assert(o.fInSelect===0&&o.fElsewhere===1,'F key '+r); assert(o.stickSteps>=3,'gamepad stick moves only once in menus '+r); assert(o.langStep===true,'gamepad cannot change the language '+r);
+  assert(o.padLock&&o.padGone,'gamepad lock / disconnect '+r); assert(o.buzz&&o.gadgets,'looping sounds muted for good '+r); });
+T('1.0.1 fixes: the same levels on the way home whatever you carry; no two creatures on one cell; back-door arrival at rest; Crown view keeps the nearest creatures; item dots trimmed', async()=>{ await load(); const r=await ev(`(()=>{ const o={same:[],stack:0,cells:0}; god=true;
+    const sigOf=()=>JSON.stringify([walkCount,exitInfo.pz,gadgets.map(g=>[g.x,g.z]),drips.map(d=>[d.x,d.z]).slice(0,20),signs.map(s=>[s.x,s.z]).slice(0,20)]);
+    for(let run=0;run<3;run++){ firstLevel=0; newRun(); for(const k of [1,2,3,4,5]){ picks.fill(0); goArea(k,'fwd',true); const a=sigOf();
+        const seenC=new Set(); for(const m of monsters){ const c=Math.floor(m.x)+','+Math.floor(m.z); if(seenC.has(c)) o.stack++; seenC.add(c); o.cells++; }
+        ['chalk','lucky','wide','rico','eye'].forEach(id=>picks[PI[id]]=1); picks[PI.star]=1; goArea(k,'back',true); o.same.push(sigOf()===a);
+        if(k===2){ o.v=Math.hypot(player.vx||0,player.vz||0); for(let i=0;i<3;i++){ now+=1/60; update(1/60); } o.v2=Math.hypot(player.vx||0,player.vz||0); } } }
+    // the Crown view: 30 creatures around you, the nearest are all drawn
+    picks.fill(0); goArea(1,'fwd',true); monsters=[]; for(let k=0;k<30;k++){ const m=makeMonster(player.x+Math.cos(k)*(2+k), player.z+Math.sin(k)*(2+k),'stalker'); m.state='idle'; monsters.push(m); }
+    const n=buildMonsterMesh(); o.mesh=n; o.room=monData.length/7;
+    // item dots: the record of old reveals is dropped
+    const it=items[0]||{x:player.x,z:player.z,y:1,t:PI.chalk,got:false,ry:0}; it.spots=[]; for(let k=0;k<200;k++){ now+=0.5; revealItem(it,now,0.5); } o.spots=it.spots.length;
+    { picks.fill(0); goLevel(1); started=true; dead=false; god=true; heat=0; const r0=rooms[0]; let wc=-1; for(let i=0;i<W*H&&wc<0;i++) if(!walk[i]&&[1,-1,W,-W,2,-2,2*W,-2*W,W+1,W-1,-W+1,-W-1].every(o=>!walk[i+o])&&Math.hypot(i%W-r0.cx,((i/W)|0)-r0.cz)>4&&Math.hypot(i%W-r0.cx,((i/W)|0)-r0.cz)<12) wc=i;
+      const m=makeMonster(r0.cx,r0.cz,'stalker'); monsters=[m]; player.x=r0.cx+30; player.z=r0.cz+30; m.state='hunt'; m.windup=0; m.lastKnown={x:wc%W+.5,z:((wc/W)|0)+.5}; m.huntSince=now;
+      const st=[]; for(let i=0;i<60*11;i++){ now+=1/60; update(1/60); if(i%60===59) st.push(m.state+':'+m.x.toFixed(1)+':'+(m.prog?(now-m.prog.t).toFixed(1):'-')+':'+level+':'+(m.lastKnown?m.lastKnown.x.toFixed(1):'')); } o.stuck=st.join(','); }
+    o.badCave=0; for(let k=0;k<30;k++){ goLevel(CAVE); const i=idx(Math.floor(exitInfo.px),Math.floor(exitInfo.pz)); if(!(i>=0&&i<W*H)||!walk[i]||bfs(idx(Math.floor(player.x),Math.floor(player.z)),walk)[i]<0) o.badCave++; }
+    return JSON.stringify(o); })()`);
+  const o=JSON.parse(r); assert(/alert|idle/.test(o.stuck.split(',').slice(-2).join()),'a hunter pushes against a wall for good '+o.stuck); assert(o.badCave===0,'a cave without a reachable exit '+r); assert(o.same.every(Boolean),'a level looked different on the way home '+JSON.stringify(o.same)); assert(o.stack===0,'creatures stacked on one cell '+r);
+  assert(o.v<1&&o.v2<8,'arriving through the back door at a huge speed '+r); assert(o.mesh>30*1500&&o.room>=o.mesh,'Crown view drops creatures '+r); assert(o.spots<=10,'item dot records grow without end '+r); });
+T('published game without cheats (1.0.1): no cheat code left; a whole run there and back with the star, the shop, achievements, pause, death, phone, gamepad', async()=>{
+  const errs0=pageErrors.length; await send('Emulation.clearDeviceMetricsOverride'); await send('Emulation.setTouchEmulationEnabled',{enabled:false});
+  await send('Page.navigate',{url:'file://'+SHIPR}); await sleep(1500); for(let i=0;i<80;i++){ if(await ev('typeof CAVE!=="undefined"&&document.readyState==="complete"').catch(()=>false)) break; await sleep(250); }
+  const r=await ev(`(async()=>{ const o={}; const gone=['buildSide','cheatAct','toggleCheat','toggleEyes','genLab','genItemLab','genTower','genSolo','takeShot','sideSync','t7Act','reviewHTML','soundAct'];
+    o.left=gone.filter(n=>{ try{ return typeof eval(n)!=='undefined'; }catch(e){ return false; } });
+    let s0, a0, e0; try{ s0=localStorage.getItem('echoloc.stars'); a0=localStorage.getItem('echoloc.ach'); e0=localStorage.getItem('echoloc.seen'); localStorage.removeItem('echoloc.stars'); localStorage.removeItem('echoloc.ach'); }catch(e){} markSeen('chalk');
+    const step=n=>{ for(let i=0;i<n;i++){ now+=1/60; update(1/60); if(dead) return; } }, calm=()=>{ monsters=[]; doorChasers=[]; };
+    document.getElementById('startBtn').click(); await new Promise(r=>setTimeout(r,300)); o.started=started&&level===0;
+    o.lv=[]; for(let k=0;k<6;k++){ calm(); const e=exitInfo; player.x=e.px; player.z=e.pz; step(3); o.lv.push(level); }
+    calm(); o.final=level===FINAL; const star=items.find(i=>i.artifact&&i.star); player.x=star.x; player.z=star.z; step(4); o.star=!!has('star');
+    for(let k=6;k>=0&&!won;k--){ calm(); const en=entranceInfo; player.x=en.x; player.z=en.z-3; step(2); calm(); player.x=en.x; player.z=en.z; step(3); }
+    o.won=won; o.stars=starData().earned; await new Promise(r=>setTimeout(r,400)); toMenu(); o.menu=ovState.k;
+    document.getElementById('startBtn').click(); await new Promise(r=>setTimeout(r,100)); o.shop=ovState.panel; const b=document.querySelector('#overlay [data-shop^="buy:"]'); if(b){ b.click(); } o.bought=starData().bought.length;
+    const go=document.querySelector('#overlay [data-shop="go"]'); go&&go.click(); await new Promise(r=>setTimeout(r,200)); o.playing=started&&!paused&&picks.some(Boolean);
+    togglePause(); o.paused=paused&&ovState.k==='paused'; escResume(); o.resumed=!paused;
+    dead=true; deathT=1; killer=null; toMenu(); o.afterDeath=ovState.k==='start'&&!started;
+    document.getElementById('achBtn').click(); o.ach=ovState.panel==='ach'&&document.querySelectorAll('#overlay .tile').length>=20;
+    try{ if(s0) localStorage.setItem('echoloc.stars',s0); else localStorage.removeItem('echoloc.stars'); if(a0) localStorage.setItem('echoloc.ach',a0); else localStorage.removeItem('echoloc.ach'); if(e0) localStorage.setItem('echoloc.seen',e0); else localStorage.removeItem('echoloc.seen'); }catch(e){}
+    return JSON.stringify(o); })()`);
+  const o=JSON.parse(r);
+  assert(!o.left.length,'cheat functions still in the published game: '+o.left); assert(o.started,'START GAME '+r); assert(o.lv.join()===[1,2,3,7,8,'F'].join().replace('F',String(o.lv[5]))&&o.final,'the run, level by level '+r);
+  assert(o.star&&o.won&&o.stars===1,'star home '+r); assert(o.menu==='start'&&o.shop==='shop'&&o.bought===1&&o.playing,'shop '+r); assert(o.paused&&o.resumed&&o.afterDeath&&o.ach,'menus '+r);
+  // phone + gamepad on the same build
+  await send('Emulation.setDeviceMetricsOverride',{width:844,height:390,deviceScaleFactor:2,mobile:true}); await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5}); await send('Page.navigate',{url:'file://'+SHIPR}); await sleep(1800);
+  const m=await ev(`(async()=>{ const o={touch:isTouch}; document.getElementById('startBtn').click(); await new Promise(r=>setTimeout(r,300)); o.on=started; const pads=[{connected:true,axes:[0,-1,0,0],buttons:Array.from({length:17},()=>({pressed:false}))}]; navigator.getGamepads=()=>pads; const z0=player.z, x0=player.x; for(let i=0;i<40;i++) frame(performance.now()+i*16); o.moved=Math.hypot(player.z-z0,player.x-x0)>0.05; pads.length=0; frame(performance.now()+700); o.padPause=paused; return JSON.stringify(o); })()`);
+  await send('Emulation.clearDeviceMetricsOverride'); await send('Emulation.setTouchEmulationEnabled',{enabled:false});
+  const mo=JSON.parse(m); assert(mo.touch&&mo.on&&mo.moved&&mo.padPause,'phone/gamepad on the published game '+m);
+  assert(pageErrors.length===errs0,'errors in the published game: '+pageErrors.slice(errs0).join(' | '));
+});
 T('itch.io build: no level102.com top bar at all, boots, START GAME plays, settings (language, text size) work, no errors', async()=>{
   const ITCH=new URL('../../scratch/echoloc/itch/index.html',import.meta.url).href, html=fs.readFileSync(new URL(ITCH),'utf8');
   assert(!/l102topbar|id="l102bar"|Back to level102/.test(html),'top bar still in the itch build');
@@ -1089,20 +1170,23 @@ T('itch.io build: no level102.com top bar at all, boots, START GAME plays, setti
   await sleep(600); const st=await ev(`document.getElementById('overlay').style.display`);
   await send('Page.navigate',{url:PAGE}); await sleep(1500);
   const o=JSON.parse(r); assert(!o.bar&&o.top==='0px','bar '+r); assert(o.fs&&o.fr,'settings '+r); assert(st==='none','did not start'); assert(pageErrors.length===errs0,'errors: '+pageErrors.slice(errs0).join(' | ')); });
-T('published page: obfuscated, boots, plays and opens the cheat sidebar', async()=>{
+T('published page: obfuscated, boots and plays, and has no cheat or debug code at all (1.0.1)', async()=>{
   await covTake();
   const html=fs.readFileSync(new URL(SHIP),'utf8'), a=html.indexOf('<canvas id="gl"'), game=html.slice(a);
-  for(const w of ['function newGame','function updateMonster','hearPlayer','letmesee','letmecheat','TUNE_DEF','tiredK']) assert(PAGE===SHIP||!game.includes(w),'still readable: '+w);
-  const errs0=pageErrors.length; await send('Emulation.clearDeviceMetricsOverride'); await send('Emulation.setTouchEmulationEnabled',{enabled:false}); await send('Page.navigate',{url:SHIP}); await sleep(1500);
+  for(const w of ['function newGame','function updateMonster','hearPlayer','TUNE_DEF','tiredK']) assert(PAGE===SHIP||!game.includes(w),'still readable: '+w);
+  for(const w of ['letmecheat','letmesee','id="side"','#side{','MONSTER ROOMS','TEST: CAVE','Today\'s review','Give all 5','echoloc.cheat','revCv','shotBtn','sound lab']) assert(!html.includes(w),'cheat/debug code in the published page: '+w);
+  { const shipR=path.resolve(HERE,'..','..','scratch','echoloc','ship','index.html'); assert(fs.statSync(shipR).size<fs.statSync(PLAIN).size*0.97,'the stripped game is not smaller than the full one'); }
+  const errs0=pageErrors.length; await send('Emulation.clearDeviceMetricsOverride'); await send('Emulation.setTouchEmulationEnabled',{enabled:false});
+  await send('Page.navigate',{url:SHIP}); await sleep(600); await ev(`localStorage.setItem('echoloc.cheat','1'),1`); await send('Page.navigate',{url:SHIP}); await sleep(1500);
   await click(640,360); await sleep(700);
   const st=await ev(`({ov:document.getElementById('overlay').style.display, h1:(document.querySelector('#overlay h1')||{}).textContent||'', prompt:document.getElementById('prompt').textContent})`);
   await key('Space',' ',' '); await key('Space',' ',' ',false); await sleep(300);
-  for(const ch of 'letmecheat') await key('Key'+ch.toUpperCase(),ch,ch);
-  await sleep(200); const side=await ev(`getComputedStyle(document.getElementById('side')).display`);
-  await send('Page.navigate',{url:SHIP}); await sleep(1500); const kept=await ev(`getComputedStyle(document.getElementById('side')).display`);
-  for(const ch of 'letmecheat') await key('Key'+ch.toUpperCase(),ch,ch); await sleep(150); await send('Page.navigate',{url:SHIP}); await sleep(1500); const off=await ev(`getComputedStyle(document.getElementById('side')).display`);
-  assert(kept==='block','cheat mode not remembered after reload'); assert(off==='none','turning it off is not remembered');
-  assert(pageErrors.length===errs0,'errors on the published page: '+pageErrors.slice(errs0).join(' | ')); assert(st.h1!=='ERROR'&&st.prompt.length>3,'published page did not start '+JSON.stringify(st)); assert(side==='block','cheat sidebar on the published page');
+  for(const ch of 'letmecheat') await key('Key'+ch.toUpperCase(),ch,ch); for(const ch of 'letmesee') await key('Key'+ch.toUpperCase(),ch,ch);
+  for(const k of ['KeyM','KeyV','KeyQ','Digit3']){ await key(k,k.slice(-1).toLowerCase(),k.slice(-1).toLowerCase()); await key(k,k.slice(-1).toLowerCase(),'',false); }
+  await sleep(300); const after=await ev(`({side:!!document.getElementById('side'), cheat:document.documentElement.classList.contains('cheat'), map:getComputedStyle(document.getElementById('map')).display==='none'||document.getElementById('map').style.display!=='block', h1:(document.querySelector('#overlay h1')||{}).textContent||''})`);
+  await ev(`localStorage.removeItem('echoloc.cheat'),1`);
+  assert(pageErrors.length===errs0,'errors on the published page: '+pageErrors.slice(errs0).join(' | ')); assert(st.h1!=='ERROR'&&st.prompt.length>3,'published page did not start '+JSON.stringify(st));
+  assert(!after.side&&!after.cheat&&after.h1!=='ERROR','cheats still reachable on the published page '+JSON.stringify(after));
 });
 
 T('round 8: level 1 is a third of its old area, level 2 half', async()=>{ await sandbox(0); const r=await ev(`(()=>{ level=0; newGame(); const a=W; level=1; newGame(); return [a,W]; })()`); assert(r[0]<=72&&r[1]<=92,'sizes '+r); });
