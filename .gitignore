@@ -1,0 +1,17 @@
+# Local only, not published (private notes, scratch and backups live one folder up, in the workspace)
+CLAUDE.local.md
+scratch/
+/scratch
+screenshots/
+node_modules/
+.DS_Store
+*.log
+*~
+todo.md
+CLAUDE.md
+# the source lives outside the repo (~/anti/level102/src, not published); these are local links to it
+/src
+/tests
+/templates
+/tools
+/run_tests.sh
