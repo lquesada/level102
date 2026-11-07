@@ -539,13 +539,13 @@ T('mobile: the ECHO button echoes on a tap (also while running); looking, or sli
   await ev('(lastEcho=-9, fatigue=0, window.__echoN=0, window.__pe=window.__pe||playerEcho, playerEcho=function(s){ __echoN++; return __pe(s); }, 1)');
   const B=JSON.parse(await ev('JSON.stringify(echoBtn.getBoundingClientRect())')), L=JSON.parse(await ev('JSON.stringify(lookHint.getBoundingClientRect())'));
   const bx=B.x+B.width/2, by=B.y+B.height/2;
-  // separate from the look area, above it, big enough to hit
-  const layout=B.bottom<=L.top+2&&B.width>=60&&B.left>844*0.45;
+  // right on top of the look pad (Luis 2026-11-07), clear of it, big enough to hit
+  const layout=B.bottom<=L.top+2&&B.width>=60&&B.left>=L.left&&B.right<=L.right;
   // a tap somewhere on the right side: look only
   await touch('touchStart',[{x:650,y:300,id:7}]); await sleep(40); await touch('touchEnd',[]); await sleep(50);
   const plain=await ev('__echoN');
   // a look drag that slides over the button
-  await touch('touchStart',[{x:bx-120,y:by+60,id:7}]); for(let i=1;i<=6;i++){ await touch('touchMove',[{x:bx-120+i*20,y:by+60-i*10,id:7}]); await sleep(20); }
+  await touch('touchStart',[{x:bx+120,y:by-60,id:7}]); for(let i=1;i<=6;i++){ await touch('touchMove',[{x:bx+120-i*20,y:by-60+i*10,id:7}]); await sleep(20); }
   await touch('touchEnd',[]); await sleep(50);
   const slid=await ev('__echoN');
   // a real tap on the button
@@ -558,6 +558,35 @@ T('mobile: the ECHO button echoes on a tap (also while running); looking, or sli
   assert(layout,'ECHO button not above / separate from the look area '+JSON.stringify([B,L]));
   assert(plain===0,'a plain touch on the right echoed'); assert(slid===0,'sliding onto the button while looking echoed');
   assert(tap===1,'tapping ECHO did not echo: '+tap); assert(r.n===2&&r.sprinting,'ECHO while running '+JSON.stringify(r));
+});
+
+T('mobile: holding the look thumb sideways keeps turning, faster further out; near the start point it does not', async()=>{
+  await ev('(monsters.length=0, player.pitch=0, 1)');
+  const hold=async(dx)=>{ await touch('touchStart',[{x:600,y:200,id:9}]); await touch('touchMove',[{x:600+dx,y:200,id:9}]); await sleep(50);
+    const y0=await ev('player.yaw'); await sleep(600); const y1=await ev('player.yaw'); const ring=await ev('getComputedStyle(document.getElementById("lookPad")).display');
+    await touch('touchEnd',[]); await sleep(60); const y2=await ev('player.yaw'); await sleep(200); return {d:y1-y0, after:(await ev('player.yaw'))-y2, ring}; };
+  const small=await hold(20), mid=await hold(100), far=await hold(200), left=await hold(-200);
+  assert(Math.abs(small.d)<0.01,'a small offset kept turning '+JSON.stringify(small));
+  assert(mid.d<-0.1&&far.d<mid.d-0.2,'holding right did not keep turning right, faster further '+JSON.stringify([mid,far]));
+  assert(left.d>0.5,'holding left did not turn left '+JSON.stringify(left));
+  assert(far.ring==='block'&&Math.abs(far.after)<0.001,'ring not shown, or still turning after release '+JSON.stringify(far));
+});
+
+T('wall feel: standing against a wall shows faint dots that stay put, no echo; nothing near a wall shows none', async()=>{
+  await ev('(monsters.length=0, echoJobs.length=0, lastEcho=-9, 1)');
+  const r=await ev(`(()=>{ let spot=null; for(let z=2;z<H-2&&!spot;z++) for(let x=2;x<W-2;x++){ if(!solidAt(x,z)&&solidAt(x+1,z)&&(cast(x+.5,1.2,z+.5,1,0,0,1),hitKind===K_WALL)&&!solidAt(x-1,z)&&!solidAt(x,z-1)&&!solidAt(x,z+1)&&!solidAt(x-2,z)){ spot=[x,z]; break; } }
+    const cnt=(px,pz)=>{ let n=0; for(let i=0;i<MAXP;i++){ const o=i*STRIDE; if(pdata[o+6]+pdata[o+7]<now) continue; if(Math.hypot(pdata[o]-px,pdata[o+2]-pz)<1) n++; } return n; };
+    const at=(x,z)=>{ player.x=x; player.z=z; player.yaw=Math.PI/2; player.pitch=0; wfT=0; for(let i=0;i<20;i++){ now+=1/60; wallFeel(1/60); } };
+    at(spot[0]+0.75,spot[1]+0.5); const near=cnt(player.x,player.z); const first=[]; for(let i=0;i<MAXP&&first.length<5;i++){ const o=i*STRIDE; if(pdata[o+6]+pdata[o+7]>=now&&Math.hypot(pdata[o]-player.x,pdata[o+2]-player.z)<1) first.push(pdata[o].toFixed(3)+','+pdata[o+1].toFixed(3)); }
+    at(spot[0]+0.75,spot[1]+0.5); const again=[]; for(let i=MAXP-1;i>=0&&again.length<400;i--){ const o=i*STRIDE; if(pdata[o+6]+pdata[o+7]>=now&&Math.hypot(pdata[o]-player.x,pdata[o+2]-player.z)<1) again.push(pdata[o].toFixed(3)+','+pdata[o+1].toFixed(3)); }
+    const clear=(x,z)=>{ const g=meshOn?groundAt(x,z):0; for(let k=0;k<36;k++) for(const h of [.2,.8,1.4,2]){ cast(x,g+h,z,Math.sin(k/36*6.283),0,Math.cos(k/36*6.283),1.3); if(hitKind) return false; } return true; };
+    let fp=null; for(const rm of rooms){ for(let q=0;q<9&&!fp;q++){ const x=rm.cx+(q%3-1)*1.3, z=rm.cz+((q/3|0)-1)*1.3; if(clear(x,z)) fp=[x,z]; } if(fp) break; }
+    now+=1; at(fp[0],fp[1]); const far=cnt(player.x,player.z);
+    return {spot, near, far, stable:first.every(p=>again.includes(p)), echo:lastEcho}; })()`);
+  await ev(`(player.x=${r.spot[0]}+0.72, player.z=${r.spot[1]}+0.5, player.yaw=Math.PI/2-0.6, player.pitch=-0.1, document.getElementById('overlay').style.display='none', document.getElementById('prompt').style.display='none', started=true, paused=false, 1)`); await sleep(900); await shot('wall_feel'); await ev(`(player.x=${r.spot[0]}+0.45, player.yaw=Math.PI/2, player.pitch=0, echoJobs.length=0, pdata.fill(0), wStart=0, wCount=MAXP, 1)`); await sleep(700); await shot('wall_feel2');
+  assert(r.near>20,'no wall dots when touching a wall '+JSON.stringify(r));
+  assert(r.far===0,'wall dots in the middle of a big room '+JSON.stringify(r));
+  assert(r.stable,'wall dots moved while standing still '+JSON.stringify(r)); assert(r.echo===-9,'wall feel made an echo');
 });
 
 T('mobile: no OPEN YOUR EYES button any more (win screen, pause screen)', async()=>{
