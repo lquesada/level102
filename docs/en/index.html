@@ -107,15 +107,19 @@ img{max-width:100%}
 
 /* the dark: a page-wide field of dots that only shows near the cursor / finger, like an echo */
 #dark{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+/* the echo (Luis 2026-11-11): around the title and the description it comes close (only the text blocks are covered, with a
+   soft edge); from the trailer down it stays on the sides. Layer 1 = everything above --cut (set by JS to just under the
+   description, follows scrolling); layer 2 = the sides. Phones: around the text on top, then only a faint edge. */
+#dark{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent),linear-gradient(to right,#000 0,#000 calc(50% - 760px),transparent calc(50% - 580px),transparent calc(50% + 580px),#000 calc(50% + 760px),#000 100%);mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent),linear-gradient(to right,#000 0,#000 calc(50% - 760px),transparent calc(50% - 580px),transparent calc(50% + 580px),#000 calc(50% + 760px),#000 100%);
+  -webkit-mask-size:100% var(--cut,0px),100% 100%;mask-size:100% var(--cut,0px),100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 0;mask-position:0 0}
+@media (max-width:760px){#dark{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent),linear-gradient(to right,rgba(0,0,0,.45) 0,transparent 22px,transparent calc(100% - 22px),rgba(0,0,0,.45) 100%);mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent),linear-gradient(to right,rgba(0,0,0,.45) 0,transparent 22px,transparent calc(100% - 22px),rgba(0,0,0,.45) 100%)}}
+.hero h1,.intro{background:#000;box-shadow:0 0 34px 26px #000;border-radius:24px}
 main,header,footer{position:relative;z-index:1}
 
 /* hero: a screenshot hidden in the dark; the light near the cursor reveals it */
 .hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:56px 16px 16px;overflow:hidden;--mx:50%;--my:42%;--r:0px}
 .hero>*{position:relative}
-/* a soft shadow behind the words, so the dots never fight the text */
-.hero::before{content:"";position:absolute;left:50%;top:50%;width:min(980px,100%);height:88%;transform:translate(-50%,-50%);
-  background:radial-gradient(closest-side,rgba(0,0,0,.86),rgba(0,0,0,.6) 70%,transparent);pointer-events:none}
 .hero h1{margin:0;width:min(720px,86vw)}
 .hero h1 img{display:block;width:100%;height:auto;filter:drop-shadow(0 0 18px rgba(47,168,232,.35))}
 
@@ -142,7 +146,7 @@ a.btn.play:hover b{color:#fff;text-shadow:0 0 12px rgba(255,74,61,.55),0 0 2px #
 
 /* sections */
 section{padding:56px 0 0}
-.lbl{margin:0 0 24px;font-size:15px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#a9bfcb}
+.lbl{margin:0 0 24px;font-size:15px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a9bfcb}
 .lbl::before{content:"";display:inline-block;width:6px;height:6px;margin:0 0 2px 0;margin-inline-end:14px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red)}
 h3{margin:0 0 12px;font-size:17px;font-weight:700;letter-spacing:.12em;color:#fff}
 p{margin:0 0 12px}
@@ -166,7 +170,7 @@ ul.feat{margin:0;padding:0;list-style:none}
 ul.feat li{position:relative;padding-left:22px;margin:0 0 10px;font-size:17px}
 ul.feat li::before{content:"";position:absolute;left:3px;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--cy);box-shadow:0 0 6px var(--cy2)}
 .ctl dl{margin:0}
-.ctl dt{margin:20px 0 6px;font-weight:700;letter-spacing:.12em;color:#fff;font-size:15px;text-transform:uppercase}
+.ctl dt{margin:20px 0 6px;font-weight:700;letter-spacing:.05em;color:#fff;font-size:15px;text-transform:uppercase}
 .ctl dt:first-child{margin-top:0}
 .ctl dd{margin:0 0 6px;font-size:17px}
 kbd{font:inherit;font-size:14px;color:#fff;border:1px solid rgba(127,216,255,.4);padding:0 5px;margin-right:4px}
@@ -192,7 +196,7 @@ ul.feat{display:block;max-width:40em;margin:28px auto 0!important}
 .snd{color:var(--cy)!important;font-size:16px!important}
 .snd svg{vertical-align:-3px;margin-right:8px}
 .btn.rec{border-color:var(--cy);box-shadow:0 0 26px rgba(47,168,232,.28),inset 0 0 18px rgba(47,168,232,.10)}
-.badge{display:inline-block;margin:0 0 6px;padding:1px 8px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#000;background:var(--cy)}
+.badge{display:inline-block;margin:0 0 6px;padding:1px 8px;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:#000;background:var(--cy)}
 .dlbox{width:min(640px,100%);margin:34px auto 0;text-align:start}
 .dlbox .lbl{margin-bottom:12px}
 .dlbox .dls{grid-template-columns:1fr 1fr!important;gap:8px}
@@ -204,7 +208,7 @@ ul.feat{display:block;max-width:40em;margin:28px auto 0!important}
 .dlbox.compact .dls b{font-size:15px}
 .dlbox.compact .dls .m{display:block;font-size:14px}
 .dlbox .note{margin-top:8px}
-.hero-vid{width:min(1200px,100%);max-width:none;margin:30px auto 0}
+.hero-vid{width:min(1088px,100%);max-width:none;margin:30px auto 0}
 @media (max-width:760px){.hero-vid{width:calc(100% + 32px);margin-left:-16px;margin-right:-16px;border-left:0;border-right:0}}
 .rows{display:grid;gap:40px}
 .row{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:40px;align-items:center}
@@ -219,7 +223,7 @@ ul.feat{display:block;max-width:40em;margin:28px auto 0!important}
 [dir=rtl] .btn .go{transform:scaleX(-1)}
 [dir=rtl] a.btn:hover .go{transform:scaleX(-1) translateX(4px)}
 /* FREE: an outlined badge with the game's cyan glow, right after each title */
-.free{display:inline-block;margin-inline-start:12px;padding:2px 8px 1px;font:700 12px/1.3 var(--mono);font-style:normal;letter-spacing:.14em;vertical-align:3px;
+.free{display:inline-block;margin-inline-start:12px;padding:2px 8px 1px;font:700 12px/1.3 var(--mono);font-style:normal;letter-spacing:.08em;vertical-align:3px;
   color:#bfefff;border:1px solid var(--cy);background:rgba(47,168,232,.12);box-shadow:0 0 10px rgba(127,216,255,.45),inset 0 0 6px rgba(127,216,255,.25);text-shadow:0 0 6px rgba(127,216,255,.8)}
 .btn.play .free{font-size:13px;vertical-align:4px}
 .dls .free{font-size:11px;padding:1px 6px 0;margin-inline-start:8px;vertical-align:2px}
@@ -245,6 +249,131 @@ html[lang=ar] *,html[lang=fa] *,html[lang=ur] *,html[lang=he] *,html[lang=hi] *,
 @media (max-width:760px){.row2>:only-child{padding:12px 16px}}
 .row2>:only-child b{font-size:18px}
 .ver bdi{unicode-bidi:isolate}
+/* buttons (draft F, Luis 2026-11-11): two big buttons, one "More ways to play / free downloads" panel with cards */
+.bigs{width:min(980px,100%);margin:34px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:28px;text-align:start}
+.big{display:block;padding:18px 20px;border:1px solid var(--cy);background:#000;color:#eaf8ff;text-decoration:none;
+  box-shadow:0 0 26px rgba(47,168,232,.3),inset 0 0 18px rgba(47,168,232,.1);transition:border-color .25s,box-shadow .25s}
+.big .bt{display:block}
+.big b{font-size:clamp(17px,2vw,21px);font-weight:700;letter-spacing:.03em;text-shadow:0 0 12px rgba(127,216,255,.7)}
+.big small{display:block;margin-top:6px;font-size:16px;color:var(--dim)}
+a.big:hover,a.big:focus-visible{border-color:var(--red2);animation:scream .9s steps(1,end) 1}
+.big.rec{box-shadow:0 0 34px rgba(47,168,232,.45),inset 0 0 20px rgba(47,168,232,.14)}
+.vrw{font-style:normal;color:var(--red);text-shadow:0 0 10px rgba(255,58,44,.85),0 0 2px #ff8c80}
+.ver{margin:12px 0 0}
+details.mw{width:min(980px,100%);margin:14px auto 0;text-align:start}
+details.mw>summary{display:flex;justify-content:center;align-items:center;gap:10px;cursor:pointer;list-style:none;color:var(--cy);font-size:17px;padding:8px 0}
+details.mw>summary::-webkit-details-marker{display:none}
+details.mw>summary span{border-bottom:1px dashed rgba(127,216,255,.5)}
+details.mw>summary:hover span{border-bottom-style:solid}
+.chev{display:inline-block;width:9px;height:9px;border-right:2px solid var(--cy);border-bottom:2px solid var(--cy);transform:rotate(45deg) translateY(-3px);transition:transform .25s}
+details.mw[open] .chev{transform:rotate(225deg) translate(-2px,-2px)}
+.mwin{margin-top:10px;padding:18px 20px;border:1px solid rgba(127,216,255,.24);background:#000}
+.inner{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.cards{display:grid;gap:8px;align-content:start}
+.cards .ct{display:flex;align-items:flex-start;gap:0}.cards .ct>span{min-width:0}.cards .ct .free{flex:none;font-size:11px;padding:1px 6px 0;margin-inline-start:10px}
+.card{display:block;padding:10px 14px;border:1px solid rgba(127,216,255,.3);color:#dbeaf2;text-decoration:none;font-size:16px;background:#000}
+a.card:hover,a.card:focus-visible{border-color:var(--cy);color:#fff}
+.card.soon{border-style:dashed;color:#b9c9d2}.card.soon small{color:var(--dim)}
+.dlw{margin-top:18px;padding-top:16px;border-top:1px solid rgba(127,216,255,.2)}
+.dlh{margin:0 0 10px;font-size:15px;font-weight:700;letter-spacing:.02em;color:#b9cbd5}
+.dlh small{text-transform:none;letter-spacing:0;color:#a3b8c4;font-weight:400;font-size:15px;margin-inline-start:6px}
+.cardsDL{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cardsDL .card b{display:flex;align-items:flex-start;flex-wrap:nowrap;font-size:15px;color:#fff}
+.cardsDL .card b>span{min-width:0}
+.cardsDL .card b .free{flex:none}
+.cardsDL .card .m{display:block;font-size:13px;color:#a7bcc8;margin-top:2px}
+.cardsDL .card .sup{display:block;font-size:13px;color:#cfe3ee;margin-top:2px}
+.cardsDL .card{display:flex;flex-direction:column}
+.cardsDL .card.rec{grid-column:1/-1;border-color:var(--cy);box-shadow:0 0 16px rgba(47,168,232,.22)}
+.cardsDL .card.rec b{font-size:18px}
+.cardsDL[data-native-ready=no] .nat{border-style:dashed}
+.cardsDL .free{font-size:11px;padding:1px 6px 0;margin-inline-start:8px;vertical-align:2px}
+.mwin .badge{margin-bottom:6px;align-self:flex-start}
+details.mw>summary{text-align:center}
+.mwin .note{margin:10px 0 0;font-size:15px;color:#a3b8c4}
+@media (max-width:760px){.bigs,.inner{grid-template-columns:1fr;gap:14px}.cardsDL{grid-template-columns:1fr}.mwin{padding:14px}.big b{letter-spacing:.02em}}
+/* icons: a screen + phone (flat) and a VR headset, drawn in the page's line style, left of the title */
+.ico{flex:none;width:1.55em;height:1.16em;margin-inline-end:.55em;fill:none;stroke:var(--cy);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 4px rgba(127,216,255,.55));vertical-align:-.18em}
+.ico.vr{stroke:#cfe3ee}.ico.vr .lens{stroke:var(--red);filter:drop-shadow(0 0 3px rgba(255,58,44,.9))}
+.big .bt{display:flex;align-items:center;flex-wrap:wrap;row-gap:6px}
+.big .bt .free{margin-inline-start:12px}
+.big .ico{width:1.95em;height:1.45em;stroke-width:1.5}
+.ico.sm{width:1.35em;height:1.02em;margin-inline-end:.5em;margin-top:.15em}
+[dir=rtl] .ico{transform:scaleX(-1)}
+/* buttons (draft J, Luis 2026-11-11) */
+.pcs{width:min(1088px,100%);margin:30px auto 0;display:grid;gap:18px;text-align:start}
+.pcs.two{grid-template-columns:1fr 1fr}
+.pc{display:flex;flex-direction:column;gap:8px;padding:18px 20px 20px;border:1px solid rgba(127,216,255,.45);background:#000;box-shadow:0 0 24px rgba(47,168,232,.18)}
+.pt{display:flex;align-items:center;flex-wrap:wrap;gap:6px 0;margin:0;font-size:clamp(18px,2vw,21px);font-weight:700;letter-spacing:.03em;color:#eaf8ff;text-shadow:0 0 10px rgba(127,216,255,.55)}
+.pt .free{margin-inline-start:12px}
+.ps{margin:0;font-size:16px;color:#a7bcc8}
+.pc .ico{width:1.95em;height:1.45em}
+.pbtn{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:6px;padding:0 24px;border-radius:8px;border:1px solid #6cc8ff;
+  background:#1769a8;color:#fff;font:700 17px/1 var(--mono);letter-spacing:.06em;text-decoration:none;cursor:pointer;
+  box-shadow:0 0 16px rgba(47,168,232,.35),inset 0 1px 0 rgba(255,255,255,.18);transition:background .15s,box-shadow .15s,transform .05s}
+.pbtn:hover{background:#1f82cc;box-shadow:0 0 26px rgba(80,190,255,.55),inset 0 1px 0 rgba(255,255,255,.25)}
+.pbtn:active{transform:translateY(1px);background:#135a90}
+.pbtn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.pc.vr .pbtn{background:#1769a8}
+.stack .pc.second{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 18px;padding:12px 16px;border-color:rgba(127,216,255,.28);box-shadow:none}
+.stack .pc.second .pt{font-size:16px;flex:1 1 auto}.stack .pc.second .ps{flex:1 1 100%;order:3;font-size:14px}
+.stack .pc.second .pbtn{margin:0;min-height:44px;font-size:15px;padding:0 18px;order:2}
+.stack .pc.main1{padding:22px 24px 24px;border-color:#7fd8ff;box-shadow:0 0 34px rgba(47,168,232,.3)}
+.stack .pc.main1 .pbtn{min-height:58px;font-size:19px}
+.split .pc{align-items:center;text-align:center}.split .pt{justify-content:center}
+.bigi .ico.xl{width:84px;height:63px;margin:0}
+.metaline{width:min(1088px,100%);margin:12px auto 0;display:flex;justify-content:space-between;align-items:center;gap:8px 18px;flex-wrap:wrap;font-size:15px}
+.metaline .ver{margin:0;text-align:start;font-size:15px}
+.morebtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 4px;background:none;border:0;color:var(--cy);font:400 15px var(--mono);cursor:pointer}
+.morebtn>span{border-bottom:1px dashed rgba(127,216,255,.55)}.morebtn:hover>span{border-bottom-style:solid}
+.morebtn:hover{color:#fff}.morebtn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.chev2{display:inline-block;width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.morebtn[aria-expanded=true] .chev2{transform:rotate(225deg) translate(-2px,-1px)}
+.mpanel{width:min(1088px,100%);margin:10px auto 0;padding:16px 18px;border:1px solid rgba(127,216,255,.24);background:#000;text-align:start}
+.allfree{margin:0 0 10px;font-size:14px;color:#a7bcc8}
+.prow,.drow{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.prow li,.drow li{display:flex;align-items:center;gap:14px;min-height:44px}
+.pbtn.sm{min-height:40px;margin:0;padding:0 12px;font-size:14px;border-radius:6px;flex:none;min-width:9.5em}
+.pbtn.off{background:#1b2a35;border-color:#3d5566;color:#9fb3c0;box-shadow:none;cursor:default}
+.rl{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;font-size:16px;color:#dbeaf2}
+.rl .ico.sm{width:1.35em;height:1.02em;margin-inline-end:.4em;align-self:center}
+.rl b{font-weight:700;color:#fff}.rl .sup{color:#a7bcc8;font-size:14px}.rl .soon{flex-basis:100%;color:#7f97a5;font-size:13px}
+.prow .rl{flex-wrap:nowrap;align-items:center;min-width:0}
+.prow .lt{min-width:0;overflow-wrap:anywhere}
+.prow li,.drow li{min-width:0}
+.dlbox2{margin-top:16px;padding-top:14px;border-top:1px solid rgba(127,216,255,.2)}
+.dlbox2 h3{margin:0 0 10px;font-size:15px;font-weight:700;letter-spacing:.02em;color:#b9cbd5}
+.drow li{padding:6px 10px;border:1px solid transparent}
+.drow li.rec{border-color:var(--cy);box-shadow:0 0 14px rgba(47,168,232,.2)}
+.pbtn.off.recoff{background:#1769a8;border-color:#6cc8ff;color:#fff;box-shadow:0 0 16px rgba(47,168,232,.35);cursor:default}
+.pbtn.ghost{background:transparent;border-color:rgba(127,216,255,.7);color:#bfe9ff;box-shadow:none}
+.pbtn.ghost:hover{background:rgba(47,168,232,.16);color:#fff;box-shadow:0 0 14px rgba(80,190,255,.3)}
+.recw{flex-basis:100%}.recw span{display:inline-block;padding:1px 7px;font-size:12px;color:#000;background:var(--cy)}
+.rl .lt{min-width:0}
+@media (max-width:760px){.pcs.two{grid-template-columns:1fr}.metaline{justify-content:space-between}.pbtn.sm{min-width:8.2em}.rl{font-size:15px}}
+
+.pc .badge{align-self:center}
+/* polish (2026-11-11 review): one content column (1088 px) for blocks, toggle line, panel and trailer; phone download rows:
+   label first, a full-width button under it; controls in two columns on wide screens */
+.prow{gap:6px}.drow{gap:4px}
+.mpanel{padding:18px 20px}
+.allfree{margin-bottom:12px}
+.pc{padding:22px 22px 20px;gap:10px}
+.pc .ps{font-size:15px;line-height:1.5}
+.split .pbtn{min-width:11em}
+.ctl dl{column-gap:56px}
+@media (min-width:761px){.wrap.two{grid-template-columns:1fr}.ctl dl{columns:2}.ctl dt{break-after:avoid}.ctl dd{break-inside:avoid}.ctl dt:first-child{margin-top:0}}
+@media (max-width:560px){.drow li{flex-direction:column;align-items:stretch;gap:6px;padding:10px}.drow li .pbtn{order:2;width:100%;min-width:0}.drow .rl{order:1}
+  .prow li{gap:10px}.metaline{flex-direction:column;align-items:flex-start;gap:0}}
+/* three blocks (Luis 2026-11-11): itch.io | Meta Store | DOWNLOAD for the visitor's system */
+.pcs.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:899px){.pcs.three{grid-template-columns:1fr}}
+@media (min-width:900px){.pcs.three .pt{min-height:2.9em;align-content:center}}   /* the three buttons line up even when a title wraps */
+.dlpc .v{display:flex;flex-direction:column;align-items:center;gap:10px}
+.dlpc .v[hidden]{display:none}
+.ico.dlico{stroke:var(--cy)}
+.pc .pbtn.off{background:#1b2a35;border-color:#3d5566;color:#9fb3c0;box-shadow:none;cursor:default;min-height:52px;margin-top:6px;min-width:11em}
 /* footer */
 footer{margin-top:64px;border-top:1px solid var(--line);padding:28px 0 36px;font-size:16px;color:var(--dim);background:#000}
 .foot{display:flex;flex-wrap:wrap;gap:24px 40px;justify-content:space-between;align-items:flex-end}
@@ -267,6 +396,19 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:28px 0 36px;font
   section{padding-top:64px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* review 2 (Luis's wife, 2026-11-11): smaller thinner icons, sans titles with FREE on the same line, smaller sub-lines, tighter vertical rhythm */
+.bigi .ico.xl{width:52px;height:39px;stroke-width:1.15;margin:0}
+.bigi{margin-bottom:-14px}.dlpc .v{gap:8px}.dlpc .v .pbtn{margin-top:2px}
+.pt{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:clamp(15px,1.45vw,18px);font-weight:700;letter-spacing:.01em;gap:4px 0}
+.pt{max-width:100%;min-width:0;justify-content:center}
+.dlpc .v{width:100%;min-width:0}
+@media (min-width:900px){.pt{flex-wrap:nowrap;white-space:nowrap}.pt.fit{flex-wrap:wrap;white-space:normal}}
+.pt .free{margin-inline-start:8px}
+.pc{gap:8px;padding:16px 18px 12px}
+.pbtn{margin-top:2px;margin-bottom:8px}
+.pc .ps{font-size:13px;line-height:1.35;margin-top:-4px}
+.metaline .ver{font-size:13px}
 </style>
 </head>
 <body>
@@ -281,32 +423,36 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:28px 0 36px;font
     <p data-i18n="d2">Something lives in these halls. It cannot see either, but it hears everything. Echo too close, or too often, and it will come. When it runs, it screams. When it screams, others answer.</p>
   </div>
 
+  <nav class="pcs three split" aria-label="Get ECHOLOC" data-i18n-aria="ariaGet">
+    <section class="pc"><div class="bigi"><svg class="ico xl" viewBox="0 0 32 24" aria-hidden="true"><rect x="1.5" y="2" width="21" height="14" rx="1.5"/><path d="M8 20.5h9M12.5 16v4.5"/><rect x="24" y="8" width="6.5" height="13" rx="1.4"/><path d="M26.4 18.6h1.7"/></svg></div><h2 class="pt"><span data-i18n="itchBig">PLAY ON ITCH.IO</span><em class="free" data-i18n="free">FREE</em></h2><a class="pbtn" href="https://level102.itch.io/echoloc" rel="noopener"><span data-i18n="playNow">PLAY NOW</span></a><p class="ps" data-i18n="itchBigS">Web · computer, phone or tablet</p></section>
+    <section class="pc vr"><div class="bigi"><svg class="ico xl vr" viewBox="0 0 32 24" aria-hidden="true"><path d="M3 7.5c0-1.7 1.3-3 3-3h20c1.7 0 3 1.3 3 3v8.2c0 1.6-1.3 2.8-2.8 2.8h-5.4c-.9 0-1.7-.5-2.1-1.3l-1-1.9a1.9 1.9 0 0 0-3.4 0l-1 1.9c-.4.8-1.2 1.3-2.1 1.3H5.8A2.8 2.8 0 0 1 3 15.7z"/><path d="M3 9.5H1M31 9.5h-2"/><circle class="lens" cx="10.5" cy="11" r="2.4"/><circle class="lens" cx="21.5" cy="11" r="2.4"/></svg></div><h2 class="pt"><span data-i18n-html="metaBig">PLAY <i class="vrw">VR</i> IN META STORE</span><em class="free" data-i18n="free">FREE</em></h2><a class="pbtn" href="https://www.meta.com/experiences/echoloc/2249662939304539/" rel="noopener"><span data-i18n="playNow">PLAY NOW</span></a><p class="ps" data-i18n="questS">Quest 2, 3, 3S and Pro</p></section>
+    <section class="pc dlpc"><div class="bigi"><svg class="ico xl dlico" viewBox="0 0 32 24" aria-hidden="true"><path d="M16 1.5v13M10.5 9.5l5.5 5.5 5.5-5.5"/><path d="M4.5 15.5v4.2c0 1 .8 1.8 1.8 1.8h19.4c1 0 1.8-.8 1.8-1.8v-4.2"/></svg></div><div class="v" data-os="web"><h2 class="pt"><span data-i18n="dlOffline">DOWNLOAD OFFLINE VERSION</span><em class="free" data-i18n="free">FREE</em></h2><a class="pbtn" href="../echoloc/echoloc-offline.zip" download="echoloc-1.2.7-offline.zip"><span data-i18n="dlBtn">DOWNLOAD</span></a><p class="ps"><span data-i18n="supFlat">Flat</span></p></div><div class="v" data-os="win64" hidden><h2 class="pt"><span data-i18n="dlForWin">DOWNLOAD FOR WINDOWS</span><em class="free" data-i18n="free">FREE</em></h2><a class="pbtn" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-windows-x64.zip" download><span data-i18n="dlBtn">DOWNLOAD</span></a><p class="ps"><span data-i18n="supFlatOrVR">Flat or VR</span></p></div><div class="v" data-os="win32" hidden><h2 class="pt"><span data-i18n="dlForWin">DOWNLOAD FOR WINDOWS</span><em class="free" data-i18n="free">FREE</em></h2><a class="pbtn" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-windows-x86.zip" download><span data-i18n="dlBtn">DOWNLOAD</span></a><p class="ps"><span data-i18n="supFlatOrVR">Flat or VR</span></p></div><div class="v" data-os="mac" hidden><h2 class="pt"><span data-i18n="dlForMac">DOWNLOAD FOR MACOS</span><em class="free" data-i18n="free">FREE</em></h2><a class="pbtn" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-macos-universal.zip" download><span data-i18n="dlBtn">DOWNLOAD</span></a><p class="ps"><span data-i18n="supFlat">Flat</span></p></div><div class="v" data-os="linux" hidden><h2 class="pt"><span data-i18n="dlForLinux">DOWNLOAD FOR LINUX</span><em class="free" data-i18n="free">FREE</em></h2><a class="pbtn" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-linux-x86_64.tar.gz" download><span data-i18n="dlBtn">DOWNLOAD</span></a><p class="ps"><span data-i18n="supFlatOrVR">Flat or VR</span></p></div></section>
+  </nav>
+  <div class="metaline"><span class="ver">Version <bdi dir="ltr">1.2.7</bdi> · <bdi dir="ltr">2026-11-11</bdi></span><button class="morebtn" type="button" aria-expanded="false" aria-controls="download"><span data-i18n="moreWays">More ways to play / free downloads</span><i class="chev2" aria-hidden="true"></i></button></div>
+  <div class="mpanel" id="download" hidden>
+    <p class="allfree" data-i18n="allFree">Everything here is free.</p>
+    <ul class="prow">
+      <li><a class="pbtn sm" href="../echoloc/"><span data-i18n="playNow">PLAY NOW</span></a><span class="rl"><svg class="ico sm" viewBox="0 0 32 24" aria-hidden="true"><rect x="1.5" y="2" width="21" height="14" rx="1.5"/><path d="M8 20.5h9M12.5 16v4.5"/><rect x="24" y="8" width="6.5" height="13" rx="1.4"/><path d="M26.4 18.6h1.7"/></svg><span class="lt">level102.com</span></span></li>
+      <li><a class="pbtn sm" href="https://level102.itch.io/echoloc" rel="noopener"><span data-i18n="playNow">PLAY NOW</span></a><span class="rl"><svg class="ico sm vr" viewBox="0 0 32 24" aria-hidden="true"><path d="M3 7.5c0-1.7 1.3-3 3-3h20c1.7 0 3 1.3 3 3v8.2c0 1.6-1.3 2.8-2.8 2.8h-5.4c-.9 0-1.7-.5-2.1-1.3l-1-1.9a1.9 1.9 0 0 0-3.4 0l-1 1.9c-.4.8-1.2 1.3-2.1 1.3H5.8A2.8 2.8 0 0 1 3 15.7z"/><path d="M3 9.5H1M31 9.5h-2"/><circle class="lens" cx="10.5" cy="11" r="2.4"/><circle class="lens" cx="21.5" cy="11" r="2.4"/></svg><span class="lt" data-i18n-html="rowVrItch"><i class="vrw">VR</i> on itch.io</span></span></li>
+      <li><a class="pbtn sm" href="../echoloc/"><span data-i18n="playNow">PLAY NOW</span></a><span class="rl"><svg class="ico sm vr" viewBox="0 0 32 24" aria-hidden="true"><path d="M3 7.5c0-1.7 1.3-3 3-3h20c1.7 0 3 1.3 3 3v8.2c0 1.6-1.3 2.8-2.8 2.8h-5.4c-.9 0-1.7-.5-2.1-1.3l-1-1.9a1.9 1.9 0 0 0-3.4 0l-1 1.9c-.4.8-1.2 1.3-2.1 1.3H5.8A2.8 2.8 0 0 1 3 15.7z"/><path d="M3 9.5H1M31 9.5h-2"/><circle class="lens" cx="10.5" cy="11" r="2.4"/><circle class="lens" cx="21.5" cy="11" r="2.4"/></svg><span class="lt" data-i18n-html="rowVrHere"><i class="vrw">VR</i> here on level102.com</span></span></li>
+    </ul>
+    <section class="dlbox2" aria-labelledby="h-dl">
+      <h3 id="h-dl" data-i18n="dlFor">Download for Windows, macOS, Linux, Android and iOS</h3>
+      <!-- data-native-ready: "no" until the GitHub release of native_version.txt is live (gen.py --native-ready makes the native rows links). -->
+      <ul class="drow" data-native-ready="yes">
+        <li data-os="web" class="rec"><a class="pbtn sm dl" href="../echoloc/echoloc-offline.zip" download="echoloc-1.2.7-offline.zip"><span data-i18n="dlBtn">DOWNLOAD</span></a><span class="rl"><b><span data-i18n="dWeb">Offline web version</span> <span data-ver>1.2.7</span></b><span class="sup"><span data-i18n="supFlat">Flat</span> · <span data-i18n="webPlat">Android · iOS · any browser</span> · zip, <span data-zipsize>1.0 MB</span></span></span></li>
+        <li data-os="win64" class="nat"><a class="pbtn sm dl ghost" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-windows-x64.zip" download><span data-i18n="dlBtn">DOWNLOAD</span></a><span class="rl"><b><span data-i18n="w64">Windows 64-bit</span> 1.2.7</b><span class="sup"><span data-i18n="supFlatVR">Flat or PC VR</span></span></span></li>
+        <li data-os="win32" class="nat"><a class="pbtn sm dl ghost" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-windows-x86.zip" download><span data-i18n="dlBtn">DOWNLOAD</span></a><span class="rl"><b><span data-i18n="w32">Windows 32-bit</span> 1.2.7</b><span class="sup"><span data-i18n="supFlatVR">Flat or PC VR</span></span></span></li>
+        <li data-os="mac" class="nat"><a class="pbtn sm dl ghost" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-macos-universal.zip" download><span data-i18n="dlBtn">DOWNLOAD</span></a><span class="rl"><b>macOS 1.2.7</b><span class="sup"><span data-i18n="supFlat">Flat</span> · Apple silicon + Intel</span></span></li>
+        <li data-os="linux" class="nat"><a class="pbtn sm dl ghost" href="https://github.com/lquesada/level102/releases/download/v1.2.7/echoloc-1.2.7-linux-x86_64.tar.gz" download><span data-i18n="dlBtn">DOWNLOAD</span></a><span class="rl"><b>Linux x86_64 1.2.7</b><span class="sup"><span data-i18n="supFlatVR">Flat or PC VR</span></span></span></li>
+      </ul>
+    </section>
+  </div>
   <div class="vid hero-vid">
-    <video controls muted loop playsinline preload="none" poster="../assets/trailer-poster.webp" width="1280" height="720" aria-label="ECHOLOC trailer, 36 seconds" data-i18n-aria="ariaTrailer" data-autoplay>
+    <video controls muted loop playsinline preload="metadata" poster="../assets/trailer-poster.webp" width="1280" height="720" aria-label="ECHOLOC trailer, 36 seconds" data-i18n-aria="ariaTrailer" data-autoplay>
       <source src="../assets/echoloc-trailer.webm" type="video/webm; codecs=av01.0.08M.10">
       <source src="../assets/echoloc-trailer.mp4" type="video/mp4">
     </video>
-  </div>
-  <nav class="cta" aria-label="Get ECHOLOC" data-i18n-aria="ariaGet">
-    <a class="btn play" href="../echoloc/"><span><b><span data-i18n="playB">PLAY IN YOUR BROWSER</span><em class="free" data-i18n="free">FREE</em></b><small data-i18n="playS">Computer, phone or tablet · no install</small></span><span class="go" aria-hidden="true">→</span></a>
-    <p class="ver">Version <bdi dir="ltr">1.2.6</bdi> · <bdi dir="ltr">2026-11-11</bdi></p>
-    <a class="btn" href="https://www.meta.com/experiences/echoloc/2249662939304539/" rel="noopener"><span><b><span data-i18n="questB">GET IT ON META STORE</span><em class="free" data-i18n="free">FREE</em></b><small data-i18n="questS">Quest 2, 3, 3S and Pro</small></span><span class="go" aria-hidden="true">→</span></a>
-    <div class="row2">
-      <a class="btn" href="https://level102.itch.io/echoloc" rel="noopener"><span><b><span data-i18n="itchB">PLAY ON ITCH.IO</span><em class="free" data-i18n="free">FREE</em></b><small data-i18n="itchS">In your browser or as a download</small></span><span class="go" aria-hidden="true">→</span></a>
-    </div>
-  </nav>
-  <div class="dlbox" id="download" aria-labelledby="h-dl">
-    <h2 class="lbl" id="h-dl" data-i18n="download">Download</h2>
-    <!-- data-native-ready: "no" until the first GitHub release with these files exists; then "yes" turns the rows into links.
-         Stable asset names (no version), so releases/latest/download/<file> never changes. -->
-    <ul class="dls" data-native-ready="no">
-      <li data-os="web"><a href="../echoloc/echoloc-offline.zip" download><b><span data-i18n="dWeb">Offline web version</span><em class="free" data-i18n="free">FREE</em></b><span class="m"><span data-i18n="dWebS">Any browser, no install · zip</span>, <span data-zipsize>1.0 MB</span> · <span data-ver>1.2.6</span></span></a></li>
-      <li data-os="win64"><span class="nat" data-href="https://github.com/lquesada/level102/releases/latest/download/echoloc-windows-x64.zip"><b><span data-i18n="w64">Windows 64-bit</span><em class="free" data-i18n="free">FREE</em></b><span class="m">x64 · zip</span></span></li>
-      <li data-os="win32"><span class="nat" data-href="https://github.com/lquesada/level102/releases/latest/download/echoloc-windows-x86.zip"><b><span data-i18n="w32">Windows 32-bit</span><em class="free" data-i18n="free">FREE</em></b><span class="m">x86 · zip</span></span></li>
-      <li data-os="mac"><span class="nat" data-href="https://github.com/lquesada/level102/releases/latest/download/echoloc-macos-universal.zip"><b><span>macOS</span><em class="free" data-i18n="free">FREE</em></b><span class="m" data-i18n="macS">Universal: Apple silicon + Intel · zip</span></span></li>
-      <li data-os="linux"><span class="nat" data-href="https://github.com/lquesada/level102/releases/latest/download/echoloc-linux-x86_64.tar.gz"><b><span>Linux</span><em class="free" data-i18n="free">FREE</em></b><span class="m">x86_64 · tar.gz</span></span></li>
-    </ul>
-    <!--NOTE--><p class="note" data-i18n="dNote">Native versions for Windows, macOS and Linux: coming with the next release.</p><!--/NOTE-->
   </div>
 </header>
 
@@ -359,7 +505,7 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:28px 0 36px;font
       </ul>
       <p data-i18n-html="support">This video game is free, support me by listening to my music project <a href="https://windlereye.com" rel="noopener">Windlereye</a></p>
       <noscript><ul class="langs"><li><a href="../en/" hreflang="en" lang="en" aria-current="page">English</a></li><li><a href="../es/" hreflang="es" lang="es">Español</a></li><li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li><li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="../pt-BR/" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a></li><li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li><li><a href="../zh/" hreflang="zh" lang="zh">简体中文</a></li><li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li><li><a href="../it/" hreflang="it" lang="it">Italiano</a></li><li><a href="../pl/" hreflang="pl" lang="pl">Polski</a></li><li><a href="../tr/" hreflang="tr" lang="tr">Türkçe</a></li><li><a href="../nl/" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="../zh-Hant/" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a></li><li><a href="../pt-PT/" hreflang="pt-PT" lang="pt-PT">Português (Portugal)</a></li><li><a href="../ar/" hreflang="ar" lang="ar">العربية</a></li><li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li><li><a href="../id/" hreflang="id" lang="id">Bahasa Indonesia</a></li><li><a href="../vi/" hreflang="vi" lang="vi">Tiếng Việt</a></li><li><a href="../uk/" hreflang="uk" lang="uk">Українська</a></li><li><a href="../en-GB/" hreflang="en-GB" lang="en-GB">English (UK)</a></li><li><a href="../sv/" hreflang="sv" lang="sv">Svenska</a></li><li><a href="../cs/" hreflang="cs" lang="cs">Čeština</a></li><li><a href="../ro/" hreflang="ro" lang="ro">Română</a></li><li><a href="../hu/" hreflang="hu" lang="hu">Magyar</a></li><li><a href="../el/" hreflang="el" lang="el">Ελληνικά</a></li><li><a href="../he/" hreflang="he" lang="he">עברית</a></li><li><a href="../th/" hreflang="th" lang="th">ไทย</a></li><li><a href="../fa/" hreflang="fa" lang="fa">فارسی</a></li><li><a href="../be/" hreflang="be" lang="be">Беларуская</a></li><li><a href="../bg/" hreflang="bg" lang="bg">Български</a></li><li><a href="../bn/" hreflang="bn" lang="bn">বাংলা</a></li><li><a href="../bs/" hreflang="bs" lang="bs">Bosanski</a></li><li><a href="../ca/" hreflang="ca" lang="ca">Català</a></li><li><a href="../da/" hreflang="da" lang="da">Dansk</a></li><li><a href="../eo/" hreflang="eo" lang="eo">Esperanto</a></li><li><a href="../et/" hreflang="et" lang="et">Eesti</a></li><li><a href="../eu/" hreflang="eu" lang="eu">Euskara</a></li><li><a href="../fi/" hreflang="fi" lang="fi">Suomi</a></li><li><a href="../fil/" hreflang="fil" lang="fil">Filipino</a></li><li><a href="../gl/" hreflang="gl" lang="gl">Galego</a></li><li><a href="../ha/" hreflang="ha" lang="ha">Hausa</a></li><li><a href="../hr/" hreflang="hr" lang="hr">Hrvatski</a></li><li><a href="../hy/" hreflang="hy" lang="hy">Հայերեն</a></li><li><a href="../is/" hreflang="is" lang="is">Íslenska</a></li><li><a href="../ka/" hreflang="ka" lang="ka">ქართული</a></li><li><a href="../kk/" hreflang="kk" lang="kk">Қазақ тілі</a></li><li><a href="../lt/" hreflang="lt" lang="lt">Lietuvių</a></li><li><a href="../lv/" hreflang="lv" lang="lv">Latviešu</a></li><li><a href="../mk/" hreflang="mk" lang="mk">Македонски</a></li><li><a href="../mn/" hreflang="mn" lang="mn">Монгол</a></li><li><a href="../mr/" hreflang="mr" lang="mr">मराठी</a></li><li><a href="../ms/" hreflang="ms" lang="ms">Bahasa Melayu</a></li><li><a href="../ne/" hreflang="ne" lang="ne">नेपाली</a></li><li><a href="../no/" hreflang="no" lang="no">Norsk</a></li><li><a href="../si/" hreflang="si" lang="si">සිංහල</a></li><li><a href="../sk/" hreflang="sk" lang="sk">Slovenčina</a></li><li><a href="../sl/" hreflang="sl" lang="sl">Slovenščina</a></li><li><a href="../sq/" hreflang="sq" lang="sq">Shqip</a></li><li><a href="../sr-Latn/" hreflang="sr-Latn" lang="sr-Latn">Srpski (latinica)</a></li><li><a href="../sw/" hreflang="sw" lang="sw">Kiswahili</a></li><li><a href="../ta/" hreflang="ta" lang="ta">தமிழ்</a></li><li><a href="../te/" hreflang="te" lang="te">తెలుగు</a></li><li><a href="../ur/" hreflang="ur" lang="ur">اردو</a></li></ul></noscript>
-      <p>© <span class="cy" data-from="2026">2026</span> Luis Quesada Torres · ECHOLOC <span data-ver>1.2.6</span></p>
+      <p>© <span class="cy" data-from="2026">2026</span> Luis Quesada Torres · ECHOLOC <span data-ver>1.2.7</span></p>
     </div>
     <nav class="more" aria-label="More games by level102" data-i18n-aria="ariaMore">
       <ul class="games">
@@ -376,6 +522,13 @@ footer{margin-top:64px;border-top:1px solid var(--line);padding:28px 0 36px;font
 <script>
 // Copyright years follow the visitor's clock: "2026", later "2026–<this year>" (the generated text is the no-JS fallback).
 document.querySelectorAll('.cy').forEach(function(e){var y=new Date().getFullYear(),f=+e.getAttribute('data-from');if(y>f)e.textContent=f+'–'+y;});
+// The echo comes close around the title and description: --cut = just below the description, kept in step with scrolling.
+(function(){var c=document.getElementById('dark'),e=document.querySelector('.pcs')||document.querySelector('.intro');if(!c||!e)return;var q=0;
+  function f(){q=0;c.style.setProperty('--cut',Math.max(0,Math.round(e.getBoundingClientRect().top-6))+'px');}
+  f();addEventListener('scroll',function(){if(!q)q=requestAnimationFrame(f);},{passive:true});addEventListener('resize',f);})();
+// Block titles stay on one line on wide screens; a title that doesn't fit (long translations) may wrap instead.
+(function(){var ts=document.querySelectorAll('.pt');function f(){ts.forEach(function(t){t.classList.remove('fit');if(t.scrollWidth>t.clientWidth+1)t.classList.add('fit');});}
+  f();setTimeout(f,0);addEventListener('load',f);addEventListener('resize',f);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);})();
 // The page is pre-rendered per language (docs/<lang>/). Scripts only need a few strings: window.TR (set by gen.py).
 var T=function(k){return (window.TR||{})[k]||null;};
 // Language dropdown: remember the choice (localStorage 'echoloc.lang', shared with the game) and open that page.
@@ -386,24 +539,32 @@ var T=function(k){return (window.TR||{})[k]||null;};
 // Strings: every translatable element carries data-i18n (text), data-i18n-html (markup) or data-i18n-alt (alt text).
 // Later: a table {lang:{key:text}} picked from navigator.languages fills them in. English only for now.
 
-// Downloads: the visitor's system first and highlighted ("Recommended for your system"). Phones, tablets and Quest: the
-// Play / Meta Quest button is the recommended one and the downloads become a compact list.
-(function(){var box=document.getElementById('download'),ul=box&&box.querySelector('.dls');if(!ul)return;
+// "More ways to play / free downloads" toggle (without JS the panel is simply shown).
+(function(){var b=document.querySelector('.morebtn'),p=document.getElementById('download');if(!b||!p)return;
+  b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',o);p.hidden=!o;});
+  if(location.hash==='#download'){b.setAttribute('aria-expanded','true');p.hidden=false;}})();
+// Recommended download (Luis 2026-11-11): the visitor's own native build for Windows / macOS / Linux x86_64, even while it is still
+// "coming with the next release"; everything else (Android, iOS, ChromeOS, ARM Linux, unknown): the offline web version. Only the recommended row has the filled button; the others are outlined. Phones / tablets: the itch.io
+// block is the recommended way to play (Quest: the Meta Store one).
+(function(){var u=document.querySelector('.drow');if(!u)return;var ready=u.getAttribute('data-native-ready')==='yes';
   var ua=navigator.userAgent||'',uad=navigator.userAgentData,pl=((uad&&uad.platform)||navigator.platform||'').toLowerCase();
   var quest=/OculusBrowser|Quest/i.test(ua),mobile=quest||(uad&&uad.mobile)||/Android|iPhone|iPad|iPod|Mobile/i.test(ua)||(/Mac/.test(ua)&&navigator.maxTouchPoints>1)||matchMedia('(pointer: coarse)').matches;
-  function badge(el){var b=document.createElement('span');b.className='badge';b.setAttribute('data-i18n','recommended');b.textContent=T('recommended')||'Recommended for your system';el.insertBefore(b,el.firstChild);}
-  if(mobile){box.classList.add('compact');var btn=document.querySelector(quest?'.cta a[href*="meta.com"]':'.cta .btn.play');
-    if(btn){btn.classList.add('rec');badge(btn.querySelector('span'));}return;}
-  function pick(os){var li=ul.querySelector('[data-os="'+os+'"]');if(!li)return;li.classList.add('rec');ul.insertBefore(li,ul.firstChild);badge(li.firstElementChild);}
-  var os=/win/.test(pl)||/Windows/.test(ua)?'win64':/mac/.test(pl)||/Macintosh/.test(ua)?'mac':/linux|x11|cros/.test(pl)||/Linux|X11/.test(ua)?'linux':'web';
+  function badge(el,before){var w=document.createElement('span');w.className='recw';w.innerHTML='<span class="badge"></span>';w.firstChild.textContent=T('recommended')||'Recommended for your system';w.firstChild.setAttribute('data-i18n','recommended');el.insertBefore(w,before||el.firstChild);}
+  if(quest){var nv=document.querySelector('.pcs');nv.insertBefore(nv.querySelector('.pc.vr'),nv.firstChild);}
+  if(mobile){var pc=document.querySelector(quest?'.pc.vr':'.pc:not(.vr):not(.dlpc)');if(pc){pc.classList.add('rec');badge(pc);}}
+  function pick(os){var r=u.querySelector('[data-os="'+os+'"]')||u.querySelector('[data-os="web"]');
+    u.querySelectorAll('li').forEach(function(li){li.classList.remove('rec');var w=li.querySelector('.recw');if(w)w.remove();var a=li.querySelector('a.pbtn');if(a)a.classList.add('ghost');var o=li.querySelector('.pbtn.off');if(o)o.classList.remove('recoff');});
+    r.classList.add('rec');u.insertBefore(r,u.firstChild);var dp=document.querySelector('.dlpc');if(dp){var w=r.getAttribute('data-os');dp.querySelectorAll('.v').forEach(function(v){v.hidden=v.getAttribute('data-os')!==w;});}var a=r.querySelector('a.pbtn');if(a)a.classList.remove('ghost');var o=r.querySelector('.pbtn.off');if(o)o.classList.add('recoff');var l=r.querySelector('.rl');badge(l);}
+  var os=/win/.test(pl)||/Windows/.test(ua)?'win64':/mac/.test(pl)||/Macintosh/.test(ua)?'mac':/linux|x11/.test(pl)||/Linux|X11/.test(ua)?'linux':'web';
+  if(os==='linux'&&/aarch64|arm/i.test(ua+' '+pl))os='web';
+  if(/cros/.test(pl)||/CrOS/.test(ua)||mobile)os='web';
   if(os==='win64'&&/Windows NT/.test(ua)&&!/Win64|WOW64|x64|amd64/i.test(ua)&&!(uad&&uad.getHighEntropyValues))os='win32';
-  if(os==='win64'&&uad&&uad.getHighEntropyValues)uad.getHighEntropyValues(['bitness']).then(function(v){if(v.bitness==='32'){ul.querySelectorAll('.rec').forEach(function(l){l.classList.remove('rec');var b=l.querySelector('.badge');if(b)b.remove();});pick('win32');}}).catch(function(){});
   pick(os);
+  if((os==='win64'||os==='linux')&&uad&&uad.getHighEntropyValues)uad.getHighEntropyValues(['bitness','architecture']).then(function(v){
+    if(os==='linux'&&v.architecture&&v.architecture!=='x86')pick('web');else if(os==='win64'&&v.bitness==='32')pick('win32');}).catch(function(){});
 })();
 
-// Native downloads: rows become links once the first GitHub release exists (flip data-native-ready to "yes").
-(function(){var l=document.querySelector('.dls[data-native-ready=yes]');if(!l)return;l.querySelectorAll('.nat').forEach(function(n){var a=document.createElement('a');a.href=n.dataset.href;a.innerHTML=n.innerHTML;n.replaceWith(a);});
-  var nt=document.querySelector('#download .note');if(nt)nt.hidden=true;})();
+
 
 var CALM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -476,9 +637,12 @@ var CALM=matchMedia('(prefers-reduced-motion: reduce)').matches;
     var still=function(){count=0;head=0;Q=1;var r=raf;first();if(raf){cancelAnimationFrame(raf);raf=0;}x.clearRect(0,0,W,H);
       for(var i=0;i<count;i++){var s=PS[i];x.globalAlpha=Math.min(1,.75*PI[i]);x.drawImage(spr[PC[i]],PX[i]-s/2,PY[i]-s/2,s,s);}x.globalAlpha=1;};
     still();addEventListener('resize',function(){size();still();});window.__dots=function(){return count;};return;}
-  setTimeout(first,450);
+  // the one opening echo starts with the trailer (its 'playing' event); if it doesn't start (autoplay blocked, not in view), after 1.6 s
+  var fired=false,go=function(){if(fired)return;fired=true;first();},vid=document.querySelector('video[data-autoplay]');
+  if(vid)vid.addEventListener('playing',go,{once:true});setTimeout(go,vid?1600:450);
   window.__dots=function(){return count;};   // checks: how many dots exist (clicks must not add any)
 })();
 </script>
+<noscript><style>.mpanel{display:block!important}.morebtn{display:none}</style></noscript>
 </body>
 </html>
