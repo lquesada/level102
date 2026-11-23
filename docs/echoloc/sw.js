@@ -4,7 +4,7 @@
 // The game page: NETWORK FIRST (online you always get the current build; the browser's own HTTP cache rules apply), the cached copy
 // only when the network fails or is very slow. Icons + manifest: cache first (they only change with a new worker anyway).
 'use strict';
-const CACHE = 'echoloc-1.4.0-bc2ca3d1d5c9';
+const CACHE = 'echoloc-1.4.1-24ad7d381a3a';
 const BASE = new URL('./', self.location).pathname;               // /echoloc/
 const PAGE = BASE;                                                 // the one cache key for the game page
 const CORE = [PAGE, 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
